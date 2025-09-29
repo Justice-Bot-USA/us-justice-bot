@@ -37,7 +37,7 @@ export function sanitizeText(text: string): string {
 export function validateAndSanitizeMessage(input: string): string {
   const validation = chatMessageSchema.safeParse({ content: input });
   if (!validation.success) {
-    throw new Error(validation.error.errors[0].message);
+    throw new Error(validation.error.issues[0].message);
   }
   return sanitizeText(validation.data.content);
 }

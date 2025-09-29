@@ -237,7 +237,6 @@ export function ChatInterface({
       inputRef.current?.focus();
     }
   };
-  };
 
   const loadChatSession = async (sessionId: string) => {
     try {
