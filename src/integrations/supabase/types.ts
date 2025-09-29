@@ -76,6 +76,75 @@ export type Database = {
         }
         Relationships: []
       }
+      form_payments: {
+        Row: {
+          amount: number
+          created_at: string
+          form_type: string | null
+          id: string
+          paypal_payment_id: string | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          amount?: number
+          created_at?: string
+          form_type?: string | null
+          id?: string
+          paypal_payment_id?: string | null
+          status?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          form_type?: string | null
+          id?: string
+          paypal_payment_id?: string | null
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      subscriptions: {
+        Row: {
+          amount: number
+          created_at: string
+          end_date: string
+          id: string
+          paypal_subscription_id: string | null
+          plan_type: string
+          start_date: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          end_date: string
+          id?: string
+          paypal_subscription_id?: string | null
+          plan_type: string
+          start_date?: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          end_date?: string
+          id?: string
+          paypal_subscription_id?: string | null
+          plan_type?: string
+          start_date?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_preferences: {
         Row: {
           created_at: string | null
