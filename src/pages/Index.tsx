@@ -5,6 +5,7 @@ import WarningBanner from "@/components/WarningBanner";
 import LegalSections from "@/components/LegalSections";
 import StateSelector from "@/components/StateSelector";
 import { ChatSection } from "@/components/ChatSection";
+import { SEOHead } from "@/components/SEOHead";
 
 const Index = () => {
   const [language, setLanguage] = useState<'en' | 'es'>('en');
@@ -29,6 +30,12 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEOHead 
+        title="US Justice Bot - Free Legal Guidance for All Americans"
+        description="Get free legal assistance and guidance for all 50 US states. Professional legal help in English and Spanish. Your trusted legal companion."
+        keywords="legal assistance, legal advice, legal help, US law, legal guidance, free legal aid, legal bot, legal AI"
+        url="https://usjusticebot.com"
+      />
       <Header language={language} onLanguageChange={setLanguage} />
       
       <main>

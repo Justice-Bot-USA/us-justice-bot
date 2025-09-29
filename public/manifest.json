@@ -1,0 +1,27 @@
+{
+  "name": "US Justice Bot",
+  "short_name": "Justice Bot",
+  "description": "Free legal guidance for all Americans",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1e40af",
+  "theme_color": "#1e40af",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/public/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/src/assets/us-justice-bot-logo.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["legal", "utilities", "business"],
+  "lang": "en-US",
+  "dir": "ltr"
+}
