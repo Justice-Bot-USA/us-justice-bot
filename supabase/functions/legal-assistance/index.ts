@@ -14,7 +14,26 @@ serve(async (req) => {
   try {
     const { message, state, legalSection, language, context } = await req.json()
 
-    const prompt = `You are a US Justice Bot, an AI legal assistant providing educational information about ${legalSection} law in ${state}. 
+    // Input validation
+    if (!message || typeof message !== 'string' || message.length > 2000) {
+      throw new Error('Invalid message')
+    }
+    if (!state || typeof state !== 'string' || state.length > 50) {
+      throw new Error('Invalid state')
+    }
+    if (!legalSection || typeof legalSection !== 'string' || legalSection.length > 100) {
+      throw new Error('Invalid legal section')
+    }
+    if (!['en', 'es'].includes(language)) {
+      throw new Error('Invalid language')
+    }
+
+    // Sanitize inputs
+    const sanitizedMessage = message.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '').replace(/<[^>]*>/g, '').trim()
+    const sanitizedState = state.replace(/[^a-zA-Z\s]/g, '').trim()
+    const sanitizedLegalSection = legalSection.replace(/[^a-zA-Z\s]/g, '').trim()
+
+    const prompt = `You are a US Justice Bot, an AI legal assistant providing educational information about ${sanitizedLegalSection} law in ${sanitizedState}.
 
 Please respond in ${language === 'es' ? 'Spanish' : 'English'}.
 
@@ -23,11 +42,11 @@ IMPORTANT DISCLAIMERS TO ALWAYS INCLUDE:
 - Always recommend consulting with a qualified attorney
 - Laws vary by jurisdiction and change over time
 
-User's question: ${message}
+User's question: ${sanitizedMessage}
 
 Context from previous messages: ${context?.map((msg: any) => `${msg.role}: ${msg.content}`).join('\n') || 'None'}
 
-Please provide a helpful, informative response about ${legalSection} law in ${state}, but always emphasize that this is general information and not legal advice. Be specific about ${state} law when possible.`
+Please provide a helpful, informative response about ${sanitizedLegalSection} law in ${sanitizedState}, but always emphasize that this is general information and not legal advice. Be specific about ${sanitizedState} law when possible.`
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
@@ -44,7 +63,7 @@ Please provide a helpful, informative response about ${legalSection} law in ${st
           },
           {
             role: 'user',
-            content: message
+            content: sanitizedMessage
           }
         ],
         max_tokens: 500,

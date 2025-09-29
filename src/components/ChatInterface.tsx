@@ -12,6 +12,7 @@ import { AuthModal } from "@/components/AuthModal";
 import { ChatHistory } from "@/components/ChatHistory";
 import { UserPreferences } from "@/components/UserPreferences";
 import { TypingIndicator } from "@/components/LoadingComponents";
+import { validateAndSanitizeMessage } from "@/lib/validation";
 
 interface Message {
   id: string;
@@ -161,57 +162,81 @@ export function ChatInterface({
   const handleSendMessage = async () => {
     if (!input.trim() || isLoading || !sessionId) return;
 
-    const userMessage: Message = {
-      id: `user-${Date.now()}`,
-      role: 'user',
-      content: input.trim(),
-      timestamp: new Date()
-    };
-
-    setMessages(prev => [...prev, userMessage]);
-    setInput("");
-    setIsLoading(true);
-
     try {
-      // Save user message to database
-      await supabase
-        .from('chat_messages')
-        .insert({
-          session_id: sessionId,
-          role: 'user',
-          content: userMessage.content
-        });
-
-      const aiResponse = await generateAIResponse(userMessage.content);
+      // Validate and sanitize user input
+      const sanitizedContent = validateAndSanitizeMessage(input);
       
-      const assistantMessage: Message = {
-        id: `assistant-${Date.now()}`,
-        role: 'assistant',
-        content: aiResponse,
+      const userMessage: Message = {
+        id: `user-${Date.now()}`,
+        role: 'user',
+        content: sanitizedContent,
         timestamp: new Date()
       };
 
-      setMessages(prev => [...prev, assistantMessage]);
-      
-      // Save AI response to database
-      await supabase
-        .from('chat_messages')
-        .insert({
-          session_id: sessionId,
-          role: 'assistant',
-          content: aiResponse
-        });
+      setMessages(prev => [...prev, userMessage]);
+      setInput("");
+      setIsLoading(true);
+
+      try {
+        // Save user message to database
+        await supabase
+          .from('chat_messages')
+          .insert({
+            session_id: sessionId,
+            role: 'user',
+            content: userMessage.content
+          });
+
+        const aiResponse = await generateAIResponse(userMessage.content);
         
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: text[language].error,
-        variant: "destructive"
-      });
-    } finally {
+        const assistantMessage: Message = {
+          id: `assistant-${Date.now()}`,
+          role: 'assistant',
+          content: aiResponse,
+          timestamp: new Date()
+        };
+
+        setMessages(prev => [...prev, assistantMessage]);
+        
+        // Save AI response to database
+        await supabase
+          .from('chat_messages')
+          .insert({
+            session_id: sessionId,
+            role: 'assistant',
+            content: aiResponse
+          });
+          
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: text[language].error,
+          variant: "destructive"
+        });
+      } finally {
+        setIsLoading(false);
+        inputRef.current?.focus();
+      }
+      
+    } catch (validationError) {
+      // Handle validation errors
+      if (validationError instanceof Error) {
+        toast({
+          title: "Invalid Input",
+          description: validationError.message,
+          variant: "destructive"
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: text[language].error,
+          variant: "destructive"
+        });
+      }
       setIsLoading(false);
       inputRef.current?.focus();
     }
+  };
   };
 
   const loadChatSession = async (sessionId: string) => {
