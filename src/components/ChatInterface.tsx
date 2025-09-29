@@ -439,4 +439,6 @@ export function ChatInterface({
       )}
     </Card>
   );
-}
+};
+
+export default ChatInterface;
