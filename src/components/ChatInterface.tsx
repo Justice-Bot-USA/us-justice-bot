@@ -4,8 +4,11 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Send, Bot, User, AlertTriangle, Scale } from "lucide-react";
+import { Send, Bot, User, AlertTriangle, Scale, LogIn, LogOut } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import { supabase } from "@/lib/supabase";
+import { useAuth } from "@/hooks/useAuth";
+import { AuthModal } from "@/components/AuthModal";
 
 interface Message {
   id: string;
@@ -24,8 +27,11 @@ export function ChatInterface({ language, selectedState, selectedSection }: Chat
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [sessionId, setSessionId] = useState<string | null>(null);
+  const [showAuthModal, setShowAuthModal] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const { user, signOut } = useAuth();
 
   const text = {
     en: {
@@ -47,15 +53,54 @@ export function ChatInterface({ language, selectedState, selectedSection }: Chat
   };
 
   useEffect(() => {
-    // Add welcome message when component mounts
-    const welcomeMessage: Message = {
-      id: `welcome-${Date.now()}`,
-      role: 'assistant',
-      content: text[language].welcome,
-      timestamp: new Date()
+    // Create or load chat session
+    const initializeSession = async () => {
+      try {
+        const { data: session, error } = await supabase
+          .from('chat_sessions')
+          .insert({
+            user_id: user?.id || null,
+            state: selectedState,
+            legal_section: selectedSection,
+            language: language
+          })
+          .select()
+          .single();
+
+        if (error) throw error;
+        
+        setSessionId(session.id);
+        
+        // Add welcome message
+        const welcomeMessage: Message = {
+          id: `welcome-${Date.now()}`,
+          role: 'assistant',
+          content: text[language].welcome,
+          timestamp: new Date()
+        };
+        setMessages([welcomeMessage]);
+        
+        // Save welcome message to database
+        await supabase
+          .from('chat_messages')
+          .insert({
+            session_id: session.id,
+            role: 'assistant',
+            content: text[language].welcome
+          });
+          
+      } catch (error) {
+        console.error('Error initializing session:', error);
+        toast({
+          title: "Error",
+          description: text[language].error,
+          variant: "destructive"
+        });
+      }
     };
-    setMessages([welcomeMessage]);
-  }, [language, selectedState, selectedSection]);
+
+    initializeSession();
+  }, [language, selectedState, selectedSection, user]);
 
   useEffect(() => {
     // Scroll to bottom when new messages are added
@@ -65,29 +110,51 @@ export function ChatInterface({ language, selectedState, selectedSection }: Chat
   }, [messages]);
 
   const generateAIResponse = async (userMessage: string): Promise<string> => {
-    // Simulate AI response - in a real app, this would call an AI API
-    const responses = {
-      en: [
-        `Based on ${selectedState} law regarding ${selectedSection}, here's what you should know: This is general information and should not be considered legal advice. I recommend consulting with a qualified attorney for your specific situation.`,
-        `In ${selectedState}, ${selectedSection} matters are generally handled as follows: [Detailed explanation]. Please note this is educational information only and not legal advice.`,
-        `For ${selectedSection} issues in ${selectedState}, the typical process involves: [Process explanation]. Always consult with a local attorney for advice specific to your case.`
-      ],
-      es: [
-        `Basado en la ley de ${selectedState} sobre ${selectedSection}, esto es lo que debes saber: Esta es información general y no debe considerarse asesoramiento legal. Recomiendo consultar con un abogado calificado para tu situación específica.`,
-        `En ${selectedState}, los asuntos de ${selectedSection} generalmente se manejan de la siguiente manera: [Explicación detallada]. Ten en cuenta que esta es solo información educativa y no asesoramiento legal.`,
-        `Para problemas de ${selectedSection} en ${selectedState}, el proceso típico involucra: [Explicación del proceso]. Siempre consulta con un abogado local para obtener asesoramiento específico para tu caso.`
-      ]
-    };
+    // Call Lovable AI API for legal assistance
+    try {
+      const response = await fetch('/api/ai/legal-assistance', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: userMessage,
+          state: selectedState,
+          legalSection: selectedSection,
+          language: language,
+          context: messages.slice(-5) // Last 5 messages for context
+        }),
+      });
 
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 1500 + Math.random() * 1000));
-    
-    const responsePool = responses[language];
-    return responsePool[Math.floor(Math.random() * responsePool.length)];
+      if (!response.ok) {
+        throw new Error('AI response failed');
+      }
+
+      const data = await response.json();
+      return data.response;
+    } catch (error) {
+      console.error('AI Error:', error);
+      // Fallback to simulated response
+      const responses = {
+        en: [
+          `Based on ${selectedState} law regarding ${selectedSection}, here's what you should know: This is general information and should not be considered legal advice. I recommend consulting with a qualified attorney for your specific situation.`,
+          `In ${selectedState}, ${selectedSection} matters are generally handled as follows: [Detailed explanation]. Please note this is educational information only and not legal advice.`,
+          `For ${selectedSection} issues in ${selectedState}, the typical process involves: [Process explanation]. Always consult with a local attorney for advice specific to your case.`
+        ],
+        es: [
+          `Basado en la ley de ${selectedState} sobre ${selectedSection}, esto es lo que debes saber: Esta es información general y no debe considerarse asesoramiento legal. Recomiendo consultar con un abogado calificado para tu situación específica.`,
+          `En ${selectedState}, los asuntos de ${selectedSection} generalmente se manejan de la siguiente manera: [Explicación detallada]. Ten en cuenta que esta es solo información educativa y no asesoramiento legal.`,
+          `Para problemas de ${selectedSection} en ${selectedState}, el proceso típico involucra: [Explicación del proceso]. Siempre consulta con un abogado local para obtener asesoramiento específico para tu caso.`
+        ]
+      };
+      
+      const responsePool = responses[language];
+      return responsePool[Math.floor(Math.random() * responsePool.length)];
+    }
   };
 
   const handleSendMessage = async () => {
-    if (!input.trim() || isLoading) return;
+    if (!input.trim() || isLoading || !sessionId) return;
 
     const userMessage: Message = {
       id: `user-${Date.now()}`,
@@ -101,6 +168,15 @@ export function ChatInterface({ language, selectedState, selectedSection }: Chat
     setIsLoading(true);
 
     try {
+      // Save user message to database
+      await supabase
+        .from('chat_messages')
+        .insert({
+          session_id: sessionId,
+          role: 'user',
+          content: userMessage.content
+        });
+
       const aiResponse = await generateAIResponse(userMessage.content);
       
       const assistantMessage: Message = {
@@ -111,6 +187,16 @@ export function ChatInterface({ language, selectedState, selectedSection }: Chat
       };
 
       setMessages(prev => [...prev, assistantMessage]);
+      
+      // Save AI response to database
+      await supabase
+        .from('chat_messages')
+        .insert({
+          session_id: sessionId,
+          role: 'assistant',
+          content: aiResponse
+        });
+        
     } catch (error) {
       toast({
         title: "Error",
@@ -142,12 +228,36 @@ export function ChatInterface({ language, selectedState, selectedSection }: Chat
             <h3 className="font-semibold text-primary">US Justice Bot</h3>
             <p className="text-sm text-muted-foreground">
               {selectedSection} • {selectedState}
+              {user && <span className="ml-2">• {user.email}</span>}
             </p>
           </div>
-          <Badge variant="secondary" className="gap-1">
-            <AlertTriangle className="w-3 h-3" />
-            {text[language].disclaimer}
-          </Badge>
+          <div className="flex items-center gap-2">
+            <Badge variant="secondary" className="gap-1">
+              <AlertTriangle className="w-3 h-3" />
+              {text[language].disclaimer}
+            </Badge>
+            {user ? (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => signOut()}
+                className="gap-1"
+              >
+                <LogOut className="w-3 h-3" />
+                {language === 'en' ? 'Sign Out' : 'Cerrar Sesión'}
+              </Button>
+            ) : (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowAuthModal(true)}
+                className="gap-1"
+              >
+                <LogIn className="w-3 h-3" />
+                {language === 'en' ? 'Sign In' : 'Iniciar Sesión'}
+              </Button>
+            )}
+          </div>
         </div>
 
         {/* Messages */}
@@ -222,6 +332,12 @@ export function ChatInterface({ language, selectedState, selectedSection }: Chat
           </Button>
         </div>
       </CardContent>
+      
+      <AuthModal 
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        language={language}
+      />
     </Card>
   );
 }
