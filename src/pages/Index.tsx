@@ -4,6 +4,7 @@ import HeroSection from "@/components/HeroSection";
 import WarningBanner from "@/components/WarningBanner";
 import LegalSections from "@/components/LegalSections";
 import StateSelector from "@/components/StateSelector";
+import { ChatSection } from "@/components/ChatSection";
 
 const Index = () => {
   const [language, setLanguage] = useState<'en' | 'es'>('en');
@@ -24,8 +25,6 @@ const Index = () => {
 
   const handleStateSelect = (state: string) => {
     setSelectedState(state);
-    // Here you would typically navigate to the chat interface
-    console.log(`Selected: ${selectedSection} in ${state}`);
   };
 
   return (
@@ -48,6 +47,12 @@ const Index = () => {
             selectedState={selectedState}
           />
         )}
+        
+        <ChatSection 
+          language={language}
+          selectedState={selectedState}
+          selectedSection={selectedSection}
+        />
       </main>
     </div>
   );
