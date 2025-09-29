@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Users, Clock, Shield, Scale } from "lucide-react";
-import heroImage from "@/assets/us-courthouse-hero.jpg";
+import heroImage from "@/assets/american-flag-bg.jpg";
 
 interface HeroSectionProps {
   language: 'en' | 'es';
@@ -40,10 +40,10 @@ const HeroSection = ({ language, onGetStarted }: HeroSectionProps) => {
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{ 
           backgroundImage: `url(${heroImage})`,
-          filter: 'brightness(0.4)'
+          filter: 'brightness(0.6)'
         }}
       />
-      <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-secondary/90" />
+      <div className="absolute inset-0 bg-primary/80" />
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl mx-auto text-center text-white">

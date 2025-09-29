@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Scale, Globe } from "lucide-react";
+import logoImage from "@/assets/us-justice-bot-logo.png";
 
 interface HeaderProps {
   language: 'en' | 'es';
@@ -29,7 +30,7 @@ const Header = ({ language, onLanguageChange }: HeaderProps) => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="flex items-center justify-center w-12 h-12 bg-white/10 rounded-lg">
-              <Scale className="w-6 h-6" />
+              <img src={logoImage} alt="US Justice Bot" className="w-8 h-8" />
             </div>
             <div>
               <h1 className="text-2xl font-bold">{text[language].title}</h1>
