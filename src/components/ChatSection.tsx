@@ -7,9 +7,17 @@ interface ChatSectionProps {
   language: 'en' | 'es';
   selectedState: string;
   selectedSection: string;
+  onLanguageChange: (language: 'en' | 'es') => void;
+  onStateChange: (state: string) => void;
 }
 
-export function ChatSection({ language, selectedState, selectedSection }: ChatSectionProps) {
+export function ChatSection({ 
+  language, 
+  selectedState, 
+  selectedSection, 
+  onLanguageChange, 
+  onStateChange 
+}: ChatSectionProps) {
   const text = {
     en: {
       title: "Legal Assistance Chat",
@@ -76,11 +84,13 @@ export function ChatSection({ language, selectedState, selectedSection }: ChatSe
 
         {/* Chat Interface */}
         <div className="mb-8">
-          <ChatInterface 
-            language={language}
-            selectedState={selectedState}
-            selectedSection={selectedSection}
-          />
+        <ChatInterface 
+          language={language} 
+          selectedState={selectedState} 
+          selectedSection={selectedSection}
+          onLanguageChange={onLanguageChange}
+          onStateChange={onStateChange}
+        />
         </div>
 
         {/* Legal Disclaimers */}

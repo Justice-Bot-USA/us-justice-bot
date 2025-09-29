@@ -49,9 +49,11 @@ const Index = () => {
         )}
         
         <ChatSection 
-          language={language}
-          selectedState={selectedState}
+          language={language} 
+          selectedState={selectedState} 
           selectedSection={selectedSection}
+          onLanguageChange={setLanguage}
+          onStateChange={setSelectedState}
         />
       </main>
     </div>

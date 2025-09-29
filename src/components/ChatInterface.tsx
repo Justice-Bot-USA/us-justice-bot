@@ -4,11 +4,14 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Send, Bot, User, AlertTriangle, Scale, LogIn, LogOut } from "lucide-react";
+import { Send, Bot, User, AlertTriangle, Scale, LogIn, LogOut, History, Settings } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/hooks/useAuth";
 import { AuthModal } from "@/components/AuthModal";
+import { ChatHistory } from "@/components/ChatHistory";
+import { UserPreferences } from "@/components/UserPreferences";
+import { TypingIndicator } from "@/components/LoadingComponents";
 
 interface Message {
   id: string;
@@ -21,14 +24,24 @@ interface ChatInterfaceProps {
   language: 'en' | 'es';
   selectedState: string;
   selectedSection: string;
+  onLanguageChange: (language: 'en' | 'es') => void;
+  onStateChange: (state: string) => void;
 }
 
-export function ChatInterface({ language, selectedState, selectedSection }: ChatInterfaceProps) {
+export function ChatInterface({ 
+  language, 
+  selectedState, 
+  selectedSection, 
+  onLanguageChange, 
+  onStateChange 
+}: ChatInterfaceProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [showChatHistory, setShowChatHistory] = useState(false);
+  const [showPreferences, setShowPreferences] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const { user, signOut } = useAuth();
@@ -201,6 +214,35 @@ export function ChatInterface({ language, selectedState, selectedSection }: Chat
     }
   };
 
+  const loadChatSession = async (sessionId: string) => {
+    try {
+      const { data: messages, error } = await supabase
+        .from('chat_messages')
+        .select('*')
+        .eq('session_id', sessionId)
+        .order('created_at', { ascending: true });
+
+      if (error) throw error;
+
+      const formattedMessages: Message[] = messages.map(msg => ({
+        id: msg.id,
+        role: msg.role as 'user' | 'assistant',
+        content: msg.content,
+        timestamp: new Date(msg.created_at)
+      }));
+
+      setMessages(formattedMessages);
+      setSessionId(sessionId);
+    } catch (error) {
+      console.error('Error loading chat session:', error);
+      toast({
+        title: "Error",
+        description: text[language].error,
+        variant: "destructive"
+      });
+    }
+  };
+
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
@@ -228,6 +270,28 @@ export function ChatInterface({ language, selectedState, selectedSection }: Chat
               <AlertTriangle className="w-3 h-3" />
               {text[language].disclaimer}
             </Badge>
+            
+            {user && (
+              <>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setShowChatHistory(true)}
+                  className="gap-1"
+                >
+                  <History className="w-3 h-3" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setShowPreferences(true)}
+                  className="gap-1"
+                >
+                  <Settings className="w-3 h-3" />
+                </Button>
+              </>
+            )}
+            
             {user ? (
               <Button
                 variant="outline"
@@ -269,7 +333,7 @@ export function ChatInterface({ language, selectedState, selectedSection }: Chat
                 )}
                 
                 <div
-                  className={`max-w-[80%] rounded-lg px-4 py-3 ${
+                  className={`max-w-[80%] rounded-lg px-4 py-3 animate-fade-in ${
                     message.role === 'user'
                       ? 'bg-primary text-primary-foreground ml-auto'
                       : 'bg-muted'
@@ -289,18 +353,7 @@ export function ChatInterface({ language, selectedState, selectedSection }: Chat
               </div>
             ))}
             
-            {isLoading && (
-              <div className="flex gap-3 justify-start">
-                <div className="flex items-center justify-center w-8 h-8 bg-primary/10 rounded-full flex-shrink-0">
-                  <Bot className="w-4 h-4 text-primary" />
-                </div>
-                <div className="bg-muted rounded-lg px-4 py-3">
-                  <p className="text-sm text-muted-foreground italic">
-                    {text[language].thinking}
-                  </p>
-                </div>
-              </div>
-            )}
+            {isLoading && <TypingIndicator language={language} />}
           </div>
         </ScrollArea>
 
@@ -319,6 +372,7 @@ export function ChatInterface({ language, selectedState, selectedSection }: Chat
             onClick={handleSendMessage}
             disabled={!input.trim() || isLoading}
             size="icon"
+            className="hover-scale"
           >
             <Send className="w-4 h-4" />
           </Button>
@@ -330,6 +384,34 @@ export function ChatInterface({ language, selectedState, selectedSection }: Chat
         onClose={() => setShowAuthModal(false)}
         language={language}
       />
+      
+      <ChatHistory
+        isOpen={showChatHistory}
+        onClose={() => setShowChatHistory(false)}
+        onSelectSession={loadChatSession}
+        language={language}
+      />
+      
+      {showPreferences && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 animate-fade-in">
+          <div className="relative">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setShowPreferences(false)}
+              className="absolute -top-10 right-0 text-white hover:bg-white/20"
+            >
+              ✕
+            </Button>
+            <UserPreferences
+              language={language}
+              selectedState={selectedState}
+              onLanguageChange={onLanguageChange}
+              onStateChange={onStateChange}
+            />
+          </div>
+        </div>
+      )}
     </Card>
   );
 }
