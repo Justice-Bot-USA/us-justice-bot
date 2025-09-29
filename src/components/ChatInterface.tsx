@@ -110,27 +110,19 @@ export function ChatInterface({ language, selectedState, selectedSection }: Chat
   }, [messages]);
 
   const generateAIResponse = async (userMessage: string): Promise<string> => {
-    // Call Lovable AI API for legal assistance
+    // Call Supabase Edge Function for legal assistance
     try {
-      const response = await fetch('/api/ai/legal-assistance', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
+      const { data, error } = await supabase.functions.invoke('legal-assistance', {
+        body: {
           message: userMessage,
           state: selectedState,
           legalSection: selectedSection,
           language: language,
           context: messages.slice(-5) // Last 5 messages for context
-        }),
+        },
       });
 
-      if (!response.ok) {
-        throw new Error('AI response failed');
-      }
-
-      const data = await response.json();
+      if (error) throw error;
       return data.response;
     } catch (error) {
       console.error('AI Error:', error);
