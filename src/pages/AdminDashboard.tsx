@@ -22,13 +22,20 @@ import {
   UserPlus
 } from 'lucide-react';
 
-interface User {
+interface Profile {
   id: string;
+  user_id: string;
   email: string;
-  created_at: string;
   first_name?: string;
   last_name?: string;
-  role?: string;
+  created_at: string;
+}
+
+interface UserRole {
+  id: string;
+  user_id: string;
+  role: string;
+  created_at: string;
 }
 
 interface ChatSession {
@@ -51,7 +58,8 @@ const AdminDashboard = () => {
   const navigate = useNavigate();
   const { user: currentUser } = useAuth();
   const { isAdmin, loading: roleLoading } = useAdminAccess();
-  const [users, setUsers] = useState<User[]>([]);
+  const [profiles, setProfiles] = useState<Profile[]>([]);
+  const [userRoles, setUserRoles] = useState<UserRole[]>([]);
   const [chatSessions, setChatSessions] = useState<ChatSession[]>([]);
   const [payments, setPayments] = useState<Payment[]>([]);
   const [loading, setLoading] = useState(true);
@@ -75,14 +83,16 @@ const AdminDashboard = () => {
 
   const fetchData = async () => {
     try {
-      // Fetch users with profiles and roles
-      const { data: usersData } = await supabase
+      // Fetch profiles
+      const { data: profilesData } = await supabase
         .from('profiles')
-        .select(`
-          *,
-          user_roles(role)
-        `)
+        .select('*')
         .order('created_at', { ascending: false });
+
+      // Fetch user roles
+      const { data: rolesData } = await supabase
+        .from('user_roles')
+        .select('*');
 
       // Fetch chat sessions
       const { data: sessionsData } = await supabase
@@ -98,14 +108,15 @@ const AdminDashboard = () => {
         .order('created_at', { ascending: false })
         .limit(100);
 
-      setUsers(usersData || []);
+      setProfiles(profilesData || []);
+      setUserRoles(rolesData || []);
       setChatSessions(sessionsData || []);
       setPayments(paymentsData || []);
 
       // Calculate stats
       const totalRevenue = (paymentsData || []).reduce((sum, payment) => sum + Number(payment.amount), 0);
       setStats({
-        totalUsers: usersData?.length || 0,
+        totalUsers: profilesData?.length || 0,
         totalSessions: sessionsData?.length || 0,
         totalPayments: paymentsData?.length || 0,
         totalRevenue,
@@ -120,11 +131,19 @@ const AdminDashboard = () => {
 
   const updateUserRole = async (userId: string, newRole: string) => {
     try {
-      // Insert/update role using raw SQL to handle the app_role enum type
-      const { error } = await supabase.rpc('admin_update_user_role', {
-        target_user_id: userId,
-        new_role: newRole
-      });
+      // Delete existing role first
+      await supabase
+        .from('user_roles')
+        .delete()
+        .eq('user_id', userId);
+
+      // Insert new role with proper typing
+      const { error } = await supabase
+        .from('user_roles')
+        .insert([{ 
+          user_id: userId, 
+          role: newRole as 'admin' | 'moderator' | 'user'
+        }]);
 
       if (error) throw error;
 
@@ -134,6 +153,11 @@ const AdminDashboard = () => {
       console.error('Error updating user role:', error);
       toast.error('Failed to update user role');
     }
+  };
+
+  const getUserRole = (userId: string): string => {
+    const userRole = userRoles.find(role => role.user_id === userId);
+    return userRole?.role || 'user';
   };
 
   if (roleLoading || loading) {
@@ -269,39 +293,45 @@ const AdminDashboard = () => {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {users.map((user) => (
-                      <TableRow key={user.id}>
-                        <TableCell>{user.email}</TableCell>
-                        <TableCell>
-                          {user.first_name && user.last_name
-                            ? `${user.first_name} ${user.last_name}`
-                            : 'N/A'}
-                        </TableCell>
-                        <TableCell>
-                          <Badge variant={user.role === 'admin' ? 'destructive' : 'secondary'}>
-                            {user.role || 'user'}
-                          </Badge>
-                        </TableCell>
-                        <TableCell>
-                          {new Date(user.created_at).toLocaleDateString()}
-                        </TableCell>
-                        <TableCell>
-                          <Select
-                            value={user.role || 'user'}
-                            onValueChange={(value) => updateUserRole(user.id, value)}
-                          >
-                            <SelectTrigger className="w-32">
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="user">User</SelectItem>
-                              <SelectItem value="moderator">Moderator</SelectItem>
-                              <SelectItem value="admin">Admin</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </TableCell>
-                      </TableRow>
-                    ))}
+                    {profiles.map((profile) => {
+                      const role = getUserRole(profile.user_id);
+                      return (
+                        <TableRow key={profile.id}>
+                          <TableCell>{profile.email}</TableCell>
+                          <TableCell>
+                            {profile.first_name && profile.last_name
+                              ? `${profile.first_name} ${profile.last_name}`
+                              : 'N/A'}
+                          </TableCell>
+                          <TableCell>
+                            <Badge variant={
+                              role === 'admin' ? 'destructive' : 
+                              role === 'moderator' ? 'default' : 'secondary'
+                            }>
+                              {role}
+                            </Badge>
+                          </TableCell>
+                          <TableCell>
+                            {new Date(profile.created_at).toLocaleDateString()}
+                          </TableCell>
+                          <TableCell>
+                            <Select
+                              value={role}
+                              onValueChange={(value) => updateUserRole(profile.user_id, value)}
+                            >
+                              <SelectTrigger className="w-32">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="user">User</SelectItem>
+                                <SelectItem value="moderator">Moderator</SelectItem>
+                                <SelectItem value="admin">Admin</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
                   </TableBody>
                 </Table>
               </CardContent>
