@@ -25,15 +25,21 @@ export function useAdminAccess() {
         .from('user_roles')
         .select('role')
         .eq('user_id', user?.id)
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .single();
+        .order('created_at', { ascending: false });
 
       if (error && error.code !== 'PGRST116') {
         console.error('Error fetching user role:', error);
         setUserRole('user');
       } else {
-        setUserRole(data?.role || 'user');
+        // If user has multiple roles, prioritize admin > moderator > user
+        const roles = data || [];
+        if (roles.some(r => r.role === 'admin')) {
+          setUserRole('admin');
+        } else if (roles.some(r => r.role === 'moderator')) {
+          setUserRole('moderator');
+        } else {
+          setUserRole('user');
+        }
       }
     } catch (error) {
       console.error('Error in fetchUserRole:', error);
