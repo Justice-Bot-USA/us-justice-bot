@@ -1,8 +1,11 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { Scale, Globe } from "lucide-react";
+import { Scale, Globe, User, LogOut, Settings } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { useRole } from "@/hooks/useRole";
 import logoImage from "@/assets/us-justice-bot-logo.png";
 
 interface HeaderProps {
@@ -11,6 +14,8 @@ interface HeaderProps {
 }
 
 const Header = ({ language, onLanguageChange }: HeaderProps) => {
+  const { user, signOut } = useAuth();
+  const { hasAdminAccess } = useRole();
   const text = {
     en: {
       title: "US Justice Bot",
@@ -53,6 +58,38 @@ const Header = ({ language, onLanguageChange }: HeaderProps) => {
                   <SelectItem value="es">Español</SelectItem>
                 </SelectContent>
               </Select>
+            </div>
+            
+            {/* Auth Section */}
+            <div className="flex items-center gap-2">
+              {user ? (
+                <div className="flex items-center gap-2">
+                  {hasAdminAccess && (
+                    <Button asChild variant="secondary" size="sm">
+                      <Link to="/admin">
+                        <Settings className="w-4 h-4 mr-1" />
+                        Admin
+                      </Link>
+                    </Button>
+                  )}
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => signOut()}
+                    className="bg-white/10 border-white/20 text-white hover:bg-white/20"
+                  >
+                    <LogOut className="w-4 h-4 mr-1" />
+                    Sign Out
+                  </Button>
+                </div>
+              ) : (
+                <Button asChild variant="secondary" size="sm">
+                  <Link to="/auth">
+                    <User className="w-4 h-4 mr-1" />
+                    Sign In
+                  </Link>
+                </Button>
+              )}
             </div>
           </div>
         </div>
