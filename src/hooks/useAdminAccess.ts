@@ -21,11 +21,14 @@ export function useAdminAccess() {
 
   const fetchUserRole = async () => {
     try {
+      console.log('Fetching user role for user:', user?.id);
       const { data, error } = await supabase
         .from('user_roles')
         .select('role')
         .eq('user_id', user?.id)
         .order('created_at', { ascending: false });
+
+      console.log('User roles query result:', { data, error });
 
       if (error && error.code !== 'PGRST116') {
         console.error('Error fetching user role:', error);
@@ -33,11 +36,15 @@ export function useAdminAccess() {
       } else {
         // If user has multiple roles, prioritize admin > moderator > user
         const roles = data || [];
+        console.log('Processing roles:', roles);
         if (roles.some(r => r.role === 'admin')) {
+          console.log('Setting user as admin');
           setUserRole('admin');
         } else if (roles.some(r => r.role === 'moderator')) {
+          console.log('Setting user as moderator');
           setUserRole('moderator');
         } else {
+          console.log('Setting user as regular user');
           setUserRole('user');
         }
       }
