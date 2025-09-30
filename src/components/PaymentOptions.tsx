@@ -180,7 +180,7 @@ export const PaymentOptions: React.FC<PaymentOptionsProps> = ({ onPaymentSuccess
           <CardTitle className="text-lg">Pay Per Form</CardTitle>
           <CardDescription>For occasional use</CardDescription>
           <div className="text-3xl font-bold">
-            $5.99
+            $2.99
             <span className="text-sm font-normal text-muted-foreground">/form</span>
           </div>
         </CardHeader>
