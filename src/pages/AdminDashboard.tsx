@@ -123,15 +123,19 @@ const AdminDashboard = () => {
   ]);
 
   useEffect(() => {
+    console.log('AdminDashboard useEffect:', { roleLoading, isAdmin, isModerator, userRole });
+    
     if (!roleLoading && !isAdmin && !isModerator) {
+      console.log('No admin access, redirecting to home');
       navigate('/');
       return;
     }
 
     if (isAdmin || isModerator) {
+      console.log('Has admin access, fetching data');
       fetchData();
     }
-  }, [isAdmin, isModerator, roleLoading, navigate]);
+  }, [isAdmin, isModerator, roleLoading, navigate, userRole]);
 
   const fetchData = async () => {
     try {
