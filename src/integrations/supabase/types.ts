@@ -70,6 +70,86 @@ export type Database = {
           },
         ]
       }
+      case_merit_scores: {
+        Row: {
+          case_description: string | null
+          case_title: string
+          complexity_score: number | null
+          county: string | null
+          created_at: string
+          estimated_success_rate: number | null
+          id: string
+          legal_area: string
+          merit_score: number
+          relevant_laws: Json | null
+          session_id: string | null
+          settlement_range_max: number | null
+          settlement_range_min: number | null
+          state: string
+          status: string | null
+          strength_factors: Json | null
+          supporting_evidence: Json | null
+          time_to_resolution_months: number | null
+          updated_at: string
+          user_id: string
+          weakness_factors: Json | null
+        }
+        Insert: {
+          case_description?: string | null
+          case_title: string
+          complexity_score?: number | null
+          county?: string | null
+          created_at?: string
+          estimated_success_rate?: number | null
+          id?: string
+          legal_area: string
+          merit_score?: number
+          relevant_laws?: Json | null
+          session_id?: string | null
+          settlement_range_max?: number | null
+          settlement_range_min?: number | null
+          state: string
+          status?: string | null
+          strength_factors?: Json | null
+          supporting_evidence?: Json | null
+          time_to_resolution_months?: number | null
+          updated_at?: string
+          user_id: string
+          weakness_factors?: Json | null
+        }
+        Update: {
+          case_description?: string | null
+          case_title?: string
+          complexity_score?: number | null
+          county?: string | null
+          created_at?: string
+          estimated_success_rate?: number | null
+          id?: string
+          legal_area?: string
+          merit_score?: number
+          relevant_laws?: Json | null
+          session_id?: string | null
+          settlement_range_max?: number | null
+          settlement_range_min?: number | null
+          state?: string
+          status?: string | null
+          strength_factors?: Json | null
+          supporting_evidence?: Json | null
+          time_to_resolution_months?: number | null
+          updated_at?: string
+          user_id?: string
+          weakness_factors?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "case_merit_scores_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "chat_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       chat_messages: {
         Row: {
           content: string
@@ -162,6 +242,104 @@ export type Database = {
         }
         Relationships: []
       }
+      legal_sweep_results: {
+        Row: {
+          content: string | null
+          created_at: string
+          extracted_data: Json | null
+          id: string
+          jurisdiction: string | null
+          keywords: Json | null
+          law_type: string | null
+          relevance_score: number | null
+          source_url: string
+          sweep_id: string
+          title: string
+        }
+        Insert: {
+          content?: string | null
+          created_at?: string
+          extracted_data?: Json | null
+          id?: string
+          jurisdiction?: string | null
+          keywords?: Json | null
+          law_type?: string | null
+          relevance_score?: number | null
+          source_url: string
+          sweep_id: string
+          title: string
+        }
+        Update: {
+          content?: string | null
+          created_at?: string
+          extracted_data?: Json | null
+          id?: string
+          jurisdiction?: string | null
+          keywords?: Json | null
+          law_type?: string | null
+          relevance_score?: number | null
+          source_url?: string
+          sweep_id?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "legal_sweep_results_sweep_id_fkey"
+            columns: ["sweep_id"]
+            isOneToOne: false
+            referencedRelation: "legal_sweeps"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      legal_sweeps: {
+        Row: {
+          created_at: string
+          created_by: string
+          id: string
+          last_run: string | null
+          legal_area_filter: string | null
+          next_scheduled_run: string | null
+          results_count: number | null
+          search_terms: Json
+          state_filter: string | null
+          status: string | null
+          sweep_name: string
+          target_domains: Json
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          id?: string
+          last_run?: string | null
+          legal_area_filter?: string | null
+          next_scheduled_run?: string | null
+          results_count?: number | null
+          search_terms?: Json
+          state_filter?: string | null
+          status?: string | null
+          sweep_name: string
+          target_domains?: Json
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          id?: string
+          last_run?: string | null
+          legal_area_filter?: string | null
+          next_scheduled_run?: string | null
+          results_count?: number | null
+          search_terms?: Json
+          state_filter?: string | null
+          status?: string | null
+          sweep_name?: string
+          target_domains?: Json
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string | null
@@ -231,6 +409,122 @@ export type Database = {
         }
         Relationships: []
       }
+      support_messages: {
+        Row: {
+          attachments: Json | null
+          created_at: string
+          id: string
+          is_staff_response: boolean | null
+          message: string
+          ticket_id: string
+          user_id: string
+        }
+        Insert: {
+          attachments?: Json | null
+          created_at?: string
+          id?: string
+          is_staff_response?: boolean | null
+          message: string
+          ticket_id: string
+          user_id: string
+        }
+        Update: {
+          attachments?: Json | null
+          created_at?: string
+          id?: string
+          is_staff_response?: boolean | null
+          message?: string
+          ticket_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "support_messages_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
+            referencedRelation: "support_tickets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      support_tickets: {
+        Row: {
+          assigned_to: string | null
+          category: string
+          created_at: string
+          description: string
+          id: string
+          priority: string
+          resolved_at: string | null
+          status: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          assigned_to?: string | null
+          category?: string
+          created_at?: string
+          description: string
+          id?: string
+          priority?: string
+          resolved_at?: string | null
+          status?: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          assigned_to?: string | null
+          category?: string
+          created_at?: string
+          description?: string
+          id?: string
+          priority?: string
+          resolved_at?: string | null
+          status?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_activity_logs: {
+        Row: {
+          action: string
+          created_at: string
+          details: Json | null
+          id: string
+          ip_address: unknown | null
+          resource_id: string | null
+          resource_type: string | null
+          user_agent: string | null
+          user_id: string
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          details?: Json | null
+          id?: string
+          ip_address?: unknown | null
+          resource_id?: string | null
+          resource_type?: string | null
+          user_agent?: string | null
+          user_id: string
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          details?: Json | null
+          id?: string
+          ip_address?: unknown | null
+          resource_id?: string | null
+          resource_type?: string | null
+          user_agent?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_preferences: {
         Row: {
           created_at: string | null
@@ -287,6 +581,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      calculate_case_merit_score: {
+        Args: { case_id: string }
+        Returns: number
+      }
       get_user_role: {
         Args: { _user_id: string }
         Returns: Database["public"]["Enums"]["app_role"]
