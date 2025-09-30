@@ -496,11 +496,11 @@ const AdminDashboard = () => {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                       <div>
                         <p className="font-medium">Monthly Plan</p>
-                        <p className="text-muted-foreground">$79.99/month</p>
+                        <p className="text-muted-foreground">$39.99/month</p>
                       </div>
                       <div>
                         <p className="font-medium">Yearly Plan</p>
-                        <p className="text-muted-foreground">$499.99/year</p>
+                        <p className="text-muted-foreground">$249.99/year</p>
                       </div>
                       <div>
                         <p className="font-medium">Pay Per Form</p>

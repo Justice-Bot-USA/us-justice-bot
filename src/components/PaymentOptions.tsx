@@ -101,7 +101,7 @@ export const PaymentOptions: React.FC<PaymentOptionsProps> = ({ onPaymentSuccess
           <CardTitle className="text-lg">Monthly Plan</CardTitle>
           <CardDescription>Perfect for regular users</CardDescription>
           <div className="text-3xl font-bold">
-            $79.99
+            $39.99
             <span className="text-sm font-normal text-muted-foreground">/month</span>
           </div>
         </CardHeader>
@@ -140,10 +140,10 @@ export const PaymentOptions: React.FC<PaymentOptionsProps> = ({ onPaymentSuccess
           <CardTitle className="text-lg">Yearly Plan</CardTitle>
           <CardDescription>Best value for committed users</CardDescription>
           <div className="text-3xl font-bold">
-            $499.99
+            $249.99
             <span className="text-sm font-normal text-muted-foreground">/year</span>
           </div>
-          <div className="text-sm text-green-600">Save $459.89 vs monthly!</div>
+          <div className="text-sm text-green-600">Save $229.89 vs monthly!</div>
         </CardHeader>
         <CardContent className="space-y-4">
           <ul className="space-y-2">
