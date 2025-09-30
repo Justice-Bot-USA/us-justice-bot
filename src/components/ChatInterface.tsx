@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Send, Bot, User, AlertTriangle, Scale, LogIn, LogOut, History, Settings } from "lucide-react";
+import { Send, Bot, User, AlertTriangle, Scale, LogIn, LogOut, History, Settings, Paperclip } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/hooks/useAuth";
@@ -12,6 +12,7 @@ import { AuthModal } from "@/components/AuthModal";
 import { ChatHistory } from "@/components/ChatHistory";
 import { UserPreferences } from "@/components/UserPreferences";
 import { TypingIndicator } from "@/components/LoadingComponents";
+import { EvidenceUploader } from "@/components/EvidenceUploader";
 import { validateAndSanitizeMessage } from "@/lib/validation";
 
 interface Message {
@@ -42,6 +43,7 @@ export function ChatInterface({
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showChatHistory, setShowChatHistory] = useState(false);
+  const [showEvidenceUploader, setShowEvidenceUploader] = useState(false);
   const [showPreferences, setShowPreferences] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -382,24 +384,59 @@ export function ChatInterface({
         </ScrollArea>
 
         {/* Input Area */}
-        <div className="flex gap-2 pt-4 border-t">
-          <Input
-            ref={inputRef}
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyPress={handleKeyPress}
-            placeholder={text[language].placeholder}
-            disabled={isLoading}
-            className="flex-1"
-          />
-          <Button 
-            onClick={handleSendMessage}
-            disabled={!input.trim() || isLoading}
-            size="icon"
-            className="hover-scale"
-          >
-            <Send className="w-4 h-4" />
-          </Button>
+        <div className="space-y-3 pt-4 border-t">
+          {/* Evidence Upload Button */}
+          <div className="flex items-center justify-between">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowEvidenceUploader(!showEvidenceUploader)}
+              className="flex items-center gap-2"
+            >
+              <Paperclip className="h-4 w-4" />
+              {showEvidenceUploader ? 'Hide' : 'Upload'} Evidence
+            </Button>
+            <div className="text-xs text-muted-foreground">
+              Upload docs, photos & evidence
+            </div>
+          </div>
+          
+          {/* Evidence Uploader Panel */}
+          {showEvidenceUploader && (
+            <div className="border rounded-lg p-4 bg-muted/20">
+              <EvidenceUploader 
+                sessionId={sessionId || undefined}
+                onFilesUploaded={(files) => {
+                  console.log('Files uploaded:', files);
+                  toast({
+                    title: "Files uploaded successfully",
+                    description: `${files.length} file(s) added to your case`,
+                  });
+                }}
+              />
+            </div>
+          )}
+          
+          {/* Message Input */}
+          <div className="flex gap-2">
+            <Input
+              ref={inputRef}
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyPress={handleKeyPress}
+              placeholder={text[language].placeholder}
+              disabled={isLoading}
+              className="flex-1"
+            />
+            <Button 
+              onClick={handleSendMessage}
+              disabled={!input.trim() || isLoading}
+              size="icon"
+              className="hover-scale"
+            >
+              <Send className="w-4 h-4" />
+            </Button>
+          </div>
         </div>
       </CardContent>
       
