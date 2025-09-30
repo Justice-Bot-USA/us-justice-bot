@@ -131,24 +131,28 @@ const AdminDashboard = () => {
 
   const updateUserRole = async (userId: string, newRole: string) => {
     try {
-      // Delete existing role first
-      await supabase
+      // First delete any existing roles for this user
+      const { error: deleteError } = await supabase
         .from('user_roles')
         .delete()
         .eq('user_id', userId);
 
-      // Insert new role with proper typing
-      const { error } = await supabase
-        .from('user_roles')
-        .insert([{ 
-          user_id: userId, 
-          role: newRole as 'admin' | 'moderator' | 'user'
-        }]);
+      if (deleteError) {
+        console.warn('No existing role to delete:', deleteError);
+      }
 
-      if (error) throw error;
+      // Insert the new role with proper enum typing
+      const { error: insertError } = await supabase
+        .from('user_roles')
+        .insert({
+          user_id: userId,
+          role: newRole as 'admin' | 'moderator' | 'user'
+        });
+
+      if (insertError) throw insertError;
 
       toast.success('User role updated successfully');
-      fetchData(); // Refresh data
+      await fetchData(); // Refresh data
     } catch (error) {
       console.error('Error updating user role:', error);
       toast.error('Failed to update user role');
