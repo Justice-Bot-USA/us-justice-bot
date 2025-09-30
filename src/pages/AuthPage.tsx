@@ -197,7 +197,7 @@ const AuthPage = () => {
               <CardHeader>
                 <CardTitle>Create account</CardTitle>
                 <CardDescription>
-                  Sign up for free legal assistance
+                  Sign up for affordable legal assistance
                 </CardDescription>
               </CardHeader>
               <CardContent>

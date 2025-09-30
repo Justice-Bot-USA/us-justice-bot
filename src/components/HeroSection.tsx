@@ -11,8 +11,8 @@ interface HeroSectionProps {
 const HeroSection = ({ language, onGetStarted }: HeroSectionProps) => {
   const text = {
     en: {
-      title: "Free Legal Guidance for Every American",
-      subtitle: "Navigate the US legal system with confidence. Get personalized guidance based on your state's laws.",
+      title: "\"Equal Justice Under Law\" - Affordable Legal Guidance",
+      subtitle: "Professional legal assistance at a fraction of attorney costs. We actually care about your justice - not just our billable hours.",
       cta: "Get Legal Help Now",
       stats: [
         { icon: Users, label: "50+ States Covered", value: "All US Jurisdictions" },
@@ -22,8 +22,8 @@ const HeroSection = ({ language, onGetStarted }: HeroSectionProps) => {
       ]
     },
     es: {
-      title: "Orientación Legal Gratuita para Cada Estadounidense",
-      subtitle: "Navegue el sistema legal de EE.UU. con confianza. Obtenga orientación personalizada basada en las leyes de su estado.",
+      title: "\"Justicia Igual Bajo la Ley\" - Orientación Legal Asequible",
+      subtitle: "Asistencia legal profesional a una fracción del costo de los abogados. Realmente nos importa su justicia, no solo nuestras horas facturables.",
       cta: "Obtener Ayuda Legal Ahora",
       stats: [
         { icon: Users, label: "50+ Estados Cubiertos", value: "Todas las Jurisdicciones de EE.UU." },

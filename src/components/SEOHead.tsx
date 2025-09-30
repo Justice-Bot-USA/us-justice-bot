@@ -10,9 +10,9 @@ interface SEOHeadProps {
 }
 
 export const SEOHead: React.FC<SEOHeadProps> = ({
-  title = "US Justice Bot - Free Legal Guidance for All Americans",
-  description = "Get free legal assistance and guidance for all 50 US states. Professional legal help in English and Spanish. Your trusted legal companion.",
-  keywords = "legal assistance, legal advice, legal help, US law, legal guidance, free legal aid",
+  title = "US Justice Bot - Equal Justice Under Law - Affordable Legal Guidance",
+  description = "Professional legal assistance at a fraction of attorney costs. We care about your justice, not billable hours. Expert guidance for all 50 US states.",
+  keywords = "affordable legal assistance, legal advice, legal help, US law, legal guidance, constitutional law, legal bot, legal AI, attorney alternative",
   image = "/public/icon-512.png",
   url = "https://usjusticebot.com",
   type = "website"

@@ -19,12 +19,12 @@ const Header = ({ language, onLanguageChange }: HeaderProps) => {
   const text = {
     en: {
       title: "US Justice Bot",
-      subtitle: "Free Legal Guidance for All Americans",
+      subtitle: "Equal Justice Under Law - Accessible Legal Guidance",
       languageLabel: "Language"
     },
     es: {
       title: "Bot de Justicia de EE.UU.",
-      subtitle: "Orientación Legal Gratuita para Todos los Estadounidenses",
+      subtitle: "Justicia Igual Bajo la Ley - Orientación Legal Accesible",
       languageLabel: "Idioma"
     }
   };
