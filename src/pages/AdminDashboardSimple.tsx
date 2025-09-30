@@ -1,18 +1,116 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useAdminAccess } from '@/hooks/useAdminAccess';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Users, MessageSquare, CreditCard, BarChart3, Settings } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
+import { Users, MessageSquare, CreditCard, BarChart3, Settings, Shield } from 'lucide-react';
+
+interface Profile {
+  id: string;
+  user_id: string;
+  email: string;
+  first_name?: string;
+  last_name?: string;
+  created_at: string;
+}
+
+interface UserRole {
+  id: string;
+  user_id: string;
+  role: string;
+  created_at: string;
+}
 
 const AdminDashboardSimple = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { isAdmin, isModerator, userRole, loading } = useAdminAccess();
+  const [profiles, setProfiles] = useState<Profile[]>([]);
+  const [userRoles, setUserRoles] = useState<UserRole[]>([]);
+  const [dataLoading, setDataLoading] = useState(true);
 
-  console.log('AdminDashboard loading:', { loading, isAdmin, isModerator, userRole });
+  // Fetch data when component loads
+  useEffect(() => {
+    if (isAdmin || isModerator) {
+      fetchData();
+    }
+  }, [isAdmin, isModerator]);
+
+  const fetchData = async () => {
+    try {
+      setDataLoading(true);
+      
+      // Fetch profiles
+      const { data: profilesData, error: profilesError } = await supabase
+        .from('profiles')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (profilesError) throw profilesError;
+      setProfiles(profilesData || []);
+
+      // Fetch user roles
+      const { data: rolesData, error: rolesError } = await supabase
+        .from('user_roles')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (rolesError) throw rolesError;
+      setUserRoles(rolesData || []);
+
+      console.log('Fetched data:', { profiles: profilesData, roles: rolesData });
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      toast.error('Failed to load admin data');
+    } finally {
+      setDataLoading(false);
+    }
+  };
+
+  const updateUserRole = async (userId: string, newRole: string) => {
+    if (!isAdmin) {
+      toast.error('Only admins can change user roles');
+      return;
+    }
+
+    try {
+      // Delete existing role
+      const { error: deleteError } = await supabase
+        .from('user_roles')
+        .delete()
+        .eq('user_id', userId);
+
+      if (deleteError) throw deleteError;
+
+      // Insert new role
+      const { error: insertError } = await supabase
+        .from('user_roles')
+        .insert({
+          user_id: userId,
+          role: newRole as 'admin' | 'moderator' | 'user'
+        });
+
+      if (insertError) throw insertError;
+
+      toast.success('User role updated successfully');
+      await fetchData(); // Refresh data
+    } catch (error) {
+      console.error('Error updating user role:', error);
+      toast.error('Failed to update user role');
+    }
+  };
+
+  const getUserRole = (userId: string): string => {
+    const userRole = userRoles.find(role => role.user_id === userId);
+    return userRole?.role || 'user';
+  };
 
   if (loading) {
     return (
@@ -73,9 +171,24 @@ const AdminDashboardSimple = () => {
               <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">0</div>
+              <div className="text-2xl font-bold">{profiles.length}</div>
               <p className="text-xs text-muted-foreground">
                 Registered users
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Admins</CardTitle>
+              <Shield className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {userRoles.filter(r => r.role === 'admin').length}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Admin users
               </p>
             </CardContent>
           </Card>
@@ -105,48 +218,109 @@ const AdminDashboardSimple = () => {
               </p>
             </CardContent>
           </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Files Uploaded</CardTitle>
-              <BarChart3 className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">0</div>
-              <p className="text-xs text-muted-foreground">
-                Evidence & documents
-              </p>
-            </CardContent>
-          </Card>
         </div>
 
         {/* Main Content */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Admin Controls</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <p className="text-muted-foreground">
-                Admin dashboard is loading. Core features:
-              </p>
-              <ul className="list-disc list-inside space-y-2 text-sm">
-                <li>User management and role assignment</li>
-                <li>Chat session monitoring</li>
-                <li>Payment tracking and analytics</li>
-                <li>File upload management</li>
-                <li>System settings and configuration</li>
-              </ul>
-              
-              <div className="pt-4">
-                <Button className="w-full">
-                  <Settings className="h-4 w-4 mr-2" />
-                  System Settings (Coming Soon)
-                </Button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        <Tabs defaultValue="users" className="w-full">
+          <TabsList>
+            <TabsTrigger value="users">User Management</TabsTrigger>
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="users" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>User Management</CardTitle>
+                <p className="text-sm text-muted-foreground">
+                  Manage user accounts and assign roles
+                </p>
+              </CardHeader>
+              <CardContent>
+                {dataLoading ? (
+                  <p>Loading users...</p>
+                ) : (
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Email</TableHead>
+                        <TableHead>Name</TableHead>
+                        <TableHead>Role</TableHead>
+                        <TableHead>Joined</TableHead>
+                        <TableHead>Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {profiles.map((profile) => (
+                        <TableRow key={profile.id}>
+                          <TableCell>{profile.email}</TableCell>
+                          <TableCell>
+                            {profile.first_name || profile.last_name 
+                              ? `${profile.first_name || ''} ${profile.last_name || ''}`.trim()
+                              : 'N/A'
+                            }
+                          </TableCell>
+                          <TableCell>
+                            <Badge variant={
+                              getUserRole(profile.user_id) === 'admin' ? 'default' :
+                              getUserRole(profile.user_id) === 'moderator' ? 'secondary' : 'outline'
+                            }>
+                              {getUserRole(profile.user_id)}
+                            </Badge>
+                          </TableCell>
+                          <TableCell>
+                            {new Date(profile.created_at).toLocaleDateString()}
+                          </TableCell>
+                          <TableCell>
+                            {isAdmin && profile.user_id !== user?.id && (
+                              <Select
+                                value={getUserRole(profile.user_id)}
+                                onValueChange={(newRole) => updateUserRole(profile.user_id, newRole)}
+                              >
+                                <SelectTrigger className="w-32">
+                                  <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="user">User</SelectItem>
+                                  <SelectItem value="moderator">Moderator</SelectItem>
+                                  <SelectItem value="admin">Admin</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            )}
+                            {profile.user_id === user?.id && (
+                              <span className="text-sm text-muted-foreground">You</span>
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="overview" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>System Overview</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <p className="text-muted-foreground">
+                    Admin dashboard with core features:
+                  </p>
+                  <ul className="list-disc list-inside space-y-2 text-sm">
+                    <li>User management and role assignment ✅</li>
+                    <li>Chat session monitoring (Coming Soon)</li>
+                    <li>Payment tracking and analytics (Coming Soon)</li>
+                    <li>File upload management ✅</li>
+                    <li>System settings and configuration (Coming Soon)</li>
+                  </ul>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
