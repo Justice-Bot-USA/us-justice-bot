@@ -5,7 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { Scale, Globe, User, LogOut, Settings } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
-import { useRole } from "@/hooks/useRole";
+import { useAdminAccess } from "@/hooks/useAdminAccess";
 import logoImage from "@/assets/us-justice-bot-logo.png";
 
 interface HeaderProps {
@@ -15,7 +15,7 @@ interface HeaderProps {
 
 const Header = ({ language, onLanguageChange }: HeaderProps) => {
   const { user, signOut } = useAuth();
-  const { hasAdminAccess } = useRole();
+  const { isAdmin } = useAdminAccess();
   const text = {
     en: {
       title: "US Justice Bot",
@@ -64,7 +64,7 @@ const Header = ({ language, onLanguageChange }: HeaderProps) => {
             <div className="flex items-center gap-2">
               {user ? (
                 <div className="flex items-center gap-2">
-                  {hasAdminAccess && (
+                  {isAdmin && (
                     <Button asChild variant="secondary" size="sm">
                       <Link to="/admin">
                         <Settings className="w-4 h-4 mr-1" />

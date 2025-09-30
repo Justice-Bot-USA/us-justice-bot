@@ -7,8 +7,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-import Admin from "./pages/Admin";
-import Auth from "./pages/Auth";
+import AuthPage from "./pages/AuthPage";
+import AdminDashboard from "./pages/AdminDashboard";
 
 const queryClient = new QueryClient();
 
@@ -21,8 +21,8 @@ export default function App() {
         <BrowserRouter basename="/">
           <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="/admin" element={<Admin />} />
-            <Route path="/auth" element={<Auth />} />
+            <Route path="/auth" element={<AuthPage />} />
+            <Route path="/admin" element={<AdminDashboard />} />
             {/* add more routes above this */}
             <Route path="*" element={<NotFound />} />
           </Routes>
