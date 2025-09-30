@@ -9,6 +9,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import AuthPage from "./pages/AuthPage";
 import AdminDashboard from "./pages/AdminDashboard";
+import AdminSetup from "./pages/AdminSetup";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +24,7 @@ export default function App() {
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<AuthPage />} />
             <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/admin-setup" element={<AdminSetup />} />
             {/* add more routes above this */}
             <Route path="*" element={<NotFound />} />
           </Routes>

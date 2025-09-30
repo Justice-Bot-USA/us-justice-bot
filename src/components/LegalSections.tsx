@@ -69,6 +69,13 @@ const LegalSections = ({ language, onSectionSelect }: LegalSectionsProps) => {
           description: "Deportation, asylum, citizenship, work permits",
           icon: Gavel,
           urgent: true
+        },
+        {
+          id: "federal",
+          title: "Federal Court & Government",
+          description: "Federal agencies, government accountability, financial institutions oversight",
+          icon: Scale,
+          important: true
         }
       ]
     },
@@ -131,6 +138,13 @@ const LegalSections = ({ language, onSectionSelect }: LegalSectionsProps) => {
           description: "Deportación, asilo, ciudadanía, permisos de trabajo",
           icon: Gavel,
           urgent: true
+        },
+        {
+          id: "federal",
+          title: "Corte Federal y Gobierno",
+          description: "Agencias federales, responsabilidad gubernamental, supervisión de instituciones financieras",
+          icon: Scale,
+          important: true
         }
       ]
     }
