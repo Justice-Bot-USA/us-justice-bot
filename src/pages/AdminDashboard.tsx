@@ -120,16 +120,11 @@ const AdminDashboard = () => {
 
   const updateUserRole = async (userId: string, newRole: string) => {
     try {
-      // First, delete existing role
-      await supabase
-        .from('user_roles')
-        .delete()
-        .eq('user_id', userId);
-
-      // Then insert new role - note: using upsert instead
-      const { error } = await supabase
-        .from('user_roles')
-        .upsert({ user_id: userId, role: newRole });
+      // Insert/update role using raw SQL to handle the app_role enum type
+      const { error } = await supabase.rpc('admin_update_user_role', {
+        target_user_id: userId,
+        new_role: newRole
+      });
 
       if (error) throw error;
 
