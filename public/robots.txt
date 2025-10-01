@@ -13,4 +13,4 @@ Allow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://usjusticebot.com/sitemap.xml
+Sitemap: https://justicebot-usa.com/sitemap.xml

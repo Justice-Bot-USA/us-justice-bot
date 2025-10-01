@@ -34,7 +34,7 @@ const Index = () => {
         title="US Justice Bot - Equal Justice Under Law - Affordable Legal Guidance"
         description="Professional legal assistance at a fraction of attorney costs. We care about your justice, not billable hours. Expert guidance for all 50 US states."
         keywords="affordable legal assistance, legal advice, legal help, US law, legal guidance, constitutional law, legal bot, legal AI, attorney alternative"
-        url="https://usjusticebot.com"
+        url="https://justicebot-usa.com"
       />
       <Header language={language} onLanguageChange={setLanguage} />
       
