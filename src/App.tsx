@@ -10,6 +10,8 @@ import NotFound from "./pages/NotFound";
 import AuthPage from "./pages/AuthPage";
 import AdminDashboardSimple from "./pages/AdminDashboardSimple";
 import AdminSetup from "./pages/AdminSetup";
+import Support from "./pages/Support";
+import CaseAnalysis from "./pages/CaseAnalysis";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +27,8 @@ export default function App() {
             <Route path="/auth" element={<AuthPage />} />
             <Route path="/admin" element={<AdminDashboardSimple />} />
             <Route path="/admin-setup" element={<AdminSetup />} />
+            <Route path="/support" element={<Support />} />
+            <Route path="/case-analysis" element={<CaseAnalysis />} />
             {/* add more routes above this */}
             <Route path="*" element={<NotFound />} />
           </Routes>

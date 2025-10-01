@@ -10,7 +10,10 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Users, MessageSquare, CreditCard, BarChart3, Settings, Shield } from 'lucide-react';
+import { Users, MessageSquare, CreditCard, BarChart3, Settings, Shield, Scale, Search, LifeBuoy } from 'lucide-react';
+import { SupportTicket } from '@/components/SupportTicket';
+import { CaseMeritAnalyzer } from '@/components/CaseMeritAnalyzer';
+import { LegalSweepManager } from '@/components/LegalSweepManager';
 
 interface Profile {
   id: string;
@@ -35,6 +38,8 @@ const AdminDashboardSimple = () => {
   const [profiles, setProfiles] = useState<Profile[]>([]);
   const [userRoles, setUserRoles] = useState<UserRole[]>([]);
   const [dataLoading, setDataLoading] = useState(true);
+  const [supportTicketCount, setSupportTicketCount] = useState(0);
+  const [caseMeritCount, setCaseMeritCount] = useState(0);
 
   // Fetch data when component loads
   useEffect(() => {
@@ -64,6 +69,24 @@ const AdminDashboardSimple = () => {
 
       if (rolesError) throw rolesError;
       setUserRoles(rolesData || []);
+
+      // Fetch support ticket count
+      const { count: ticketCount, error: ticketError } = await supabase
+        .from('support_tickets')
+        .select('*', { count: 'exact', head: true });
+
+      if (!ticketError) {
+        setSupportTicketCount(ticketCount || 0);
+      }
+
+      // Fetch case merit count
+      const { count: meritCount, error: meritError } = await supabase
+        .from('case_merit_scores')
+        .select('*', { count: 'exact', head: true });
+
+      if (!meritError) {
+        setCaseMeritCount(meritCount || 0);
+      }
 
       console.log('Fetched data:', { profiles: profilesData, roles: rolesData });
     } catch (error) {
@@ -208,6 +231,32 @@ const AdminDashboardSimple = () => {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Support Tickets</CardTitle>
+              <LifeBuoy className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{supportTicketCount}</div>
+              <p className="text-xs text-muted-foreground">
+                Active support tickets
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Cases Analyzed</CardTitle>
+              <Scale className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{caseMeritCount}</div>
+              <p className="text-xs text-muted-foreground">
+                Merit analyses completed
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Revenue</CardTitle>
               <CreditCard className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
@@ -224,6 +273,9 @@ const AdminDashboardSimple = () => {
         <Tabs defaultValue="users" className="w-full">
           <TabsList>
             <TabsTrigger value="users">User Management</TabsTrigger>
+            <TabsTrigger value="support">Support Tickets</TabsTrigger>
+            <TabsTrigger value="merit">Case Analysis</TabsTrigger>
+            <TabsTrigger value="sweeps">Legal Sweeps</TabsTrigger>
             <TabsTrigger value="overview">Overview</TabsTrigger>
           </TabsList>
           
@@ -299,6 +351,18 @@ const AdminDashboardSimple = () => {
             </Card>
           </TabsContent>
 
+          <TabsContent value="support" className="space-y-4">
+            <SupportTicket />
+          </TabsContent>
+
+          <TabsContent value="merit" className="space-y-4">
+            <CaseMeritAnalyzer />
+          </TabsContent>
+
+          <TabsContent value="sweeps" className="space-y-4">
+            <LegalSweepManager />
+          </TabsContent>
+
           <TabsContent value="overview" className="space-y-4">
             <Card>
               <CardHeader>
@@ -311,6 +375,9 @@ const AdminDashboardSimple = () => {
                   </p>
                   <ul className="list-disc list-inside space-y-2 text-sm">
                     <li>User management and role assignment ✅</li>
+                    <li>Support ticket system ✅</li>
+                    <li>Case merit analysis ✅</li>
+                    <li>Legal sweeps & research ✅</li>
                     <li>Chat session monitoring (Coming Soon)</li>
                     <li>Payment tracking and analytics (Coming Soon)</li>
                     <li>File upload management ✅</li>

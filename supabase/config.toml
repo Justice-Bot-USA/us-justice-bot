@@ -27,6 +27,12 @@ verify_jwt = false
 [functions.paypal-payments]
 verify_jwt = false
 
+[functions.analyze-case-merit]
+verify_jwt = true
+
+[functions.legal-sweep]
+verify_jwt = true
+
 [studio]
 enabled = true
 port = 54323
