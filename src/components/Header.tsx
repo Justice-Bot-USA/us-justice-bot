@@ -72,6 +72,14 @@ const Header = ({ language, onLanguageChange }: HeaderProps) => {
                       </Link>
                     </Button>
                   )}
+                  {!isAdmin && (
+                    <Button asChild variant="secondary" size="sm">
+                      <Link to="/admin-setup">
+                        <Settings className="w-4 h-4 mr-1" />
+                        Become Admin
+                      </Link>
+                    </Button>
+                  )}
                   <Button
                     variant="outline"
                     size="sm"
