@@ -78,10 +78,16 @@ export type Database = {
           county: string | null
           created_at: string
           estimated_success_rate: number | null
+          evidence_to_gather: Json | null
+          filing_options: Json | null
           id: string
+          improvement_suggestions: Json | null
           legal_area: string
+          legal_pathway: Json | null
           merit_score: number
+          next_steps: Json | null
           relevant_laws: Json | null
+          required_forms: Json | null
           session_id: string | null
           settlement_range_max: number | null
           settlement_range_min: number | null
@@ -101,10 +107,16 @@ export type Database = {
           county?: string | null
           created_at?: string
           estimated_success_rate?: number | null
+          evidence_to_gather?: Json | null
+          filing_options?: Json | null
           id?: string
+          improvement_suggestions?: Json | null
           legal_area: string
+          legal_pathway?: Json | null
           merit_score?: number
+          next_steps?: Json | null
           relevant_laws?: Json | null
+          required_forms?: Json | null
           session_id?: string | null
           settlement_range_max?: number | null
           settlement_range_min?: number | null
@@ -124,10 +136,16 @@ export type Database = {
           county?: string | null
           created_at?: string
           estimated_success_rate?: number | null
+          evidence_to_gather?: Json | null
+          filing_options?: Json | null
           id?: string
+          improvement_suggestions?: Json | null
           legal_area?: string
+          legal_pathway?: Json | null
           merit_score?: number
+          next_steps?: Json | null
           relevant_laws?: Json | null
+          required_forms?: Json | null
           session_id?: string | null
           settlement_range_max?: number | null
           settlement_range_min?: number | null

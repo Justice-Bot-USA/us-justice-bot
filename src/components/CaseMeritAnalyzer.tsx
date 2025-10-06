@@ -10,6 +10,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import { Scale, TrendingUp, TrendingDown, FileText, DollarSign, Calendar, Target } from 'lucide-react';
 import { ComprehensiveCaseAnalysis } from './ComprehensiveCaseAnalysis';
+import { MeritScoreImprovements } from './MeritScoreImprovements';
 
 interface CaseMeritScore {
   id: string;
@@ -24,6 +25,13 @@ interface CaseMeritScore {
   time_to_resolution_months: number;
   complexity_score: number;
   created_at: string;
+  legal_pathway?: any[];
+  required_forms?: any[];
+  evidence_to_gather?: any[];
+  filing_options?: any;
+  next_steps?: any[];
+  improvement_suggestions?: any[];
+  legal_area?: string;
 }
 
 export const CaseMeritAnalyzer: React.FC = () => {
@@ -52,7 +60,7 @@ export const CaseMeritAnalyzer: React.FC = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setCaseMeritScores(data || []);
+      setCaseMeritScores((data || []) as CaseMeritScore[]);
     } catch (error) {
       console.error('Error fetching case merit scores:', error);
     }
@@ -164,12 +172,19 @@ export const CaseMeritAnalyzer: React.FC = () => {
               onChange={(e) => setLegalArea(e.target.value)}
             />
           </div>
-          <Textarea
-            placeholder="Describe your case in detail. Include facts, evidence, and any relevant circumstances..."
-            value={caseDescription}
-            onChange={(e) => setCaseDescription(e.target.value)}
-            rows={6}
-          />
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Describe Your Legal Issue</label>
+            <Textarea
+              placeholder="Tell us your version of events in detail. Include:&#10;• What happened and when&#10;• Who was involved&#10;• What evidence you have (photos, documents, witnesses)&#10;• What outcome you're seeking&#10;• Any deadlines or time constraints&#10;&#10;The more detailed you are, the better we can analyze your case and provide guidance."
+              value={caseDescription}
+              onChange={(e) => setCaseDescription(e.target.value)}
+              rows={8}
+              className="resize-none"
+            />
+            <p className="text-xs text-muted-foreground">
+              This is your legal triage - describe everything relevant to help our AI understand your situation
+            </p>
+          </div>
           <Button onClick={analyzeCase} disabled={analyzing} className="w-full">
             {analyzing ? 'Analyzing...' : 'Analyze Case Merit'}
           </Button>
@@ -217,21 +232,29 @@ export const CaseMeritAnalyzer: React.FC = () => {
 
           {/* Detailed Analysis */}
           {selectedCase && (
-            <Card>
-              <CardHeader>
-                <CardTitle>{selectedCase.case_title}</CardTitle>
-                <div className="flex items-center gap-4">
-                  <span className={`text-4xl font-bold ${getMeritScoreColor(selectedCase.merit_score)}`}>
-                    {selectedCase.merit_score.toFixed(0)}
-                  </span>
-                  <div className="flex-1">
-                    <Progress value={selectedCase.merit_score} className="h-3" />
-                    <p className="text-sm text-muted-foreground mt-1">
-                      {getMeritScoreLabel(selectedCase.merit_score)}
-                    </p>
+            <>
+              {/* Merit Score Improvements - Show First */}
+              <MeritScoreImprovements 
+                meritScore={selectedCase.merit_score}
+                improvementSuggestions={selectedCase.improvement_suggestions || []}
+                evidenceCount={(selectedCase as any).supporting_evidence?.length || 0}
+              />
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>{selectedCase.case_title}</CardTitle>
+                  <div className="flex items-center gap-4">
+                    <span className={`text-4xl font-bold ${getMeritScoreColor(selectedCase.merit_score)}`}>
+                      {selectedCase.merit_score.toFixed(0)}
+                    </span>
+                    <div className="flex-1">
+                      <Progress value={selectedCase.merit_score} className="h-3" />
+                      <p className="text-sm text-muted-foreground mt-1">
+                        {getMeritScoreLabel(selectedCase.merit_score)}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              </CardHeader>
+                </CardHeader>
               <CardContent className="space-y-4">
                 {/* Key Metrics */}
                 <div className="grid grid-cols-2 gap-4">
@@ -320,20 +343,21 @@ export const CaseMeritAnalyzer: React.FC = () => {
                 )}
               </CardContent>
             </Card>
-          )}
 
-          {/* Comprehensive Analysis - New Section */}
-          {selectedCase && (selectedCase as any).legal_pathway && (
-            <ComprehensiveCaseAnalysis 
-              analysis={{
-                legalCategory: (selectedCase as any).legal_area,
-                legalPathway: (selectedCase as any).legal_pathway,
-                requiredForms: (selectedCase as any).required_forms,
-                evidenceToGather: (selectedCase as any).evidence_to_gather,
-                filingOptions: (selectedCase as any).filing_options,
-                nextSteps: (selectedCase as any).next_steps,
-              }}
-            />
+            {/* Comprehensive Analysis - New Section */}
+            {(selectedCase.legal_pathway || selectedCase.required_forms || selectedCase.evidence_to_gather || selectedCase.filing_options) && (
+              <ComprehensiveCaseAnalysis 
+                analysis={{
+                  legalCategory: selectedCase.legal_area,
+                  legalPathway: selectedCase.legal_pathway,
+                  requiredForms: selectedCase.required_forms,
+                  evidenceToGather: selectedCase.evidence_to_gather,
+                  filingOptions: selectedCase.filing_options,
+                  nextSteps: selectedCase.next_steps,
+                }}
+              />
+            )}
+          </>
           )}
         </div>
       )}

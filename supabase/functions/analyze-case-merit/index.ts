@@ -143,6 +143,33 @@ Return your analysis in valid JSON format with this exact structure:
       throw new Error('Failed to parse AI analysis response');
     }
 
+    // Generate improvement suggestions based on merit score and weaknesses
+    const improvementSuggestions = [];
+    
+    if (analysis.meritScore < 70) {
+      improvementSuggestions.push({
+        category: 'Evidence',
+        suggestion: 'Your case would benefit from stronger documentation. Focus on gathering the evidence items listed in the Evidence tab.',
+        priority: 'high'
+      });
+    }
+    
+    if (analysis.weaknessFactors && analysis.weaknessFactors.length > analysis.strengthFactors.length) {
+      improvementSuggestions.push({
+        category: 'Case Strength',
+        suggestion: 'Address the weaknesses identified in your case. Consider consulting with an attorney to strengthen your position.',
+        priority: 'high'
+      });
+    }
+    
+    if (!uploadedFiles || uploadedFiles.length < 3) {
+      improvementSuggestions.push({
+        category: 'Documentation',
+        suggestion: 'Upload more supporting documents and evidence. Photos, contracts, emails, and witness statements can significantly improve your merit score.',
+        priority: 'medium'
+      });
+    }
+
     // Create case merit score record with comprehensive AI analysis
     const { data: caseRecord, error: insertError } = await supabaseClient
       .from('case_merit_scores')
@@ -164,6 +191,12 @@ Return your analysis in valid JSON format with this exact structure:
         settlement_range_max: analysis.settlementRange.max,
         time_to_resolution_months: analysis.timeToResolutionMonths,
         complexity_score: analysis.complexityScore,
+        legal_pathway: analysis.legalPathway || [],
+        required_forms: analysis.requiredForms || [],
+        evidence_to_gather: analysis.evidenceToGather || [],
+        filing_options: analysis.filingOptions || {},
+        next_steps: analysis.nextSteps || [],
+        improvement_suggestions: improvementSuggestions,
         status: 'analyzed'
       })
       .select()
@@ -196,7 +229,8 @@ Return your analysis in valid JSON format with this exact structure:
           },
           timeToResolutionMonths: analysis.timeToResolutionMonths,
           complexityScore: analysis.complexityScore,
-          nextSteps: analysis.nextSteps
+          nextSteps: analysis.nextSteps,
+          improvementSuggestions
         },
         caseId: caseRecord.id
       }),
