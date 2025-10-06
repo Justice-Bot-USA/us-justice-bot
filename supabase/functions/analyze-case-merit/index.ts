@@ -20,111 +20,130 @@ serve(async (req) => {
 
     const { caseData, uploadedFiles } = await req.json();
     
-    console.log('Analyzing case merit:', { caseData, uploadedFiles });
+    console.log('Analyzing case merit with AI:', { caseData, uploadedFiles });
 
-    // Analyze case factors
-    const strengthFactors = [];
-    const weaknessFactors = [];
-    const relevantLaws = [];
-
-    // Analyze based on case description
-    if (caseData.description) {
-      const description = caseData.description.toLowerCase();
-      
-      // Analyze strengths
-      if (description.includes('documented') || description.includes('evidence')) {
-        strengthFactors.push({
-          factor: 'Strong Documentation',
-          weight: 0.8,
-          description: 'Case has documented evidence'
-        });
-      }
-      
-      if (description.includes('witness') || description.includes('witnesses')) {
-        strengthFactors.push({
-          factor: 'Witness Testimony Available',
-          weight: 0.7,
-          description: 'Multiple witnesses can corroborate claims'
-        });
-      }
-
-      // Analyze weaknesses
-      if (description.includes('no evidence') || description.includes('no proof')) {
-        weaknessFactors.push({
-          factor: 'Lack of Evidence',
-          weight: 0.9,
-          description: 'Limited physical evidence'
-        });
-      }
-      
-      if (description.includes('verbal agreement') || description.includes('no contract')) {
-        weaknessFactors.push({
-          factor: 'Verbal Agreement',
-          weight: 0.6,
-          description: 'No written contract'
-        });
-      }
-    }
-
-    // Add points for uploaded evidence
+    // Fetch and analyze uploaded documents
+    let documentContents = '';
     if (uploadedFiles && uploadedFiles.length > 0) {
-      strengthFactors.push({
-        factor: 'Physical Evidence Uploaded',
-        weight: 0.85,
-        description: `${uploadedFiles.length} evidence file(s) uploaded`
-      });
+      console.log('Fetching uploaded documents for analysis...');
+      for (const file of uploadedFiles) {
+        try {
+          const { data, error } = await supabaseClient
+            .from('case_files')
+            .select('file_name, file_type, description')
+            .eq('id', file.id)
+            .single();
+          
+          if (!error && data) {
+            documentContents += `\n\nDocument: ${data.file_name} (${data.file_type})`;
+            if (data.description) {
+              documentContents += `\nDescription: ${data.description}`;
+            }
+          }
+        } catch (err) {
+          console.error('Error fetching document:', err);
+        }
+      }
     }
 
-    // Get state and county specific laws (simplified for now)
-    relevantLaws.push({
-      title: `${caseData.state} ${caseData.legalArea} Statute`,
-      citation: `${caseData.state} Rev. Stat. § XXX`,
-      relevance: 0.9,
-      summary: `Key statute governing ${caseData.legalArea} in ${caseData.state}`
-    });
+    // Construct comprehensive AI prompt
+    const aiPrompt = `You are an expert legal analyst. Analyze this case thoroughly and provide detailed, actionable guidance.
 
-    if (caseData.county) {
-      relevantLaws.push({
-        title: `${caseData.county} County Local Ordinance`,
-        citation: `${caseData.county} County Code § XXX`,
-        relevance: 0.7,
-        summary: `Local regulations for ${caseData.county} County`
-      });
-    }
+CASE INFORMATION:
+Title: ${caseData.title}
+Description: ${caseData.description}
+State: ${caseData.state}
+County: ${caseData.county || 'Not specified'}
+Legal Area: ${caseData.legalArea}
 
-    // Calculate merit score
-    let meritScore = 50.0; // Base score
+UPLOADED DOCUMENTS:
+${documentContents || 'No documents uploaded yet'}
+
+REQUIRED ANALYSIS:
+1. Case Merit Score (0-100) with detailed justification
+2. Legal Category/Path - Identify the specific type of legal case and jurisdiction
+3. Relevant Laws - List specific statutes, codes, and regulations for ${caseData.state}
+4. Strength Factors - Identify 3-5 key strengths with weight (0-1) and explanation
+5. Weakness Factors - Identify 3-5 key weaknesses with weight (0-1) and explanation
+6. Legal Pathway - Step-by-step guide on how to proceed (file complaint, negotiate, etc.)
+7. Required Forms - List specific forms needed to file in ${caseData.state} ${caseData.county ? `${caseData.county} County` : ''}
+8. Evidence to Gather - Specific types of evidence needed to strengthen the case
+9. Filing Options - Explain pro se vs attorney representation options
+10. Settlement Range - Estimated settlement or damages range
+11. Time to Resolution - Estimated timeline in months
+12. Next Steps - Immediate actionable steps to take
+
+Return your analysis in valid JSON format with this exact structure:
+{
+  "meritScore": number (0-100),
+  "legalCategory": "specific category",
+  "strengthFactors": [{"factor": "name", "weight": 0.0-1.0, "description": "detailed explanation"}],
+  "weaknessFactors": [{"factor": "name", "weight": 0.0-1.0, "description": "detailed explanation"}],
+  "relevantLaws": [{"title": "law name", "citation": "statute cite", "relevance": 0.0-1.0, "summary": "what it means"}],
+  "legalPathway": ["step 1", "step 2", "step 3"],
+  "requiredForms": [{"formName": "name", "formNumber": "number", "purpose": "why needed", "where": "how to get it"}],
+  "evidenceToGather": [{"type": "evidence type", "importance": "high/medium/low", "howToObtain": "instructions"}],
+  "filingOptions": {"proSe": "explanation", "withAttorney": "explanation", "recommendation": "which is better and why"},
+  "estimatedSuccessRate": number (0-100),
+  "settlementRange": {"min": number, "max": number},
+  "timeToResolutionMonths": number,
+  "complexityScore": number (1-10),
+  "nextSteps": ["immediate action 1", "immediate action 2", "immediate action 3"]
+}`;
+
+    console.log('Calling Lovable AI for case analysis...');
     
-    strengthFactors.forEach(factor => {
-      meritScore += factor.weight * 10;
-    });
-    
-    weaknessFactors.forEach(factor => {
-      meritScore -= factor.weight * 8;
-    });
-
-    // Adjust based on evidence count
-    if (uploadedFiles) {
-      meritScore += Math.min(uploadedFiles.length * 3, 20);
+    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
+    if (!LOVABLE_API_KEY) {
+      throw new Error('LOVABLE_API_KEY not configured');
     }
 
-    // Ensure score is between 0 and 100
-    meritScore = Math.max(0, Math.min(100, meritScore));
+    const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'google/gemini-2.5-flash',
+        messages: [
+          {
+            role: 'system',
+            content: 'You are an expert legal analyst specializing in case merit analysis and legal guidance. Always respond with valid, complete JSON.'
+          },
+          {
+            role: 'user',
+            content: aiPrompt
+          }
+        ],
+        temperature: 0.7,
+      }),
+    });
 
-    // Calculate success rate and settlement range
-    const estimatedSuccessRate = meritScore * 0.8;
-    const baseSettlement = 10000;
-    const settlementRangeMin = baseSettlement * (meritScore / 100);
-    const settlementRangeMax = baseSettlement * (meritScore / 100) * 3;
+    if (!aiResponse.ok) {
+      const errorText = await aiResponse.text();
+      console.error('AI API error:', aiResponse.status, errorText);
+      throw new Error(`AI analysis failed: ${errorText}`);
+    }
 
-    // Estimate time to resolution based on complexity
-    const complexityScore = weaknessFactors.length + strengthFactors.length;
-    const timeToResolutionMonths = Math.min(
-      6 + (complexityScore * 2),
-      36
-    );
+    const aiData = await aiResponse.json();
+    console.log('AI response received');
+    
+    const aiContent = aiData.choices[0].message.content;
+    
+    // Parse AI response
+    let analysis;
+    try {
+      // Extract JSON from markdown code blocks if present
+      const jsonMatch = aiContent.match(/```json\n([\s\S]*?)\n```/) || aiContent.match(/```\n([\s\S]*?)\n```/);
+      const jsonString = jsonMatch ? jsonMatch[1] : aiContent;
+      analysis = JSON.parse(jsonString);
+    } catch (parseError) {
+      console.error('Failed to parse AI response:', parseError, 'Content:', aiContent);
+      throw new Error('Failed to parse AI analysis response');
+    }
 
-    // Create case merit score record
+    // Create case merit score record with comprehensive AI analysis
     const { data: caseRecord, error: insertError } = await supabaseClient
       .from('case_merit_scores')
       .insert({
@@ -134,17 +153,17 @@ serve(async (req) => {
         case_description: caseData.description,
         state: caseData.state,
         county: caseData.county,
-        legal_area: caseData.legalArea,
-        merit_score: meritScore,
-        strength_factors: strengthFactors,
-        weakness_factors: weaknessFactors,
-        relevant_laws: relevantLaws,
+        legal_area: analysis.legalCategory || caseData.legalArea,
+        merit_score: analysis.meritScore,
+        strength_factors: analysis.strengthFactors,
+        weakness_factors: analysis.weaknessFactors,
+        relevant_laws: analysis.relevantLaws,
         supporting_evidence: uploadedFiles || [],
-        estimated_success_rate: estimatedSuccessRate,
-        settlement_range_min: settlementRangeMin,
-        settlement_range_max: settlementRangeMax,
-        time_to_resolution_months: timeToResolutionMonths,
-        complexity_score: complexityScore,
+        estimated_success_rate: analysis.estimatedSuccessRate,
+        settlement_range_min: analysis.settlementRange.min,
+        settlement_range_max: analysis.settlementRange.max,
+        time_to_resolution_months: analysis.timeToResolutionMonths,
+        complexity_score: analysis.complexityScore,
         status: 'analyzed'
       })
       .select()
@@ -155,21 +174,29 @@ serve(async (req) => {
       throw insertError;
     }
 
+    console.log('Case analysis completed successfully');
+
     return new Response(
       JSON.stringify({
         success: true,
-        meritScore: meritScore.toFixed(2),
+        meritScore: analysis.meritScore.toFixed(2),
+        legalCategory: analysis.legalCategory,
         analysis: {
-          strengthFactors,
-          weaknessFactors,
-          relevantLaws,
-          estimatedSuccessRate: estimatedSuccessRate.toFixed(2),
+          strengthFactors: analysis.strengthFactors,
+          weaknessFactors: analysis.weaknessFactors,
+          relevantLaws: analysis.relevantLaws,
+          legalPathway: analysis.legalPathway,
+          requiredForms: analysis.requiredForms,
+          evidenceToGather: analysis.evidenceToGather,
+          filingOptions: analysis.filingOptions,
+          estimatedSuccessRate: analysis.estimatedSuccessRate.toFixed(2),
           settlementRange: {
-            min: settlementRangeMin.toFixed(2),
-            max: settlementRangeMax.toFixed(2)
+            min: analysis.settlementRange.min.toFixed(2),
+            max: analysis.settlementRange.max.toFixed(2)
           },
-          timeToResolutionMonths,
-          complexityScore
+          timeToResolutionMonths: analysis.timeToResolutionMonths,
+          complexityScore: analysis.complexityScore,
+          nextSteps: analysis.nextSteps
         },
         caseId: caseRecord.id
       }),

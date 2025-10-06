@@ -9,6 +9,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import { Scale, TrendingUp, TrendingDown, FileText, DollarSign, Calendar, Target } from 'lucide-react';
+import { ComprehensiveCaseAnalysis } from './ComprehensiveCaseAnalysis';
 
 interface CaseMeritScore {
   id: string;
@@ -308,7 +309,10 @@ export const CaseMeritAnalyzer: React.FC = () => {
                       {selectedCase.relevant_laws.map((law: any, idx: number) => (
                         <div key={idx} className="p-2 bg-blue-50 border border-blue-200 rounded">
                           <p className="font-medium text-sm">{law.title}</p>
-                          <p className="text-xs text-muted-foreground">{law.citation}</p>
+                          <p className="text-xs text-muted-foreground mb-1">{law.citation}</p>
+                          {law.summary && (
+                            <p className="text-xs">{law.summary}</p>
+                          )}
                         </div>
                       ))}
                     </div>
@@ -316,6 +320,20 @@ export const CaseMeritAnalyzer: React.FC = () => {
                 )}
               </CardContent>
             </Card>
+          )}
+
+          {/* Comprehensive Analysis - New Section */}
+          {selectedCase && (selectedCase as any).legal_pathway && (
+            <ComprehensiveCaseAnalysis 
+              analysis={{
+                legalCategory: (selectedCase as any).legal_area,
+                legalPathway: (selectedCase as any).legal_pathway,
+                requiredForms: (selectedCase as any).required_forms,
+                evidenceToGather: (selectedCase as any).evidence_to_gather,
+                filingOptions: (selectedCase as any).filing_options,
+                nextSteps: (selectedCase as any).next_steps,
+              }}
+            />
           )}
         </div>
       )}
