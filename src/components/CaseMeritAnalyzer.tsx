@@ -5,12 +5,14 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
-import { Scale, TrendingUp, TrendingDown, FileText, DollarSign, Calendar, Target } from 'lucide-react';
+import { Scale, TrendingUp, TrendingDown, FileText, DollarSign, Calendar, Target, Upload, CheckCircle2, ArrowRight } from 'lucide-react';
 import { ComprehensiveCaseAnalysis } from './ComprehensiveCaseAnalysis';
 import { MeritScoreImprovements } from './MeritScoreImprovements';
+import { EvidenceUploader } from './EvidenceUploader';
 
 interface CaseMeritScore {
   id: string;
@@ -36,6 +38,7 @@ interface CaseMeritScore {
 
 export const CaseMeritAnalyzer: React.FC = () => {
   const { user } = useAuth();
+  const [currentStep, setCurrentStep] = useState<'triage' | 'evidence' | 'analyze'>('triage');
   const [caseTitle, setCaseTitle] = useState('');
   const [caseDescription, setCaseDescription] = useState('');
   const [state, setState] = useState('');
@@ -44,6 +47,7 @@ export const CaseMeritAnalyzer: React.FC = () => {
   const [analyzing, setAnalyzing] = useState(false);
   const [caseMeritScores, setCaseMeritScores] = useState<CaseMeritScore[]>([]);
   const [selectedCase, setSelectedCase] = useState<CaseMeritScore | null>(null);
+  const [uploadedFilesCount, setUploadedFilesCount] = useState(0);
 
   useEffect(() => {
     if (user) {
@@ -138,56 +142,153 @@ export const CaseMeritAnalyzer: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      {/* Analysis Form */}
+      {/* Step-by-Step Journey */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Scale className="h-5 w-5" />
-            Case Merit Analysis
+            Build Your Legal Case
           </CardTitle>
           <CardDescription>
-            Analyze your case strength based on state & county laws, evidence, and legal factors
+            Follow these steps to analyze your case and get form recommendations
           </CardDescription>
+          
+          {/* Progress Indicator */}
+          <div className="flex items-center gap-2 mt-4">
+            <div className={`flex items-center gap-2 ${currentStep === 'triage' ? 'text-primary' : 'text-muted-foreground'}`}>
+              {currentStep !== 'triage' ? <CheckCircle2 className="h-5 w-5 text-green-600" /> : <div className="h-5 w-5 rounded-full border-2 border-primary flex items-center justify-center"><span className="text-xs">1</span></div>}
+              <span className="text-sm font-medium">Legal Triage</span>
+            </div>
+            <ArrowRight className="h-4 w-4 text-muted-foreground" />
+            <div className={`flex items-center gap-2 ${currentStep === 'evidence' ? 'text-primary' : 'text-muted-foreground'}`}>
+              {currentStep === 'analyze' ? <CheckCircle2 className="h-5 w-5 text-green-600" /> : <div className="h-5 w-5 rounded-full border-2 flex items-center justify-center"><span className="text-xs">2</span></div>}
+              <span className="text-sm font-medium">Upload Evidence</span>
+            </div>
+            <ArrowRight className="h-4 w-4 text-muted-foreground" />
+            <div className={`flex items-center gap-2 ${currentStep === 'analyze' ? 'text-primary' : 'text-muted-foreground'}`}>
+              <div className="h-5 w-5 rounded-full border-2 flex items-center justify-center"><span className="text-xs">3</span></div>
+              <span className="text-sm font-medium">Analyze & Get Forms</span>
+            </div>
+          </div>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Input
-              placeholder="Case Title"
-              value={caseTitle}
-              onChange={(e) => setCaseTitle(e.target.value)}
-            />
-            <Input
-              placeholder="State (e.g., California)"
-              value={state}
-              onChange={(e) => setState(e.target.value)}
-            />
-            <Input
-              placeholder="County (Optional)"
-              value={county}
-              onChange={(e) => setCounty(e.target.value)}
-            />
-            <Input
-              placeholder="Legal Area (e.g., Contract Law)"
-              value={legalArea}
-              onChange={(e) => setLegalArea(e.target.value)}
-            />
-          </div>
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Describe Your Legal Issue</label>
-            <Textarea
-              placeholder="Tell us your version of events in detail. Include:&#10;• What happened and when&#10;• Who was involved&#10;• What evidence you have (photos, documents, witnesses)&#10;• What outcome you're seeking&#10;• Any deadlines or time constraints&#10;&#10;The more detailed you are, the better we can analyze your case and provide guidance."
-              value={caseDescription}
-              onChange={(e) => setCaseDescription(e.target.value)}
-              rows={8}
-              className="resize-none"
-            />
-            <p className="text-xs text-muted-foreground">
-              This is your legal triage - describe everything relevant to help our AI understand your situation
-            </p>
-          </div>
-          <Button onClick={analyzeCase} disabled={analyzing} className="w-full">
-            {analyzing ? 'Analyzing...' : 'Analyze Case Merit'}
-          </Button>
+          <Tabs value={currentStep} onValueChange={(value) => setCurrentStep(value as any)}>
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger value="triage" disabled={false}>
+                1. Describe Your Case
+              </TabsTrigger>
+              <TabsTrigger value="evidence" disabled={!caseTitle || !caseDescription}>
+                2. Upload Evidence
+              </TabsTrigger>
+              <TabsTrigger value="analyze" disabled={!caseTitle || !caseDescription}>
+                3. Analyze Case
+              </TabsTrigger>
+            </TabsList>
+            
+            {/* Step 1: Legal Triage */}
+            <TabsContent value="triage" className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Input
+                  placeholder="Case Title *"
+                  value={caseTitle}
+                  onChange={(e) => setCaseTitle(e.target.value)}
+                />
+                <Input
+                  placeholder="State (e.g., California) *"
+                  value={state}
+                  onChange={(e) => setState(e.target.value)}
+                />
+                <Input
+                  placeholder="County (Optional)"
+                  value={county}
+                  onChange={(e) => setCounty(e.target.value)}
+                />
+                <Input
+                  placeholder="Legal Area (e.g., Contract Law) *"
+                  value={legalArea}
+                  onChange={(e) => setLegalArea(e.target.value)}
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Describe Your Legal Issue *</label>
+                <Textarea
+                  placeholder="Tell us your version of events in detail. Include:&#10;• What happened and when&#10;• Who was involved&#10;• What evidence you have (photos, documents, witnesses)&#10;• What outcome you're seeking&#10;• Any deadlines or time constraints&#10;&#10;The more detailed you are, the better we can analyze your case and provide guidance."
+                  value={caseDescription}
+                  onChange={(e) => setCaseDescription(e.target.value)}
+                  rows={10}
+                  className="resize-none"
+                />
+                <p className="text-xs text-muted-foreground">
+                  This is your legal triage - describe everything relevant to help our AI understand your situation
+                </p>
+              </div>
+              <Button 
+                onClick={() => setCurrentStep('evidence')} 
+                disabled={!caseTitle || !caseDescription || !state || !legalArea}
+                className="w-full"
+              >
+                Continue to Evidence Upload
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </TabsContent>
+            
+            {/* Step 2: Evidence Upload */}
+            <TabsContent value="evidence" className="space-y-4">
+              <div className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <h4 className="font-medium text-blue-900 mb-2">📁 Why Upload Evidence?</h4>
+                <p className="text-sm text-blue-800">
+                  Uploading evidence strengthens your case analysis. Include contracts, photos, emails, receipts, and any documents that support your claim.
+                </p>
+              </div>
+              
+              <EvidenceUploader 
+                onFilesUploaded={(files) => setUploadedFilesCount(files.length)}
+              />
+              
+              <div className="flex gap-2">
+                <Button variant="outline" onClick={() => setCurrentStep('triage')} className="flex-1">
+                  Back to Case Details
+                </Button>
+                <Button onClick={() => setCurrentStep('analyze')} className="flex-1">
+                  {uploadedFilesCount > 0 ? `Continue with ${uploadedFilesCount} file(s)` : 'Skip & Analyze'}
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </div>
+            </TabsContent>
+            
+            {/* Step 3: Analyze */}
+            <TabsContent value="analyze" className="space-y-4">
+              <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+                <h4 className="font-medium text-green-900 mb-2">✅ Ready to Analyze</h4>
+                <div className="text-sm text-green-800 space-y-1">
+                  <p>• Case: {caseTitle}</p>
+                  <p>• Location: {county ? `${county}, ${state}` : state}</p>
+                  <p>• Legal Area: {legalArea}</p>
+                  <p>• Evidence Files: {uploadedFilesCount}</p>
+                </div>
+              </div>
+              
+              <div className="space-y-2">
+                <h4 className="font-medium">What You'll Receive:</h4>
+                <ul className="text-sm space-y-1 text-muted-foreground">
+                  <li>✓ Merit score and case strength analysis</li>
+                  <li>✓ Legal pathway and jurisdiction-specific guidance</li>
+                  <li>✓ Required forms for your case type</li>
+                  <li>✓ Evidence collection recommendations</li>
+                  <li>✓ Filing options and next steps</li>
+                  <li>✓ Suggestions to improve your case</li>
+                </ul>
+              </div>
+              
+              <Button onClick={analyzeCase} disabled={analyzing} className="w-full" size="lg">
+                {analyzing ? 'Analyzing Your Case...' : 'Submit for AI Analysis'}
+              </Button>
+              
+              <Button variant="outline" onClick={() => setCurrentStep('evidence')} className="w-full">
+                Back to Evidence Upload
+              </Button>
+            </TabsContent>
+          </Tabs>
         </CardContent>
       </Card>
 
