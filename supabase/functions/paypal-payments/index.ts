@@ -68,8 +68,8 @@ async function createSubscription(accessToken: string, data: any) {
   const { planType, userId } = data;
   
   const planDetails = planType === 'monthly' 
-    ? { amount: '79.99', interval: 'MONTH' }
-    : { amount: '499.99', interval: 'YEAR' };
+    ? { amount: '19.99', interval: 'MONTH' }
+    : { amount: '99.00', interval: 'YEAR' };
 
   // Create subscription plan if it doesn't exist
   const planResponse = await fetch(`${PAYPAL_BASE_URL}/v1/billing/plans`, {
