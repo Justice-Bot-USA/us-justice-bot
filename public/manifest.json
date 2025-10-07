@@ -3,7 +3,7 @@
   "short_name": "Justice Bot",
   "description": "Free legal guidance for all Americans",
   "start_url": "/",
-  "display": "standalone",
+  "display": "browser",
   "background_color": "#1e40af",
   "theme_color": "#1e40af",
   "orientation": "portrait-primary",

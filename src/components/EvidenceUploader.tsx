@@ -81,7 +81,7 @@ export const EvidenceUploader: React.FC<EvidenceUploaderProps> = ({
           </TabsContent>
         </Tabs>
         
-        <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+        <div className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
           <h4 className="font-medium text-blue-900 mb-2">📋 Evidence Collection Tips:</h4>
           <ul className="text-sm text-blue-800 space-y-1">
             <li>• Include contracts, agreements, and legal documents</li>

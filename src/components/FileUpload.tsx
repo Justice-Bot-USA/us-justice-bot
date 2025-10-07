@@ -194,7 +194,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       {/* Upload Area */}
       <Card>
         <CardHeader>
