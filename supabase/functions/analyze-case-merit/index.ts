@@ -46,8 +46,8 @@ serve(async (req) => {
       }
     }
 
-    // Construct comprehensive AI prompt
-    const aiPrompt = `You are an expert legal analyst. Analyze this case thoroughly and provide detailed, actionable guidance.
+    // Construct comprehensive AI prompt with emphasis on jurisdiction-specific forms
+    const aiPrompt = `You are an expert legal analyst with deep knowledge of US state and county court systems, filing procedures, and legal forms.
 
 CASE INFORMATION:
 Title: ${caseData.title}
@@ -59,36 +59,76 @@ Legal Area: ${caseData.legalArea}
 UPLOADED DOCUMENTS:
 ${documentContents || 'No documents uploaded yet'}
 
-REQUIRED ANALYSIS:
-1. Case Merit Score (0-100) with detailed justification
-2. Legal Category/Path - Identify the specific type of legal case and jurisdiction
-3. Relevant Laws - List specific statutes, codes, and regulations for ${caseData.state}
-4. Strength Factors - Identify 3-5 key strengths with weight (0-1) and explanation
-5. Weakness Factors - Identify 3-5 key weaknesses with weight (0-1) and explanation
-6. Legal Pathway - Step-by-step guide on how to proceed (file complaint, negotiate, etc.)
-7. Required Forms - List specific forms needed to file in ${caseData.state} ${caseData.county ? `${caseData.county} County` : ''}
-8. Evidence to Gather - Specific types of evidence needed to strengthen the case
-9. Filing Options - Explain pro se vs attorney representation options
-10. Settlement Range - Estimated settlement or damages range
-11. Time to Resolution - Estimated timeline in months
-12. Next Steps - Immediate actionable steps to take
+CRITICAL REQUIREMENTS:
+
+1. **JURISDICTION-SPECIFIC FORMS** - This is the most important part:
+   - Provide ACTUAL legal forms required for filing in ${caseData.state}${caseData.county ? ` ${caseData.county} County` : ''}
+   - Include exact form numbers/codes (e.g., "FL-100" for California Divorce Petition)
+   - Specify the correct court level (Small Claims, Superior Court, District Court, etc.)
+   - Include where to obtain each form (court website URL, clerk's office, online portal)
+   - Note any county-specific variations or local rules
+   - List forms in the order they should be filed
+
+2. **STATE-SPECIFIC LEGAL PATHWAY**:
+   - Cite specific ${caseData.state} statutes, codes, and case law
+   - Reference ${caseData.state} court rules and procedures
+   - Include ${caseData.state}-specific filing deadlines and statute of limitations
+   - Note any recent ${caseData.state} legislative changes affecting this case type
+
+3. **COUNTY-SPECIFIC PROCEDURES**${caseData.county ? ` (${caseData.county} County)` : ''}:
+   - Local court filing procedures and hours
+   - County-specific filing fees
+   - Local rules that differ from state rules
+   - Electronic filing requirements (if applicable)
+
+4. **COMPREHENSIVE ANALYSIS**:
+   - Case Merit Score (0-100) with detailed justification
+   - Legal Category - Specific type of case in ${caseData.state} jurisdiction
+   - Relevant ${caseData.state} Laws with citations
+   - Strength Factors (3-5) with weights and explanations
+   - Weakness Factors (3-5) with weights and explanations
+   - Evidence to Gather specific to ${caseData.state} requirements
+   - Filing Options (pro se vs attorney) for this jurisdiction
+   - Settlement Range appropriate for ${caseData.state}
+   - Time to Resolution considering ${caseData.state} court backlogs
+   - Next Steps tailored to ${caseData.state}${caseData.county ? ` ${caseData.county} County` : ''} procedures
 
 Return your analysis in valid JSON format with this exact structure:
 {
   "meritScore": number (0-100),
-  "legalCategory": "specific category",
+  "legalCategory": "specific category in ${caseData.state}",
   "strengthFactors": [{"factor": "name", "weight": 0.0-1.0, "description": "detailed explanation"}],
   "weaknessFactors": [{"factor": "name", "weight": 0.0-1.0, "description": "detailed explanation"}],
-  "relevantLaws": [{"title": "law name", "citation": "statute cite", "relevance": 0.0-1.0, "summary": "what it means"}],
-  "legalPathway": ["step 1", "step 2", "step 3"],
-  "requiredForms": [{"formName": "name", "formNumber": "number", "purpose": "why needed", "where": "how to get it"}],
-  "evidenceToGather": [{"type": "evidence type", "importance": "high/medium/low", "howToObtain": "instructions"}],
-  "filingOptions": {"proSe": "explanation", "withAttorney": "explanation", "recommendation": "which is better and why"},
+  "relevantLaws": [{"title": "law name", "citation": "${caseData.state} statute cite", "relevance": 0.0-1.0, "summary": "what it means for this case"}],
+  "legalPathway": ["step 1 with ${caseData.state} specifics", "step 2", "step 3"],
+  "requiredForms": [
+    {
+      "formName": "Exact official form name", 
+      "formNumber": "Official form number/code",
+      "purpose": "Why this form is required",
+      "where": "Exact URL or location to obtain (e.g., ${caseData.state} Courts website)",
+      "filingOrder": number,
+      "fees": "Filing fee amount if applicable",
+      "courtLevel": "Which court (e.g., Superior Court, Small Claims)"
+    }
+  ],
+  "evidenceToGather": [{"type": "evidence type", "importance": "high/medium/low", "howToObtain": "specific instructions", "legalBasis": "${caseData.state} evidentiary requirement"}],
+  "filingOptions": {
+    "proSe": "Detailed explanation of representing yourself in ${caseData.state}",
+    "withAttorney": "Benefits of attorney representation in ${caseData.state}",
+    "recommendation": "Which is better for this case type in ${caseData.state} and why",
+    "courtSelfHelpResources": "Available resources in ${caseData.state}${caseData.county ? ` ${caseData.county} County` : ''}"
+  },
   "estimatedSuccessRate": number (0-100),
-  "settlementRange": {"min": number, "max": number},
+  "settlementRange": {"min": number, "max": number, "basis": "How this range was determined for ${caseData.state}"},
   "timeToResolutionMonths": number,
   "complexityScore": number (1-10),
-  "nextSteps": ["immediate action 1", "immediate action 2", "immediate action 3"]
+  "nextSteps": [
+    "Immediate action 1 specific to ${caseData.state}${caseData.county ? ` ${caseData.county} County` : ''}",
+    "Immediate action 2",
+    "Immediate action 3"
+  ],
+  "jurisdictionNotes": "Important ${caseData.state}${caseData.county ? ` ${caseData.county} County` : ''} specific information, local rules, or recent changes"
 }`;
 
     console.log('Calling Lovable AI for case analysis...');
@@ -105,18 +145,17 @@ Return your analysis in valid JSON format with this exact structure:
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
+        model: 'google/gemini-2.5-pro',
         messages: [
           {
             role: 'system',
-            content: 'You are an expert legal analyst specializing in case merit analysis and legal guidance. Always respond with valid, complete JSON.'
+            content: `You are an expert legal analyst with comprehensive knowledge of all US state and county court systems. You have access to current legal forms, filing procedures, and jurisdiction-specific requirements. You specialize in providing accurate, actionable legal guidance including exact form numbers and court procedures for specific states and counties. Always provide real, verifiable form numbers and court information.`
           },
           {
             role: 'user',
             content: aiPrompt
           }
         ],
-        temperature: 0.7,
       }),
     });
 
