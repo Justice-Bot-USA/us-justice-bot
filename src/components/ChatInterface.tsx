@@ -69,13 +69,20 @@ export function ChatInterface({
   };
 
   useEffect(() => {
-    // Create or load chat session
+    // Require authentication for chat sessions
+    if (!user) {
+      setMessages([]);
+      setSessionId(null);
+      return;
+    }
+
+    // Create or load chat session (only for authenticated users)
     const initializeSession = async () => {
       try {
         const { data: session, error } = await supabase
           .from('chat_sessions')
           .insert({
-            user_id: user?.id || null,
+            user_id: user.id, // Now required, no null values allowed
             state: selectedState,
             legal_section: selectedSection,
             language: language
@@ -277,6 +284,27 @@ export function ChatInterface({
   };
 
   return (
+    <>
+      {!user ? (
+        <Card className="w-full max-w-4xl mx-auto">
+          <CardContent className="p-8 text-center">
+            <Scale className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+            <h3 className="text-xl font-semibold mb-2">
+              {language === 'en' ? 'Sign In Required' : 'Inicio de Sesión Requerido'}
+            </h3>
+            <p className="text-muted-foreground mb-6">
+              {language === 'en' 
+                ? 'Please sign in to start a secure legal consultation. All conversations are private and protected.'
+                : 'Por favor inicia sesión para comenzar una consulta legal segura. Todas las conversaciones son privadas y protegidas.'
+              }
+            </p>
+            <Button onClick={() => setShowAuthModal(true)}>
+              <LogIn className="w-4 h-4 mr-2" />
+              {language === 'en' ? 'Sign In' : 'Iniciar Sesión'}
+            </Button>
+          </CardContent>
+        </Card>
+      ) : (
     <Card className="w-full max-w-4xl mx-auto h-[600px] flex flex-col">
       <CardContent className="flex-1 flex flex-col p-4">
         {/* Chat Header */}
@@ -439,6 +467,8 @@ export function ChatInterface({
           </div>
         </div>
       </CardContent>
+    </Card>
+      )}
       
       <AuthModal 
         isOpen={showAuthModal}
@@ -473,6 +503,6 @@ export function ChatInterface({
           </div>
         </div>
       )}
-    </Card>
+    </>
   );
 }
