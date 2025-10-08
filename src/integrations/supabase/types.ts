@@ -599,6 +599,39 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_export_profiles: {
+        Args: { p_filters?: Json; p_reason: string }
+        Returns: {
+          created_at: string
+          email: string
+          first_name: string
+          id: string
+          last_name: string
+          user_id: string
+        }[]
+      }
+      admin_view_profile_access_logs: {
+        Args: { p_days_back?: number }
+        Returns: {
+          accessed_at: string
+          action: string
+          admin_user_id: string
+          details: Json
+          log_id: string
+        }[]
+      }
+      admin_view_profiles: {
+        Args: { p_limit?: number; p_offset?: number; p_user_id?: string }
+        Returns: {
+          created_at: string
+          email: string
+          first_name: string
+          id: string
+          last_name: string
+          updated_at: string
+          user_id: string
+        }[]
+      }
       calculate_case_merit_score: {
         Args: { case_id: string }
         Returns: number

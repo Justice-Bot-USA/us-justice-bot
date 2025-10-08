@@ -52,11 +52,13 @@ const AdminDashboardSimple = () => {
     try {
       setDataLoading(true);
       
-      // Fetch profiles
+      // Fetch profiles using audited function (logs admin access automatically)
       const { data: profilesData, error: profilesError } = await supabase
-        .from('profiles')
-        .select('*')
-        .order('created_at', { ascending: false });
+        .rpc('admin_view_profiles', {
+          p_user_id: null, // null = view all profiles
+          p_limit: 1000,
+          p_offset: 0
+        });
 
       if (profilesError) throw profilesError;
       setProfiles(profilesData || []);
@@ -88,7 +90,7 @@ const AdminDashboardSimple = () => {
         setCaseMeritCount(meritCount || 0);
       }
 
-      console.log('Fetched data:', { profiles: profilesData, roles: rolesData });
+      console.log('Fetched data with audit logging:', { profiles: profilesData, roles: rolesData });
     } catch (error) {
       console.error('Error fetching data:', error);
       toast.error('Failed to load admin data');
