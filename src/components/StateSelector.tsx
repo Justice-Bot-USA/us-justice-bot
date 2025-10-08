@@ -99,7 +99,7 @@ const StateSelector = ({ language, onStateSelect, selectedState }: StateSelector
               <SelectTrigger className="w-full">
                 <SelectValue placeholder={text[language].placeholder} />
               </SelectTrigger>
-              <SelectContent className="max-h-60">
+              <SelectContent className="max-h-60 bg-background z-50">
                 {usStates.map((state) => (
                   <SelectItem key={state.code} value={state.code}>
                     {state.name} ({state.code})
