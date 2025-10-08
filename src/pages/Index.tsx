@@ -19,13 +19,22 @@ const Index = () => {
 
   const handleSectionSelect = (section: string) => {
     setSelectedSection(section);
-    if (!selectedState) {
-      setShowStateSelector(true);
-    }
+    setShowStateSelector(true);
+    // Scroll to state selector
+    setTimeout(() => {
+      const stateSelector = document.getElementById('state-selector');
+      stateSelector?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 100);
   };
 
   const handleStateSelect = (state: string) => {
     setSelectedState(state);
+    setShowStateSelector(false);
+    // Scroll to chat section
+    setTimeout(() => {
+      const chatSection = document.getElementById('chat-section');
+      chatSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
   };
 
   return (
@@ -48,20 +57,24 @@ const Index = () => {
         <LegalSections language={language} onSectionSelect={handleSectionSelect} />
         
         {showStateSelector && (
-          <StateSelector 
-            language={language} 
-            onStateSelect={handleStateSelect}
-            selectedState={selectedState}
-          />
+          <div id="state-selector">
+            <StateSelector 
+              language={language} 
+              onStateSelect={handleStateSelect}
+              selectedState={selectedState}
+            />
+          </div>
         )}
         
-        <ChatSection 
-          language={language} 
-          selectedState={selectedState} 
-          selectedSection={selectedSection}
-          onLanguageChange={setLanguage}
-          onStateChange={setSelectedState}
-        />
+        <div id="chat-section">
+          <ChatSection 
+            language={language} 
+            selectedState={selectedState} 
+            selectedSection={selectedSection}
+            onLanguageChange={setLanguage}
+            onStateChange={setSelectedState}
+          />
+        </div>
       </main>
     </div>
   );
