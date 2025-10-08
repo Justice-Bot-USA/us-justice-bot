@@ -169,156 +169,120 @@ export const CloudStorageIntegration: React.FC<CloudStorageProps> = ({
 
   return (
     <div className="space-y-6">
+      {/* Google Drive */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Cloud className="h-5 w-5" />
-            Evidence & Document Management
+          <CardTitle className="flex items-center gap-2 text-lg">
+            <ExternalLink className="h-5 w-5 text-blue-600" />
+            Google Drive
           </CardTitle>
           <CardDescription>
-            Upload files directly or link from cloud storage services for case building and legal analysis
+            Link documents directly from your Google Drive
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <Tabs defaultValue="upload" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="upload" className="flex items-center gap-2">
-                <Upload className="h-4 w-4" />
-                Direct Upload
-              </TabsTrigger>
-              <TabsTrigger value="cloud" className="flex items-center gap-2">
-                <Cloud className="h-4 w-4" />
-                Cloud Storage
-              </TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="upload" className="space-y-4">
-              <FileUpload 
-                sessionId={sessionId} 
-                onUploadComplete={onFilesLinked}
-                bucketType="evidence-files"
-              />
-            </TabsContent>
-            
-            <TabsContent value="cloud" className="space-y-6">
-              {/* Google Drive */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-lg">
-                    <ExternalLink className="h-5 w-5 text-blue-600" />
-                    Google Drive
-                  </CardTitle>
-                  <CardDescription>
-                    Link documents directly from your Google Drive
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="google-drive-url">Google Drive Share Link</Label>
-                    <Input
-                      id="google-drive-url"
-                      placeholder="https://drive.google.com/file/d/..."
-                      value={googleDriveUrl}
-                      onChange={(e) => setGoogleDriveUrl(e.target.value)}
-                    />
-                  </div>
-                  <Button 
-                    onClick={handleGoogleDriveLink}
-                    disabled={linking || !googleDriveUrl}
-                    className="w-full"
-                  >
-                    <LinkIcon className="h-4 w-4 mr-2" />
-                    Link Google Drive File
-                  </Button>
-                  <div className="text-xs text-gray-500">
-                    <strong>How to get the link:</strong> Right-click on any file in Google Drive → Get link → Copy link
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Dropbox */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-lg">
-                    <FolderOpen className="h-5 w-5 text-blue-500" />
-                    Dropbox
-                  </CardTitle>
-                  <CardDescription>
-                    Link documents from your Dropbox account
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="dropbox-url">Dropbox Share Link</Label>
-                    <Input
-                      id="dropbox-url"
-                      placeholder="https://www.dropbox.com/s/..."
-                      value={dropboxUrl}
-                      onChange={(e) => setDropboxUrl(e.target.value)}
-                    />
-                  </div>
-                  <Button 
-                    onClick={handleDropboxLink}
-                    disabled={linking || !dropboxUrl}
-                    className="w-full"
-                  >
-                    <LinkIcon className="h-4 w-4 mr-2" />
-                    Link Dropbox File
-                  </Button>
-                  <div className="text-xs text-gray-500">
-                    <strong>How to get the link:</strong> Right-click on any file in Dropbox → Share → Copy link
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* OneDrive */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-lg">
-                    <Cloud className="h-5 w-5 text-blue-400" />
-                    Microsoft OneDrive
-                  </CardTitle>
-                  <CardDescription>
-                    Link documents from your OneDrive account
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="onedrive-url">OneDrive Share Link</Label>
-                    <Input
-                      id="onedrive-url"
-                      placeholder="https://1drv.ms/..."
-                      value={oneDriveUrl}
-                      onChange={(e) => setOneDriveUrl(e.target.value)}
-                    />
-                  </div>
-                  <Button 
-                    onClick={handleOneDriveLink}
-                    disabled={linking || !oneDriveUrl}
-                    className="w-full"
-                  >
-                    <LinkIcon className="h-4 w-4 mr-2" />
-                    Link OneDrive File
-                  </Button>
-                  <div className="text-xs text-gray-500">
-                    <strong>How to get the link:</strong> Right-click on any file in OneDrive → Share → Copy link
-                  </div>
-                </CardContent>
-              </Card>
-
-              <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
-                <h4 className="font-medium text-blue-900 mb-2">💡 Pro Tips for Evidence Collection:</h4>
-                <ul className="text-sm text-blue-800 space-y-1">
-                  <li>• Organize files by case topic or legal area</li>
-                  <li>• Include dates and descriptions for better case building</li>
-                  <li>• Use cloud links for large files to save storage space</li>
-                  <li>• Tag files with relevant keywords for easy searching</li>
-                </ul>
-              </div>
-            </TabsContent>
-          </Tabs>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="google-drive-url">Google Drive Share Link</Label>
+            <Input
+              id="google-drive-url"
+              placeholder="https://drive.google.com/file/d/..."
+              value={googleDriveUrl}
+              onChange={(e) => setGoogleDriveUrl(e.target.value)}
+            />
+          </div>
+          <Button 
+            onClick={handleGoogleDriveLink}
+            disabled={linking || !googleDriveUrl}
+            className="w-full"
+          >
+            <LinkIcon className="h-4 w-4 mr-2" />
+            Link Google Drive File
+          </Button>
+          <div className="text-xs text-muted-foreground">
+            <strong>How to get the link:</strong> Right-click on any file in Google Drive → Get link → Copy link
+          </div>
         </CardContent>
       </Card>
+
+      {/* Dropbox */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-lg">
+            <FolderOpen className="h-5 w-5 text-blue-500" />
+            Dropbox
+          </CardTitle>
+          <CardDescription>
+            Link documents from your Dropbox account
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="dropbox-url">Dropbox Share Link</Label>
+            <Input
+              id="dropbox-url"
+              placeholder="https://www.dropbox.com/s/..."
+              value={dropboxUrl}
+              onChange={(e) => setDropboxUrl(e.target.value)}
+            />
+          </div>
+          <Button 
+            onClick={handleDropboxLink}
+            disabled={linking || !dropboxUrl}
+            className="w-full"
+          >
+            <LinkIcon className="h-4 w-4 mr-2" />
+            Link Dropbox File
+          </Button>
+          <div className="text-xs text-muted-foreground">
+            <strong>How to get the link:</strong> Right-click on any file in Dropbox → Share → Copy link
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* OneDrive */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-lg">
+            <Cloud className="h-5 w-5 text-blue-400" />
+            Microsoft OneDrive
+          </CardTitle>
+          <CardDescription>
+            Link documents from your OneDrive account
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="onedrive-url">OneDrive Share Link</Label>
+            <Input
+              id="onedrive-url"
+              placeholder="https://1drv.ms/..."
+              value={oneDriveUrl}
+              onChange={(e) => setOneDriveUrl(e.target.value)}
+            />
+          </div>
+          <Button 
+            onClick={handleOneDriveLink}
+            disabled={linking || !oneDriveUrl}
+            className="w-full"
+          >
+            <LinkIcon className="h-4 w-4 mr-2" />
+            Link OneDrive File
+          </Button>
+          <div className="text-xs text-muted-foreground">
+            <strong>How to get the link:</strong> Right-click on any file in OneDrive → Share → Copy link
+          </div>
+        </CardContent>
+      </Card>
+
+      <div className="p-4 bg-blue-50 dark:bg-blue-950 rounded-lg border border-blue-200 dark:border-blue-800">
+        <h4 className="font-medium text-blue-900 dark:text-blue-100 mb-2">💡 Pro Tips for Evidence Collection:</h4>
+        <ul className="text-sm text-blue-800 dark:text-blue-200 space-y-1">
+          <li>• Organize files by case topic or legal area</li>
+          <li>• Include dates and descriptions for better case building</li>
+          <li>• Use cloud links for large files to save storage space</li>
+          <li>• Tag files with relevant keywords for easy searching</li>
+        </ul>
+      </div>
     </div>
   );
 };

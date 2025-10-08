@@ -196,72 +196,40 @@ export const FileUpload: React.FC<FileUploadProps> = ({
   return (
     <div className="space-y-6">
       {/* Upload Area */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Upload className="h-5 w-5" />
-            Evidence & Document Upload
-          </CardTitle>
-          <CardDescription>
-            Upload photos, documents, PDFs, and other evidence for case building and analysis
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div
-            className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
-              dragActive 
-                ? 'border-primary bg-primary/5' 
-                : 'border-gray-300 hover:border-primary/50'
-            }`}
-            onDragEnter={handleDrag}
-            onDragLeave={handleDrag}
-            onDragOver={handleDrag}
-            onDrop={handleDrop}
-          >
-            <Upload className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-            <p className="text-lg font-medium mb-2">
-              Drag and drop files here, or click to select
-            </p>
-            <p className="text-sm text-gray-500 mb-4">
-              Supports: Images, PDFs, Documents, Audio, Video (Max 20MB per file)
-            </p>
-            <Button
-              onClick={() => fileInputRef.current?.click()}
-              disabled={uploading}
-              variant="outline"
-            >
-              Select Files
-            </Button>
-            <input
-              ref={fileInputRef}
-              type="file"
-              multiple
-              accept="*/*"
-              onChange={handleFileInput}
-              className="hidden"
-            />
-          </div>
-
-          {/* Cloud Storage Integration */}
-          <div className="mt-6">
-            <Label className="text-sm font-medium">Or connect cloud storage:</Label>
-            <div className="flex gap-2 mt-2">
-              <Button variant="outline" size="sm">
-                <Cloud className="h-4 w-4 mr-2" />
-                Google Drive
-              </Button>
-              <Button variant="outline" size="sm">
-                <Folder className="h-4 w-4 mr-2" />
-                Dropbox
-              </Button>
-              <Button variant="outline" size="sm">
-                <ExternalLink className="h-4 w-4 mr-2" />
-                OneDrive
-              </Button>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      <div
+        className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
+          dragActive 
+            ? 'border-primary bg-primary/5' 
+            : 'border-muted-foreground/25 hover:border-primary/50'
+        }`}
+        onDragEnter={handleDrag}
+        onDragLeave={handleDrag}
+        onDragOver={handleDrag}
+        onDrop={handleDrop}
+      >
+        <Upload className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+        <p className="text-lg font-medium mb-2">
+          Drag and drop files here, or click to select
+        </p>
+        <p className="text-sm text-muted-foreground mb-4">
+          Supports: Images, PDFs, Documents, Audio, Video (Max 20MB per file)
+        </p>
+        <Button
+          onClick={() => fileInputRef.current?.click()}
+          disabled={uploading}
+          variant="outline"
+        >
+          Select Files
+        </Button>
+        <input
+          ref={fileInputRef}
+          type="file"
+          multiple
+          accept="*/*"
+          onChange={handleFileInput}
+          className="hidden"
+        />
+      </div>
 
       {/* Uploaded Files List */}
       {files.length > 0 && (
