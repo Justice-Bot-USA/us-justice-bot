@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
 import WarningBanner from "@/components/WarningBanner";
@@ -8,6 +9,7 @@ import { ChatSection } from "@/components/ChatSection";
 import { SEOHead } from "@/components/SEOHead";
 
 const Index = () => {
+  const navigate = useNavigate();
   const [language, setLanguage] = useState<'en' | 'es'>('en');
   const [selectedState, setSelectedState] = useState<string>('');
   const [selectedSection, setSelectedSection] = useState<string>('');
@@ -18,13 +20,7 @@ const Index = () => {
   };
 
   const handleSectionSelect = (section: string) => {
-    setSelectedSection(section);
-    setShowStateSelector(true);
-    // Scroll to state selector
-    setTimeout(() => {
-      const stateSelector = document.getElementById('state-selector');
-      stateSelector?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }, 100);
+    navigate('/case-analysis');
   };
 
   const handleStateSelect = (state: string) => {
