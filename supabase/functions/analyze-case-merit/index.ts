@@ -47,7 +47,7 @@ serve(async (req) => {
     }
 
     // Construct comprehensive AI prompt with emphasis on jurisdiction-specific forms
-    const aiPrompt = `You are an expert legal analyst with deep knowledge of US state and county court systems, filing procedures, and legal forms.
+    const aiPrompt = `You are an expert legal analyst with deep knowledge of US state and county court systems, filing procedures, legal forms, and case law precedents.
 
 CASE INFORMATION:
 Title: ${caseData.title}
@@ -61,7 +61,22 @@ ${documentContents || 'No documents uploaded yet'}
 
 CRITICAL REQUIREMENTS:
 
-1. **JURISDICTION-SPECIFIC FORMS** - This is the most important part:
+1. **CASE LAW & PRECEDENT ANALYSIS** - Foundation for merit scoring:
+   - Reference relevant ${caseData.state} case law and legal precedents in ${caseData.legalArea}
+   - Cite specific court decisions from ${caseData.state}${caseData.county ? ` and ${caseData.county} County courts` : ''} that are similar to this case
+   - Compare this case to successful/unsuccessful precedents in the jurisdiction
+   - Explain how precedents support or undermine the merit score
+   - Include both appellate and trial court decisions when relevant
+   - Note any recent rulings that changed the legal landscape in ${caseData.state}
+
+2. **MERIT SCORE CALCULATION** (0-100):
+   - Base score on strength of case law support in ${caseData.state}${caseData.county ? ` ${caseData.county} County` : ''}
+   - Weight factors: Precedent alignment (40%), Evidence strength (30%), Legal basis (20%), Procedural compliance (10%)
+   - Provide detailed justification referencing specific cases and statutes
+   - Explain how similar cases have fared in ${caseData.state} courts
+   - Account for local court tendencies and judicial patterns${caseData.county ? ` in ${caseData.county} County` : ''}
+
+3. **JURISDICTION-SPECIFIC FORMS**:
    - Provide ACTUAL legal forms required for filing in ${caseData.state}${caseData.county ? ` ${caseData.county} County` : ''}
    - Include exact form numbers/codes (e.g., "FL-100" for California Divorce Petition)
    - Specify the correct court level (Small Claims, Superior Court, District Court, etc.)
@@ -69,58 +84,98 @@ CRITICAL REQUIREMENTS:
    - Note any county-specific variations or local rules
    - List forms in the order they should be filed
 
-2. **STATE-SPECIFIC LEGAL PATHWAY**:
-   - Cite specific ${caseData.state} statutes, codes, and case law
+4. **STATE-SPECIFIC LEGAL PATHWAY**:
+   - Cite specific ${caseData.state} statutes, codes, and regulations
    - Reference ${caseData.state} court rules and procedures
    - Include ${caseData.state}-specific filing deadlines and statute of limitations
    - Note any recent ${caseData.state} legislative changes affecting this case type
+   - Map out the complete legal journey from filing to resolution
 
-3. **COUNTY-SPECIFIC PROCEDURES**${caseData.county ? ` (${caseData.county} County)` : ''}:
-   - Local court filing procedures and hours
-   - County-specific filing fees
+5. **COUNTY/MUNICIPALITY PROCEDURES**${caseData.county ? ` (${caseData.county} County)` : ''}:
+   - Local court filing procedures, hours, and administrative requirements
+   - County-specific filing fees and payment methods
    - Local rules that differ from state rules
-   - Electronic filing requirements (if applicable)
+   - Electronic filing requirements and portals
+   - Courthouse locations and department assignments
+   - Local mediation or alternative dispute resolution requirements
 
-4. **COMPREHENSIVE ANALYSIS**:
-   - Case Merit Score (0-100) with detailed justification
-   - Legal Category - Specific type of case in ${caseData.state} jurisdiction
-   - Relevant ${caseData.state} Laws with citations
-   - Strength Factors (3-5) with weights and explanations
-   - Weakness Factors (3-5) with weights and explanations
-   - Evidence to Gather specific to ${caseData.state} requirements
-   - Filing Options (pro se vs attorney) for this jurisdiction
-   - Settlement Range appropriate for ${caseData.state}
-   - Time to Resolution considering ${caseData.state} court backlogs
-   - Next Steps tailored to ${caseData.state}${caseData.county ? ` ${caseData.county} County` : ''} procedures
+6. **LEGAL JOURNEY PATHWAY**:
+   - Define clear next steps from initial filing through resolution
+   - Specify tribunal/court appearances required (dates estimated based on court backlogs)
+   - Identify mandatory hearings, conferences, and deadlines
+   - Outline settlement conference opportunities
+   - Map trial preparation requirements if case proceeds
+   - Note appeal options if applicable
+
+7. **COMPREHENSIVE ANALYSIS**:
+   - Evidence to Gather specific to ${caseData.state} evidentiary requirements
+   - Filing Options (pro se vs attorney) with cost-benefit analysis for this jurisdiction
+   - Settlement Range based on ${caseData.state} case law and jury verdict data
+   - Time to Resolution considering current ${caseData.state}${caseData.county ? ` ${caseData.county} County` : ''} court backlogs
 
 Return your analysis in valid JSON format with this exact structure:
 {
   "meritScore": number (0-100),
+  "meritScoreJustification": "Detailed explanation of how merit score was calculated, referencing specific case law, precedents, and the 40/30/20/10 weighting formula",
   "legalCategory": "specific category in ${caseData.state}",
-  "strengthFactors": [{"factor": "name", "weight": 0.0-1.0, "description": "detailed explanation"}],
-  "weaknessFactors": [{"factor": "name", "weight": 0.0-1.0, "description": "detailed explanation"}],
-  "relevantLaws": [{"title": "law name", "citation": "${caseData.state} statute cite", "relevance": 0.0-1.0, "summary": "what it means for this case"}],
-  "legalPathway": ["step 1 with ${caseData.state} specifics", "step 2", "step 3"],
+  "caseLawPrecedents": [
+    {
+      "caseName": "Case name v. Case name",
+      "citation": "Full legal citation",
+      "court": "${caseData.state} court name",
+      "year": year,
+      "relevance": "How this case relates to the current matter",
+      "outcome": "How the case was decided",
+      "impact": "How this precedent affects merit score"
+    }
+  ],
+  "strengthFactors": [{"factor": "name", "weight": 0.0-1.0, "description": "detailed explanation with case law support"}],
+  "weaknessFactors": [{"factor": "name", "weight": 0.0-1.0, "description": "detailed explanation with precedent concerns"}],
+  "relevantLaws": [{"title": "law name", "citation": "${caseData.state} statute cite", "relevance": 0.0-1.0, "summary": "what it means for this case", "casesThatAppliedThis": ["Case citations"]}],
+  "legalPathway": [
+    {
+      "step": number,
+      "action": "Specific action to take",
+      "timeline": "When this should occur",
+      "location": "Court/tribunal/office",
+      "requirements": ["What's needed for this step"],
+      "formsCited": ["Form numbers needed at this step"],
+      "estimatedCost": "Dollar amount or range"
+    }
+  ],
   "requiredForms": [
     {
       "formName": "Exact official form name", 
       "formNumber": "Official form number/code",
       "purpose": "Why this form is required",
-      "where": "Exact URL or location to obtain (e.g., ${caseData.state} Courts website)",
+      "where": "Exact URL or location to obtain",
       "filingOrder": number,
       "fees": "Filing fee amount if applicable",
-      "courtLevel": "Which court (e.g., Superior Court, Small Claims)"
+      "courtLevel": "Which court",
+      "deadline": "When this must be filed",
+      "helpResources": "Where to get help completing this form"
     }
   ],
-  "evidenceToGather": [{"type": "evidence type", "importance": "high/medium/low", "howToObtain": "specific instructions", "legalBasis": "${caseData.state} evidentiary requirement"}],
+  "tribunalAppearances": [
+    {
+      "appearanceType": "Hearing type (Initial, Pre-trial, Trial, etc.)",
+      "estimatedTimeframe": "Months from filing",
+      "location": "Courthouse/tribunal name and address",
+      "preparation": ["What to prepare"],
+      "canAppearRemotely": boolean,
+      "typicalDuration": "How long it takes"
+    }
+  ],
+  "evidenceToGather": [{"type": "evidence type", "importance": "high/medium/low", "howToObtain": "specific instructions", "legalBasis": "${caseData.state} evidentiary requirement", "precedentSupport": "Cases where this evidence was pivotal"}],
   "filingOptions": {
     "proSe": "Detailed explanation of representing yourself in ${caseData.state}",
-    "withAttorney": "Benefits of attorney representation in ${caseData.state}",
-    "recommendation": "Which is better for this case type in ${caseData.state} and why",
-    "courtSelfHelpResources": "Available resources in ${caseData.state}${caseData.county ? ` ${caseData.county} County` : ''}"
+    "withAttorney": "Benefits of attorney representation",
+    "recommendation": "Which is better for this case type and why",
+    "courtSelfHelpResources": "Available resources in ${caseData.state}${caseData.county ? ` ${caseData.county} County` : ''}",
+    "expectedAttorneyCost": "Range of costs for legal representation in ${caseData.state}"
   },
   "estimatedSuccessRate": number (0-100),
-  "settlementRange": {"min": number, "max": number, "basis": "How this range was determined for ${caseData.state}"},
+  "settlementRange": {"min": number, "max": number, "basis": "How determined based on ${caseData.state} case law and jury verdicts"},
   "timeToResolutionMonths": number,
   "complexityScore": number (1-10),
   "nextSteps": [
@@ -128,7 +183,7 @@ Return your analysis in valid JSON format with this exact structure:
     "Immediate action 2",
     "Immediate action 3"
   ],
-  "jurisdictionNotes": "Important ${caseData.state}${caseData.county ? ` ${caseData.county} County` : ''} specific information, local rules, or recent changes"
+  "jurisdictionNotes": "Important ${caseData.state}${caseData.county ? ` ${caseData.county} County` : ''} specific information, local rules, recent changes, or judicial tendencies"
 }`;
 
     console.log('Calling Lovable AI for case analysis...');
@@ -149,7 +204,14 @@ Return your analysis in valid JSON format with this exact structure:
         messages: [
           {
             role: 'system',
-            content: `You are an expert legal analyst with comprehensive knowledge of all US state and county court systems. You have access to current legal forms, filing procedures, and jurisdiction-specific requirements. You specialize in providing accurate, actionable legal guidance including exact form numbers and court procedures for specific states and counties. Always provide real, verifiable form numbers and court information.`
+            content: `You are an expert legal analyst with comprehensive knowledge of all US state and county court systems, case law databases, and legal precedents. You have access to current legal forms, filing procedures, jurisdiction-specific requirements, and historical case outcomes. You specialize in:
+- Analyzing case merit based on relevant precedents and statutory law
+- Providing accurate case law citations and legal research
+- Mapping complete legal journeys from initial filing through all court appearances to final resolution
+- Identifying tribunal and court appearance requirements
+- Calculating merit scores using precedent analysis, evidence strength, legal basis, and procedural factors
+- Providing exact form numbers, filing procedures, and jurisdiction-specific guidance
+Always ground your merit score in specific case law and provide verifiable form numbers and court information.`
           },
           {
             role: 'user',
@@ -209,7 +271,7 @@ Return your analysis in valid JSON format with this exact structure:
       });
     }
 
-    // Create case merit score record with comprehensive AI analysis
+    // Create case merit score record with comprehensive AI analysis including case law
     const { data: caseRecord, error: insertError } = await supabaseClient
       .from('case_merit_scores')
       .insert({
@@ -226,8 +288,8 @@ Return your analysis in valid JSON format with this exact structure:
         relevant_laws: analysis.relevantLaws,
         supporting_evidence: uploadedFiles || [],
         estimated_success_rate: analysis.estimatedSuccessRate,
-        settlement_range_min: analysis.settlementRange.min,
-        settlement_range_max: analysis.settlementRange.max,
+        settlement_range_min: analysis.settlementRange?.min || 0,
+        settlement_range_max: analysis.settlementRange?.max || 0,
         time_to_resolution_months: analysis.timeToResolutionMonths,
         complexity_score: analysis.complexityScore,
         legal_pathway: analysis.legalPathway || [],
@@ -252,23 +314,28 @@ Return your analysis in valid JSON format with this exact structure:
       JSON.stringify({
         success: true,
         meritScore: analysis.meritScore.toFixed(2),
+        meritScoreJustification: analysis.meritScoreJustification,
         legalCategory: analysis.legalCategory,
         analysis: {
+          caseLawPrecedents: analysis.caseLawPrecedents || [],
           strengthFactors: analysis.strengthFactors,
           weaknessFactors: analysis.weaknessFactors,
           relevantLaws: analysis.relevantLaws,
           legalPathway: analysis.legalPathway,
           requiredForms: analysis.requiredForms,
+          tribunalAppearances: analysis.tribunalAppearances || [],
           evidenceToGather: analysis.evidenceToGather,
           filingOptions: analysis.filingOptions,
-          estimatedSuccessRate: analysis.estimatedSuccessRate.toFixed(2),
+          estimatedSuccessRate: analysis.estimatedSuccessRate?.toFixed(2) || '0.00',
           settlementRange: {
-            min: analysis.settlementRange.min.toFixed(2),
-            max: analysis.settlementRange.max.toFixed(2)
+            min: analysis.settlementRange?.min?.toFixed(2) || '0.00',
+            max: analysis.settlementRange?.max?.toFixed(2) || '0.00',
+            basis: analysis.settlementRange?.basis || ''
           },
           timeToResolutionMonths: analysis.timeToResolutionMonths,
           complexityScore: analysis.complexityScore,
           nextSteps: analysis.nextSteps,
+          jurisdictionNotes: analysis.jurisdictionNotes,
           improvementSuggestions
         },
         caseId: caseRecord.id
