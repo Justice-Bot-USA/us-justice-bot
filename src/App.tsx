@@ -13,6 +13,7 @@ import AdminSetup from "./pages/AdminSetup";
 import Support from "./pages/Support";
 import CaseAnalysis from "./pages/CaseAnalysis";
 import Pricing from "./pages/Pricing";
+import LegalJourney from "./pages/LegalJourney";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +32,7 @@ export default function App() {
             <Route path="/support" element={<Support />} />
             <Route path="/case-analysis" element={<CaseAnalysis />} />
             <Route path="/pricing" element={<Pricing />} />
+            <Route path="/legal-journey" element={<LegalJourney />} />
             {/* add more routes above this */}
             <Route path="*" element={<NotFound />} />
           </Routes>
