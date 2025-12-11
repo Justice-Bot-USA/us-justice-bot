@@ -260,6 +260,159 @@ export type Database = {
         }
         Relationships: []
       }
+      journey_steps: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          description: string | null
+          due_date: string | null
+          id: string
+          journey_id: string
+          metadata: Json | null
+          status: string
+          step_number: number
+          step_type: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          journey_id: string
+          metadata?: Json | null
+          status?: string
+          step_number: number
+          step_type: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          journey_id?: string
+          metadata?: Json | null
+          status?: string
+          step_number?: number
+          step_type?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "journey_steps_journey_id_fkey"
+            columns: ["journey_id"]
+            isOneToOne: false
+            referencedRelation: "legal_journeys"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      journey_tasks: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          description: string | null
+          due_date: string | null
+          id: string
+          is_completed: boolean
+          notes: string | null
+          priority: string
+          step_id: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          is_completed?: boolean
+          notes?: string | null
+          priority?: string
+          step_id: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          is_completed?: boolean
+          notes?: string | null
+          priority?: string
+          step_id?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "journey_tasks_step_id_fkey"
+            columns: ["step_id"]
+            isOneToOne: false
+            referencedRelation: "journey_steps"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      legal_journeys: {
+        Row: {
+          case_merit_id: string | null
+          completed_at: string | null
+          created_at: string
+          current_step: number
+          id: string
+          started_at: string
+          status: string
+          total_steps: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          case_merit_id?: string | null
+          completed_at?: string | null
+          created_at?: string
+          current_step?: number
+          id?: string
+          started_at?: string
+          status?: string
+          total_steps?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          case_merit_id?: string | null
+          completed_at?: string | null
+          created_at?: string
+          current_step?: number
+          id?: string
+          started_at?: string
+          status?: string
+          total_steps?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "legal_journeys_case_merit_id_fkey"
+            columns: ["case_merit_id"]
+            isOneToOne: false
+            referencedRelation: "case_merit_scores"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       legal_sweep_results: {
         Row: {
           content: string | null
