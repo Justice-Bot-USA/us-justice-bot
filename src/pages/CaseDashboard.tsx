@@ -3,6 +3,7 @@ import { useCases, Case, CaseTimelineEvent } from '@/hooks/useCases';
 import { useAuth } from '@/hooks/useAuth';
 import Header from '@/components/Header';
 import { CaseCard } from '@/components/dashboard/CaseCard';
+import { ExportAllCasesButton } from '@/components/export/ExportAllCasesButton';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
@@ -97,10 +98,13 @@ export default function CaseDashboard() {
               Manage and track all your legal cases in one place
             </p>
           </div>
-          <Button onClick={() => navigate('/case-analysis')} className="gap-2">
-            <Plus className="h-4 w-4" />
-            New Case Analysis
-          </Button>
+          <div className="flex gap-2">
+            <ExportAllCasesButton cases={cases} />
+            <Button onClick={() => navigate('/case-analysis')} className="gap-2">
+              <Plus className="h-4 w-4" />
+              New Case Analysis
+            </Button>
+          </div>
         </div>
 
         {/* Filters */}
