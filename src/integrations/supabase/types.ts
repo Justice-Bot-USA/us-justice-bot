@@ -72,6 +72,7 @@ export type Database = {
       }
       case_merit_scores: {
         Row: {
+          archived_at: string | null
           case_description: string | null
           case_title: string
           complexity_score: number | null
@@ -82,10 +83,12 @@ export type Database = {
           filing_options: Json | null
           id: string
           improvement_suggestions: Json | null
+          last_activity_at: string | null
           legal_area: string
           legal_pathway: Json | null
           merit_score: number
           next_steps: Json | null
+          notes: string | null
           relevant_laws: Json | null
           required_forms: Json | null
           session_id: string | null
@@ -101,6 +104,7 @@ export type Database = {
           weakness_factors: Json | null
         }
         Insert: {
+          archived_at?: string | null
           case_description?: string | null
           case_title: string
           complexity_score?: number | null
@@ -111,10 +115,12 @@ export type Database = {
           filing_options?: Json | null
           id?: string
           improvement_suggestions?: Json | null
+          last_activity_at?: string | null
           legal_area: string
           legal_pathway?: Json | null
           merit_score?: number
           next_steps?: Json | null
+          notes?: string | null
           relevant_laws?: Json | null
           required_forms?: Json | null
           session_id?: string | null
@@ -130,6 +136,7 @@ export type Database = {
           weakness_factors?: Json | null
         }
         Update: {
+          archived_at?: string | null
           case_description?: string | null
           case_title?: string
           complexity_score?: number | null
@@ -140,10 +147,12 @@ export type Database = {
           filing_options?: Json | null
           id?: string
           improvement_suggestions?: Json | null
+          last_activity_at?: string | null
           legal_area?: string
           legal_pathway?: Json | null
           merit_score?: number
           next_steps?: Json | null
+          notes?: string | null
           relevant_laws?: Json | null
           required_forms?: Json | null
           session_id?: string | null
@@ -164,6 +173,47 @@ export type Database = {
             columns: ["session_id"]
             isOneToOne: false
             referencedRelation: "chat_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      case_timeline_events: {
+        Row: {
+          case_id: string
+          created_at: string
+          description: string | null
+          event_type: string
+          id: string
+          metadata: Json | null
+          title: string
+          user_id: string
+        }
+        Insert: {
+          case_id: string
+          created_at?: string
+          description?: string | null
+          event_type: string
+          id?: string
+          metadata?: Json | null
+          title: string
+          user_id: string
+        }
+        Update: {
+          case_id?: string
+          created_at?: string
+          description?: string | null
+          event_type?: string
+          id?: string
+          metadata?: Json | null
+          title?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "case_timeline_events_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "case_merit_scores"
             referencedColumns: ["id"]
           },
         ]
@@ -541,6 +591,36 @@ export type Database = {
         }
         Relationships: []
       }
+      profiles_email_backup: {
+        Row: {
+          created_at: string | null
+          email: string | null
+          first_name: string | null
+          id: string | null
+          last_name: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email?: string | null
+          first_name?: string | null
+          id?: string | null
+          last_name?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string | null
+          first_name?: string | null
+          id?: string | null
+          last_name?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       subscriptions: {
         Row: {
           amount: number
@@ -663,10 +743,12 @@ export type Database = {
       user_activity_logs: {
         Row: {
           action: string
+          anonymized_at: string | null
           created_at: string
           details: Json | null
           id: string
           ip_address: unknown
+          ip_address_hash: string | null
           resource_id: string | null
           resource_type: string | null
           user_agent: string | null
@@ -674,10 +756,12 @@ export type Database = {
         }
         Insert: {
           action: string
+          anonymized_at?: string | null
           created_at?: string
           details?: Json | null
           id?: string
           ip_address?: unknown
+          ip_address_hash?: string | null
           resource_id?: string | null
           resource_type?: string | null
           user_agent?: string | null
@@ -685,10 +769,54 @@ export type Database = {
         }
         Update: {
           action?: string
+          anonymized_at?: string | null
           created_at?: string
           details?: Json | null
           id?: string
           ip_address?: unknown
+          ip_address_hash?: string | null
+          resource_id?: string | null
+          resource_type?: string | null
+          user_agent?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_activity_logs_archive: {
+        Row: {
+          action: string
+          anonymized_at: string | null
+          created_at: string
+          details: Json | null
+          id: string
+          ip_address: unknown
+          ip_address_hash: string | null
+          resource_id: string | null
+          resource_type: string | null
+          user_agent: string | null
+          user_id: string
+        }
+        Insert: {
+          action: string
+          anonymized_at?: string | null
+          created_at?: string
+          details?: Json | null
+          id?: string
+          ip_address?: unknown
+          ip_address_hash?: string | null
+          resource_id?: string | null
+          resource_type?: string | null
+          user_agent?: string | null
+          user_id: string
+        }
+        Update: {
+          action?: string
+          anonymized_at?: string | null
+          created_at?: string
+          details?: Json | null
+          id?: string
+          ip_address?: unknown
+          ip_address_hash?: string | null
           resource_id?: string | null
           resource_type?: string | null
           user_agent?: string | null

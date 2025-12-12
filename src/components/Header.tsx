@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { Scale, Globe, User, LogOut, Settings } from "lucide-react";
+import { Scale, Globe, User, LogOut, Settings, Briefcase } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useAdminAccess } from "@/hooks/useAdminAccess";
 import logoImage from "@/assets/us-justice-bot-logo.png";
@@ -64,6 +64,12 @@ const Header = ({ language, onLanguageChange }: HeaderProps) => {
             <div className="flex items-center gap-2">
               {user ? (
                 <div className="flex items-center gap-2">
+                  <Button asChild variant="secondary" size="sm">
+                    <Link to="/my-cases">
+                      <Briefcase className="w-4 h-4 mr-1" />
+                      My Cases
+                    </Link>
+                  </Button>
                   {isAdmin && (
                     <Button asChild variant="secondary" size="sm">
                       <Link to="/admin">
