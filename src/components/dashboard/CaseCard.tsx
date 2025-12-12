@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { CaseStatusBadge } from './CaseStatusBadge';
 import { CaseTimeline } from './CaseTimeline';
 import { CaseNotes } from './CaseNotes';
+import { DocumentExportButton } from '@/components/export/DocumentExportButton';
 import { 
   Select,
   SelectContent,
@@ -100,6 +101,7 @@ export function CaseCard({
               </div>
             </div>
             <div className="flex items-center gap-2">
+              <DocumentExportButton caseData={caseData} size="sm" />
               <Button
                 variant="outline"
                 size="sm"
