@@ -253,6 +253,441 @@ export const stateFormsLibrary: Record<string, StateFormsData> = {
       ],
     }
   },
+},
+
+  // ==================== PENNSYLVANIA ====================
+  "PA": {
+    stateName: "Pennsylvania",
+    courtWebsite: "https://www.pacourts.us",
+    selfHelpUrl: "https://www.palawhelp.org",
+    forms: {
+      "family": [
+        { formNumber: "Complaint in Divorce", name: "Complaint in Divorce", description: "Start divorce proceedings", url: "https://www.pacourts.us/forms/for-the-public/divorce-forms", category: "Divorce", feeAmount: "$333.75", feeWaiverAvailable: true },
+        { formNumber: "Waiver of Notice", name: "Waiver of Notice of Intention to File", description: "Spouse consents to divorce filing", url: "https://www.pacourts.us/forms/for-the-public/divorce-forms", category: "Divorce" },
+        { formNumber: "Affidavit of Consent", name: "Affidavit of Consent (3301c)", description: "Mutual consent divorce affidavit", url: "https://www.pacourts.us/forms/for-the-public/divorce-forms", category: "Divorce" },
+        { formNumber: "Counter-Affidavit", name: "Counter-Affidavit (3301d)", description: "Separation-based divorce response", url: "https://www.pacourts.us/forms/for-the-public/divorce-forms", category: "Divorce" },
+        { formNumber: "PFA Petition", name: "Petition for Protection From Abuse", description: "Request domestic violence protection", url: "https://www.pacourts.us/forms/for-the-public/pfa-forms", category: "Protection Orders", feeAmount: "Free" },
+        { formNumber: "Custody Complaint", name: "Complaint for Custody", description: "Request child custody determination", url: "https://www.pacourts.us/forms/for-the-public/custody-forms", category: "Custody", feeAmount: "$107.21", feeWaiverAvailable: true },
+      ],
+      "small-claims": [
+        { formNumber: "MDJ Statement of Claim", name: "Statement of Claim", description: "Start case in Magisterial District Court (up to $12,000)", url: "https://www.pacourts.us/forms/for-the-public/minor-court-forms", category: "Filing", feeAmount: "$50-$125", feeWaiverAvailable: true },
+        { formNumber: "Notice of Intent to Defend", name: "Notice of Intent to Defend", description: "Notify court you'll contest claim", url: "https://www.pacourts.us/forms/for-the-public/minor-court-forms", category: "Response" },
+        { formNumber: "Appeal from MDJ", name: "Notice of Appeal", description: "Appeal magisterial court decision", url: "https://www.pacourts.us/forms/for-the-public/minor-court-forms", category: "Appeals" },
+      ],
+      "employment": [
+        { formNumber: "UC-42", name: "Unemployment Compensation Claim", description: "Apply for unemployment benefits", url: "https://www.uc.pa.gov/unemployment-benefits/file/Pages/Filing-for-UC.aspx", category: "Unemployment" },
+        { formNumber: "LLC-1", name: "Wage Claim Form", description: "Report unpaid wages", url: "https://www.dli.pa.gov/Individuals/Labor-Management-Relations/llc/Pages/Wage-Complaints.aspx", category: "Wage Claims", feeAmount: "Free" },
+        { formNumber: "PHRC Complaint", name: "Complaint of Discrimination", description: "File discrimination complaint", url: "https://www.phrc.pa.gov/File-A-Complaint/Pages/default.aspx", category: "Discrimination", feeAmount: "Free" },
+      ],
+      "housing": [
+        { formNumber: "Landlord-Tenant Complaint", name: "Landlord-Tenant Complaint", description: "Eviction lawsuit", url: "https://www.pacourts.us/forms/for-the-public/landlord-tenant-forms", category: "Eviction", feeAmount: "$50-$125", feeWaiverAvailable: true },
+        { formNumber: "Answer to L-T Complaint", name: "Answer to Landlord-Tenant Complaint", description: "Tenant response to eviction", url: "https://www.pacourts.us/forms/for-the-public/landlord-tenant-forms", category: "Defense" },
+        { formNumber: "Security Deposit Complaint", name: "Small Claims for Security Deposit", description: "Sue for security deposit return", url: "https://www.pacourts.us/forms/for-the-public/minor-court-forms", category: "Deposits" },
+      ],
+      "criminal": [
+        { formNumber: "Expungement Petition", name: "Petition for Expungement", description: "Clear eligible criminal records", url: "https://www.pacourts.us/forms/for-the-public/criminal-forms", category: "Expungement", feeAmount: "$132", feeWaiverAvailable: true },
+        { formNumber: "Clean Slate Petition", name: "Petition for Limited Access", description: "Seal eligible records under Clean Slate", url: "https://www.pacourts.us/forms/for-the-public/criminal-forms", category: "Record Sealing" },
+        { formNumber: "Pardon Application", name: "Application for Clemency", description: "Apply for Governor's pardon", url: "https://www.bop.pa.gov/application-process/Pages/default.aspx", category: "Pardon" },
+      ],
+      "general": [
+        { formNumber: "IFP Petition", name: "Petition to Proceed In Forma Pauperis", description: "Request court fee waiver", url: "https://www.pacourts.us/forms/for-the-public/fee-waiver-forms", category: "Fee Waiver", feeAmount: "Free" },
+        { formNumber: "Proof of Service", name: "Affidavit of Service", description: "Confirm papers were served", url: "https://www.pacourts.us/forms", category: "Service" },
+      ],
+    }
+  },
+
+  // ==================== OHIO ====================
+  "OH": {
+    stateName: "Ohio",
+    courtWebsite: "https://www.supremecourt.ohio.gov",
+    selfHelpUrl: "https://www.ohiolegalhelp.org",
+    forms: {
+      "family": [
+        { formNumber: "DR 25.01", name: "Complaint for Divorce", description: "Start divorce with children", url: "https://www.supremecourt.ohio.gov/JCS/CFC/DRForms/", category: "Divorce", feeAmount: "$350", feeWaiverAvailable: true },
+        { formNumber: "DR 25.10", name: "Complaint for Divorce (No Children)", description: "Divorce without minor children", url: "https://www.supremecourt.ohio.gov/JCS/CFC/DRForms/", category: "Divorce", feeAmount: "$350", feeWaiverAvailable: true },
+        { formNumber: "DR 25.20", name: "Financial Disclosure Affidavit", description: "Required financial information", url: "https://www.supremecourt.ohio.gov/JCS/CFC/DRForms/", category: "Financial" },
+        { formNumber: "DR 25.04", name: "Shared Parenting Plan", description: "Joint custody arrangement", url: "https://www.supremecourt.ohio.gov/JCS/CFC/DRForms/", category: "Custody" },
+        { formNumber: "DV 1-2", name: "Petition for Domestic Violence CPO", description: "Request civil protection order", url: "https://www.supremecourt.ohio.gov/JCS/domesticViolence/", category: "Protection Orders", feeAmount: "Free" },
+      ],
+      "small-claims": [
+        { formNumber: "Small Claims Complaint", name: "Statement of Claim", description: "Start small claims case (up to $6,000)", url: "https://www.ohiolegalhelp.org/topic/small-claims", category: "Filing", feeAmount: "$35-$85", feeWaiverAvailable: true },
+        { formNumber: "Counterclaim", name: "Counterclaim Form", description: "Defendant's claim against plaintiff", url: "https://www.ohiolegalhelp.org/topic/small-claims", category: "Response" },
+        { formNumber: "Motion for Default", name: "Motion for Default Judgment", description: "Win case if no response", url: "https://www.ohiolegalhelp.org/topic/small-claims", category: "Judgment" },
+      ],
+      "employment": [
+        { formNumber: "ODJFS UI Claim", name: "Unemployment Benefits Claim", description: "Apply for unemployment", url: "https://unemployment.ohio.gov/", category: "Unemployment" },
+        { formNumber: "Wage Complaint", name: "Wage and Hour Complaint", description: "Report unpaid wages", url: "https://com.ohio.gov/wps/portal/gov/com/divisions/industrial-compliance/wage-and-hour", category: "Wage Claims", feeAmount: "Free" },
+        { formNumber: "OCRC Charge", name: "Charge of Discrimination", description: "File employment discrimination complaint", url: "https://crc.ohio.gov/", category: "Discrimination", feeAmount: "Free" },
+      ],
+      "housing": [
+        { formNumber: "Eviction Complaint", name: "Complaint in Forcible Entry and Detainer", description: "Landlord eviction lawsuit", url: "https://www.ohiolegalhelp.org/topic/eviction", category: "Eviction", feeAmount: "$112-$175", feeWaiverAvailable: true },
+        { formNumber: "Answer to Eviction", name: "Answer to Eviction Complaint", description: "Tenant defense to eviction", url: "https://www.ohiolegalhelp.org/topic/eviction", category: "Defense" },
+        { formNumber: "Motion to Stay", name: "Motion to Stay Execution of Writ", description: "Delay eviction execution", url: "https://www.ohiolegalhelp.org/topic/eviction", category: "Motions" },
+      ],
+      "criminal": [
+        { formNumber: "Expungement Application", name: "Application to Seal Record", description: "Seal eligible criminal records", url: "https://www.ohiolegalhelp.org/topic/expungement", category: "Expungement", feeAmount: "$50", feeWaiverAvailable: true },
+        { formNumber: "CQE Application", name: "Certificate of Qualification for Employment", description: "Remove employment barriers", url: "https://www.drc.ohio.gov/cqe", category: "Certificates" },
+      ],
+      "general": [
+        { formNumber: "Affidavit of Indigency", name: "Affidavit of Indigency", description: "Request court fee waiver", url: "https://www.ohiolegalhelp.org", category: "Fee Waiver", feeAmount: "Free" },
+        { formNumber: "Affidavit of Service", name: "Affidavit of Service", description: "Confirm papers were served", url: "https://www.ohiolegalhelp.org", category: "Service" },
+      ],
+    }
+  },
+
+  // ==================== GEORGIA ====================
+  "GA": {
+    stateName: "Georgia",
+    courtWebsite: "https://georgiacourts.gov",
+    selfHelpUrl: "https://georgialegalaid.org",
+    forms: {
+      "family": [
+        { formNumber: "Divorce Petition", name: "Petition for Divorce", description: "Start divorce proceedings", url: "https://georgiacourts.gov/resources/court-forms/", category: "Divorce", feeAmount: "$212-$250", feeWaiverAvailable: true },
+        { formNumber: "Domestic Relations Case Filing Info", name: "Domestic Relations Case Filing Information Form", description: "Required case information", url: "https://georgiacourts.gov/resources/court-forms/", category: "Divorce" },
+        { formNumber: "Acknowledgement of Service", name: "Acknowledgement of Service and Consent", description: "Spouse accepts service", url: "https://georgiacourts.gov/resources/court-forms/", category: "Divorce" },
+        { formNumber: "Legitimation Petition", name: "Petition for Legitimation", description: "Establish father's rights", url: "https://georgiacourts.gov/resources/court-forms/", category: "Paternity" },
+        { formNumber: "TPO Petition", name: "Petition for Temporary Protective Order", description: "Request family violence protection", url: "https://georgiacourts.gov/resources/court-forms/", category: "Protection Orders", feeAmount: "Free" },
+      ],
+      "small-claims": [
+        { formNumber: "Magistrate Court Claim", name: "Statement of Claim", description: "Start case in Magistrate Court (up to $15,000)", url: "https://georgiacourts.gov/resources/court-forms/", category: "Filing", feeAmount: "$45-$75", feeWaiverAvailable: true },
+        { formNumber: "Answer", name: "Answer to Claim", description: "Respond to claim against you", url: "https://georgiacourts.gov/resources/court-forms/", category: "Response" },
+        { formNumber: "Counterclaim", name: "Counterclaim", description: "Sue the person suing you", url: "https://georgiacourts.gov/resources/court-forms/", category: "Response" },
+      ],
+      "employment": [
+        { formNumber: "DOL UI Claim", name: "Unemployment Insurance Claim", description: "Apply for unemployment benefits", url: "https://www.dol.state.ga.us/public/uiben/", category: "Unemployment" },
+        { formNumber: "DOL Wage Complaint", name: "Wage Complaint Form", description: "Report unpaid wages", url: "https://dol.georgia.gov/wage-and-hour-complaints", category: "Wage Claims", feeAmount: "Free" },
+        { formNumber: "GCHR Complaint", name: "Charge of Discrimination", description: "File discrimination complaint", url: "https://gceo.georgia.gov/", category: "Discrimination", feeAmount: "Free" },
+      ],
+      "housing": [
+        { formNumber: "Dispossessory Affidavit", name: "Affidavit for Dispossessory Warrant", description: "Landlord eviction filing", url: "https://georgialegalaid.org/resource/eviction-dispossessory-georgia", category: "Eviction", feeAmount: "$56-$76", feeWaiverAvailable: true },
+        { formNumber: "Answer to Dispossessory", name: "Answer to Dispossessory", description: "Tenant response to eviction", url: "https://georgialegalaid.org/resource/eviction-dispossessory-georgia", category: "Defense" },
+        { formNumber: "Deposit Demand", name: "Security Deposit Demand Letter", description: "Demand deposit return", url: "https://georgialegalaid.org", category: "Deposits" },
+      ],
+      "criminal": [
+        { formNumber: "Record Restriction Petition", name: "Petition to Restrict Record", description: "Seal eligible criminal records", url: "https://georgialegalaid.org/resource/record-restriction", category: "Record Restriction", feeAmount: "$50-$150", feeWaiverAvailable: true },
+        { formNumber: "First Offender Discharge", name: "Petition for First Offender Discharge", description: "Complete First Offender sentence", url: "https://georgialegalaid.org", category: "First Offender" },
+      ],
+      "general": [
+        { formNumber: "Affidavit of Indigence", name: "Affidavit of Indigence", description: "Request court fee waiver", url: "https://georgiacourts.gov/resources/court-forms/", category: "Fee Waiver", feeAmount: "Free" },
+        { formNumber: "Affidavit of Service", name: "Affidavit of Personal Service", description: "Confirm papers were served", url: "https://georgiacourts.gov/resources/court-forms/", category: "Service" },
+      ],
+    }
+  },
+
+  // ==================== NORTH CAROLINA ====================
+  "NC": {
+    stateName: "North Carolina",
+    courtWebsite: "https://www.nccourts.gov",
+    selfHelpUrl: "https://www.nccourts.gov/help-topics",
+    forms: {
+      "family": [
+        { formNumber: "AOC-CV-802", name: "Complaint for Absolute Divorce", description: "Start divorce proceedings", url: "https://www.nccourts.gov/documents/forms/complaint-for-absolute-divorce", category: "Divorce", feeAmount: "$225", feeWaiverAvailable: true },
+        { formNumber: "AOC-CV-100", name: "Civil Summons", description: "Notice to defendant", url: "https://www.nccourts.gov/documents/forms/civil-summons-alias-and-pluries-summons", category: "Service" },
+        { formNumber: "AOC-CV-304", name: "Custody Complaint/Motion", description: "Request child custody", url: "https://www.nccourts.gov/documents/forms/complaint-motion-for-child-custody", category: "Custody", feeAmount: "$225", feeWaiverAvailable: true },
+        { formNumber: "AOC-CV-305", name: "Child Support Complaint", description: "Request child support order", url: "https://www.nccourts.gov/documents/forms/complaint-for-child-support", category: "Support", feeAmount: "$225", feeWaiverAvailable: true },
+        { formNumber: "AOC-CV-303", name: "Domestic Violence Complaint", description: "Request DVPO protection", url: "https://www.nccourts.gov/documents/forms/complaint-and-motion-for-domestic-violence-protective-order", category: "Protection Orders", feeAmount: "Free" },
+      ],
+      "small-claims": [
+        { formNumber: "AOC-CVM-100", name: "Complaint to Enforce Claim", description: "Start small claims case (up to $10,000)", url: "https://www.nccourts.gov/documents/forms/magistrate-summons-complaint-to-enforce-claim", category: "Filing", feeAmount: "$96", feeWaiverAvailable: true },
+        { formNumber: "AOC-CVM-200", name: "Answer to Small Claim", description: "Respond to small claims lawsuit", url: "https://www.nccourts.gov/documents/forms", category: "Response" },
+        { formNumber: "AOC-CVM-203", name: "Counterclaim", description: "Sue the person suing you", url: "https://www.nccourts.gov/documents/forms", category: "Response" },
+        { formNumber: "AOC-CVM-220", name: "Appeal from Magistrate", description: "Appeal to District Court", url: "https://www.nccourts.gov/documents/forms", category: "Appeals" },
+      ],
+      "employment": [
+        { formNumber: "DES UI Claim", name: "Unemployment Insurance Claim", description: "Apply for unemployment benefits", url: "https://des.nc.gov/apply-unemployment", category: "Unemployment" },
+        { formNumber: "DOL Wage Complaint", name: "Wage and Hour Complaint", description: "Report unpaid wages", url: "https://www.labor.nc.gov/workplace-rights/employee-rights-regarding-time-worked-and-wages-earned/how-file-wage-complaint", category: "Wage Claims", feeAmount: "Free" },
+        { formNumber: "HRC Complaint", name: "Charge of Discrimination", description: "File employment discrimination complaint", url: "https://www.oah.nc.gov/civil-rights-division/employment-discrimination", category: "Discrimination", feeAmount: "Free" },
+      ],
+      "housing": [
+        { formNumber: "AOC-CVM-201", name: "Complaint in Summary Ejectment", description: "Landlord eviction lawsuit", url: "https://www.nccourts.gov/documents/forms/magistrate-summons-complaint-in-summary-ejectment", category: "Eviction", feeAmount: "$96", feeWaiverAvailable: true },
+        { formNumber: "AOC-CVM-202", name: "Answer to Summary Ejectment", description: "Tenant response to eviction", url: "https://www.nccourts.gov/documents/forms", category: "Defense" },
+        { formNumber: "Deposit Demand", name: "Security Deposit Demand Letter", description: "Demand deposit return within 30 days", url: "https://www.nclegalaid.org", category: "Deposits" },
+      ],
+      "criminal": [
+        { formNumber: "AOC-CR-285", name: "Petition for Expunction", description: "Clear eligible criminal records", url: "https://www.nccourts.gov/documents/forms/petition-and-order-of-expunction-under-g-s-15a-145", category: "Expungement", feeAmount: "$175", feeWaiverAvailable: true },
+        { formNumber: "AOC-CR-287", name: "Affidavit of Indigency (Expunction)", description: "Request fee waiver for expunction", url: "https://www.nccourts.gov/documents/forms", category: "Expungement" },
+      ],
+      "general": [
+        { formNumber: "AOC-G-106", name: "Petition to Proceed as Indigent", description: "Request court fee waiver", url: "https://www.nccourts.gov/documents/forms/petition-to-sue-appeal-or-defend-as-an-indigent", category: "Fee Waiver", feeAmount: "Free" },
+        { formNumber: "AOC-CV-101", name: "Proof of Service", description: "Confirm papers were served", url: "https://www.nccourts.gov/documents/forms", category: "Service" },
+      ],
+    }
+  },
+
+  // ==================== MICHIGAN ====================
+  "MI": {
+    stateName: "Michigan",
+    courtWebsite: "https://courts.michigan.gov",
+    selfHelpUrl: "https://michiganlegalhelp.org",
+    forms: {
+      "family": [
+        { formNumber: "FOC 101", name: "Complaint for Divorce", description: "Start divorce with children", url: "https://courts.michigan.gov/administration/admin/op/pages/foc.aspx", category: "Divorce", feeAmount: "$175-$255", feeWaiverAvailable: true },
+        { formNumber: "FOC 102", name: "Complaint for Divorce (No Children)", description: "Divorce without minor children", url: "https://courts.michigan.gov/administration/admin/op/pages/foc.aspx", category: "Divorce", feeAmount: "$175-$255", feeWaiverAvailable: true },
+        { formNumber: "FOC 1a", name: "Verified Statement", description: "Required case information", url: "https://courts.michigan.gov/administration/admin/op/pages/foc.aspx", category: "Divorce" },
+        { formNumber: "CC 375", name: "Personal Protection Order Petition", description: "Request PPO protection", url: "https://courts.michigan.gov/administration/admin/op/pages/cc.aspx", category: "Protection Orders", feeAmount: "Free" },
+        { formNumber: "FOC 89", name: "Uniform Child Custody Jurisdiction Act", description: "Required custody jurisdiction form", url: "https://courts.michigan.gov/administration/admin/op/pages/foc.aspx", category: "Custody" },
+      ],
+      "small-claims": [
+        { formNumber: "DC 84", name: "Small Claims Affidavit and Claim", description: "Start small claims case (up to $6,500)", url: "https://courts.michigan.gov/administration/admin/op/pages/dc.aspx", category: "Filing", feeAmount: "$30-$70", feeWaiverAvailable: true },
+        { formNumber: "DC 84a", name: "Counterclaim", description: "Sue the person suing you", url: "https://courts.michigan.gov/administration/admin/op/pages/dc.aspx", category: "Response" },
+        { formNumber: "DC 85", name: "Small Claims Judgment", description: "Court judgment form", url: "https://courts.michigan.gov/administration/admin/op/pages/dc.aspx", category: "Judgment" },
+      ],
+      "employment": [
+        { formNumber: "UIA Claim", name: "Unemployment Insurance Claim", description: "Apply for unemployment benefits", url: "https://michigan.gov/leo/bureaus-agencies/uia", category: "Unemployment" },
+        { formNumber: "LEO Wage Complaint", name: "Wage and Hour Complaint", description: "Report unpaid wages", url: "https://www.michigan.gov/leo/bureaus-agencies/ber", category: "Wage Claims", feeAmount: "Free" },
+        { formNumber: "MDCR Complaint", name: "Complaint of Discrimination", description: "File discrimination complaint", url: "https://www.michigan.gov/mdcr/", category: "Discrimination", feeAmount: "Free" },
+      ],
+      "housing": [
+        { formNumber: "DC 102a", name: "Summons and Complaint (Land Contract Forfeiture)", description: "Eviction for land contract default", url: "https://courts.michigan.gov/administration/admin/op/pages/dc.aspx", category: "Eviction", feeAmount: "$45-$70", feeWaiverAvailable: true },
+        { formNumber: "DC 104a", name: "Summons and Complaint (Termination of Tenancy)", description: "Standard eviction lawsuit", url: "https://courts.michigan.gov/administration/admin/op/pages/dc.aspx", category: "Eviction", feeAmount: "$45-$70", feeWaiverAvailable: true },
+        { formNumber: "Answer to Eviction", name: "Answer to Summary Proceedings", description: "Tenant response to eviction", url: "https://michiganlegalhelp.org/self-help-tools/housing/i-am-being-evicted", category: "Defense" },
+      ],
+      "criminal": [
+        { formNumber: "MC 227", name: "Application to Set Aside Conviction", description: "Expunge eligible criminal records", url: "https://courts.michigan.gov/administration/admin/op/pages/mc.aspx", category: "Expungement", feeAmount: "$50", feeWaiverAvailable: true },
+        { formNumber: "MC 227a", name: "Affidavit in Support of Application", description: "Required expungement affidavit", url: "https://courts.michigan.gov/administration/admin/op/pages/mc.aspx", category: "Expungement" },
+      ],
+      "general": [
+        { formNumber: "MC 20", name: "Fee Waiver Request", description: "Request court fee waiver", url: "https://courts.michigan.gov/administration/admin/op/pages/mc.aspx", category: "Fee Waiver", feeAmount: "Free" },
+        { formNumber: "MC 14", name: "Proof of Service", description: "Confirm papers were served", url: "https://courts.michigan.gov/administration/admin/op/pages/mc.aspx", category: "Service" },
+      ],
+    }
+  },
+
+  // ==================== NEW JERSEY ====================
+  "NJ": {
+    stateName: "New Jersey",
+    courtWebsite: "https://www.njcourts.gov",
+    selfHelpUrl: "https://www.njcourts.gov/self-help",
+    forms: {
+      "family": [
+        { formNumber: "FM Complaint", name: "Complaint for Divorce", description: "Start divorce proceedings", url: "https://www.njcourts.gov/forms/family", category: "Divorce", feeAmount: "$300", feeWaiverAvailable: true },
+        { formNumber: "Acknowledgment of Service", name: "Acknowledgment of Service", description: "Spouse accepts service", url: "https://www.njcourts.gov/forms/family", category: "Divorce" },
+        { formNumber: "Case Information Statement", name: "Case Information Statement", description: "Required financial disclosure", url: "https://www.njcourts.gov/forms/family", category: "Financial" },
+        { formNumber: "TRO Complaint", name: "Complaint for Temporary Restraining Order", description: "Request domestic violence protection", url: "https://www.njcourts.gov/forms/family", category: "Protection Orders", feeAmount: "Free" },
+        { formNumber: "Non-Dissolution Complaint", name: "Complaint for Custody/Support", description: "Custody/support without divorce", url: "https://www.njcourts.gov/forms/family", category: "Custody", feeAmount: "$50-$175", feeWaiverAvailable: true },
+      ],
+      "small-claims": [
+        { formNumber: "SC Complaint", name: "Small Claims Complaint", description: "Start small claims case (up to $3,000)", url: "https://www.njcourts.gov/forms/small-claims", category: "Filing", feeAmount: "$15-$35", feeWaiverAvailable: true },
+        { formNumber: "SC Special Civil Part", name: "Special Civil Part Complaint", description: "Claims $3,001-$20,000", url: "https://www.njcourts.gov/forms/special-civil-part", category: "Filing", feeAmount: "$35-$75", feeWaiverAvailable: true },
+        { formNumber: "Counterclaim", name: "Counterclaim Form", description: "Sue the person suing you", url: "https://www.njcourts.gov/forms/small-claims", category: "Response" },
+      ],
+      "employment": [
+        { formNumber: "UI Claim", name: "Unemployment Insurance Claim", description: "Apply for unemployment benefits", url: "https://www.nj.gov/labor/myunemployment/", category: "Unemployment" },
+        { formNumber: "Wage Claim", name: "Wage Collection Claim", description: "Report unpaid wages", url: "https://www.nj.gov/labor/wageandhour/", category: "Wage Claims", feeAmount: "Free" },
+        { formNumber: "DCR Complaint", name: "Complaint of Discrimination", description: "File discrimination complaint", url: "https://www.njoag.gov/about/divisions-and-offices/division-on-civil-rights-home/", category: "Discrimination", feeAmount: "Free" },
+      ],
+      "housing": [
+        { formNumber: "LT Complaint", name: "Landlord Tenant Complaint", description: "Eviction lawsuit", url: "https://www.njcourts.gov/forms/landlord-tenant", category: "Eviction", feeAmount: "$50", feeWaiverAvailable: true },
+        { formNumber: "LT Answer", name: "Answer to Landlord Tenant Complaint", description: "Tenant response to eviction", url: "https://www.njcourts.gov/forms/landlord-tenant", category: "Defense" },
+        { formNumber: "LT Hardship Application", name: "Hardship Stay Application", description: "Request delay of eviction", url: "https://www.njcourts.gov/forms/landlord-tenant", category: "Motions" },
+      ],
+      "criminal": [
+        { formNumber: "Expungement Petition", name: "Petition for Expungement", description: "Clear eligible criminal records", url: "https://www.njcourts.gov/forms/expungement", category: "Expungement", feeAmount: "$75", feeWaiverAvailable: true },
+        { formNumber: "Expungement Order", name: "Order for Expungement", description: "Court order granting expungement", url: "https://www.njcourts.gov/forms/expungement", category: "Expungement" },
+      ],
+      "general": [
+        { formNumber: "Fee Waiver Application", name: "Application for Fee Waiver", description: "Request court fee waiver", url: "https://www.njcourts.gov/forms/fee-waiver", category: "Fee Waiver", feeAmount: "Free" },
+        { formNumber: "Affidavit of Service", name: "Affidavit of Service", description: "Confirm papers were served", url: "https://www.njcourts.gov/forms", category: "Service" },
+      ],
+    }
+  },
+
+  // ==================== VIRGINIA ====================
+  "VA": {
+    stateName: "Virginia",
+    courtWebsite: "https://www.vacourts.gov",
+    selfHelpUrl: "https://www.valegalaid.org",
+    forms: {
+      "family": [
+        { formNumber: "CC-1402", name: "Complaint for Divorce", description: "Start divorce proceedings", url: "https://www.vacourts.gov/forms/circuit/cc1402.pdf", category: "Divorce", feeAmount: "$86-$101", feeWaiverAvailable: true },
+        { formNumber: "CC-1403", name: "Answer to Divorce Complaint", description: "Respond to divorce filing", url: "https://www.vacourts.gov/forms/circuit/cc1403.pdf", category: "Divorce" },
+        { formNumber: "DC-620", name: "Petition for Protective Order", description: "Request family abuse protection", url: "https://www.vacourts.gov/forms/district/dc620.pdf", category: "Protection Orders", feeAmount: "Free" },
+        { formNumber: "DC-610", name: "Petition for Custody/Visitation", description: "Request custody determination", url: "https://www.vacourts.gov/forms/district/dc610.pdf", category: "Custody", feeAmount: "$25", feeWaiverAvailable: true },
+        { formNumber: "DC-601", name: "Petition for Child Support", description: "Request child support order", url: "https://www.vacourts.gov/forms/district/dc601.pdf", category: "Support", feeAmount: "Free" },
+      ],
+      "small-claims": [
+        { formNumber: "DC-402", name: "Civil Claim for Warrant in Debt", description: "Start small claims case (up to $5,000)", url: "https://www.vacourts.gov/forms/district/dc402.pdf", category: "Filing", feeAmount: "$33-$76", feeWaiverAvailable: true },
+        { formNumber: "DC-432", name: "Motion for Judgment", description: "Civil claims over $5,000", url: "https://www.vacourts.gov/forms/district/dc432.pdf", category: "Filing", feeAmount: "$58-$82", feeWaiverAvailable: true },
+        { formNumber: "DC-405", name: "Grounds of Defense", description: "Respond to claim against you", url: "https://www.vacourts.gov/forms/district/dc405.pdf", category: "Response" },
+      ],
+      "employment": [
+        { formNumber: "VEC Claim", name: "Unemployment Insurance Claim", description: "Apply for unemployment benefits", url: "https://www.vec.virginia.gov/unemployed", category: "Unemployment" },
+        { formNumber: "DOLI Wage Claim", name: "Claim for Unpaid Wages", description: "Report wage violations", url: "https://www.doli.virginia.gov/labor-law/payment-of-wage-702/", category: "Wage Claims", feeAmount: "Free" },
+        { formNumber: "EEOC/Local Complaint", name: "Charge of Discrimination", description: "File employment discrimination complaint", url: "https://www.eeoc.gov/field-office/richmond/location", category: "Discrimination", feeAmount: "Free" },
+      ],
+      "housing": [
+        { formNumber: "DC-421", name: "Summons for Unlawful Detainer", description: "Eviction lawsuit", url: "https://www.vacourts.gov/forms/district/dc421.pdf", category: "Eviction", feeAmount: "$44-$58", feeWaiverAvailable: true },
+        { formNumber: "Answer to UD", name: "Answer to Unlawful Detainer", description: "Tenant response to eviction", url: "https://www.valegalaid.org/issues/housing/eviction", category: "Defense" },
+        { formNumber: "Deposit Demand", name: "Security Deposit Demand Letter", description: "Demand deposit return within 45 days", url: "https://www.valegalaid.org/issues/housing", category: "Deposits" },
+      ],
+      "criminal": [
+        { formNumber: "CC-1475", name: "Petition for Expungement", description: "Clear eligible criminal records", url: "https://www.vacourts.gov/forms/circuit/cc1475.pdf", category: "Expungement", feeAmount: "Free", feeWaiverAvailable: true },
+        { formNumber: "Order of Expungement", name: "Order of Expungement", description: "Court order granting expungement", url: "https://www.vacourts.gov/forms/circuit/", category: "Expungement" },
+      ],
+      "general": [
+        { formNumber: "DC-420", name: "Affidavit for Proceeding Without Payment of Fees", description: "Request court fee waiver", url: "https://www.vacourts.gov/forms/district/dc420.pdf", category: "Fee Waiver", feeAmount: "Free" },
+        { formNumber: "Proof of Service", name: "Affidavit of Service", description: "Confirm papers were served", url: "https://www.vacourts.gov/forms", category: "Service" },
+      ],
+    }
+  },
+
+  // ==================== WASHINGTON ====================
+  "WA": {
+    stateName: "Washington",
+    courtWebsite: "https://www.courts.wa.gov",
+    selfHelpUrl: "https://www.washingtonlawhelp.org",
+    forms: {
+      "family": [
+        { formNumber: "FL Divorce 201", name: "Petition for Dissolution (Divorce)", description: "Start divorce proceedings", url: "https://www.courts.wa.gov/forms/?fa=forms.contribute&formID=79", category: "Divorce", feeAmount: "$314", feeWaiverAvailable: true },
+        { formNumber: "FL All Family 101", name: "Confidential Information Form", description: "Required confidential information", url: "https://www.courts.wa.gov/forms/?fa=forms.contribute&formID=79", category: "Divorce" },
+        { formNumber: "FL All Family 130", name: "Summons", description: "Notice to spouse", url: "https://www.courts.wa.gov/forms/?fa=forms.contribute&formID=79", category: "Service" },
+        { formNumber: "FL All Family 140", name: "Motion for Temporary Orders", description: "Request temporary orders", url: "https://www.courts.wa.gov/forms/?fa=forms.contribute&formID=79", category: "Motions" },
+        { formNumber: "DV 1.015", name: "Petition for Order for Protection", description: "Request domestic violence protection", url: "https://www.courts.wa.gov/forms/?fa=forms.contribute&formID=19", category: "Protection Orders", feeAmount: "Free" },
+      ],
+      "small-claims": [
+        { formNumber: "SC 100", name: "Small Claims Notice of Claim", description: "Start small claims case (up to $10,000)", url: "https://www.courts.wa.gov/forms/?fa=forms.contribute&formID=2", category: "Filing", feeAmount: "$35-$50", feeWaiverAvailable: true },
+        { formNumber: "SC 200", name: "Small Claims Response", description: "Respond to claim against you", url: "https://www.courts.wa.gov/forms/?fa=forms.contribute&formID=2", category: "Response" },
+        { formNumber: "SC 300", name: "Small Claims Counterclaim", description: "Sue the person suing you", url: "https://www.courts.wa.gov/forms/?fa=forms.contribute&formID=2", category: "Response" },
+        { formNumber: "SC 400", name: "Small Claims Subpoena", description: "Require witness to appear", url: "https://www.courts.wa.gov/forms/?fa=forms.contribute&formID=2", category: "Discovery" },
+      ],
+      "employment": [
+        { formNumber: "ESD Claim", name: "Unemployment Insurance Claim", description: "Apply for unemployment benefits", url: "https://esd.wa.gov/unemployment", category: "Unemployment" },
+        { formNumber: "L&I Wage Complaint", name: "Workplace Rights Complaint", description: "Report wage violations", url: "https://lni.wa.gov/workers-rights/workplace-complaints/", category: "Wage Claims", feeAmount: "Free" },
+        { formNumber: "HRC Complaint", name: "Complaint of Discrimination", description: "File discrimination complaint", url: "https://www.hum.wa.gov/file-complaint", category: "Discrimination", feeAmount: "Free" },
+      ],
+      "housing": [
+        { formNumber: "Unlawful Detainer", name: "Summons - Unlawful Detainer", description: "Eviction lawsuit", url: "https://www.courts.wa.gov/forms/?fa=forms.contribute&formID=20", category: "Eviction", feeAmount: "$45-$60", feeWaiverAvailable: true },
+        { formNumber: "UD Answer", name: "Answer to Unlawful Detainer", description: "Tenant response to eviction", url: "https://www.washingtonlawhelp.org/issues/housing/eviction", category: "Defense" },
+        { formNumber: "Order to Show Cause", name: "Motion for Order to Show Cause", description: "Request eviction hearing", url: "https://www.courts.wa.gov/forms/?fa=forms.contribute&formID=20", category: "Motions" },
+      ],
+      "criminal": [
+        { formNumber: "CrRLJ 09.0400", name: "Petition for Vacation", description: "Clear eligible criminal records", url: "https://www.courts.wa.gov/forms/?fa=forms.contribute&formID=14", category: "Vacation", feeAmount: "Free", feeWaiverAvailable: true },
+        { formNumber: "CrRLJ 09.0500", name: "Order Vacating Conviction", description: "Court order vacating conviction", url: "https://www.courts.wa.gov/forms/?fa=forms.contribute&formID=14", category: "Vacation" },
+      ],
+      "general": [
+        { formNumber: "GR 34", name: "Application for Waiver of Civil Filing Fees", description: "Request court fee waiver", url: "https://www.courts.wa.gov/forms/?fa=forms.contribute&formID=38", category: "Fee Waiver", feeAmount: "Free" },
+        { formNumber: "Proof of Service", name: "Proof of Service", description: "Confirm papers were served", url: "https://www.courts.wa.gov/forms", category: "Service" },
+      ],
+    }
+  },
+
+  // ==================== ARIZONA ====================
+  "AZ": {
+    stateName: "Arizona",
+    courtWebsite: "https://www.azcourts.gov",
+    selfHelpUrl: "https://azcourthelp.org",
+    forms: {
+      "family": [
+        { formNumber: "DRP11f", name: "Petition for Dissolution of Marriage", description: "Start divorce with children", url: "https://www.azcourts.gov/selfservicecenter/Self-Service-Forms/Dissolution-of-Marriage-Divorce", category: "Divorce", feeAmount: "$349", feeWaiverAvailable: true },
+        { formNumber: "DRP11g", name: "Petition for Dissolution (No Children)", description: "Divorce without minor children", url: "https://www.azcourts.gov/selfservicecenter/Self-Service-Forms/Dissolution-of-Marriage-Divorce", category: "Divorce", feeAmount: "$349", feeWaiverAvailable: true },
+        { formNumber: "DRP13f", name: "Summons", description: "Notice to spouse", url: "https://www.azcourts.gov/selfservicecenter/Self-Service-Forms/Dissolution-of-Marriage-Divorce", category: "Service" },
+        { formNumber: "DRPOP1f", name: "Petition for Order of Protection", description: "Request domestic violence protection", url: "https://www.azcourts.gov/selfservicecenter/Self-Service-Forms/Protective-Orders", category: "Protection Orders", feeAmount: "Free" },
+        { formNumber: "DRCV11f", name: "Petition for Custody/Parenting Time", description: "Request custody determination", url: "https://www.azcourts.gov/selfservicecenter/Self-Service-Forms/Custody-Parenting-Time", category: "Custody", feeAmount: "$256", feeWaiverAvailable: true },
+      ],
+      "small-claims": [
+        { formNumber: "CV2000f", name: "Complaint", description: "Start small claims case (up to $3,500)", url: "https://www.azcourts.gov/selfservicecenter/Self-Service-Forms/Small-Claims", category: "Filing", feeAmount: "$20-$75", feeWaiverAvailable: true },
+        { formNumber: "CV2010f", name: "Summons", description: "Notice to defendant", url: "https://www.azcourts.gov/selfservicecenter/Self-Service-Forms/Small-Claims", category: "Service" },
+        { formNumber: "CV2020f", name: "Counterclaim", description: "Sue the person suing you", url: "https://www.azcourts.gov/selfservicecenter/Self-Service-Forms/Small-Claims", category: "Response" },
+        { formNumber: "CV2030f", name: "Motion for Default Judgment", description: "Win if no response", url: "https://www.azcourts.gov/selfservicecenter/Self-Service-Forms/Small-Claims", category: "Judgment" },
+      ],
+      "employment": [
+        { formNumber: "DES UI Claim", name: "Unemployment Insurance Claim", description: "Apply for unemployment benefits", url: "https://des.az.gov/services/employment/unemployment-individual", category: "Unemployment" },
+        { formNumber: "ICA Wage Claim", name: "Wage Claim Application", description: "Report unpaid wages", url: "https://www.azica.gov/forms/labor-forms", category: "Wage Claims", feeAmount: "Free" },
+        { formNumber: "ACRD Complaint", name: "Charge of Discrimination", description: "File discrimination complaint", url: "https://www.azag.gov/civil-rights", category: "Discrimination", feeAmount: "Free" },
+      ],
+      "housing": [
+        { formNumber: "FED1f", name: "Complaint for Forcible Entry and Detainer", description: "Eviction lawsuit", url: "https://www.azcourts.gov/selfservicecenter/Self-Service-Forms/Eviction-Actions", category: "Eviction", feeAmount: "$35-$65", feeWaiverAvailable: true },
+        { formNumber: "FED Answer", name: "Answer to Eviction Complaint", description: "Tenant response to eviction", url: "https://azcourthelp.org/self-service-center/eviction", category: "Defense" },
+        { formNumber: "Deposit Demand", name: "Security Deposit Demand Letter", description: "Demand deposit return within 14 days", url: "https://azcourthelp.org", category: "Deposits" },
+      ],
+      "criminal": [
+        { formNumber: "Set Aside Application", name: "Application to Set Aside Judgment", description: "Clear eligible criminal records (ARS 13-905)", url: "https://www.azcourts.gov/selfservicecenter/Self-Service-Forms/Criminal-Set-Aside-of-Judgment", category: "Set Aside", feeAmount: "Free", feeWaiverAvailable: true },
+        { formNumber: "Restoration of Rights", name: "Petition for Restoration of Civil Rights", description: "Restore voting and other rights", url: "https://www.azcourts.gov/selfservicecenter/Self-Service-Forms", category: "Restoration" },
+      ],
+      "general": [
+        { formNumber: "FW1f", name: "Application to Defer Filing Fee", description: "Request court fee waiver", url: "https://www.azcourts.gov/selfservicecenter/Self-Service-Forms/Fee-Deferral-and-Waiver", category: "Fee Waiver", feeAmount: "Free" },
+        { formNumber: "Proof of Service", name: "Acceptance of Service", description: "Confirm papers were served", url: "https://www.azcourts.gov/selfservicecenter", category: "Service" },
+      ],
+    }
+  },
+
+  // ==================== MASSACHUSETTS ====================
+  "MA": {
+    stateName: "Massachusetts",
+    courtWebsite: "https://www.mass.gov/orgs/massachusetts-court-system",
+    selfHelpUrl: "https://www.masslegalhelp.org",
+    forms: {
+      "family": [
+        { formNumber: "CJD 101A", name: "Complaint for Divorce", description: "Start divorce proceedings (1A - joint)", url: "https://www.mass.gov/lists/probate-and-family-court-forms", category: "Divorce", feeAmount: "$215", feeWaiverAvailable: true },
+        { formNumber: "CJD 101B", name: "Complaint for Divorce (Contested)", description: "Contested divorce filing (1B)", url: "https://www.mass.gov/lists/probate-and-family-court-forms", category: "Divorce", feeAmount: "$215", feeWaiverAvailable: true },
+        { formNumber: "CJD 106", name: "Financial Statement (Short)", description: "Financial disclosure (<$75k income)", url: "https://www.mass.gov/lists/probate-and-family-court-forms", category: "Financial" },
+        { formNumber: "CJD 106L", name: "Financial Statement (Long)", description: "Financial disclosure (>$75k income)", url: "https://www.mass.gov/lists/probate-and-family-court-forms", category: "Financial" },
+        { formNumber: "FA-2", name: "Complaint for Protection from Abuse", description: "Request 209A restraining order", url: "https://www.mass.gov/lists/abuse-prevention-209a-forms", category: "Protection Orders", feeAmount: "Free" },
+      ],
+      "small-claims": [
+        { formNumber: "SC-1", name: "Statement of Claim and Notice", description: "Start small claims case (up to $7,000)", url: "https://www.mass.gov/lists/small-claims-forms", category: "Filing", feeAmount: "$40-$50", feeWaiverAvailable: true },
+        { formNumber: "SC-2", name: "Counterclaim", description: "Sue the person suing you", url: "https://www.mass.gov/lists/small-claims-forms", category: "Response" },
+        { formNumber: "SC-5", name: "Motion to Remove to Superior Court", description: "Move case to higher court", url: "https://www.mass.gov/lists/small-claims-forms", category: "Motions" },
+      ],
+      "employment": [
+        { formNumber: "UI Claim", name: "Unemployment Insurance Claim", description: "Apply for unemployment benefits", url: "https://www.mass.gov/how-to/apply-for-unemployment-benefits", category: "Unemployment" },
+        { formNumber: "AGO Wage Complaint", name: "Wage Complaint Form", description: "Report unpaid wages to Attorney General", url: "https://www.mass.gov/how-to/file-a-wage-complaint", category: "Wage Claims", feeAmount: "Free" },
+        { formNumber: "MCAD Complaint", name: "Charge of Discrimination", description: "File discrimination complaint", url: "https://www.mass.gov/how-to/file-a-complaint-of-discrimination", category: "Discrimination", feeAmount: "Free" },
+      ],
+      "housing": [
+        { formNumber: "Summary Process Summons", name: "Summary Process Summons and Complaint", description: "Eviction lawsuit", url: "https://www.mass.gov/lists/summary-process-eviction-forms", category: "Eviction", feeAmount: "$195", feeWaiverAvailable: true },
+        { formNumber: "SP Answer", name: "Answer and Defenses", description: "Tenant response to eviction", url: "https://www.masslegalhelp.org/housing/evictions", category: "Defense" },
+        { formNumber: "Discovery Request", name: "Discovery Request", description: "Request documents from landlord", url: "https://www.masslegalhelp.org/housing/evictions", category: "Discovery" },
+      ],
+      "criminal": [
+        { formNumber: "Sealing Petition", name: "Petition to Seal Record", description: "Seal eligible criminal records", url: "https://www.mass.gov/how-to/request-a-copy-of-your-criminal-record", category: "Sealing", feeAmount: "Free", feeWaiverAvailable: true },
+        { formNumber: "Expungement Petition", name: "Petition for Expungement", description: "Expunge eligible records (limited)", url: "https://www.mass.gov/expungement", category: "Expungement" },
+      ],
+      "general": [
+        { formNumber: "AFE", name: "Affidavit of Indigency", description: "Request court fee waiver", url: "https://www.mass.gov/lists/court-forms", category: "Fee Waiver", feeAmount: "Free" },
+        { formNumber: "Proof of Service", name: "Affidavit of Service", description: "Confirm papers were served", url: "https://www.mass.gov/lists/court-forms", category: "Service" },
+      ],
+    }
+  },
+
+  // ==================== COLORADO ====================
+  "CO": {
+    stateName: "Colorado",
+    courtWebsite: "https://www.courts.state.co.us",
+    selfHelpUrl: "https://www.courts.state.co.us/Self_Help/",
+    forms: {
+      "family": [
+        { formNumber: "JDF 1101", name: "Petition for Dissolution of Marriage", description: "Start divorce with children", url: "https://www.courts.state.co.us/Forms/SubCategory.cfm?Category=Divorce", category: "Divorce", feeAmount: "$230", feeWaiverAvailable: true },
+        { formNumber: "JDF 1000", name: "Case Information Sheet", description: "Required case information", url: "https://www.courts.state.co.us/Forms/SubCategory.cfm?Category=Divorce", category: "Divorce" },
+        { formNumber: "JDF 1104", name: "Summons for Dissolution", description: "Notice to spouse", url: "https://www.courts.state.co.us/Forms/SubCategory.cfm?Category=Divorce", category: "Service" },
+        { formNumber: "JDF 1111", name: "Sworn Financial Statement", description: "Required financial disclosure", url: "https://www.courts.state.co.us/Forms/SubCategory.cfm?Category=Divorce", category: "Financial" },
+        { formNumber: "JDF 402", name: "Verified Complaint for Protection Order", description: "Request civil protection order", url: "https://www.courts.state.co.us/Forms/SubCategory.cfm?Category=Protection%20Orders", category: "Protection Orders", feeAmount: "Free" },
+      ],
+      "small-claims": [
+        { formNumber: "JDF 250", name: "Notice, Claim and Summons to Appear for Trial", description: "Start small claims case (up to $7,500)", url: "https://www.courts.state.co.us/Forms/SubCategory.cfm?Category=Small%20Claims", category: "Filing", feeAmount: "$31-$55", feeWaiverAvailable: true },
+        { formNumber: "JDF 252", name: "Counterclaim", description: "Sue the person suing you", url: "https://www.courts.state.co.us/Forms/SubCategory.cfm?Category=Small%20Claims", category: "Response" },
+        { formNumber: "JDF 253", name: "Motion for Default Judgment", description: "Win if no response", url: "https://www.courts.state.co.us/Forms/SubCategory.cfm?Category=Small%20Claims", category: "Judgment" },
+      ],
+      "employment": [
+        { formNumber: "CDLE UI Claim", name: "Unemployment Insurance Claim", description: "Apply for unemployment benefits", url: "https://cdle.colorado.gov/unemployment", category: "Unemployment" },
+        { formNumber: "CDLE Wage Complaint", name: "Wage Complaint", description: "Report unpaid wages", url: "https://cdle.colorado.gov/wage-and-hour-law/how-to-file-a-wage-complaint", category: "Wage Claims", feeAmount: "Free" },
+        { formNumber: "CCRD Charge", name: "Charge of Discrimination", description: "File discrimination complaint", url: "https://ccrd.colorado.gov/", category: "Discrimination", feeAmount: "Free" },
+      ],
+      "housing": [
+        { formNumber: "JDF 99", name: "Complaint in Forcible Entry and Detainer", description: "Eviction lawsuit", url: "https://www.courts.state.co.us/Forms/SubCategory.cfm?Category=Eviction", category: "Eviction", feeAmount: "$85-$97", feeWaiverAvailable: true },
+        { formNumber: "Answer to FED", name: "Answer to Eviction Complaint", description: "Tenant response to eviction", url: "https://www.courts.state.co.us/Self_Help/eviction/", category: "Defense" },
+        { formNumber: "Deposit Demand", name: "Security Deposit Demand Letter", description: "Demand deposit return within 30 days", url: "https://www.coloradolegalservices.org", category: "Deposits" },
+      ],
+      "criminal": [
+        { formNumber: "JDF CR 320", name: "Motion to Seal Criminal Records", description: "Seal eligible criminal records", url: "https://www.courts.state.co.us/Forms/SubCategory.cfm?Category=Criminal", category: "Sealing", feeAmount: "$65", feeWaiverAvailable: true },
+        { formNumber: "JDF CR 325", name: "Order Sealing Criminal Records", description: "Court order sealing records", url: "https://www.courts.state.co.us/Forms/SubCategory.cfm?Category=Criminal", category: "Sealing" },
+      ],
+      "general": [
+        { formNumber: "JDF 205", name: "Motion to File Without Payment of Filing Fee", description: "Request court fee waiver", url: "https://www.courts.state.co.us/Forms/SubCategory.cfm?Category=Fee%20Waivers", category: "Fee Waiver", feeAmount: "Free" },
+        { formNumber: "JDF 105", name: "Affidavit of Service", description: "Confirm papers were served", url: "https://www.courts.state.co.us/Forms", category: "Service" },
+      ],
+    }
+  },
 };
 
 // Generate default forms for states without detailed data

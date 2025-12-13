@@ -1,23 +1,33 @@
 # Robots.txt for US Justice Bot
 # https://justicebot-usa.com
 
-User-agent: Googlebot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-User-agent: Twitterbot
-Allow: /
-
-User-agent: facebookexternalhit
-Allow: /
-
 User-agent: *
 Allow: /
 
+# Block admin and private pages
+Disallow: /admin
+Disallow: /admin-setup
+Disallow: /admin-dashboard
+
+# Block auth pages from indexing
+Disallow: /auth
+
+# Allow important pages
+Allow: /forms-library
+Allow: /ai-tools
+Allow: /pricing
+Allow: /support
+Allow: /legal/
+Allow: /case-analysis
+
+# Crawl delay for politeness
+Crawl-delay: 1
+
 # Sitemap location
 Sitemap: https://justicebot-usa.com/sitemap.xml
+
+# Additional sitemaps
+# Sitemap: https://justicebot-usa.com/sitemap-states.xml
 
 # Disallow admin and internal pages
 Disallow: /admin
