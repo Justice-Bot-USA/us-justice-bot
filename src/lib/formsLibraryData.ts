@@ -377,5 +377,68 @@ export const legalAreaCategories = [
   { id: "employment", name: "Employment", icon: "Briefcase" },
   { id: "housing", name: "Housing & Eviction", icon: "Home" },
   { id: "criminal", name: "Criminal Defense", icon: "Shield" },
+  { id: "federal", name: "Federal Court", icon: "Scale" },
   { id: "general", name: "General Forms", icon: "FileText" },
 ];
+
+// Federal Court Forms (applies to all states)
+export const federalCourtForms: CourtForm[] = [
+  // Civil Filing Forms
+  { formNumber: "AO-440", name: "Summons in a Civil Action", description: "Official summons for federal civil cases", url: "https://www.uscourts.gov/forms/civil-forms/summons-civil-action", category: "Civil Filing", feeAmount: "$405", feeWaiverAvailable: true },
+  { formNumber: "CV-071", name: "Civil Cover Sheet", description: "Required cover sheet for all civil filings", url: "https://www.uscourts.gov/forms/civil-forms/civil-cover-sheet", category: "Civil Filing" },
+  { formNumber: "AO-441", name: "Summons on Third-Party Complaint", description: "Summons for third-party defendants", url: "https://www.uscourts.gov/forms/civil-forms/summons-third-party-complaint", category: "Civil Filing" },
+  { formNumber: "CV-060", name: "Request to Proceed In Forma Pauperis", description: "Request fee waiver for filing", url: "https://www.uscourts.gov/forms/fee-schedule/application-proceed-district-court-without-prepaying-fees-or-costs", category: "Fee Waiver", feeAmount: "Free", feeWaiverAvailable: true },
+  
+  // Habeas Corpus & Post-Conviction
+  { formNumber: "CV-069", name: "Petition for Writ of Habeas Corpus (State Custody)", description: "Challenge state imprisonment under 28 U.S.C. § 2254", url: "https://www.uscourts.gov/forms/habeas-forms/petition-relief-person-state-custody", category: "Habeas Corpus", feeAmount: "$5", feeWaiverAvailable: true },
+  { formNumber: "CV-027", name: "Petition for Writ of Habeas Corpus (Federal Custody)", description: "Challenge federal imprisonment under 28 U.S.C. § 2241", url: "https://www.uscourts.gov/forms/habeas-forms/petition-writ-habeas-corpus-under-28-usc-2241", category: "Habeas Corpus", feeAmount: "$5", feeWaiverAvailable: true },
+  { formNumber: "CV-067", name: "Motion to Vacate Sentence (§2255)", description: "Challenge federal sentence under 28 U.S.C. § 2255", url: "https://www.uscourts.gov/forms/habeas-forms/motion-vacate-set-aside-or-correct-sentence-person-federal-custody", category: "Post-Conviction", feeAmount: "$5", feeWaiverAvailable: true },
+  
+  // Civil Rights
+  { formNumber: "CV-066", name: "Civil Rights Complaint", description: "File civil rights lawsuit (42 U.S.C. § 1983)", url: "https://apps.cacd.uscourts.gov/cm-api/dwwwroot/CV-066.pdf", category: "Civil Rights", feeAmount: "$405", feeWaiverAvailable: true },
+  { formNumber: "CV-066A", name: "Prisoner Civil Rights Instructions", description: "Instructions for prisoner civil rights complaints", url: "https://apps.cacd.uscourts.gov/cm-api/dwwwroot/CV-66A.pdf", category: "Civil Rights" },
+  
+  // Subpoenas
+  { formNumber: "AO-88", name: "Subpoena to Appear and Testify (Civil)", description: "Compel witness testimony in civil case", url: "https://www.uscourts.gov/forms/subpoena-forms/subpoena-appear-and-testify-hearing-or-trial-civil-action", category: "Subpoenas" },
+  { formNumber: "AO-88A", name: "Subpoena to Testify at Deposition", description: "Compel witness for deposition", url: "https://www.uscourts.gov/forms/subpoena-forms/subpoena-testify-deposition-civil-action", category: "Subpoenas" },
+  { formNumber: "AO-88B", name: "Subpoena to Produce Documents", description: "Compel document production", url: "https://www.uscourts.gov/forms/subpoena-forms/subpoena-produce-documents-information-or-objects-or-permit-inspection", category: "Subpoenas" },
+  { formNumber: "CR-021", name: "Subpoena in Criminal Case", description: "Compel witness in criminal case", url: "https://apps.cacd.uscourts.gov/cm-api/dwwwroot/CR-021.pdf", category: "Subpoenas" },
+  
+  // Appeals
+  { formNumber: "A-002", name: "Notice of Appeal", description: "Appeal district court decision to circuit court", url: "https://www.uscourts.gov/forms/appellate-forms/notice-appeal-district-court", category: "Appeals", feeAmount: "$605", feeWaiverAvailable: true },
+  { formNumber: "A-018", name: "Motion to Appeal In Forma Pauperis", description: "Request fee waiver for appeal", url: "https://apps.cacd.uscourts.gov/cm-api/dwwwroot/A-018.pdf", category: "Appeals", feeAmount: "Free" },
+  
+  // Judgment Enforcement
+  { formNumber: "CV-023", name: "Writ of Execution", description: "Enforce federal court judgment", url: "https://apps.cacd.uscourts.gov/cm-api/dwwwroot/CV-023.pdf", category: "Enforcement" },
+  { formNumber: "CV-088", name: "Wage Garnishment Package", description: "Garnish wages to satisfy judgment", url: "https://apps.cacd.uscourts.gov/cm-api/dwwwroot/CV-088.pdf", category: "Enforcement" },
+  { formNumber: "AO-451", name: "Register Judgment in Another District", description: "Enforce judgment in another federal district", url: "https://www.uscourts.gov/forms/judgment-forms/clerks-certification-judgment-be-registered-another-district", category: "Enforcement" },
+  
+  // Criminal Forms
+  { formNumber: "CR-010", name: "Advisement of Constitutional Rights", description: "Initial appearance rights advisement", url: "https://apps.cacd.uscourts.gov/cm-api/dwwwroot/CR-010.pdf", category: "Criminal" },
+  { formNumber: "CR-014", name: "Designation of Counsel", description: "Attorney appearance in criminal case", url: "https://apps.cacd.uscourts.gov/cm-api/dwwwroot/CR-014.pdf", category: "Criminal" },
+  { formNumber: "CR-032", name: "Waiver of Right to Counsel", description: "Proceed without attorney (pro se)", url: "https://apps.cacd.uscourts.gov/cm-api/dwwwroot/CR-032.pdf", category: "Criminal" },
+  { formNumber: "CJA-23", name: "Financial Affidavit (Public Defender)", description: "Apply for appointed counsel", url: "https://apps.cacd.uscourts.gov/cm-api/dwwwroot/CJA-23.pdf", category: "Criminal", feeAmount: "Free" },
+  { formNumber: "AO-455", name: "Waiver of Indictment", description: "Waive grand jury indictment", url: "https://www.uscourts.gov/forms/criminal-forms/waiver-indictment", category: "Criminal" },
+  
+  // ADR/Mediation
+  { formNumber: "ADR-001", name: "Request for ADR Selection", description: "Request alternative dispute resolution", url: "https://apps.cacd.uscourts.gov/cm-api/dwwwroot/ADR-001.pdf", category: "Mediation" },
+  { formNumber: "ADR-003", name: "Mediation Report", description: "Report mediation outcome to court", url: "https://apps.cacd.uscourts.gov/cm-api/dwwwroot/ADR-003.pdf", category: "Mediation" },
+  
+  // Bankruptcy (Basic)
+  { formNumber: "B-101", name: "Voluntary Petition (Individual)", description: "File for personal bankruptcy", url: "https://www.uscourts.gov/forms/bankruptcy-forms/voluntary-petition-individuals-filing-bankruptcy", category: "Bankruptcy", feeAmount: "$338 (Ch7) / $313 (Ch13)", feeWaiverAvailable: true },
+  { formNumber: "B-103A", name: "Application to Pay Filing Fee in Installments", description: "Pay bankruptcy fee over time", url: "https://www.uscourts.gov/forms/bankruptcy-forms/application-individuals-pay-filing-fee-installments", category: "Bankruptcy" },
+  { formNumber: "B-103B", name: "Application to Waive Bankruptcy Filing Fee", description: "Request fee waiver for bankruptcy", url: "https://www.uscourts.gov/forms/bankruptcy-forms/application-waive-chapter-7-filing-fee", category: "Bankruptcy", feeAmount: "Free" },
+  
+  // Intellectual Property
+  { formNumber: "AO-120", name: "Patent/Trademark Report", description: "Report patent or trademark filing", url: "https://www.uscourts.gov/forms/other-forms/report-filing-or-determination-action-regarding-patent-or-trademark", category: "IP" },
+  { formNumber: "AO-121", name: "Copyright Report", description: "Report copyright filing or determination", url: "https://www.uscourts.gov/forms/other-forms/report-filing-or-determination-action-or-appeal-regarding-copyright", category: "IP" },
+];
+
+// Federal court info
+export const federalCourtInfo = {
+  name: "Federal Courts",
+  website: "https://www.uscourts.gov",
+  selfHelp: "https://www.uscourts.gov/forms",
+  pacer: "https://pacer.uscourts.gov",
+  findCourt: "https://www.uscourts.gov/federal-court-finder",
+};
