@@ -17,6 +17,7 @@ import LegalJourney from "./pages/LegalJourney";
 import CaseDashboard from "./pages/CaseDashboard";
 import AITools from "./pages/AITools";
 import AIToolsInteractive from "./pages/AIToolsInteractive";
+import LegalAreaPage from "./pages/LegalAreaPage";
 
 const queryClient = new QueryClient();
 
@@ -39,6 +40,7 @@ export default function App() {
             <Route path="/my-cases" element={<CaseDashboard />} />
             <Route path="/ai-tools" element={<AITools />} />
             <Route path="/ai-tools/use" element={<AIToolsInteractive />} />
+            <Route path="/legal-areas/:areaId" element={<LegalAreaPage />} />
             {/* add more routes above this */}
             <Route path="*" element={<NotFound />} />
           </Routes>
