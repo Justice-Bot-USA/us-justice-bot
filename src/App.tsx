@@ -18,6 +18,7 @@ import CaseDashboard from "./pages/CaseDashboard";
 import AITools from "./pages/AITools";
 import AIToolsInteractive from "./pages/AIToolsInteractive";
 import LegalAreaPage from "./pages/LegalAreaPage";
+import FormsLibrary from "./pages/FormsLibrary";
 
 const queryClient = new QueryClient();
 
@@ -41,6 +42,7 @@ export default function App() {
             <Route path="/ai-tools" element={<AITools />} />
             <Route path="/ai-tools/use" element={<AIToolsInteractive />} />
             <Route path="/legal-areas/:areaId" element={<LegalAreaPage />} />
+            <Route path="/forms-library" element={<FormsLibrary />} />
             {/* add more routes above this */}
             <Route path="*" element={<NotFound />} />
           </Routes>
