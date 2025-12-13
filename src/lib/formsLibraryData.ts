@@ -806,11 +806,15 @@ export function getStateFormsData(stateCode: string): StateFormsData {
 
 // Get all legal area categories
 export const legalAreaCategories = [
-  { id: "family", name: "Family Law", icon: "Heart" },
+  { id: "family", name: "Family Law / Divorce", icon: "Heart" },
   { id: "small-claims", name: "Small Claims", icon: "DollarSign" },
   { id: "employment", name: "Employment", icon: "Briefcase" },
   { id: "housing", name: "Housing & Eviction", icon: "Home" },
   { id: "criminal", name: "Criminal Defense", icon: "Shield" },
+  { id: "cps", name: "CPS / Child Welfare", icon: "Baby" },
+  { id: "workers-rights", name: "Workers Rights", icon: "HardHat" },
+  { id: "human-rights", name: "Human Rights", icon: "Users" },
+  { id: "agency-complaints", name: "Agency Complaints", icon: "AlertTriangle" },
   { id: "federal", name: "Federal Court", icon: "Scale" },
   { id: "general", name: "General Forms", icon: "FileText" },
 ];
