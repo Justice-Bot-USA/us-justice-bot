@@ -473,6 +473,557 @@ export const additionalStatesFormsLibrary: Record<string, StateFormsData> = {
       ],
     }
   },
+  // ==================== MISSISSIPPI ====================
+  "MS": {
+    stateName: "Mississippi",
+    courtWebsite: "https://courts.ms.gov",
+    selfHelpUrl: "https://mslegalservices.org",
+    forms: {
+      "family": [
+        { formNumber: "Divorce Complaint", name: "Complaint for Divorce", description: "Start divorce proceedings", url: "https://courts.ms.gov/trialcourts/chancery/chancerydivorceforms.php", category: "Divorce", feeAmount: "$52", feeWaiverAvailable: true },
+        { formNumber: "Protective Order", name: "Petition for Protective Order", description: "Domestic violence protection", url: "https://courts.ms.gov/", category: "Protection Orders", feeAmount: "Free" },
+      ],
+      "small-claims": [
+        { formNumber: "Justice Court Claim", name: "Statement of Claim", description: "Small claims (up to $3,500)", url: "https://courts.ms.gov/", category: "Filing", feeAmount: "$40", feeWaiverAvailable: true },
+      ],
+      "employment": [
+        { formNumber: "MDES Claim", name: "Unemployment Insurance Claim", description: "Apply for unemployment", url: "https://mdes.ms.gov/", category: "Unemployment" },
+        { formNumber: "EEOC Charge", name: "EEOC Discrimination Charge", description: "Federal discrimination complaint", url: "https://www.eeoc.gov/field-office/jackson/location", category: "Discrimination", feeAmount: "Free" },
+      ],
+      "housing": [
+        { formNumber: "Eviction", name: "Complaint for Eviction", description: "Eviction lawsuit", url: "https://courts.ms.gov/", category: "Eviction", feeAmount: "$40", feeWaiverAvailable: true },
+      ],
+      "criminal": [
+        { formNumber: "Expungement", name: "Petition for Expungement", description: "Clear eligible records", url: "https://courts.ms.gov/", category: "Expungement", feeAmount: "$250" },
+      ],
+      "general": [
+        { formNumber: "IFP", name: "Affidavit of Indigency", description: "Request court fee waiver", url: "https://courts.ms.gov/", category: "Fee Waiver", feeAmount: "Free" },
+      ],
+    }
+  },
+
+  // ==================== MISSOURI ====================
+  "MO": {
+    stateName: "Missouri",
+    courtWebsite: "https://www.courts.mo.gov",
+    selfHelpUrl: "https://www.courts.mo.gov/page.jsp?id=704",
+    forms: {
+      "family": [
+        { formNumber: "CAFC100", name: "Petition for Dissolution", description: "Start divorce proceedings", url: "https://www.courts.mo.gov/page.jsp?id=46027", category: "Divorce", feeAmount: "$163", feeWaiverAvailable: true },
+        { formNumber: "CAFC201", name: "Petition for Order of Protection", description: "Domestic violence protection", url: "https://www.courts.mo.gov/page.jsp?id=46027", category: "Protection Orders", feeAmount: "Free" },
+      ],
+      "small-claims": [
+        { formNumber: "CV101", name: "Statement of Claim", description: "Small claims (up to $5,000)", url: "https://www.courts.mo.gov/page.jsp?id=704", category: "Filing", feeAmount: "$45-$75", feeWaiverAvailable: true },
+      ],
+      "employment": [
+        { formNumber: "DES Claim", name: "Unemployment Insurance Claim", description: "Apply for unemployment", url: "https://labor.mo.gov/unemployed-workers", category: "Unemployment" },
+        { formNumber: "MCHR Complaint", name: "Human Rights Complaint", description: "Employment discrimination", url: "https://labor.mo.gov/mohumanrights", category: "Discrimination", feeAmount: "Free" },
+      ],
+      "housing": [
+        { formNumber: "Eviction", name: "Landlord Petition for Rent and Possession", description: "Eviction lawsuit", url: "https://www.courts.mo.gov/page.jsp?id=704", category: "Eviction", feeAmount: "$45", feeWaiverAvailable: true },
+      ],
+      "criminal": [
+        { formNumber: "Expungement", name: "Petition for Expungement", description: "Clear eligible records", url: "https://www.courts.mo.gov/page.jsp?id=46027", category: "Expungement", feeAmount: "$250" },
+      ],
+      "general": [
+        { formNumber: "CV67", name: "Motion to Proceed IFP", description: "Request court fee waiver", url: "https://www.courts.mo.gov/page.jsp?id=704", category: "Fee Waiver", feeAmount: "Free" },
+      ],
+    }
+  },
+
+  // ==================== MONTANA ====================
+  "MT": {
+    stateName: "Montana",
+    courtWebsite: "https://courts.mt.gov",
+    selfHelpUrl: "https://courts.mt.gov/selfhelp",
+    forms: {
+      "family": [
+        { formNumber: "DR-201", name: "Petition for Dissolution", description: "Start divorce proceedings", url: "https://courts.mt.gov/selfhelp/forms", category: "Divorce", feeAmount: "$170", feeWaiverAvailable: true },
+        { formNumber: "TRO Petition", name: "Petition for Temporary Order", description: "Temporary restraining order", url: "https://courts.mt.gov/selfhelp/forms", category: "Protection Orders", feeAmount: "Free" },
+      ],
+      "small-claims": [
+        { formNumber: "Small Claims", name: "Small Claims Complaint", description: "Small claims (up to $7,000)", url: "https://courts.mt.gov/selfhelp/smallclaims", category: "Filing", feeAmount: "$30-$70", feeWaiverAvailable: true },
+      ],
+      "employment": [
+        { formNumber: "DLI Claim", name: "Unemployment Insurance Claim", description: "Apply for unemployment", url: "https://uid.dli.mt.gov/", category: "Unemployment" },
+        { formNumber: "HRB Complaint", name: "Human Rights Bureau Complaint", description: "Employment discrimination", url: "https://erd.dli.mt.gov/human-rights", category: "Discrimination", feeAmount: "Free" },
+      ],
+      "housing": [
+        { formNumber: "Eviction", name: "Complaint for Possession", description: "Eviction lawsuit", url: "https://courts.mt.gov/selfhelp/forms", category: "Eviction", feeAmount: "$70", feeWaiverAvailable: true },
+      ],
+      "criminal": [
+        { formNumber: "Expungement", name: "Petition for Expungement", description: "Clear eligible records", url: "https://courts.mt.gov/selfhelp/forms", category: "Expungement", feeAmount: "$50" },
+      ],
+      "general": [
+        { formNumber: "Fee Waiver", name: "Application to Waive Filing Fee", description: "Request court fee waiver", url: "https://courts.mt.gov/selfhelp/forms", category: "Fee Waiver", feeAmount: "Free" },
+      ],
+    }
+  },
+
+  // ==================== NEBRASKA ====================
+  "NE": {
+    stateName: "Nebraska",
+    courtWebsite: "https://supremecourt.nebraska.gov",
+    selfHelpUrl: "https://supremecourt.nebraska.gov/self-help",
+    forms: {
+      "family": [
+        { formNumber: "DC 6:1", name: "Complaint for Dissolution", description: "Start divorce proceedings", url: "https://supremecourt.nebraska.gov/self-help/families-background-categories/divorce", category: "Divorce", feeAmount: "$158", feeWaiverAvailable: true },
+        { formNumber: "Protection Order", name: "Petition for Protection Order", description: "Domestic abuse protection", url: "https://supremecourt.nebraska.gov/self-help/", category: "Protection Orders", feeAmount: "Free" },
+      ],
+      "small-claims": [
+        { formNumber: "Small Claims", name: "Statement of Claim", description: "Small claims (up to $3,600)", url: "https://supremecourt.nebraska.gov/self-help/small-claims", category: "Filing", feeAmount: "$26-$53", feeWaiverAvailable: true },
+      ],
+      "employment": [
+        { formNumber: "NDOL Claim", name: "Unemployment Insurance Claim", description: "Apply for unemployment", url: "https://dol.nebraska.gov/UIBenefits", category: "Unemployment" },
+        { formNumber: "NEOC Complaint", name: "Equal Opportunity Complaint", description: "Employment discrimination", url: "https://neoc.nebraska.gov/", category: "Discrimination", feeAmount: "Free" },
+      ],
+      "housing": [
+        { formNumber: "Eviction", name: "Complaint for Restitution", description: "Eviction lawsuit", url: "https://supremecourt.nebraska.gov/self-help/", category: "Eviction", feeAmount: "$47", feeWaiverAvailable: true },
+      ],
+      "criminal": [
+        { formNumber: "Set Aside", name: "Motion to Set Aside Conviction", description: "Clear eligible records", url: "https://supremecourt.nebraska.gov/self-help/", category: "Set Aside", feeAmount: "$25" },
+      ],
+      "general": [
+        { formNumber: "IFP", name: "Application to Proceed IFP", description: "Request court fee waiver", url: "https://supremecourt.nebraska.gov/self-help/", category: "Fee Waiver", feeAmount: "Free" },
+      ],
+    }
+  },
+
+  // ==================== NEVADA ====================
+  "NV": {
+    stateName: "Nevada",
+    courtWebsite: "https://nvcourts.gov",
+    selfHelpUrl: "https://selfhelp.nvcourts.gov",
+    forms: {
+      "family": [
+        { formNumber: "Joint Petition", name: "Joint Petition for Divorce", description: "Uncontested divorce", url: "https://selfhelp.nvcourts.gov/self-help/divorce", category: "Divorce", feeAmount: "$299-$450", feeWaiverAvailable: true },
+        { formNumber: "Complaint for Divorce", name: "Complaint for Divorce", description: "Contested divorce", url: "https://selfhelp.nvcourts.gov/self-help/divorce", category: "Divorce", feeAmount: "$299-$450", feeWaiverAvailable: true },
+        { formNumber: "TPO Application", name: "Application for TPO", description: "Temporary protection order", url: "https://selfhelp.nvcourts.gov/self-help/protection-orders", category: "Protection Orders", feeAmount: "Free" },
+      ],
+      "small-claims": [
+        { formNumber: "Small Claims", name: "Small Claims Affidavit", description: "Small claims (up to $10,000)", url: "https://selfhelp.nvcourts.gov/self-help/small-claims", category: "Filing", feeAmount: "$85-$125", feeWaiverAvailable: true },
+      ],
+      "employment": [
+        { formNumber: "DETR Claim", name: "Unemployment Insurance Claim", description: "Apply for unemployment", url: "https://ui.nv.gov/", category: "Unemployment" },
+        { formNumber: "NERC Complaint", name: "Equal Rights Complaint", description: "Employment discrimination", url: "https://detr.nv.gov/NERC", category: "Discrimination", feeAmount: "Free" },
+      ],
+      "housing": [
+        { formNumber: "Eviction", name: "Landlord Complaint for Eviction", description: "Eviction lawsuit", url: "https://selfhelp.nvcourts.gov/self-help/eviction", category: "Eviction", feeAmount: "$71-$225", feeWaiverAvailable: true },
+      ],
+      "criminal": [
+        { formNumber: "Record Seal", name: "Petition to Seal Records", description: "Seal criminal records", url: "https://selfhelp.nvcourts.gov/self-help/sealing-records", category: "Record Sealing", feeAmount: "$0-$104" },
+      ],
+      "general": [
+        { formNumber: "Fee Waiver", name: "Application for Fee Waiver", description: "Request court fee waiver", url: "https://selfhelp.nvcourts.gov/", category: "Fee Waiver", feeAmount: "Free" },
+      ],
+    }
+  },
+
+  // ==================== NEW HAMPSHIRE ====================
+  "NH": {
+    stateName: "New Hampshire",
+    courtWebsite: "https://www.courts.nh.gov",
+    selfHelpUrl: "https://www.courts.nh.gov/self-help",
+    forms: {
+      "family": [
+        { formNumber: "NHJB-2025-F", name: "Petition for Divorce", description: "Start divorce proceedings", url: "https://www.courts.nh.gov/forms", category: "Divorce", feeAmount: "$252", feeWaiverAvailable: true },
+        { formNumber: "NHJB-2148-DFPS", name: "Petition for Protective Order", description: "Domestic violence protection", url: "https://www.courts.nh.gov/forms", category: "Protection Orders", feeAmount: "Free" },
+      ],
+      "small-claims": [
+        { formNumber: "NHJB-2046-Se", name: "Statement of Claim", description: "Small claims (up to $10,000)", url: "https://www.courts.nh.gov/forms", category: "Filing", feeAmount: "$65-$165", feeWaiverAvailable: true },
+      ],
+      "employment": [
+        { formNumber: "NHES Claim", name: "Unemployment Insurance Claim", description: "Apply for unemployment", url: "https://www.nhes.nh.gov/", category: "Unemployment" },
+        { formNumber: "HRC Complaint", name: "Human Rights Complaint", description: "Employment discrimination", url: "https://www.nh.gov/hrc/", category: "Discrimination", feeAmount: "Free" },
+      ],
+      "housing": [
+        { formNumber: "Eviction", name: "Landlord Writ", description: "Eviction lawsuit", url: "https://www.courts.nh.gov/forms", category: "Eviction", feeAmount: "$90", feeWaiverAvailable: true },
+      ],
+      "criminal": [
+        { formNumber: "Annulment", name: "Petition for Annulment", description: "Clear criminal records", url: "https://www.courts.nh.gov/forms", category: "Annulment", feeAmount: "$254" },
+      ],
+      "general": [
+        { formNumber: "NHJB-2123-Se", name: "Motion to Waive Fees", description: "Request court fee waiver", url: "https://www.courts.nh.gov/forms", category: "Fee Waiver", feeAmount: "Free" },
+      ],
+    }
+  },
+
+  // ==================== NEW MEXICO ====================
+  "NM": {
+    stateName: "New Mexico",
+    courtWebsite: "https://www.nmcourts.gov",
+    selfHelpUrl: "https://www.nmcourts.gov/self-help/",
+    forms: {
+      "family": [
+        { formNumber: "4-501", name: "Petition for Dissolution", description: "Start divorce proceedings", url: "https://metro.nmcourts.gov/filing-your-case-without-attorney.aspx", category: "Divorce", feeAmount: "$137", feeWaiverAvailable: true },
+        { formNumber: "4-961", name: "Petition for Order of Protection", description: "Domestic violence protection", url: "https://www.nmcourts.gov/self-help/", category: "Protection Orders", feeAmount: "Free" },
+      ],
+      "small-claims": [
+        { formNumber: "Metropolitan Small Claims", name: "Complaint", description: "Small claims (up to $10,000)", url: "https://metro.nmcourts.gov/metropolitan-court-divisions/small-claims.aspx", category: "Filing", feeAmount: "$35-$65", feeWaiverAvailable: true },
+      ],
+      "employment": [
+        { formNumber: "NMDWS Claim", name: "Unemployment Insurance Claim", description: "Apply for unemployment", url: "https://www.dws.state.nm.us/Unemployment-Insurance", category: "Unemployment" },
+        { formNumber: "HRB Complaint", name: "Human Rights Bureau Complaint", description: "Employment discrimination", url: "https://www.dws.state.nm.us/human-rights", category: "Discrimination", feeAmount: "Free" },
+      ],
+      "housing": [
+        { formNumber: "Eviction", name: "Owner's Petition for Restitution", description: "Eviction lawsuit", url: "https://metro.nmcourts.gov/", category: "Eviction", feeAmount: "$35-$65", feeWaiverAvailable: true },
+      ],
+      "criminal": [
+        { formNumber: "Expungement", name: "Petition for Expungement", description: "Clear eligible records", url: "https://www.nmcourts.gov/self-help/", category: "Expungement", feeAmount: "Free" },
+      ],
+      "general": [
+        { formNumber: "4-222", name: "Application to Proceed IFP", description: "Request court fee waiver", url: "https://www.nmcourts.gov/self-help/", category: "Fee Waiver", feeAmount: "Free" },
+      ],
+    }
+  },
+
+  // ==================== NORTH DAKOTA ====================
+  "ND": {
+    stateName: "North Dakota",
+    courtWebsite: "https://www.ndcourts.gov",
+    selfHelpUrl: "https://www.ndcourts.gov/legal-self-help",
+    forms: {
+      "family": [
+        { formNumber: "SFN 54023", name: "Complaint for Divorce", description: "Start divorce proceedings", url: "https://www.ndcourts.gov/legal-self-help/divorce", category: "Divorce", feeAmount: "$80", feeWaiverAvailable: true },
+        { formNumber: "Protection Order", name: "Petition for Protection Order", description: "Domestic violence protection", url: "https://www.ndcourts.gov/legal-self-help/", category: "Protection Orders", feeAmount: "Free" },
+      ],
+      "small-claims": [
+        { formNumber: "Small Claims", name: "Statement of Claim", description: "Small claims (up to $15,000)", url: "https://www.ndcourts.gov/legal-self-help/small-claims", category: "Filing", feeAmount: "$20-$75", feeWaiverAvailable: true },
+      ],
+      "employment": [
+        { formNumber: "JSND Claim", name: "Unemployment Insurance Claim", description: "Apply for unemployment", url: "https://www.jobsnd.com/unemployment-insurance", category: "Unemployment" },
+        { formNumber: "HRD Complaint", name: "Human Rights Complaint", description: "Employment discrimination", url: "https://www.nd.gov/labor/human-rights/", category: "Discrimination", feeAmount: "Free" },
+      ],
+      "housing": [
+        { formNumber: "Eviction", name: "Complaint for Eviction", description: "Eviction lawsuit", url: "https://www.ndcourts.gov/legal-self-help/", category: "Eviction", feeAmount: "$80", feeWaiverAvailable: true },
+      ],
+      "criminal": [
+        { formNumber: "Expungement", name: "Petition for Sealing", description: "Seal eligible records", url: "https://www.ndcourts.gov/legal-self-help/", category: "Record Sealing", feeAmount: "$50" },
+      ],
+      "general": [
+        { formNumber: "Fee Waiver", name: "Application to Waive Fees", description: "Request court fee waiver", url: "https://www.ndcourts.gov/legal-self-help/", category: "Fee Waiver", feeAmount: "Free" },
+      ],
+    }
+  },
+
+  // ==================== OKLAHOMA ====================
+  "OK": {
+    stateName: "Oklahoma",
+    courtWebsite: "https://www.oscn.net",
+    selfHelpUrl: "https://oklaw.org",
+    forms: {
+      "family": [
+        { formNumber: "Petition for Divorce", name: "Petition for Dissolution", description: "Start divorce proceedings", url: "https://www.oscn.net/forms/", category: "Divorce", feeAmount: "$181", feeWaiverAvailable: true },
+        { formNumber: "VPO Petition", name: "Petition for Protective Order", description: "Victim protective order", url: "https://www.oscn.net/forms/", category: "Protection Orders", feeAmount: "Free" },
+      ],
+      "small-claims": [
+        { formNumber: "Small Claims", name: "Statement of Claim", description: "Small claims (up to $10,000)", url: "https://www.oscn.net/forms/", category: "Filing", feeAmount: "$58-$153", feeWaiverAvailable: true },
+      ],
+      "employment": [
+        { formNumber: "OESC Claim", name: "Unemployment Insurance Claim", description: "Apply for unemployment", url: "https://oesc.ok.gov/", category: "Unemployment" },
+        { formNumber: "AG Civil Rights", name: "Attorney General Civil Rights", description: "Employment discrimination", url: "https://www.oag.ok.gov/", category: "Discrimination", feeAmount: "Free" },
+      ],
+      "housing": [
+        { formNumber: "FED", name: "Forcible Entry and Detainer", description: "Eviction lawsuit", url: "https://www.oscn.net/forms/", category: "Eviction", feeAmount: "$58", feeWaiverAvailable: true },
+      ],
+      "criminal": [
+        { formNumber: "Expungement", name: "Application for Expungement", description: "Clear eligible records", url: "https://www.oscn.net/forms/", category: "Expungement", feeAmount: "$150" },
+      ],
+      "general": [
+        { formNumber: "Pauper's Affidavit", name: "Application to Proceed as Pauper", description: "Request court fee waiver", url: "https://www.oscn.net/forms/", category: "Fee Waiver", feeAmount: "Free" },
+      ],
+    }
+  },
+
+  // ==================== OREGON ====================
+  "OR": {
+    stateName: "Oregon",
+    courtWebsite: "https://www.courts.oregon.gov",
+    selfHelpUrl: "https://www.courts.oregon.gov/programs/sflp",
+    forms: {
+      "family": [
+        { formNumber: "Petition for Dissolution", name: "Petition for Dissolution", description: "Start divorce proceedings", url: "https://www.courts.oregon.gov/forms/Pages/family.aspx", category: "Divorce", feeAmount: "$301", feeWaiverAvailable: true },
+        { formNumber: "FAPA Petition", name: "Petition for FAPA Restraining Order", description: "Family abuse prevention", url: "https://www.courts.oregon.gov/forms/Pages/restraining-orders.aspx", category: "Protection Orders", feeAmount: "Free" },
+      ],
+      "small-claims": [
+        { formNumber: "Small Claims", name: "Claim Form", description: "Small claims (up to $10,000)", url: "https://www.courts.oregon.gov/forms/Pages/small-claims.aspx", category: "Filing", feeAmount: "$37-$68", feeWaiverAvailable: true },
+      ],
+      "employment": [
+        { formNumber: "OED Claim", name: "Unemployment Insurance Claim", description: "Apply for unemployment", url: "https://unemployment.oregon.gov/", category: "Unemployment" },
+        { formNumber: "BOLI Complaint", name: "Civil Rights Division Complaint", description: "Employment discrimination", url: "https://www.oregon.gov/boli/civil-rights/Pages/default.aspx", category: "Discrimination", feeAmount: "Free" },
+      ],
+      "housing": [
+        { formNumber: "FED", name: "Complaint for Eviction", description: "Eviction lawsuit", url: "https://www.courts.oregon.gov/forms/Pages/landlord-tenant.aspx", category: "Eviction", feeAmount: "$93", feeWaiverAvailable: true },
+      ],
+      "criminal": [
+        { formNumber: "Set Aside Motion", name: "Motion to Set Aside Conviction", description: "Clear eligible records", url: "https://www.courts.oregon.gov/forms/Pages/default.aspx", category: "Set Aside", feeAmount: "$281" },
+      ],
+      "general": [
+        { formNumber: "Fee Waiver", name: "Application for Fee Waiver/Deferral", description: "Request court fee waiver", url: "https://www.courts.oregon.gov/forms/Pages/fee-waiver.aspx", category: "Fee Waiver", feeAmount: "Free" },
+      ],
+    }
+  },
+
+  // ==================== RHODE ISLAND ====================
+  "RI": {
+    stateName: "Rhode Island",
+    courtWebsite: "https://www.courts.ri.gov",
+    selfHelpUrl: "https://www.courts.ri.gov/PublicResources/selfhelpcenter/",
+    forms: {
+      "family": [
+        { formNumber: "DR-3", name: "Complaint for Divorce", description: "Start divorce proceedings", url: "https://www.courts.ri.gov/Courts/familycourt/Pages/forms.aspx", category: "Divorce", feeAmount: "$160", feeWaiverAvailable: true },
+        { formNumber: "Protection Order", name: "Petition for Protection Order", description: "Domestic violence protection", url: "https://www.courts.ri.gov/Courts/districtcourt/Pages/restrainingorder.aspx", category: "Protection Orders", feeAmount: "Free" },
+      ],
+      "small-claims": [
+        { formNumber: "Small Claims", name: "Statement of Claim", description: "Small claims (up to $2,500)", url: "https://www.courts.ri.gov/Courts/districtcourt/Pages/smallclaims.aspx", category: "Filing", feeAmount: "$30-$50", feeWaiverAvailable: true },
+      ],
+      "employment": [
+        { formNumber: "DLT Claim", name: "Unemployment Insurance Claim", description: "Apply for unemployment", url: "https://dlt.ri.gov/individuals/unemployment-insurance", category: "Unemployment" },
+        { formNumber: "RICHR Complaint", name: "Human Rights Complaint", description: "Employment discrimination", url: "https://richr.ri.gov/", category: "Discrimination", feeAmount: "Free" },
+      ],
+      "housing": [
+        { formNumber: "Eviction", name: "Complaint for Eviction", description: "Eviction lawsuit", url: "https://www.courts.ri.gov/", category: "Eviction", feeAmount: "$30-$50", feeWaiverAvailable: true },
+      ],
+      "criminal": [
+        { formNumber: "Expungement", name: "Motion for Expungement", description: "Clear eligible records", url: "https://www.courts.ri.gov/", category: "Expungement", feeAmount: "$100" },
+      ],
+      "general": [
+        { formNumber: "IFP", name: "Application for IFP Status", description: "Request court fee waiver", url: "https://www.courts.ri.gov/", category: "Fee Waiver", feeAmount: "Free" },
+      ],
+    }
+  },
+
+  // ==================== SOUTH CAROLINA ====================
+  "SC": {
+    stateName: "South Carolina",
+    courtWebsite: "https://www.sccourts.org",
+    selfHelpUrl: "https://www.sclegal.org",
+    forms: {
+      "family": [
+        { formNumber: "SCCA 400", name: "Complaint for Divorce", description: "Start divorce proceedings", url: "https://www.sccourts.org/forms/", category: "Divorce", feeAmount: "$150", feeWaiverAvailable: true },
+        { formNumber: "SCCA 306", name: "Petition for Order of Protection", description: "Domestic violence protection", url: "https://www.sccourts.org/forms/", category: "Protection Orders", feeAmount: "Free" },
+      ],
+      "small-claims": [
+        { formNumber: "Magistrate Court", name: "Civil Summons and Complaint", description: "Small claims (up to $7,500)", url: "https://www.sccourts.org/forms/", category: "Filing", feeAmount: "$40-$80", feeWaiverAvailable: true },
+      ],
+      "employment": [
+        { formNumber: "DEW Claim", name: "Unemployment Insurance Claim", description: "Apply for unemployment", url: "https://dew.sc.gov/", category: "Unemployment" },
+        { formNumber: "SCHAC Complaint", name: "Human Affairs Complaint", description: "Employment discrimination", url: "https://www.schac.sc.gov/", category: "Discrimination", feeAmount: "Free" },
+      ],
+      "housing": [
+        { formNumber: "Eviction", name: "Summons and Complaint (Ejectment)", description: "Eviction lawsuit", url: "https://www.sccourts.org/forms/", category: "Eviction", feeAmount: "$40", feeWaiverAvailable: true },
+      ],
+      "criminal": [
+        { formNumber: "Expungement", name: "Application for Expungement", description: "Clear eligible records", url: "https://www.sccourts.org/forms/", category: "Expungement", feeAmount: "$250" },
+      ],
+      "general": [
+        { formNumber: "SCCA 100", name: "Application for Fee Waiver", description: "Request court fee waiver", url: "https://www.sccourts.org/forms/", category: "Fee Waiver", feeAmount: "Free" },
+      ],
+    }
+  },
+
+  // ==================== SOUTH DAKOTA ====================
+  "SD": {
+    stateName: "South Dakota",
+    courtWebsite: "https://ujs.sd.gov",
+    selfHelpUrl: "https://ujs.sd.gov/Self_Help/",
+    forms: {
+      "family": [
+        { formNumber: "UJS-102", name: "Complaint for Divorce", description: "Start divorce proceedings", url: "https://ujs.sd.gov/Forms/", category: "Divorce", feeAmount: "$95", feeWaiverAvailable: true },
+        { formNumber: "Protection Order", name: "Petition for Protection Order", description: "Domestic abuse protection", url: "https://ujs.sd.gov/Self_Help/protection_orders.aspx", category: "Protection Orders", feeAmount: "Free" },
+      ],
+      "small-claims": [
+        { formNumber: "Small Claims", name: "Statement of Claim", description: "Small claims (up to $12,000)", url: "https://ujs.sd.gov/Self_Help/small_claims.aspx", category: "Filing", feeAmount: "$40-$75", feeWaiverAvailable: true },
+      ],
+      "employment": [
+        { formNumber: "DLR Claim", name: "Unemployment Insurance Claim", description: "Apply for unemployment", url: "https://dlr.sd.gov/ra/", category: "Unemployment" },
+        { formNumber: "HRC Complaint", name: "Human Rights Complaint", description: "Employment discrimination", url: "https://dlr.sd.gov/human_rights/", category: "Discrimination", feeAmount: "Free" },
+      ],
+      "housing": [
+        { formNumber: "Eviction", name: "Complaint for Eviction", description: "Eviction lawsuit", url: "https://ujs.sd.gov/Forms/", category: "Eviction", feeAmount: "$70", feeWaiverAvailable: true },
+      ],
+      "criminal": [
+        { formNumber: "Expungement", name: "Petition for Expungement", description: "Clear eligible records", url: "https://ujs.sd.gov/Forms/", category: "Expungement", feeAmount: "$0-$50" },
+      ],
+      "general": [
+        { formNumber: "IFP", name: "Application to Proceed IFP", description: "Request court fee waiver", url: "https://ujs.sd.gov/Forms/", category: "Fee Waiver", feeAmount: "Free" },
+      ],
+    }
+  },
+
+  // ==================== TENNESSEE ====================
+  "TN": {
+    stateName: "Tennessee",
+    courtWebsite: "https://www.tncourts.gov",
+    selfHelpUrl: "https://www.justiceforalltn.org",
+    forms: {
+      "family": [
+        { formNumber: "Complaint for Divorce", name: "Complaint for Divorce", description: "Start divorce proceedings", url: "https://www.tncourts.gov/forms", category: "Divorce", feeAmount: "$184-$350", feeWaiverAvailable: true },
+        { formNumber: "Order of Protection", name: "Petition for Order of Protection", description: "Domestic violence protection", url: "https://www.tncourts.gov/forms", category: "Protection Orders", feeAmount: "Free" },
+      ],
+      "small-claims": [
+        { formNumber: "General Sessions", name: "Civil Warrant", description: "Small claims (up to $25,000)", url: "https://www.tncourts.gov/forms", category: "Filing", feeAmount: "$50-$125", feeWaiverAvailable: true },
+      ],
+      "employment": [
+        { formNumber: "TDLWD Claim", name: "Unemployment Insurance Claim", description: "Apply for unemployment", url: "https://www.jobs4tn.gov/", category: "Unemployment" },
+        { formNumber: "THRC Complaint", name: "Human Rights Complaint", description: "Employment discrimination", url: "https://www.tn.gov/humanrights/", category: "Discrimination", feeAmount: "Free" },
+      ],
+      "housing": [
+        { formNumber: "Detainer Warrant", name: "Detainer Warrant", description: "Eviction lawsuit", url: "https://www.tncourts.gov/forms", category: "Eviction", feeAmount: "$50-$87", feeWaiverAvailable: true },
+      ],
+      "criminal": [
+        { formNumber: "Expungement", name: "Petition for Expungement", description: "Clear eligible records", url: "https://www.tncourts.gov/forms", category: "Expungement", feeAmount: "$100-$450" },
+      ],
+      "general": [
+        { formNumber: "Pauper's Oath", name: "Affidavit of Indigency", description: "Request court fee waiver", url: "https://www.tncourts.gov/forms", category: "Fee Waiver", feeAmount: "Free" },
+      ],
+    }
+  },
+
+  // ==================== UTAH ====================
+  "UT": {
+    stateName: "Utah",
+    courtWebsite: "https://www.utcourts.gov",
+    selfHelpUrl: "https://www.utcourts.gov/selfhelp/",
+    forms: {
+      "family": [
+        { formNumber: "Petition for Divorce", name: "Petition for Divorce", description: "Start divorce proceedings", url: "https://www.utcourts.gov/howto/family/divorce/", category: "Divorce", feeAmount: "$330", feeWaiverAvailable: true },
+        { formNumber: "Protective Order", name: "Petition for Protective Order", description: "Cohabitant abuse protection", url: "https://www.utcourts.gov/howto/protective/", category: "Protection Orders", feeAmount: "Free" },
+      ],
+      "small-claims": [
+        { formNumber: "Small Claims", name: "Statement of Claim", description: "Small claims (up to $11,000)", url: "https://www.utcourts.gov/howto/smallclaims/", category: "Filing", feeAmount: "$60-$185", feeWaiverAvailable: true },
+      ],
+      "employment": [
+        { formNumber: "DWS Claim", name: "Unemployment Insurance Claim", description: "Apply for unemployment", url: "https://jobs.utah.gov/ui/", category: "Unemployment" },
+        { formNumber: "UALD Complaint", name: "Labor Division Complaint", description: "Employment discrimination", url: "https://laborcommission.utah.gov/divisions/antidiscrimination-labor-division/", category: "Discrimination", feeAmount: "Free" },
+      ],
+      "housing": [
+        { formNumber: "Eviction", name: "Complaint for Eviction", description: "Eviction lawsuit", url: "https://www.utcourts.gov/howto/landlord/", category: "Eviction", feeAmount: "$55-$400", feeWaiverAvailable: true },
+      ],
+      "criminal": [
+        { formNumber: "Expungement", name: "Petition for Expungement", description: "Clear eligible records", url: "https://bci.utah.gov/expungements/", category: "Expungement", feeAmount: "$65-$135" },
+      ],
+      "general": [
+        { formNumber: "Fee Waiver", name: "Motion to Waive Fees", description: "Request court fee waiver", url: "https://www.utcourts.gov/howto/filing/feewaiver/", category: "Fee Waiver", feeAmount: "Free" },
+      ],
+    }
+  },
+
+  // ==================== VERMONT ====================
+  "VT": {
+    stateName: "Vermont",
+    courtWebsite: "https://www.vermontjudiciary.org",
+    selfHelpUrl: "https://www.vermontjudiciary.org/self-help",
+    forms: {
+      "family": [
+        { formNumber: "400", name: "Complaint for Divorce", description: "Start divorce proceedings", url: "https://www.vermontjudiciary.org/self-help/divorce", category: "Divorce", feeAmount: "$295", feeWaiverAvailable: true },
+        { formNumber: "RFA", name: "Petition for Relief from Abuse", description: "Domestic violence protection", url: "https://www.vermontjudiciary.org/self-help/abuse-prevention", category: "Protection Orders", feeAmount: "Free" },
+      ],
+      "small-claims": [
+        { formNumber: "Small Claims", name: "Statement of Claim", description: "Small claims (up to $5,000)", url: "https://www.vermontjudiciary.org/self-help/small-claims", category: "Filing", feeAmount: "$75-$150", feeWaiverAvailable: true },
+      ],
+      "employment": [
+        { formNumber: "VDOL Claim", name: "Unemployment Insurance Claim", description: "Apply for unemployment", url: "https://labor.vermont.gov/unemployment-insurance", category: "Unemployment" },
+        { formNumber: "HRC Complaint", name: "Human Rights Complaint", description: "Employment discrimination", url: "https://hrc.vermont.gov/", category: "Discrimination", feeAmount: "Free" },
+      ],
+      "housing": [
+        { formNumber: "Eviction", name: "Ejectment Complaint", description: "Eviction lawsuit", url: "https://www.vermontjudiciary.org/self-help/landlord-tenant", category: "Eviction", feeAmount: "$295", feeWaiverAvailable: true },
+      ],
+      "criminal": [
+        { formNumber: "Expungement", name: "Petition for Expungement", description: "Clear eligible records", url: "https://www.vermontjudiciary.org/", category: "Expungement", feeAmount: "$90" },
+      ],
+      "general": [
+        { formNumber: "Fee Waiver", name: "Application for Waiver of Filing Fees", description: "Request court fee waiver", url: "https://www.vermontjudiciary.org/self-help/", category: "Fee Waiver", feeAmount: "Free" },
+      ],
+    }
+  },
+
+  // ==================== WEST VIRGINIA ====================
+  "WV": {
+    stateName: "West Virginia",
+    courtWebsite: "https://www.courtswv.gov",
+    selfHelpUrl: "https://www.lawv.net",
+    forms: {
+      "family": [
+        { formNumber: "SCA-FC-100", name: "Petition for Divorce", description: "Start divorce proceedings", url: "https://www.courtswv.gov/lower-courts/family-court/", category: "Divorce", feeAmount: "$175", feeWaiverAvailable: true },
+        { formNumber: "DV-1", name: "Petition for Protective Order", description: "Domestic violence protection", url: "https://www.courtswv.gov/lower-courts/family-court/", category: "Protection Orders", feeAmount: "Free" },
+      ],
+      "small-claims": [
+        { formNumber: "Magistrate Civil", name: "Civil Complaint", description: "Magistrate court (up to $10,000)", url: "https://www.courtswv.gov/lower-courts/magistrate-court/", category: "Filing", feeAmount: "$30-$70", feeWaiverAvailable: true },
+      ],
+      "employment": [
+        { formNumber: "WC Claim", name: "Unemployment Compensation Claim", description: "Apply for unemployment", url: "https://workforcewv.org/", category: "Unemployment" },
+        { formNumber: "HRC Complaint", name: "Human Rights Commission Complaint", description: "Employment discrimination", url: "https://hrc.wv.gov/", category: "Discrimination", feeAmount: "Free" },
+      ],
+      "housing": [
+        { formNumber: "Eviction", name: "Wrongful Occupation Complaint", description: "Eviction lawsuit", url: "https://www.courtswv.gov/lower-courts/magistrate-court/", category: "Eviction", feeAmount: "$30-$45", feeWaiverAvailable: true },
+      ],
+      "criminal": [
+        { formNumber: "Expungement", name: "Petition for Expungement", description: "Clear eligible records", url: "https://www.courtswv.gov/", category: "Expungement", feeAmount: "$50" },
+      ],
+      "general": [
+        { formNumber: "IFP", name: "Affidavit for IFP Status", description: "Request court fee waiver", url: "https://www.courtswv.gov/", category: "Fee Waiver", feeAmount: "Free" },
+      ],
+    }
+  },
+
+  // ==================== WISCONSIN ====================
+  "WI": {
+    stateName: "Wisconsin",
+    courtWebsite: "https://www.wicourts.gov",
+    selfHelpUrl: "https://www.wicourts.gov/services/public/selfhelp/",
+    forms: {
+      "family": [
+        { formNumber: "FA-4110V", name: "Petition for Divorce", description: "Start divorce proceedings", url: "https://www.wicourts.gov/forms1/circuit/ccform.jsp?Category=19", category: "Divorce", feeAmount: "$184.50", feeWaiverAvailable: true },
+        { formNumber: "FA-4114VA", name: "Petition for TRO/Injunction", description: "Domestic abuse protection", url: "https://www.wicourts.gov/forms1/circuit/ccform.jsp?Category=1", category: "Protection Orders", feeAmount: "Free" },
+      ],
+      "small-claims": [
+        { formNumber: "SC-500", name: "Claim", description: "Small claims (up to $10,000)", url: "https://www.wicourts.gov/forms1/circuit/ccform.jsp?Category=50", category: "Filing", feeAmount: "$94.50", feeWaiverAvailable: true },
+      ],
+      "employment": [
+        { formNumber: "DWD Claim", name: "Unemployment Insurance Claim", description: "Apply for unemployment", url: "https://dwd.wisconsin.gov/ui/", category: "Unemployment" },
+        { formNumber: "ERD Complaint", name: "Equal Rights Complaint", description: "Employment discrimination", url: "https://dwd.wisconsin.gov/er/civilrights/", category: "Discrimination", feeAmount: "Free" },
+      ],
+      "housing": [
+        { formNumber: "SC-505", name: "Eviction - Summons and Complaint", description: "Eviction lawsuit", url: "https://www.wicourts.gov/forms1/circuit/ccform.jsp?Category=50", category: "Eviction", feeAmount: "$94.50", feeWaiverAvailable: true },
+      ],
+      "criminal": [
+        { formNumber: "CR-230", name: "Petition for Expungement", description: "Clear eligible records", url: "https://www.wicourts.gov/forms1/circuit/ccform.jsp?Category=43", category: "Expungement", feeAmount: "$0" },
+      ],
+      "general": [
+        { formNumber: "GF-180", name: "Petition for Waiver of Fees", description: "Request court fee waiver", url: "https://www.wicourts.gov/forms1/circuit/ccform.jsp?Category=25", category: "Fee Waiver", feeAmount: "Free" },
+      ],
+    }
+  },
+
+  // ==================== WYOMING ====================
+  "WY": {
+    stateName: "Wyoming",
+    courtWebsite: "https://www.courts.state.wy.us",
+    selfHelpUrl: "https://www.courts.state.wy.us/self-help-center/",
+    forms: {
+      "family": [
+        { formNumber: "Complaint for Divorce", name: "Complaint for Divorce", description: "Start divorce proceedings", url: "https://www.courts.state.wy.us/court-rules-and-forms/standard-family-court-forms/", category: "Divorce", feeAmount: "$85", feeWaiverAvailable: true },
+        { formNumber: "Protective Order", name: "Petition for Order of Protection", description: "Domestic violence protection", url: "https://www.courts.state.wy.us/court-rules-and-forms/standard-family-court-forms/", category: "Protection Orders", feeAmount: "Free" },
+      ],
+      "small-claims": [
+        { formNumber: "Small Claims", name: "Statement of Claim", description: "Small claims (up to $6,000)", url: "https://www.courts.state.wy.us/self-help-center/", category: "Filing", feeAmount: "$20-$40", feeWaiverAvailable: true },
+      ],
+      "employment": [
+        { formNumber: "DWS Claim", name: "Unemployment Insurance Claim", description: "Apply for unemployment", url: "https://dws.wyo.gov/workforce-services/unemployment-insurance/", category: "Unemployment" },
+        { formNumber: "DWS Civil Rights", name: "Civil Rights Complaint", description: "Employment discrimination", url: "https://dws.wyo.gov/workforce-services/labor-standards/", category: "Discrimination", feeAmount: "Free" },
+      ],
+      "housing": [
+        { formNumber: "Eviction", name: "Forcible Entry and Detainer", description: "Eviction lawsuit", url: "https://www.courts.state.wy.us/self-help-center/", category: "Eviction", feeAmount: "$55", feeWaiverAvailable: true },
+      ],
+      "criminal": [
+        { formNumber: "Expungement", name: "Petition for Expungement", description: "Clear eligible records", url: "https://www.courts.state.wy.us/", category: "Expungement", feeAmount: "$50-$100" },
+      ],
+      "general": [
+        { formNumber: "IFP", name: "Application to Proceed IFP", description: "Request court fee waiver", url: "https://www.courts.state.wy.us/", category: "Fee Waiver", feeAmount: "Free" },
+      ],
+    }
+  },
 };
 
 export function getAdditionalStateData(stateCode: string): StateFormsData | undefined {
