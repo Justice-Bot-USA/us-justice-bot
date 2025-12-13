@@ -24,7 +24,7 @@ import {
   Building2
 } from 'lucide-react';
 import { states, stateAbbreviations } from '@/lib/states';
-import { getStateFormsData, stateCourtWebsites, legalAreaCategories, CourtForm } from '@/lib/formsLibraryData';
+import { getStateFormsData, stateCourtWebsites, legalAreaCategories, CourtForm, federalCourtForms, federalCourtInfo } from '@/lib/formsLibraryData';
 
 const categoryIcons: Record<string, React.ReactNode> = {
   "family": <Heart className="h-5 w-5" />,
@@ -32,6 +32,7 @@ const categoryIcons: Record<string, React.ReactNode> = {
   "employment": <Briefcase className="h-5 w-5" />,
   "housing": <Home className="h-5 w-5" />,
   "criminal": <Shield className="h-5 w-5" />,
+  "federal": <Scale className="h-5 w-5" />,
   "general": <FileText className="h-5 w-5" />,
 };
 
@@ -44,6 +45,18 @@ export default function FormsLibrary() {
   const stateInfo = stateCourtWebsites[selectedState];
 
   const filteredForms = useMemo(() => {
+    // For federal category, use federal forms instead of state forms
+    if (selectedCategory === 'federal') {
+      if (!searchQuery.trim()) return federalCourtForms;
+      const query = searchQuery.toLowerCase();
+      return federalCourtForms.filter(form => 
+        form.name.toLowerCase().includes(query) ||
+        form.formNumber.toLowerCase().includes(query) ||
+        form.description.toLowerCase().includes(query) ||
+        form.category.toLowerCase().includes(query)
+      );
+    }
+    
     const categoryForms = stateData.forms[selectedCategory] || [];
     if (!searchQuery.trim()) return categoryForms;
     
@@ -56,7 +69,8 @@ export default function FormsLibrary() {
     );
   }, [stateData, selectedCategory, searchQuery]);
 
-  const hasDetailedData = ['CA', 'TX', 'NY', 'FL', 'IL'].includes(selectedState);
+  const hasDetailedData = selectedCategory === 'federal' || ['CA', 'TX', 'NY', 'FL', 'IL'].includes(selectedState);
+  const isFederalCategory = selectedCategory === 'federal';
 
   return (
     <div className="min-h-screen bg-background">
@@ -129,46 +143,83 @@ export default function FormsLibrary() {
           </CardContent>
         </Card>
 
-        {/* State Info Banner */}
+        {/* State/Federal Info Banner */}
         <Card className="mb-8 border-primary/20 bg-primary/5">
           <CardContent className="pt-6">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div className="flex items-center gap-3">
                 <Building2 className="h-8 w-8 text-primary" />
                 <div>
-                  <h2 className="text-xl font-semibold">{stateInfo?.name || 'State'} Courts</h2>
+                  <h2 className="text-xl font-semibold">
+                    {isFederalCategory ? 'Federal Courts' : `${stateInfo?.name || 'State'} Courts`}
+                  </h2>
                   <p className="text-muted-foreground text-sm">
-                    {hasDetailedData 
-                      ? 'Detailed forms with official court links available'
-                      : 'Basic form templates - visit state court website for official forms'
+                    {isFederalCategory 
+                      ? 'Federal court forms apply nationwide for U.S. District Courts'
+                      : hasDetailedData 
+                        ? 'Detailed forms with official court links available'
+                        : 'Basic form templates - visit state court website for official forms'
                     }
                   </p>
                 </div>
               </div>
               <div className="flex flex-wrap gap-2">
-                {stateData.courtWebsite && (
-                  <Button variant="outline" size="sm" asChild>
-                    <a href={stateData.courtWebsite} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="h-4 w-4 mr-2" />
-                      State Courts
-                    </a>
-                  </Button>
-                )}
-                {stateData.selfHelpUrl && (
-                  <Button variant="outline" size="sm" asChild>
-                    <a href={stateData.selfHelpUrl} target="_blank" rel="noopener noreferrer">
-                      <Info className="h-4 w-4 mr-2" />
-                      Self-Help Center
-                    </a>
-                  </Button>
+                {isFederalCategory ? (
+                  <>
+                    <Button variant="outline" size="sm" asChild>
+                      <a href={federalCourtInfo.website} target="_blank" rel="noopener noreferrer">
+                        <ExternalLink className="h-4 w-4 mr-2" />
+                        US Courts
+                      </a>
+                    </Button>
+                    <Button variant="outline" size="sm" asChild>
+                      <a href={federalCourtInfo.pacer} target="_blank" rel="noopener noreferrer">
+                        <FileText className="h-4 w-4 mr-2" />
+                        PACER
+                      </a>
+                    </Button>
+                    <Button variant="outline" size="sm" asChild>
+                      <a href={federalCourtInfo.findCourt} target="_blank" rel="noopener noreferrer">
+                        <Search className="h-4 w-4 mr-2" />
+                        Find Court
+                      </a>
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    {stateData.courtWebsite && (
+                      <Button variant="outline" size="sm" asChild>
+                        <a href={stateData.courtWebsite} target="_blank" rel="noopener noreferrer">
+                          <ExternalLink className="h-4 w-4 mr-2" />
+                          State Courts
+                        </a>
+                      </Button>
+                    )}
+                    {stateData.selfHelpUrl && (
+                      <Button variant="outline" size="sm" asChild>
+                        <a href={stateData.selfHelpUrl} target="_blank" rel="noopener noreferrer">
+                          <Info className="h-4 w-4 mr-2" />
+                          Self-Help Center
+                        </a>
+                      </Button>
+                    )}
+                  </>
                 )}
               </div>
             </div>
-            {!hasDetailedData && (
+            {!hasDetailedData && !isFederalCategory && (
               <div className="mt-4 p-3 bg-amber-500/10 border border-amber-500/20 rounded-lg">
                 <p className="text-sm text-amber-800 dark:text-amber-200">
                   <strong>Note:</strong> Detailed forms data is available for CA, TX, NY, FL, and IL. 
                   For other states, please visit the official court website above for specific form numbers and requirements.
+                </p>
+              </div>
+            )}
+            {isFederalCategory && (
+              <div className="mt-4 p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+                <p className="text-sm text-blue-800 dark:text-blue-200">
+                  <strong>Federal Forms:</strong> These forms are used in U.S. District Courts nationwide. 
+                  Some district courts have local forms - check your specific court's website for local requirements.
                 </p>
               </div>
             )}
