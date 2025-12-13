@@ -21,7 +21,7 @@ const tools = [
     description: "AI-powered analysis of your legal documents, contracts, and case files. Get instant insights on key terms, potential issues, and recommended actions.",
     features: ["Contract review", "Risk identification", "Key term extraction", "Plain English summaries"],
     status: "Available",
-    link: "/case-analysis"
+    link: "/ai-tools/use"
   },
   {
     icon: Calculator,
@@ -29,7 +29,7 @@ const tools = [
     description: "Estimate potential settlement ranges based on your case type, jurisdiction, and comparable cases. Understand what your claim might be worth.",
     features: ["Case value estimation", "Comparative analysis", "Factor weighting", "Range predictions"],
     status: "Available",
-    link: "/case-analysis"
+    link: "/ai-tools/use"
   },
   {
     icon: MapPin,

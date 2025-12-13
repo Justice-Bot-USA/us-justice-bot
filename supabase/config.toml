@@ -33,6 +33,12 @@ verify_jwt = true
 [functions.legal-sweep]
 verify_jwt = true
 
+[functions.document-analyzer]
+verify_jwt = false
+
+[functions.settlement-calculator]
+verify_jwt = false
+
 [studio]
 enabled = true
 port = 54323
