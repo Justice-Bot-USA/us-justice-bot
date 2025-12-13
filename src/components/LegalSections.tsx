@@ -1,7 +1,8 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Scale, Briefcase, Shield, Users, DollarSign, Home, Gavel, Heart } from "lucide-react";
+import { Scale, Briefcase, Shield, Users, DollarSign, Home, Gavel, Heart, ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface LegalSectionsProps {
   language: 'en' | 'es';
@@ -9,6 +10,8 @@ interface LegalSectionsProps {
 }
 
 const LegalSections = ({ language, onSectionSelect }: LegalSectionsProps) => {
+  const navigate = useNavigate();
+  
   const text = {
     en: {
       title: "Select Your Legal Area",
@@ -198,9 +201,29 @@ const LegalSections = ({ language, onSectionSelect }: LegalSectionsProps) => {
                   <CardDescription className="mb-4">
                     {section.description}
                   </CardDescription>
-                  <Button variant="outline" className="w-full group-hover:bg-primary group-hover:text-primary-foreground">
-                    {language === 'en' ? 'Get Help' : 'Obtener Ayuda'}
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button 
+                      variant="outline" 
+                      className="flex-1 group-hover:bg-primary group-hover:text-primary-foreground"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onSectionSelect(section.id);
+                      }}
+                    >
+                      {language === 'en' ? 'Get Help' : 'Obtener Ayuda'}
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/legal-areas/${section.id}`);
+                      }}
+                      title={language === 'en' ? 'Learn More' : 'Saber Más'}
+                    >
+                      <ArrowRight className="w-4 h-4" />
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             );
