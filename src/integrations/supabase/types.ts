@@ -561,6 +561,78 @@ export type Database = {
         }
         Relationships: []
       }
+      payments: {
+        Row: {
+          capture_id: string | null
+          created_at: string
+          id: string
+          paypal_order_id: string | null
+          status: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          capture_id?: string | null
+          created_at?: string
+          id?: string
+          paypal_order_id?: string | null
+          status?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          capture_id?: string | null
+          created_at?: string
+          id?: string
+          paypal_order_id?: string | null
+          status?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      paypal_webhook_events: {
+        Row: {
+          id: string
+          payload: Json
+          received_at: string
+        }
+        Insert: {
+          id: string
+          payload: Json
+          received_at?: string
+        }
+        Update: {
+          id?: string
+          payload?: Json
+          received_at?: string
+        }
+        Relationships: []
+      }
+      paypal_webhook_failures: {
+        Row: {
+          created_at: string
+          headers: Json | null
+          id: string
+          payload: Json | null
+          reason: string | null
+        }
+        Insert: {
+          created_at?: string
+          headers?: Json | null
+          id?: string
+          payload?: Json | null
+          reason?: string | null
+        }
+        Update: {
+          created_at?: string
+          headers?: Json | null
+          id?: string
+          payload?: Json | null
+          reason?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string | null
