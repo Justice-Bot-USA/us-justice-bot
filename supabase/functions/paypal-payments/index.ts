@@ -15,6 +15,31 @@ const PAYPAL_CLIENT_ID = Deno.env.get('PAYPAL_CLIENT_ID')!;
 const PAYPAL_CLIENT_SECRET = Deno.env.get('PAYPAL_CLIENT_SECRET')!;
 const PAYPAL_BASE_URL = 'https://api.sandbox.paypal.com'; // Use sandbox for development
 
+// Extract user ID from JWT token in Authorization header
+const getUserIdFromToken = async (req: Request): Promise<string> => {
+  const authHeader = req.headers.get('Authorization');
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    throw new Error('Missing or invalid Authorization header');
+  }
+  
+  const token = authHeader.replace('Bearer ', '');
+  
+  // Create a client with the user's token to verify and extract user info
+  const userSupabase = createClient(supabaseUrl, Deno.env.get('SUPABASE_ANON_KEY')!, {
+    global: { headers: { Authorization: `Bearer ${token}` } }
+  });
+  
+  const { data: { user }, error } = await userSupabase.auth.getUser();
+  
+  if (error || !user) {
+    console.error('Failed to verify user token:', error);
+    throw new Error('Invalid or expired token');
+  }
+  
+  console.log('Authenticated user:', user.id);
+  return user.id;
+};
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -22,6 +47,9 @@ serve(async (req) => {
 
   try {
     console.log('PayPal payments function called');
+    
+    // Extract authenticated user ID from JWT token (not from request body)
+    const userId = await getUserIdFromToken(req);
     
     const { action, ...data } = await req.json();
     
@@ -42,13 +70,14 @@ serve(async (req) => {
 
     const accessToken = await getAccessToken();
 
+    // Pass the verified userId instead of trusting request body
     switch (action) {
       case 'create_subscription':
-        return await createSubscription(accessToken, data);
+        return await createSubscription(accessToken, { ...data, userId });
       case 'create_one_time_payment':
-        return await createOneTimePayment(accessToken, data);
+        return await createOneTimePayment(accessToken, { ...data, userId });
       case 'verify_payment':
-        return await verifyPayment(accessToken, data);
+        return await verifyPayment(accessToken, { ...data, userId });
       default:
         throw new Error('Invalid action');
     }
