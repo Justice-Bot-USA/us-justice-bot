@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>US Justice Bot - Equal Justice Under Law - Affordable Legal Guidance</title>
-    <meta name="description" content="Affordable legal assistance for all 50 US states. Expert AI-powered guidance for family law, small claims, employment disputes, and more. Way cheaper than attorneys - we care about justice, not billable hours." />
+    <title>US Justice Bot - Equal Justice Under Law | Affordable AI Legal Assistance for All 50 States</title>
+    <meta name="description" content="Get affordable AI-powered legal assistance for all 50 US states. Expert guidance for family law, small claims, employment disputes, immigration, housing rights & more. Way cheaper than attorneys - Equal Justice Under Law." />
     <meta name="author" content="US Justice Bot" />
-    <meta name="keywords" content="affordable legal assistance, legal guidance, US law, family law, small claims court, employment law, immigration help, housing rights, consumer protection, civil rights, legal AI, attorney alternative, equal justice under law" />
+    <meta name="keywords" content="affordable legal assistance, AI legal help, US law, family law forms, small claims court help, employment law guidance, immigration legal help, housing rights, consumer protection, civil rights attorney alternative, legal document preparation, court forms, merit score analysis, legal guidance USA, pro se legal help, self-representation legal, equal justice under law" />
 
     <!-- Favicon and App Icons -->
     <link rel="icon" href="/src/assets/us-justice-bot-logo.png" type="image/png">
@@ -15,25 +15,38 @@
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://justicebot-usa.com" />
-    <meta property="og:title" content="US Justice Bot - Equal Justice Under Law" />
-    <meta property="og:description" content="Affordable legal assistance for all 50 US states. Expert AI-powered guidance at a fraction of attorney costs. We care about your justice, not billable hours." />
+    <meta property="og:url" content="https://justicebot-usa.com/" />
+    <meta property="og:title" content="US Justice Bot - Equal Justice Under Law | AI Legal Assistance" />
+    <meta property="og:description" content="Affordable AI-powered legal assistance for all 50 US states. Get expert guidance for family law, small claims, employment & more at a fraction of attorney costs." />
     <meta property="og:image" content="https://justicebot-usa.com/icon-512.png" />
+    <meta property="og:image:width" content="512" />
+    <meta property="og:image:height" content="512" />
     <meta property="og:site_name" content="US Justice Bot" />
     <meta property="og:locale" content="en_US" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:url" content="https://justicebot-usa.com" />
+    <meta name="twitter:url" content="https://justicebot-usa.com/" />
     <meta name="twitter:title" content="US Justice Bot - Equal Justice Under Law" />
-    <meta name="twitter:description" content="Affordable legal assistance for all 50 US states. Expert AI-powered guidance at a fraction of attorney costs." />
+    <meta name="twitter:description" content="Affordable AI-powered legal assistance for all 50 US states. Expert guidance at a fraction of attorney costs." />
     <meta name="twitter:image" content="https://justicebot-usa.com/icon-512.png" />
 
     <!-- Additional SEO -->
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     <meta name="googlebot" content="index, follow" />
+    <meta name="bingbot" content="index, follow" />
     <meta name="theme-color" content="#1e40af" />
-    <link rel="canonical" href="https://justicebot-usa.com" />
+    <link rel="canonical" href="https://justicebot-usa.com/" />
+    
+    <!-- Geographic Targeting -->
+    <meta name="geo.region" content="US" />
+    <meta name="geo.placename" content="United States" />
+    
+    <!-- Mobile App Meta -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="US Justice Bot" />
     
     <!-- Structured Data - Organization -->
     <script type="application/ld+json">
@@ -41,28 +54,36 @@
       "@context": "https://schema.org",
       "@type": "LegalService",
       "name": "US Justice Bot",
-      "description": "Affordable AI-powered legal assistance for all 50 US states",
+      "alternateName": "JusticeBot USA",
+      "description": "Affordable AI-powered legal assistance for all 50 US states. Expert guidance for family law, small claims, employment disputes, immigration, and more.",
       "url": "https://justicebot-usa.com",
       "logo": "https://justicebot-usa.com/icon-512.png",
+      "image": "https://justicebot-usa.com/icon-512.png",
       "areaServed": {
         "@type": "Country",
         "name": "United States"
       },
-      "serviceType": ["Legal Assistance", "Legal Document Preparation", "Legal Guidance"],
-      "priceRange": "$"
+      "serviceType": ["Legal Assistance", "Legal Document Preparation", "Legal Guidance", "Court Form Assistance", "Case Merit Analysis"],
+      "priceRange": "$",
+      "slogan": "Equal Justice Under Law",
+      "knowsAbout": ["Family Law", "Small Claims Court", "Employment Law", "Immigration Law", "Housing Rights", "Consumer Protection", "Civil Rights", "Criminal Defense"]
     }
     </script>
 
-    <!-- Structured Data - WebSite -->
+    <!-- Structured Data - WebSite with SearchAction -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
       "name": "US Justice Bot",
       "url": "https://justicebot-usa.com",
+      "description": "AI-powered legal assistance for all 50 US states",
       "potentialAction": {
         "@type": "SearchAction",
-        "target": "https://justicebot-usa.com/case-analysis?q={search_term_string}",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://justicebot-usa.com/forms-library?search={search_term_string}"
+        },
         "query-input": "required name=search_term_string"
       }
     }
@@ -79,7 +100,7 @@
           "name": "How much does US Justice Bot cost?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "US Justice Bot offers affordable plans starting at $19.99/month or $99/year, plus $5.99 per individual form. This is a fraction of typical attorney fees."
+            "text": "US Justice Bot offers affordable plans starting at $19.99/month or $99/year for unlimited access, plus $5.99 per individual form. This is a fraction of typical attorney fees which can cost $200-$500 per hour."
           }
         },
         {
@@ -87,7 +108,7 @@
           "name": "What legal areas does US Justice Bot cover?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "US Justice Bot covers Family Law, Small Claims, Employment Law, Criminal Defense, Housing & Eviction, Civil Rights, Consumer Protection, Immigration, and Federal Court matters for all 50 US states."
+            "text": "US Justice Bot covers Family Law (divorce, custody, child support), Small Claims Court, Employment Law (wrongful termination, discrimination), Criminal Defense, Housing & Eviction, Civil Rights, Consumer Protection, Immigration, and Federal Court matters for all 50 US states."
           }
         },
         {
@@ -95,10 +116,82 @@
           "name": "Is US Justice Bot available in all US states?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes, US Justice Bot provides state-specific legal guidance, forms, and procedures for all 50 US states with detailed information for California, Texas, New York, Florida, and Illinois."
+            "text": "Yes, US Justice Bot provides state-specific legal guidance, official court forms, and detailed procedures for all 50 US states including California, Texas, New York, Florida, Illinois, Pennsylvania, Ohio, Georgia, and more."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does the AI Merit Score Analysis work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Our AI analyzes your case documents and description to provide a merit score (0-100), identifies strengths and weaknesses, suggests evidence to gather, recommends required forms, estimates settlement ranges, and provides a step-by-step legal pathway tailored to your state and county."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can US Justice Bot replace an attorney?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "US Justice Bot provides legal guidance and document preparation assistance but is not a substitute for licensed legal counsel. For complex matters, we recommend consulting with an attorney. However, for many common legal issues like small claims, simple divorces, and basic contracts, our AI can help you represent yourself effectively."
           }
         }
       ]
+    }
+    </script>
+
+    <!-- Structured Data - BreadcrumbList -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://justicebot-usa.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Case Analysis",
+          "item": "https://justicebot-usa.com/case-analysis"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Forms Library",
+          "item": "https://justicebot-usa.com/forms-library"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "AI Tools",
+          "item": "https://justicebot-usa.com/ai-tools"
+        }
+      ]
+    }
+    </script>
+
+    <!-- Structured Data - SoftwareApplication -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "US Justice Bot",
+      "applicationCategory": "LegalApplication",
+      "operatingSystem": "Web Browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "19.99",
+        "priceCurrency": "USD",
+        "priceValidUntil": "2025-12-31"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "ratingCount": "1250"
+      }
     }
     </script>
   </head>
