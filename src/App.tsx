@@ -15,6 +15,7 @@ import CaseAnalysis from "./pages/CaseAnalysis";
 import Pricing from "./pages/Pricing";
 import LegalJourney from "./pages/LegalJourney";
 import CaseDashboard from "./pages/CaseDashboard";
+import AITools from "./pages/AITools";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,7 @@ export default function App() {
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/legal-journey" element={<LegalJourney />} />
             <Route path="/my-cases" element={<CaseDashboard />} />
+            <Route path="/ai-tools" element={<AITools />} />
             {/* add more routes above this */}
             <Route path="*" element={<NotFound />} />
           </Routes>

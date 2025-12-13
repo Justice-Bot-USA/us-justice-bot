@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { Scale, Globe, User, LogOut, Settings, Briefcase } from "lucide-react";
+import { Scale, Globe, User, LogOut, Settings, Briefcase, Sparkles } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useAdminAccess } from "@/hooks/useAdminAccess";
 import logoImage from "@/assets/us-justice-bot-logo.png";
@@ -59,6 +59,14 @@ const Header = ({ language, onLanguageChange }: HeaderProps) => {
                 </SelectContent>
               </Select>
             </div>
+            
+            {/* AI Tools Link */}
+            <Button asChild variant="ghost" size="sm" className="text-primary-foreground hover:bg-white/10">
+              <Link to="/ai-tools">
+                <Sparkles className="w-4 h-4 mr-1" />
+                AI Tools
+              </Link>
+            </Button>
             
             {/* Auth Section */}
             <div className="flex items-center gap-2">
