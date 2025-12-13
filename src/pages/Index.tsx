@@ -2,8 +2,11 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
+import HowItWorks from "@/components/HowItWorks";
 import WarningBanner from "@/components/WarningBanner";
 import LegalSections from "@/components/LegalSections";
+import TrustStats from "@/components/TrustStats";
+import SuccessStories from "@/components/SuccessStories";
 import StateSelector from "@/components/StateSelector";
 import { ChatSection } from "@/components/ChatSection";
 import { SEOHead } from "@/components/SEOHead";
@@ -26,7 +29,6 @@ const Index = () => {
   const handleStateSelect = (state: string) => {
     setSelectedState(state);
     setShowStateSelector(false);
-    // Scroll to chat section
     setTimeout(() => {
       const chatSection = document.getElementById('chat-section');
       chatSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -46,11 +48,17 @@ const Index = () => {
       <main>
         <HeroSection language={language} onGetStarted={handleGetStarted} />
         
+        <HowItWorks language={language} />
+        
         <div className="container mx-auto px-4">
           <WarningBanner language={language} />
         </div>
         
         <LegalSections language={language} onSectionSelect={handleSectionSelect} />
+        
+        <TrustStats language={language} />
+        
+        <SuccessStories language={language} />
         
         {showStateSelector && (
           <div id="state-selector">
