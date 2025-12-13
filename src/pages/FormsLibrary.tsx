@@ -21,7 +21,11 @@ import {
   Scale,
   CheckCircle,
   Info,
-  Building2
+  Building2,
+  Baby,
+  HandHeart,
+  ClipboardList,
+  Users
 } from 'lucide-react';
 import { states, stateAbbreviations } from '@/lib/states';
 import { getStateFormsData, stateCourtWebsites, legalAreaCategories, CourtForm, federalCourtForms, federalCourtInfo } from '@/lib/formsLibraryData';
@@ -34,6 +38,10 @@ const categoryIcons: Record<string, React.ReactNode> = {
   "criminal": <Shield className="h-5 w-5" />,
   "federal": <Scale className="h-5 w-5" />,
   "general": <FileText className="h-5 w-5" />,
+  "cps": <Baby className="h-5 w-5" />,
+  "workers-rights": <Users className="h-5 w-5" />,
+  "human-rights": <HandHeart className="h-5 w-5" />,
+  "agency-complaints": <ClipboardList className="h-5 w-5" />,
 };
 
 export default function FormsLibrary() {
