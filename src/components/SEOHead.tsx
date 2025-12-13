@@ -11,10 +11,10 @@ interface SEOHeadProps {
 
 export const SEOHead: React.FC<SEOHeadProps> = ({
   title = "US Justice Bot - Equal Justice Under Law - Affordable Legal Guidance",
-  description = "Professional legal assistance at a fraction of attorney costs. We care about your justice, not billable hours. Expert guidance for all 50 US states.",
-  keywords = "affordable legal assistance, legal advice, legal help, US law, legal guidance, constitutional law, legal bot, legal AI, attorney alternative",
-  image = "/public/icon-512.png",
-  url = "https://usjusticebot.com",
+  description = "Affordable legal assistance for all 50 US states. Expert AI-powered guidance for family law, small claims, employment disputes, and more. Way cheaper than attorneys - we care about justice, not billable hours.",
+  keywords = "affordable legal assistance, legal guidance, US law, family law, small claims court, employment law, immigration help, housing rights, consumer protection, civil rights, legal AI, attorney alternative, equal justice under law",
+  image = "https://justicebot-usa.com/icon-512.png",
+  url = "https://justicebot-usa.com",
   type = "website"
 }) => {
   React.useEffect(() => {
