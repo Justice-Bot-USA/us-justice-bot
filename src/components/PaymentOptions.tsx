@@ -66,7 +66,7 @@ export const PaymentOptions: React.FC<PaymentOptionsProps> = ({ onPaymentSuccess
           </CardTitle>
           <CardDescription>Perfect for ongoing legal needs</CardDescription>
           <div className="text-4xl font-bold text-primary">
-            $59.99
+            $9.99
             <span className="text-lg font-normal text-muted-foreground">/month</span>
           </div>
         </CardHeader>
@@ -113,7 +113,7 @@ export const PaymentOptions: React.FC<PaymentOptionsProps> = ({ onPaymentSuccess
         <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
           <Badge className="bg-gradient-to-r from-primary to-primary/80 text-primary-foreground px-4 py-2 text-sm font-semibold">
             <Crown className="h-4 w-4 mr-1" />
-            BEST VALUE - SAVE 58%
+            BEST VALUE - SAVE 34%
           </Badge>
         </div>
         
@@ -124,14 +124,14 @@ export const PaymentOptions: React.FC<PaymentOptionsProps> = ({ onPaymentSuccess
           </CardTitle>
           <CardDescription>Maximum savings for serious users</CardDescription>
           <div className="text-4xl font-bold text-primary">
-            $299.99
+            $79
             <span className="text-lg font-normal text-muted-foreground">/year</span>
           </div>
           <div className="text-lg text-green-600 font-semibold">
-            Save $419.89 compared to monthly!
+            Save $40.88 compared to monthly!
           </div>
           <div className="text-sm text-muted-foreground">
-            That's just $25/month
+            That's just $6.58/month
           </div>
         </CardHeader>
         <CardContent className="space-y-6">

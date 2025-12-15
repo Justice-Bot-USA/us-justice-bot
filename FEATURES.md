@@ -259,21 +259,31 @@ US Justice Bot is a comprehensive legal assistance platform that provides afford
 ## Pricing Model
 
 ### Subscription Benefits
-- **Monthly Plan ($59.99/month)**:
+- **Pay Per Form ($4.99/form)**:
+  - One-time payment for single form
+  - AI-powered case evaluation
+  - State-specific guidance
+  - Document generation
+
+- **Monthly Plan ($9.99/month)**:
   - Unlimited AI chat sessions
-  - 10 case merit analyses per month
+  - Unlimited form access
   - Priority support
-  - Evidence upload (up to 100MB)
-  
-- **Annual Plan ($299.99/year)**:
-  - All monthly features
-  - Unlimited case analyses
-  - Premium priority support
-  - Evidence upload (up to 500MB)
-  - Save $419.89 annually
+  - All 50 states coverage
+  - Advanced case analysis
+  - Document storage
+   
+- **Annual Plan ($79/year)**:
+  - Everything in Monthly Plan
+  - 34% discount vs monthly
+  - Priority case reviews
+  - Extended document storage
+  - Dedicated support
+  - Just $6.58/month
 
 ### Value Proposition
-- Professional legal assistance at **1/10th the cost of a lawyer**
+- Professional legal assistance at **1/20th the cost of a lawyer**
+- $10 cheaper than competitors
 - 24/7 availability
 - No hourly billing
 - Transparent pricing

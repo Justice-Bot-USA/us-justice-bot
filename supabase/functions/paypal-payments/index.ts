@@ -96,9 +96,9 @@ serve(async (req) => {
 async function createSubscription(accessToken: string, data: any) {
   const { planType, userId } = data;
   
-  const planDetails = planType === 'monthly' 
-    ? { amount: '19.99', interval: 'MONTH' }
-    : { amount: '99.00', interval: 'YEAR' };
+const planDetails = planType === 'monthly' 
+    ? { amount: '9.99', interval: 'MONTH' }
+    : { amount: '79.00', interval: 'YEAR' };
 
   // Create subscription plan if it doesn't exist
   const planResponse = await fetch(`${PAYPAL_BASE_URL}/v1/billing/plans`, {
@@ -150,7 +150,7 @@ async function createSubscription(accessToken: string, data: any) {
         email_address: data.email || 'customer@example.com',
       },
       application_context: {
-        brand_name: 'Legal Bot',
+        brand_name: 'US Justice Bot',
         locale: 'en-US',
         shipping_preference: 'NO_SHIPPING',
         user_action: 'SUBSCRIBE_NOW',
@@ -158,8 +158,8 @@ async function createSubscription(accessToken: string, data: any) {
           payer_selected: 'PAYPAL',
           payee_preferred: 'IMMEDIATE_PAYMENT_REQUIRED',
         },
-        return_url: `${Deno.env.get('SUPABASE_URL')}/functions/v1/paypal-payments?action=verify_subscription`,
-        cancel_url: 'https://example.com/cancel',
+        return_url: 'https://justicebot-usa.com/pricing?subscription=success',
+        cancel_url: 'https://justicebot-usa.com/pricing?subscription=cancelled',
       },
     }),
   });
@@ -190,13 +190,14 @@ async function createOneTimePayment(accessToken: string, data: any) {
       purchase_units: [{
         amount: {
           currency_code: 'USD',
-          value: '5.99',
+          value: '4.99',
         },
         description: `Legal form processing - ${formType}`,
       }],
       application_context: {
-        return_url: `${Deno.env.get('SUPABASE_URL')}/functions/v1/paypal-payments?action=verify_payment`,
-        cancel_url: 'https://example.com/cancel',
+        brand_name: 'US Justice Bot',
+        return_url: 'https://justicebot-usa.com/pricing?payment=success',
+        cancel_url: 'https://justicebot-usa.com/pricing?payment=cancelled',
       },
     }),
   });
@@ -235,7 +236,7 @@ async function verifyPayment(accessToken: string, data: any) {
       .insert({
         user_id: userId,
         paypal_payment_id: paymentId,
-        amount: 5.99,
+        amount: 4.99,
         status: 'completed',
         form_type: data.formType || 'general',
       });

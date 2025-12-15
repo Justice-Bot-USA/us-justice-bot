@@ -1,1 +1,5 @@
+# Force non-www to www (canonical URL)
+https://www.justicebot-usa.com/* https://justicebot-usa.com/:splat 301!
+
+# SPA fallback
 /* /index.html 200
