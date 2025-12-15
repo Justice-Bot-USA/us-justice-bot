@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Check, Shield } from 'lucide-react';
+import { Check, Shield, CheckCircle } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { usePaywallAccess } from '@/hooks/usePaywallAccess';
 import { supabase } from '@/integrations/supabase/client';
@@ -12,11 +12,47 @@ import Header from '@/components/Header';
 
 const Pricing = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { user } = useAuth();
-  const { isAdmin, hasActiveSubscription } = usePaywallAccess();
+  const { isAdmin, hasActiveSubscription, refreshAccess } = usePaywallAccess();
   const { toast } = useToast();
   const [loading, setLoading] = useState<string | null>(null);
   const [language, setLanguage] = useState<'en' | 'es'>('en');
+
+  // Handle payment return URLs
+  useEffect(() => {
+    const subscription = searchParams.get('subscription');
+    const payment = searchParams.get('payment');
+    
+    if (subscription === 'success') {
+      toast({
+        title: 'Subscription Activated!',
+        description: 'Thank you for subscribing. You now have full access.',
+      });
+      refreshAccess();
+      navigate('/pricing', { replace: true });
+    } else if (subscription === 'cancelled') {
+      toast({
+        title: 'Subscription Cancelled',
+        description: 'Your subscription was not completed.',
+        variant: 'destructive',
+      });
+      navigate('/pricing', { replace: true });
+    } else if (payment === 'success') {
+      toast({
+        title: 'Payment Successful!',
+        description: 'Thank you for your purchase.',
+      });
+      navigate('/pricing', { replace: true });
+    } else if (payment === 'cancelled') {
+      toast({
+        title: 'Payment Cancelled',
+        description: 'Your payment was not completed.',
+        variant: 'destructive',
+      });
+      navigate('/pricing', { replace: true });
+    }
+  }, [searchParams, toast, navigate, refreshAccess]);
 
   const handleSubscription = async (planType: 'monthly' | 'annual') => {
     if (!user) {
@@ -126,7 +162,7 @@ const Pricing = () => {
               <CardTitle>Pay Per Form</CardTitle>
               <CardDescription>One-time payment for single form</CardDescription>
               <div className="mt-4">
-                <span className="text-4xl font-bold">$5.99</span>
+                <span className="text-4xl font-bold">$4.99</span>
                 <span className="text-muted-foreground">/form</span>
               </div>
             </CardHeader>
@@ -168,7 +204,7 @@ const Pricing = () => {
               <CardTitle>Monthly Plan</CardTitle>
               <CardDescription>Unlimited access, billed monthly</CardDescription>
               <div className="mt-4">
-                <span className="text-4xl font-bold">$19.99</span>
+                <span className="text-4xl font-bold">$9.99</span>
                 <span className="text-muted-foreground">/month</span>
               </div>
             </CardHeader>
@@ -212,13 +248,13 @@ const Pricing = () => {
             </Badge>
             <CardHeader>
               <CardTitle>Annual Plan</CardTitle>
-              <CardDescription>Save $140.88 per year</CardDescription>
+              <CardDescription>Save $40.88 per year</CardDescription>
               <div className="mt-4">
-                <span className="text-4xl font-bold">$99</span>
+                <span className="text-4xl font-bold">$79</span>
                 <span className="text-muted-foreground">/year</span>
               </div>
               <p className="text-sm text-muted-foreground mt-2">
-                Just $8.25/month
+                Just $6.58/month
               </p>
             </CardHeader>
             <CardContent>
@@ -229,7 +265,7 @@ const Pricing = () => {
                 </li>
                 <li className="flex items-start">
                   <Check className="w-5 h-5 text-primary mr-2 mt-0.5" />
-                  <span>59% discount vs monthly</span>
+                  <span>34% discount vs monthly</span>
                 </li>
                 <li className="flex items-start">
                   <Check className="w-5 h-5 text-primary mr-2 mt-0.5" />

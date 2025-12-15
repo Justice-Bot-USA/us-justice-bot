@@ -60,8 +60,8 @@ export function PaywallGuard({
       </CardHeader>
       <CardContent className="flex flex-col items-center gap-4">
         <p className="text-sm text-muted-foreground text-center max-w-md">
-          Choose from our flexible pricing options: pay per form ($5.99), 
-          monthly subscription ($19.99/month), or annual plan ($99/year - best value!).
+          Choose from our flexible pricing options: pay per form ($4.99), 
+          monthly subscription ($9.99/month), or annual plan ($79/year - best value!).
         </p>
         <div className="flex gap-3">
           <Button onClick={() => navigate('/pricing')}>
