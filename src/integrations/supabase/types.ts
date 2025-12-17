@@ -591,48 +591,6 @@ export type Database = {
         }
         Relationships: []
       }
-      paypal_webhook_events: {
-        Row: {
-          id: string
-          payload: Json
-          received_at: string
-        }
-        Insert: {
-          id: string
-          payload: Json
-          received_at?: string
-        }
-        Update: {
-          id?: string
-          payload?: Json
-          received_at?: string
-        }
-        Relationships: []
-      }
-      paypal_webhook_failures: {
-        Row: {
-          created_at: string
-          headers: Json | null
-          id: string
-          payload: Json | null
-          reason: string | null
-        }
-        Insert: {
-          created_at?: string
-          headers?: Json | null
-          id?: string
-          payload?: Json | null
-          reason?: string | null
-        }
-        Update: {
-          created_at?: string
-          headers?: Json | null
-          id?: string
-          payload?: Json | null
-          reason?: string | null
-        }
-        Relationships: []
-      }
       profiles: {
         Row: {
           created_at: string | null
