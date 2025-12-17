@@ -955,6 +955,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_verified_admin: { Args: { uid: string }; Returns: boolean }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
