@@ -13,7 +13,7 @@ const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
 const PAYPAL_CLIENT_ID = Deno.env.get('PAYPAL_CLIENT_ID')!;
 const PAYPAL_CLIENT_SECRET = Deno.env.get('PAYPAL_CLIENT_SECRET')!;
-const PAYPAL_BASE_URL = 'https://api.sandbox.paypal.com'; // Use sandbox for development
+const PAYPAL_BASE_URL = 'https://api.paypal.com'; // Production mode for live payments
 
 // Extract user ID from JWT token in Authorization header
 const getUserIdFromToken = async (req: Request): Promise<string> => {
