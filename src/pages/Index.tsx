@@ -119,7 +119,7 @@ const Index = () => {
       
       <Header language={language} onLanguageChange={setLanguage} />
       
-      <main id="main-content">
+      <main id="main-content" className="space-y-0">
         <HeroSection language={language} onGetStarted={handleGetStarted} />
         
         {/* States Banner */}
@@ -129,30 +129,38 @@ const Index = () => {
         
         {/* Feature Highlight */}
         <Suspense fallback={null}>
-          <FeatureHighlightBanner />
+          <div className="py-4">
+            <FeatureHighlightBanner />
+          </div>
         </Suspense>
         
         {/* Urgency Timer */}
         <Suspense fallback={null}>
-          <div className="container mx-auto px-4 py-4">
+          <div className="container mx-auto px-4 py-8">
             <UrgencyTimer />
           </div>
         </Suspense>
         
         {/* Journey Flowchart */}
         <Suspense fallback={<LoadingSection />}>
-          <JourneyFlowchart />
+          <div className="py-8">
+            <JourneyFlowchart />
+          </div>
         </Suspense>
         
-        <HowItWorks language={language} />
+        <div className="py-8">
+          <HowItWorks language={language} />
+        </div>
         
         {/* Pricing Comparison */}
         <Suspense fallback={<LoadingSection />}>
-          <PricingComparison />
+          <div className="py-8">
+            <PricingComparison />
+          </div>
         </Suspense>
         
         {/* Interactive Tutorial */}
-        <section className="py-16 bg-muted/30">
+        <section className="py-20 bg-muted/30">
           <div className="container mx-auto px-4">
             <Suspense fallback={<LoadingSection />}>
               <InteractiveTutorial />
@@ -162,11 +170,13 @@ const Index = () => {
         
         {/* Triage Section */}
         <Suspense fallback={<LoadingSection />}>
-          <TriageSection />
+          <div className="py-12">
+            <TriageSection />
+          </div>
         </Suspense>
         
         {/* Merit Score Calculator */}
-        <section className="py-16 px-4 bg-gradient-to-b from-background to-muted/30">
+        <section className="py-20 px-4 bg-gradient-to-b from-background to-muted/30">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">Check Your Case Strength</h2>
@@ -180,16 +190,20 @@ const Index = () => {
           </div>
         </section>
         
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 py-8">
           <WarningBanner language={language} />
         </div>
         
-        <LegalSections language={language} onSectionSelect={handleSectionSelect} />
+        <div className="py-8">
+          <LegalSections language={language} onSectionSelect={handleSectionSelect} />
+        </div>
         
-        <TrustStats language={language} />
+        <div className="py-8">
+          <TrustStats language={language} />
+        </div>
         
         {/* Money-Back Guarantee */}
-        <section className="py-8 px-4 bg-background">
+        <section className="py-16 px-4 bg-background">
           <div className="max-w-4xl mx-auto">
             <Suspense fallback={null}>
               <MoneyBackGuarantee />
@@ -197,16 +211,22 @@ const Index = () => {
           </div>
         </section>
         
-        <SuccessStories language={language} />
+        <div className="py-8">
+          <SuccessStories language={language} />
+        </div>
         
         {/* Features Section */}
         <Suspense fallback={<LoadingSection />}>
-          <FeaturesSection />
+          <div className="py-8">
+            <FeaturesSection />
+          </div>
         </Suspense>
         
         {/* Competitor Comparison */}
         <Suspense fallback={<LoadingSection />}>
-          <CompetitorComparison />
+          <div className="py-8">
+            <CompetitorComparison />
+          </div>
         </Suspense>
         
         {showStateSelector && (
