@@ -14,6 +14,7 @@ import { Scale, TrendingUp, TrendingDown, FileText, DollarSign, Calendar, Target
 import { ComprehensiveCaseAnalysis } from './ComprehensiveCaseAnalysis';
 import { MeritScoreImprovements } from './MeritScoreImprovements';
 import { EvidenceUploader } from './EvidenceUploader';
+import { analytics } from '@/hooks/useAnalytics';
 
 // All 50 US States
 const US_STATES = [
@@ -123,6 +124,9 @@ export const CaseMeritAnalyzer: React.FC = () => {
       toast.error('Please fill in all required fields');
       return;
     }
+
+    // Track case analysis started
+    analytics.caseAnalysisStarted(legalArea, state);
 
     try {
       setAnalyzing(true);

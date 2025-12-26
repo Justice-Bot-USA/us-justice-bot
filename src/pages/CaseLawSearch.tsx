@@ -11,6 +11,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { ArrowLeft, Search, Scale, FileText, Upload, BookOpen, Gavel, ExternalLink, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { analytics } from "@/hooks/useAnalytics";
 
 const US_STATES = [
   "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut",
@@ -86,6 +87,12 @@ const CaseLawSearch = () => {
     if (e.target.files) {
       const newFiles = Array.from(e.target.files);
       setUploadedFiles(prev => [...prev, ...newFiles]);
+      
+      // Track document uploads
+      newFiles.forEach(file => {
+        analytics.documentUpload(file.type || 'unknown');
+      });
+      
       toast({
         title: "Files Uploaded",
         description: `${newFiles.length} file(s) added to your search context.`,
@@ -106,6 +113,11 @@ const CaseLawSearch = () => {
       });
       return;
     }
+
+    const legalAreaLabel = LEGAL_AREAS.find(a => a.value === legalArea)?.label || legalArea;
+    
+    // Track case law search
+    analytics.caseLawSearch(legalAreaLabel, state);
 
     setIsSearching(true);
     setResults(null);
