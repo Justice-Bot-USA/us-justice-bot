@@ -39,6 +39,9 @@ verify_jwt = false
 [functions.settlement-calculator]
 verify_jwt = false
 
+[functions.case-law-search]
+verify_jwt = false
+
 [studio]
 enabled = true
 port = 54323

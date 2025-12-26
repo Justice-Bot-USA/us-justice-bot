@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Scale, Globe, User, LogOut, Settings, Briefcase, Sparkles, FileText, TrendingUp, Menu, Gavel } from "lucide-react";
+import { Scale, Globe, User, LogOut, Settings, Briefcase, Sparkles, FileText, TrendingUp, Menu, Gavel, BookOpen } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useAdminAccess } from "@/hooks/useAdminAccess";
 import logoImage from "@/assets/us-justice-bot-logo.png";
@@ -84,6 +84,13 @@ const Header = ({ language, onLanguageChange }: HeaderProps) => {
               <Link to="/criminal-defense-guide">
                 <Gavel className="w-4 h-4 mr-1" aria-hidden="true" />
                 Criminal Guide
+              </Link>
+            </Button>
+
+            <Button asChild variant="ghost" size="sm" className="text-primary-foreground hover:bg-white/10">
+              <Link to="/case-law-search">
+                <BookOpen className="w-4 h-4 mr-1" aria-hidden="true" />
+                Case Law
               </Link>
             </Button>
 
@@ -180,6 +187,12 @@ const Header = ({ language, onLanguageChange }: HeaderProps) => {
                       <Link to="/criminal-defense-guide">
                         <Gavel className="w-4 h-4 mr-2" aria-hidden="true" />
                         Criminal Defense Guide
+                      </Link>
+                    </Button>
+                    <Button asChild variant="secondary" className="w-full justify-start">
+                      <Link to="/case-law-search">
+                        <BookOpen className="w-4 h-4 mr-2" aria-hidden="true" />
+                        Case Law Search
                       </Link>
                     </Button>
                     <Button asChild variant="secondary" className="w-full justify-start">
