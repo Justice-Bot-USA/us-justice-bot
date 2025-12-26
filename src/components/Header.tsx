@@ -14,8 +14,11 @@ interface HeaderProps {
 }
 
 const Header = ({ language, onLanguageChange }: HeaderProps) => {
-  const { user, signOut } = useAuth();
+  const { user, signOut, loading } = useAuth();
   const { isAdmin } = useAdminAccess();
+  
+  // Show Sign In button while loading to avoid flicker
+  const showSignedIn = !loading && user;
   const text = {
     en: {
       title: "US Justice Bot",
@@ -86,7 +89,7 @@ const Header = ({ language, onLanguageChange }: HeaderProps) => {
             
             {/* Auth Section */}
             <div className="flex items-center gap-2">
-              {user ? (
+              {showSignedIn ? (
                 <div className="flex items-center gap-2">
                   <Button asChild variant="secondary" size="sm">
                     <Link to="/my-cases">
