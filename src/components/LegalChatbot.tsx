@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Send, Bot, User, Scale, MessageCircle, Sparkles, AlertTriangle } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/lib/supabase";
+import { analytics } from "@/hooks/useAnalytics";
 
 interface Message {
   id: string;
@@ -108,6 +109,9 @@ export function LegalChatbot() {
     setInput("");
     setIsLoading(true);
     setIsExpanded(true);
+
+    // Track chat message
+    analytics.chatMessage(selectedArea, selectedState);
 
     try {
       const aiResponse = await generateAIResponse(userMessage.content);
