@@ -6,13 +6,61 @@ import { Textarea } from '@/components/ui/textarea';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
-import { Scale, TrendingUp, TrendingDown, FileText, DollarSign, Calendar, Target, Upload, CheckCircle2, ArrowRight } from 'lucide-react';
+import { Scale, TrendingUp, TrendingDown, FileText, DollarSign, Calendar, Target, Upload, CheckCircle2, ArrowRight, Gavel } from 'lucide-react';
 import { ComprehensiveCaseAnalysis } from './ComprehensiveCaseAnalysis';
 import { MeritScoreImprovements } from './MeritScoreImprovements';
 import { EvidenceUploader } from './EvidenceUploader';
+
+// All 50 US States
+const US_STATES = [
+  "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut",
+  "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa",
+  "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan",
+  "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire",
+  "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio",
+  "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota",
+  "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia",
+  "Wisconsin", "Wyoming", "District of Columbia"
+];
+
+// Legal Areas including Criminal Defense
+const LEGAL_AREAS = [
+  { value: "criminal-defense", label: "Criminal Defense", category: "criminal" },
+  { value: "dui-dwi", label: "DUI / DWI", category: "criminal" },
+  { value: "drug-crimes", label: "Drug Crimes", category: "criminal" },
+  { value: "theft-crimes", label: "Theft / Property Crimes", category: "criminal" },
+  { value: "assault-battery", label: "Assault & Battery", category: "criminal" },
+  { value: "domestic-violence", label: "Domestic Violence", category: "criminal" },
+  { value: "white-collar", label: "White Collar Crimes", category: "criminal" },
+  { value: "traffic-violations", label: "Traffic Violations", category: "criminal" },
+  { value: "expungement", label: "Expungement / Record Sealing", category: "criminal" },
+  { value: "family-law", label: "Family Law / Divorce", category: "civil" },
+  { value: "child-custody", label: "Child Custody", category: "civil" },
+  { value: "child-support", label: "Child Support", category: "civil" },
+  { value: "small-claims", label: "Small Claims", category: "civil" },
+  { value: "housing-tenant", label: "Housing / Tenant Rights", category: "civil" },
+  { value: "eviction-defense", label: "Eviction Defense", category: "civil" },
+  { value: "employment", label: "Employment / Wrongful Termination", category: "civil" },
+  { value: "wage-theft", label: "Wage Theft / Unpaid Wages", category: "civil" },
+  { value: "discrimination", label: "Discrimination / Civil Rights", category: "civil" },
+  { value: "personal-injury", label: "Personal Injury", category: "civil" },
+  { value: "medical-malpractice", label: "Medical Malpractice", category: "civil" },
+  { value: "contract-dispute", label: "Contract Disputes", category: "civil" },
+  { value: "consumer-protection", label: "Consumer Protection", category: "civil" },
+  { value: "debt-collection", label: "Debt Collection Defense", category: "civil" },
+  { value: "bankruptcy", label: "Bankruptcy", category: "civil" },
+  { value: "immigration", label: "Immigration", category: "civil" },
+  { value: "cps-child-welfare", label: "CPS / Child Welfare", category: "civil" },
+  { value: "human-rights", label: "Human Rights", category: "civil" },
+  { value: "workers-comp", label: "Workers' Compensation", category: "civil" },
+  { value: "social-security", label: "Social Security / Disability", category: "civil" },
+  { value: "veterans-benefits", label: "Veterans Benefits", category: "civil" },
+  { value: "other", label: "Other Legal Matter", category: "civil" }
+];
 
 interface CaseMeritScore {
   id: string;
@@ -193,33 +241,56 @@ export const CaseMeritAnalyzer: React.FC = () => {
                   value={caseTitle}
                   onChange={(e) => setCaseTitle(e.target.value)}
                 />
-                <Input
-                  placeholder="State (e.g., California) *"
-                  value={state}
-                  onChange={(e) => setState(e.target.value)}
-                />
+                <Select value={state} onValueChange={setState}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select State *" />
+                  </SelectTrigger>
+                  <SelectContent className="max-h-60">
+                    {US_STATES.map((s) => (
+                      <SelectItem key={s} value={s}>{s}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 <Input
                   placeholder="County (Optional)"
                   value={county}
                   onChange={(e) => setCounty(e.target.value)}
                 />
-                <Input
-                  placeholder="Legal Area (e.g., Contract Law) *"
-                  value={legalArea}
-                  onChange={(e) => setLegalArea(e.target.value)}
-                />
+                <Select value={legalArea} onValueChange={setLegalArea}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select Legal Area *" />
+                  </SelectTrigger>
+                  <SelectContent className="max-h-60">
+                    <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground flex items-center gap-1">
+                      <Gavel className="h-3 w-3" /> Criminal Law
+                    </div>
+                    {LEGAL_AREAS.filter(a => a.category === 'criminal').map((area) => (
+                      <SelectItem key={area.value} value={area.label}>{area.label}</SelectItem>
+                    ))}
+                    <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground flex items-center gap-1 mt-2">
+                      <Scale className="h-3 w-3" /> Civil Law
+                    </div>
+                    {LEGAL_AREAS.filter(a => a.category === 'civil').map((area) => (
+                      <SelectItem key={area.value} value={area.label}>{area.label}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium">Describe Your Legal Issue *</label>
                 <Textarea
-                  placeholder="Tell us your version of events in detail. Include:&#10;• What happened and when&#10;• Who was involved&#10;• What evidence you have (photos, documents, witnesses)&#10;• What outcome you're seeking&#10;• Any deadlines or time constraints&#10;&#10;The more detailed you are, the better we can analyze your case and provide guidance."
+                  placeholder={legalArea?.toLowerCase().includes('criminal') || legalArea?.toLowerCase().includes('dui') || legalArea?.toLowerCase().includes('assault') || legalArea?.toLowerCase().includes('drug') || legalArea?.toLowerCase().includes('theft') ? 
+                    "Tell us about your criminal case in detail. Include:\n• What charges you're facing\n• When and where the incident occurred\n• What happened from your perspective\n• Any evidence (police reports, videos, witnesses)\n• Your arrest and bail status\n• Any prior criminal history\n• What outcome you're hoping for\n\nThe more detailed you are, the better we can analyze defenses and strategies." :
+                    "Tell us your version of events in detail. Include:\n• What happened and when\n• Who was involved\n• What evidence you have (photos, documents, witnesses)\n• What outcome you're seeking\n• Any deadlines or time constraints\n\nThe more detailed you are, the better we can analyze your case and provide guidance."}
                   value={caseDescription}
                   onChange={(e) => setCaseDescription(e.target.value)}
                   rows={10}
                   className="resize-none"
                 />
                 <p className="text-xs text-muted-foreground">
-                  This is your legal triage - describe everything relevant to help our AI understand your situation
+                  {legalArea?.toLowerCase().includes('criminal') || legalArea?.toLowerCase().includes('dui') ? 
+                    "Your information is confidential. We'll analyze potential defenses under your state's criminal laws." :
+                    "This is your legal triage - describe everything relevant to help our AI understand your situation"}
                 </p>
               </div>
               <Button 

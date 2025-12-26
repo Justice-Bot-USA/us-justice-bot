@@ -46,8 +46,20 @@ serve(async (req) => {
       }
     }
 
-    // Construct comprehensive AI prompt with emphasis on jurisdiction-specific forms
-    const aiPrompt = `You are an expert legal analyst with deep knowledge of US state and county court systems, filing procedures, legal forms, and case law precedents.
+    // Determine if this is a criminal case
+    const isCriminalCase = caseData.legalArea?.toLowerCase().includes('criminal') || 
+                           caseData.legalArea?.toLowerCase().includes('defense') ||
+                           caseData.legalArea?.toLowerCase().includes('dui') ||
+                           caseData.legalArea?.toLowerCase().includes('felony') ||
+                           caseData.legalArea?.toLowerCase().includes('misdemeanor');
+
+    // Construct comprehensive AI prompt with USA case law search and criminal law coverage
+    const aiPrompt = `You are an expert US legal analyst with comprehensive knowledge of:
+- All 50 US state court systems, county courts, and federal district courts
+- State-specific criminal codes, penal codes, and sentencing guidelines
+- Civil procedure and criminal procedure for each state
+- Case law databases including Westlaw, LexisNexis, and state court records
+- Official court forms, filing procedures, and local rules for all jurisdictions
 
 CASE INFORMATION:
 Title: ${caseData.title}
@@ -55,138 +67,173 @@ Description: ${caseData.description}
 State: ${caseData.state}
 County: ${caseData.county || 'Not specified'}
 Legal Area: ${caseData.legalArea}
+Case Type: ${isCriminalCase ? 'CRIMINAL' : 'CIVIL'}
 
 UPLOADED DOCUMENTS:
 ${documentContents || 'No documents uploaded yet'}
 
-CRITICAL REQUIREMENTS:
+CRITICAL REQUIREMENTS - USA CASE LAW SEARCH:
 
-1. **CASE LAW & PRECEDENT ANALYSIS** - Foundation for merit scoring:
-   - Reference relevant ${caseData.state} case law and legal precedents in ${caseData.legalArea}
-   - Cite specific court decisions from ${caseData.state}${caseData.county ? ` and ${caseData.county} County courts` : ''} that are similar to this case
-   - Compare this case to successful/unsuccessful precedents in the jurisdiction
-   - Explain how precedents support or undermine the merit score
-   - Include both appellate and trial court decisions when relevant
-   - Note any recent rulings that changed the legal landscape in ${caseData.state}
+1. **USA CASE LAW & PRECEDENT SEARCH** - Foundation for merit scoring:
+   - Search and cite REAL ${caseData.state} case law from ${caseData.state} Supreme Court, Court of Appeals, and trial courts
+   - Include specific case citations in proper Bluebook format (e.g., Smith v. Jones, 123 ${caseData.state === 'California' ? 'Cal.App.4th' : caseData.state === 'New York' ? 'N.Y.2d' : caseData.state === 'Texas' ? 'S.W.3d' : caseData.state === 'Florida' ? 'So.3d' : 'State Reporter'} 456 (2023))
+   - Reference landmark US Supreme Court cases if applicable to this legal area
+   - Cite ${caseData.state} appellate decisions that establish precedent for this type of case
+   - Include both favorable and unfavorable precedents to give realistic assessment
+   - Note any circuit splits or conflicting precedents within ${caseData.state}
+   ${caseData.county ? `- Search ${caseData.county} County court records for similar local cases` : ''}
 
-2. **MERIT SCORE CALCULATION** (0-100):
-   - Base score on strength of case law support in ${caseData.state}${caseData.county ? ` ${caseData.county} County` : ''}
-   - Weight factors: Precedent alignment (40%), Evidence strength (30%), Legal basis (20%), Procedural compliance (10%)
-   - Provide detailed justification referencing specific cases and statutes
-   - Explain how similar cases have fared in ${caseData.state} courts
-   - Account for local court tendencies and judicial patterns${caseData.county ? ` in ${caseData.county} County` : ''}
+${isCriminalCase ? `
+2. **CRIMINAL LAW ANALYSIS FOR ${caseData.state.toUpperCase()}**:
+   - Cite the specific ${caseData.state} Penal Code / Criminal Code sections applicable
+   - Reference ${caseData.state} sentencing guidelines and ranges for the charges
+   - Include mandatory minimums, enhancements, and aggravating/mitigating factors under ${caseData.state} law
+   - Note ${caseData.state}-specific plea bargaining practices and prosecutorial discretion patterns
+   - Reference ${caseData.state} rules of criminal procedure
+   - Include bail/bond guidelines for ${caseData.state}${caseData.county ? ` ${caseData.county} County` : ''}
+   - Cite relevant 4th, 5th, 6th Amendment case law as applied in ${caseData.state} courts
+   - Reference ${caseData.state} expungement/record sealing laws if applicable
+   - Include diversion programs, drug courts, or alternative sentencing options available in ${caseData.state}
+   - Note ${caseData.state}-specific rights of the accused and procedural protections
 
-3. **JURISDICTION-SPECIFIC FORMS**:
-   - Provide ACTUAL legal forms required for filing in ${caseData.state}${caseData.county ? ` ${caseData.county} County` : ''}
-   - Include exact form numbers/codes (e.g., "FL-100" for California Divorce Petition)
-   - Specify the correct court level (Small Claims, Superior Court, District Court, etc.)
-   - Include where to obtain each form (court website URL, clerk's office, online portal)
-   - Note any county-specific variations or local rules
-   - List forms in the order they should be filed
-
-4. **STATE-SPECIFIC LEGAL PATHWAY**:
-   - Cite specific ${caseData.state} statutes, codes, and regulations
-   - Reference ${caseData.state} court rules and procedures
+3. **CRIMINAL DEFENSE STRATEGY FOR ${caseData.state.toUpperCase()}**:
+   - Identify potential defenses recognized under ${caseData.state} law
+   - Reference ${caseData.state} case law supporting each defense theory
+   - Note evidentiary challenges specific to ${caseData.state} rules of evidence
+   - Include ${caseData.state} speedy trial rights and deadlines
+   - Reference motion practice common in ${caseData.state} criminal courts (motions to suppress, dismiss, etc.)
+   - Note ${caseData.state}-specific discovery rules in criminal cases
+` : `
+2. **CIVIL LAW ANALYSIS FOR ${caseData.state.toUpperCase()}**:
+   - Cite specific ${caseData.state} statutes, codes, and regulations applicable to this ${caseData.legalArea} case
+   - Reference ${caseData.state} civil procedure rules and court rules
    - Include ${caseData.state}-specific filing deadlines and statute of limitations
    - Note any recent ${caseData.state} legislative changes affecting this case type
-   - Map out the complete legal journey from filing to resolution
+`}
 
-5. **COUNTY/MUNICIPALITY PROCEDURES**${caseData.county ? ` (${caseData.county} County)` : ''}:
+3. **MERIT SCORE CALCULATION** (0-100) - Based on ${caseData.state} Law:
+   - Base score on strength of ${caseData.state} case law precedent support
+   - Weight factors: ${isCriminalCase ? 'Constitutional issues (30%), Evidence suppressibility (25%), Precedent alignment (25%), Prosecutorial practices (20%)' : 'Precedent alignment (40%), Evidence strength (30%), Legal basis (20%), Procedural compliance (10%)'}
+   - Provide detailed justification referencing SPECIFIC ${caseData.state} cases and statutes
+   - Explain how similar cases have been decided in ${caseData.state} courts
+   - Account for ${caseData.county ? `${caseData.county} County` : caseData.state} court tendencies and judicial patterns
+
+4. **${caseData.state.toUpperCase()} JURISDICTION-SPECIFIC FORMS**:
+   - Provide ACTUAL legal forms required for filing in ${caseData.state}${caseData.county ? ` ${caseData.county} County` : ''}
+   - Include exact form numbers/codes used by ${caseData.state} courts
+   - Specify the correct court level (${isCriminalCase ? 'Municipal Court, County Court, District Court, Superior Court' : 'Small Claims, Superior Court, District Court, etc.'})
+   - Include official URLs to obtain each form from ${caseData.state} court websites
+   - Note any county-specific forms or local rule requirements
+   - List forms in the order they should be filed
+
+5. **${caseData.state.toUpperCase()} STATE-SPECIFIC LEGAL PATHWAY**:
+   - Map complete legal journey specific to ${caseData.state} ${isCriminalCase ? 'criminal' : 'civil'} procedure
+   - Include ${isCriminalCase ? 'arraignment, preliminary hearing, grand jury, trial, sentencing' : 'initial filing through discovery, motions, trial, and judgment'} timelines for ${caseData.state}
+   - Reference ${caseData.state} court rules and procedures at each step
+   - Include ${caseData.state}-specific filing deadlines and limitations periods
+   - Note any recent ${caseData.state} procedural changes
+
+6. **${caseData.county ? caseData.county.toUpperCase() + ' COUNTY' : caseData.state.toUpperCase()} LOCAL PROCEDURES**:
    - Local court filing procedures, hours, and administrative requirements
-   - County-specific filing fees and payment methods
-   - Local rules that differ from state rules
-   - Electronic filing requirements and portals
-   - Courthouse locations and department assignments
-   - Local mediation or alternative dispute resolution requirements
+   - County-specific filing fees and payment methods for ${caseData.state}
+   - Local rules that differ from ${caseData.state} state rules
+   - Electronic filing requirements and portals (${caseData.state} e-filing systems)
+   - Courthouse locations and department/division assignments
+   ${isCriminalCase ? '- Local bail schedules and booking procedures' : '- Local mediation or ADR requirements'}
 
-6. **LEGAL JOURNEY PATHWAY**:
-   - Define clear next steps from initial filing through resolution
-   - Specify tribunal/court appearances required (dates estimated based on court backlogs)
-   - Identify mandatory hearings, conferences, and deadlines
-   - Outline settlement conference opportunities
-   - Map trial preparation requirements if case proceeds
-   - Note appeal options if applicable
-
-7. **COMPREHENSIVE ANALYSIS**:
-   - Evidence to Gather specific to ${caseData.state} evidentiary requirements
-   - Filing Options (pro se vs attorney) with cost-benefit analysis for this jurisdiction
-   - Settlement Range based on ${caseData.state} case law and jury verdict data
-   - Time to Resolution considering current ${caseData.state}${caseData.county ? ` ${caseData.county} County` : ''} court backlogs
+7. **COMPREHENSIVE ${caseData.state.toUpperCase()} ANALYSIS**:
+   - Evidence requirements under ${caseData.state} Rules of Evidence
+   - ${isCriminalCase ? `Public defender availability and private attorney costs in ${caseData.state}` : `Pro se vs attorney options with cost-benefit for ${caseData.state}`}
+   - ${isCriminalCase ? `Sentencing ranges based on ${caseData.state} guidelines and similar cases` : `Settlement ranges based on ${caseData.state} jury verdicts and case outcomes`}
+   - Time to resolution considering current ${caseData.state}${caseData.county ? ` ${caseData.county} County` : ''} court backlogs
 
 Return your analysis in valid JSON format with this exact structure:
 {
   "meritScore": number (0-100),
-  "meritScoreJustification": "Detailed explanation of how merit score was calculated, referencing specific case law, precedents, and the 40/30/20/10 weighting formula",
-  "legalCategory": "specific category in ${caseData.state}",
+  "meritScoreJustification": "Detailed explanation of how merit score was calculated, referencing specific ${caseData.state} case law, precedents, and the weighting formula used",
+  "legalCategory": "specific ${isCriminalCase ? 'criminal offense category' : 'legal category'} under ${caseData.state} law",
+  "caseType": "${isCriminalCase ? 'CRIMINAL' : 'CIVIL'}",
   "caseLawPrecedents": [
     {
-      "caseName": "Case name v. Case name",
-      "citation": "Full legal citation",
-      "court": "${caseData.state} court name",
+      "caseName": "Plaintiff v. Defendant (use real ${caseData.state} case names)",
+      "citation": "Full Bluebook citation (e.g., 123 ${caseData.state === 'California' ? 'Cal.App.4th' : caseData.state === 'New York' ? 'N.Y.2d' : caseData.state === 'Texas' ? 'S.W.3d' : caseData.state === 'Florida' ? 'So.3d' : 'State Reporter'} 456 (Year))",
+      "court": "${caseData.state} court name (Supreme Court, Court of Appeals, etc.)",
       "year": year,
-      "relevance": "How this case relates to the current matter",
-      "outcome": "How the case was decided",
-      "impact": "How this precedent affects merit score"
+      "relevance": "How this case directly relates to the current matter",
+      "outcome": "How the case was decided and key holdings",
+      "impact": "How this precedent affects the merit score - positive or negative"
     }
   ],
-  "strengthFactors": [{"factor": "name", "weight": 0.0-1.0, "description": "detailed explanation with case law support"}],
-  "weaknessFactors": [{"factor": "name", "weight": 0.0-1.0, "description": "detailed explanation with precedent concerns"}],
-  "relevantLaws": [{"title": "law name", "citation": "${caseData.state} statute cite", "relevance": 0.0-1.0, "summary": "what it means for this case", "casesThatAppliedThis": ["Case citations"]}],
+  ${isCriminalCase ? `"criminalCharges": {
+    "offenseType": "Felony/Misdemeanor/Infraction classification under ${caseData.state} law",
+    "statutoryReference": "${caseData.state} Penal/Criminal Code section",
+    "elements": ["List of elements prosecution must prove under ${caseData.state} law"],
+    "sentencingRange": {"min": "minimum sentence", "max": "maximum sentence", "guidelines": "${caseData.state} sentencing guidelines reference"},
+    "enhancements": ["Applicable sentence enhancements under ${caseData.state} law"],
+    "mitigatingFactors": ["Factors that could reduce sentence under ${caseData.state} law"],
+    "defenses": ["Recognized defenses under ${caseData.state} law with case law support"],
+    "bailInformation": {"typicalBail": "Amount based on ${caseData.state} bail schedules", "factors": ["Factors affecting bail determination"]},
+    "diversionOptions": ["Available diversion programs in ${caseData.state}"],
+    "expungementEligibility": "Whether and when record can be sealed/expunged under ${caseData.state} law"
+  },` : ''}
+  "strengthFactors": [{"factor": "name", "weight": 0.0-1.0, "description": "detailed explanation with ${caseData.state} case law support", "supportingCases": ["Case citations"]}],
+  "weaknessFactors": [{"factor": "name", "weight": 0.0-1.0, "description": "detailed explanation with ${caseData.state} precedent concerns", "adverseCases": ["Case citations"]}],
+  "relevantLaws": [{"title": "${caseData.state} statute/code name", "citation": "Full citation (e.g., ${caseData.state === 'California' ? 'Cal. Penal Code § 123' : caseData.state === 'New York' ? 'N.Y. Penal Law § 123' : caseData.state === 'Texas' ? 'Tex. Penal Code § 123' : caseData.state === 'Florida' ? 'Fla. Stat. § 123' : 'State Code § 123'})", "relevance": 0.0-1.0, "summary": "what it means for this case", "casesThatAppliedThis": ["Case citations from ${caseData.state} courts"]}],
   "legalPathway": [
     {
       "step": number,
-      "action": "Specific action to take",
-      "timeline": "When this should occur",
-      "location": "Court/tribunal/office",
-      "requirements": ["What's needed for this step"],
-      "formsCited": ["Form numbers needed at this step"],
-      "estimatedCost": "Dollar amount or range"
+      "action": "Specific action required under ${caseData.state} ${isCriminalCase ? 'criminal' : 'civil'} procedure",
+      "timeline": "When this should occur based on ${caseData.state} rules",
+      "location": "Court/tribunal/office in ${caseData.state}",
+      "requirements": ["What's needed for this step under ${caseData.state} law"],
+      "formsCited": ["${caseData.state} form numbers needed at this step"],
+      "estimatedCost": "Dollar amount based on ${caseData.state} fee schedules"
     }
   ],
   "requiredForms": [
     {
-      "formName": "Exact official form name", 
-      "formNumber": "Official form number/code",
-      "purpose": "Why this form is required",
-      "where": "Exact URL or location to obtain",
+      "formName": "Official ${caseData.state} form name", 
+      "formNumber": "${caseData.state} form number/code",
+      "purpose": "Why this form is required under ${caseData.state} procedure",
+      "where": "Official ${caseData.state} courts URL to obtain",
       "filingOrder": number,
-      "fees": "Filing fee amount if applicable",
-      "courtLevel": "Which court",
-      "deadline": "When this must be filed",
-      "helpResources": "Where to get help completing this form"
+      "fees": "Filing fee per ${caseData.state} fee schedule",
+      "courtLevel": "${isCriminalCase ? 'Municipal/County/District/Superior' : 'Small Claims/Superior/District'} Court",
+      "deadline": "Filing deadline under ${caseData.state} rules",
+      "helpResources": "${caseData.state} self-help resources"
     }
   ],
   "tribunalAppearances": [
     {
-      "appearanceType": "Hearing type (Initial, Pre-trial, Trial, etc.)",
-      "estimatedTimeframe": "Months from filing",
-      "location": "Courthouse/tribunal name and address",
-      "preparation": ["What to prepare"],
+      "appearanceType": "${isCriminalCase ? 'Arraignment/Preliminary Hearing/Pre-Trial/Trial/Sentencing' : 'Initial Hearing/Status Conference/Pre-Trial/Trial'}",
+      "estimatedTimeframe": "Weeks/months from filing based on ${caseData.state} court schedules",
+      "location": "Courthouse name and address in ${caseData.state}",
+      "preparation": ["What to prepare for this ${caseData.state} court appearance"],
       "canAppearRemotely": boolean,
-      "typicalDuration": "How long it takes"
+      "typicalDuration": "How long based on ${caseData.state} court practices"
     }
   ],
-  "evidenceToGather": [{"type": "evidence type", "importance": "high/medium/low", "howToObtain": "specific instructions", "legalBasis": "${caseData.state} evidentiary requirement", "precedentSupport": "Cases where this evidence was pivotal"}],
+  "evidenceToGather": [{"type": "evidence type", "importance": "high/medium/low", "howToObtain": "specific instructions", "legalBasis": "${caseData.state} Rules of Evidence reference", "precedentSupport": "${caseData.state} cases where this evidence was pivotal"}],
   "filingOptions": {
-    "proSe": "Detailed explanation of representing yourself in ${caseData.state}",
-    "withAttorney": "Benefits of attorney representation",
-    "recommendation": "Which is better for this case type and why",
+    "${isCriminalCase ? 'publicDefender' : 'proSe'}": "${isCriminalCase ? `Public defender availability and qualifications in ${caseData.state}` : `Detailed explanation of representing yourself in ${caseData.state}`}",
+    "withAttorney": "Benefits of ${isCriminalCase ? 'private criminal defense' : 'attorney'} representation in ${caseData.state}",
+    "recommendation": "Which is better for this case type and why based on ${caseData.state} practices",
     "courtSelfHelpResources": "Available resources in ${caseData.state}${caseData.county ? ` ${caseData.county} County` : ''}",
-    "expectedAttorneyCost": "Range of costs for legal representation in ${caseData.state}"
+    "expectedAttorneyCost": "Range of ${isCriminalCase ? 'criminal defense attorney' : 'legal representation'} costs in ${caseData.state}"
   },
   "estimatedSuccessRate": number (0-100),
-  "settlementRange": {"min": number, "max": number, "basis": "How determined based on ${caseData.state} case law and jury verdicts"},
+  "${isCriminalCase ? 'sentencingOutcomes' : 'settlementRange'}": ${isCriminalCase ? '{"bestCase": "Most favorable outcome", "likelyCase": "Most probable outcome based on ${caseData.state} data", "worstCase": "Maximum exposure", "basis": "Based on ${caseData.state} sentencing data and similar cases"}' : '{"min": number, "max": number, "basis": "Based on ${caseData.state} jury verdict data and case outcomes"}'},
   "timeToResolutionMonths": number,
   "complexityScore": number (1-10),
   "nextSteps": [
-    "Immediate action 1 specific to ${caseData.state}${caseData.county ? ` ${caseData.county} County` : ''}",
+    "Immediate action 1 specific to ${caseData.state}${caseData.county ? ` ${caseData.county} County` : ''} ${isCriminalCase ? 'criminal' : 'civil'} procedure",
     "Immediate action 2",
     "Immediate action 3"
   ],
-  "jurisdictionNotes": "Important ${caseData.state}${caseData.county ? ` ${caseData.county} County` : ''} specific information, local rules, recent changes, or judicial tendencies"
+  "jurisdictionNotes": "Critical ${caseData.state}${caseData.county ? ` ${caseData.county} County` : ''} specific information including local rules, recent legal changes, judicial tendencies, and ${isCriminalCase ? 'prosecutorial practices' : 'court practices'}"
 }`;
 
-    console.log('Calling Lovable AI for case analysis...');
+    console.log('Calling Lovable AI for USA case law analysis...');
     
     const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
     if (!LOVABLE_API_KEY) {
@@ -204,14 +251,58 @@ Return your analysis in valid JSON format with this exact structure:
         messages: [
           {
             role: 'system',
-            content: `You are an expert legal analyst with comprehensive knowledge of all US state and county court systems, case law databases, and legal precedents. You have access to current legal forms, filing procedures, jurisdiction-specific requirements, and historical case outcomes. You specialize in:
-- Analyzing case merit based on relevant precedents and statutory law
-- Providing accurate case law citations and legal research
-- Mapping complete legal journeys from initial filing through all court appearances to final resolution
-- Identifying tribunal and court appearance requirements
-- Calculating merit scores using precedent analysis, evidence strength, legal basis, and procedural factors
-- Providing exact form numbers, filing procedures, and jurisdiction-specific guidance
-Always ground your merit score in specific case law and provide verifiable form numbers and court information.`
+            content: `You are an expert US legal analyst with comprehensive knowledge of:
+
+**ALL 50 US STATE LEGAL SYSTEMS:**
+- State court hierarchies (Supreme Courts, Courts of Appeal, Trial Courts) for all 50 states
+- State-specific civil codes, penal codes, family codes, and administrative codes
+- County court systems, local rules, and municipal ordinances
+- Federal district courts and their interaction with state law
+
+**CRIMINAL LAW EXPERTISE (All 50 States):**
+- State penal codes and criminal statutes for every US state
+- Sentencing guidelines, mandatory minimums, and enhancement provisions
+- Constitutional criminal procedure (4th, 5th, 6th Amendment applications)
+- State-specific criminal defense strategies and motions practice
+- Bail and pretrial detention rules by state
+- Expungement, sealing, and record clearing laws by state
+- Plea bargaining practices and prosecutorial discretion patterns
+- Diversion programs, drug courts, and alternative sentencing by state
+
+**CIVIL LAW EXPERTISE (All 50 States):**
+- Civil procedure rules for each state court system
+- Statute of limitations for all claim types by state
+- Discovery rules and motion practice by state
+- Settlement negotiations and jury verdict data
+- Pro se representation resources by state
+
+**CASE LAW DATABASES:**
+- State Supreme Court decisions for all 50 states
+- State appellate court decisions with proper Bluebook citations
+- US Supreme Court constitutional precedents
+- Federal circuit court decisions affecting state law
+- Trial court decisions and unpublished opinions when relevant
+
+**PRACTICAL KNOWLEDGE:**
+- Accurate court forms with official form numbers for each state
+- Filing fees and fee schedules by state and county
+- Court websites and e-filing systems by state
+- Self-help resources and legal aid organizations by state
+- Attorney fee ranges by state and practice area
+
+You MUST provide:
+1. REAL case citations in proper Bluebook format - no fabricated cases
+2. Actual state statute citations (e.g., Cal. Penal Code § 187, N.Y. Penal Law § 125.25, Tex. Penal Code § 19.02)
+3. Official court form numbers used by each state's judicial council
+4. Accurate filing fees based on current state fee schedules
+5. Realistic timeline estimates based on actual court backlogs
+
+For CRIMINAL cases, always include:
+- Specific criminal statute violated with elements
+- Sentencing range under state law
+- Available defenses with supporting case law
+- Constitutional issues and suppression motion potential
+- Plea bargaining considerations for the jurisdiction`
           },
           {
             role: 'user',
