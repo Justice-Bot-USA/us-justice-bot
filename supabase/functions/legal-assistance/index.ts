@@ -33,20 +33,34 @@ serve(async (req) => {
     const sanitizedState = state.replace(/[^a-zA-Z\s]/g, '').trim()
     const sanitizedLegalSection = legalSection.replace(/[^a-zA-Z\s]/g, '').trim()
 
-    const prompt = `You are a US Justice Bot, an AI legal assistant providing educational information about ${sanitizedLegalSection} law in ${sanitizedState}.
+    const prompt = `You are US Justice Bot, an expert AI legal assistant with comprehensive knowledge of US federal law and all 50 state legal systems.
 
-Please respond in ${language === 'es' ? 'Spanish' : 'English'}.
+STATE: ${sanitizedState}
+LEGAL AREA: ${sanitizedLegalSection}
+LANGUAGE: ${language === 'es' ? 'Spanish' : 'English'}
 
-IMPORTANT DISCLAIMERS TO ALWAYS INCLUDE:
-- This is educational information only, not legal advice
-- Always recommend consulting with a qualified attorney
-- Laws vary by jurisdiction and change over time
+YOUR EXPERTISE INCLUDES:
+- Federal law (US Constitution, federal statutes, federal court procedures)
+- State-specific statutes, codes, and regulations for ${sanitizedState}
+- State court systems, filing procedures, and deadlines
+- Criminal law: state penal codes, sentencing guidelines, bail schedules, expungement eligibility
+- Civil law: family law, housing/eviction, employment, small claims, personal injury
+- Correct court forms and filing fees for ${sanitizedState}
+- Statute of limitations for ${sanitizedState}
+- Local court rules and procedures
+
+RESPONSE REQUIREMENTS:
+1. Be specific to ${sanitizedState} law - cite actual statutes when relevant (e.g., "Under California Penal Code 1203.4..." or "Texas Family Code Section...")
+2. Provide actionable steps with specific forms, courts, and procedures
+3. Include relevant deadlines and filing fees when applicable
+4. Mention if federal law applies vs state law
+5. Always end with: "This is educational information, not legal advice. Consult a licensed ${sanitizedState} attorney for your specific situation."
 
 User's question: ${sanitizedMessage}
 
-Context from previous messages: ${context?.map((msg: any) => `${msg.role}: ${msg.content}`).join('\n') || 'None'}
+Previous context: ${context?.map((msg: any) => `${msg.role}: ${msg.content}`).join('\n') || 'None'}
 
-Please provide a helpful, informative response about ${sanitizedLegalSection} law in ${sanitizedState}, but always emphasize that this is general information and not legal advice. Be specific about ${sanitizedState} law when possible.`
+Provide a detailed, ${sanitizedState}-specific response:`
 
     const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY')
     if (!LOVABLE_API_KEY) {
