@@ -20,6 +20,7 @@ import AIToolsInteractive from "./pages/AIToolsInteractive";
 import LegalAreaPage from "./pages/LegalAreaPage";
 import FormsLibrary from "./pages/FormsLibrary";
 import CriminalDefenseGuide from "./pages/CriminalDefenseGuide";
+import CaseLawSearch from "./pages/CaseLawSearch";
 
 const queryClient = new QueryClient();
 
@@ -45,6 +46,7 @@ export default function App() {
             <Route path="/legal-areas/:areaId" element={<LegalAreaPage />} />
             <Route path="/forms-library" element={<FormsLibrary />} />
             <Route path="/criminal-defense-guide" element={<CriminalDefenseGuide />} />
+            <Route path="/case-law-search" element={<CaseLawSearch />} />
             {/* add more routes above this */}
             <Route path="*" element={<NotFound />} />
           </Routes>
