@@ -34,6 +34,7 @@ const USCourtTriage = lazy(() => import("@/components/USCourtTriage"));
 const AIToolsShowcase = lazy(() => import("@/components/AIToolsShowcase"));
 const CourtLocator = lazy(() => import("@/components/CourtLocator"));
 const FeatureGrid = lazy(() => import("@/components/FeatureGrid"));
+const LegalChatbot = lazy(() => import("@/components/LegalChatbot"));
 
 // Lazy load engagement widgets
 const SocialProofTicker = lazy(() => import("@/components/SocialProofTicker"));
@@ -173,6 +174,11 @@ const Index = () => {
         {/* US Court Triage - matches Canada tribunals */}
         <Suspense fallback={<LoadingSection />}>
           <USCourtTriage />
+        </Suspense>
+        
+        {/* Legal Chatbot - Free AI Assistant */}
+        <Suspense fallback={<LoadingSection />}>
+          <LegalChatbot />
         </Suspense>
         
         {/* Merit Score Calculator */}
