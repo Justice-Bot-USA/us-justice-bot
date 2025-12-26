@@ -27,6 +27,14 @@ const UrgencyTimer = lazy(() => import("@/components/UrgencyTimer"));
 const FeatureHighlightBanner = lazy(() => import("@/components/FeatureHighlightBanner"));
 const StatesBanner = lazy(() => import("@/components/StatesBanner"));
 
+// New Canada-matching components
+const StatsBar = lazy(() => import("@/components/StatsBar"));
+const QuickLegalTools = lazy(() => import("@/components/QuickLegalTools"));
+const USCourtTriage = lazy(() => import("@/components/USCourtTriage"));
+const AIToolsShowcase = lazy(() => import("@/components/AIToolsShowcase"));
+const CourtLocator = lazy(() => import("@/components/CourtLocator"));
+const FeatureGrid = lazy(() => import("@/components/FeatureGrid"));
+
 // Lazy load engagement widgets
 const SocialProofTicker = lazy(() => import("@/components/SocialProofTicker"));
 const LeadCaptureModal = lazy(() => import("@/components/LeadCaptureModal"));
@@ -120,6 +128,11 @@ const Index = () => {
       <Header language={language} onLanguageChange={setLanguage} />
       
       <main id="main-content" className="space-y-0">
+        {/* Stats Bar - matches Canada */}
+        <Suspense fallback={null}>
+          <StatsBar />
+        </Suspense>
+        
         <HeroSection language={language} onGetStarted={handleGetStarted} />
         
         {/* States Banner */}
@@ -127,25 +140,14 @@ const Index = () => {
           <StatesBanner />
         </Suspense>
         
-        {/* Feature Highlight */}
-        <Suspense fallback={null}>
-          <div className="py-4">
-            <FeatureHighlightBanner />
-          </div>
-        </Suspense>
-        
-        {/* Urgency Timer */}
-        <Suspense fallback={null}>
-          <div className="container mx-auto px-4 py-8">
-            <UrgencyTimer />
-          </div>
-        </Suspense>
-        
-        {/* Journey Flowchart */}
+        {/* AI Tools Showcase - matches Canada */}
         <Suspense fallback={<LoadingSection />}>
-          <div className="py-8">
-            <JourneyFlowchart />
-          </div>
+          <AIToolsShowcase />
+        </Suspense>
+        
+        {/* Quick Legal Tools - matches Canada */}
+        <Suspense fallback={<LoadingSection />}>
+          <QuickLegalTools />
         </Suspense>
         
         <div className="py-8">
@@ -168,11 +170,9 @@ const Index = () => {
           </div>
         </section>
         
-        {/* Triage Section */}
+        {/* US Court Triage - matches Canada tribunals */}
         <Suspense fallback={<LoadingSection />}>
-          <div className="py-12">
-            <TriageSection />
-          </div>
+          <USCourtTriage />
         </Suspense>
         
         {/* Merit Score Calculator */}
