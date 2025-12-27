@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Scale, Globe, User, LogOut, Settings, Briefcase, Sparkles, FileText, TrendingUp, Menu, Gavel, BookOpen } from "lucide-react";
+import { Scale, Globe, User, LogOut, Settings, Briefcase, Sparkles, FileText, TrendingUp, Menu, Gavel, BookOpen, FolderOpen } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useAdminAccess } from "@/hooks/useAdminAccess";
 import logoImage from "@/assets/us-justice-bot-logo.png";
@@ -117,6 +117,12 @@ const Header = ({ language, onLanguageChange }: HeaderProps) => {
                       My Cases
                     </Link>
                   </Button>
+                  <Button asChild variant="ghost" size="sm" className="text-primary-foreground hover:bg-white/10">
+                    <Link to="/book-of-documents">
+                      <FolderOpen className="w-4 h-4 mr-1" aria-hidden="true" />
+                      Documents
+                    </Link>
+                  </Button>
                   {isAdmin && (
                     <Button asChild variant="secondary" size="sm">
                       <Link to="/admin">
@@ -216,6 +222,12 @@ const Header = ({ language, onLanguageChange }: HeaderProps) => {
                           <Link to="/my-cases">
                             <Briefcase className="w-4 h-4 mr-2" aria-hidden="true" />
                             My Cases
+                          </Link>
+                        </Button>
+                        <Button asChild variant="secondary" className="w-full justify-start">
+                          <Link to="/book-of-documents">
+                            <FolderOpen className="w-4 h-4 mr-2" aria-hidden="true" />
+                            Book of Documents
                           </Link>
                         </Button>
                         {isAdmin && (

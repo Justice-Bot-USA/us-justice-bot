@@ -21,6 +21,7 @@ import LegalAreaPage from "./pages/LegalAreaPage";
 import FormsLibrary from "./pages/FormsLibrary";
 import CriminalDefenseGuide from "./pages/CriminalDefenseGuide";
 import CaseLawSearch from "./pages/CaseLawSearch";
+import BookOfDocuments from "./pages/BookOfDocuments";
 
 const queryClient = new QueryClient();
 
@@ -47,6 +48,7 @@ export default function App() {
             <Route path="/forms-library" element={<FormsLibrary />} />
             <Route path="/criminal-defense-guide" element={<CriminalDefenseGuide />} />
             <Route path="/case-law-search" element={<CaseLawSearch />} />
+            <Route path="/book-of-documents" element={<BookOfDocuments />} />
             {/* add more routes above this */}
             <Route path="*" element={<NotFound />} />
           </Routes>
