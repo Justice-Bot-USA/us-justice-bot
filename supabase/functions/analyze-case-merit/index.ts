@@ -1,23 +1,19 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { corsHeaders, handleCors, requireUser } from "../_shared/auth.ts";
+import { successResponse, errorResponse } from "../_shared/errors.ts";
+import { createAdminClient } from "../_shared/db.ts";
 
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-};
-
-serve(async (req) => {
-  if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders });
-  }
+Deno.serve(async (req: Request) => {
+  // Handle CORS preflight
+  const corsResponse = handleCors(req);
+  if (corsResponse) return corsResponse;
 
   try {
-    // Use service role key to bypass RLS for inserting case records
-    const supabaseClient = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
-    );
+    // Require authentication
+    await requireUser(req);
+    
+    // Use admin client to bypass RLS for inserting case records
+    const supabaseClient = createAdminClient();
 
     const { caseData, uploadedFiles } = await req.json();
     
@@ -236,12 +232,12 @@ Return your analysis in valid JSON format with this exact structure:
 
     console.log('Calling Lovable AI for USA case law analysis...');
     
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
+    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) {
-      throw new Error('LOVABLE_API_KEY not configured');
+      throw new Error("LOVABLE_API_KEY not configured");
     }
 
-    const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+    const aiResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${LOVABLE_API_KEY}`,
@@ -402,45 +398,39 @@ For CRIMINAL cases, always include:
 
     console.log('Case analysis completed successfully');
 
-    return new Response(
-      JSON.stringify({
-        success: true,
-        meritScore: analysis.meritScore.toFixed(2),
-        meritScoreJustification: analysis.meritScoreJustification,
-        legalCategory: analysis.legalCategory,
-        analysis: {
-          caseLawPrecedents: analysis.caseLawPrecedents || [],
-          strengthFactors: analysis.strengthFactors,
-          weaknessFactors: analysis.weaknessFactors,
-          relevantLaws: analysis.relevantLaws,
-          legalPathway: analysis.legalPathway,
-          requiredForms: analysis.requiredForms,
-          tribunalAppearances: analysis.tribunalAppearances || [],
-          evidenceToGather: analysis.evidenceToGather,
-          filingOptions: analysis.filingOptions,
-          estimatedSuccessRate: analysis.estimatedSuccessRate?.toFixed(2) || '0.00',
-          settlementRange: {
-            min: analysis.settlementRange?.min?.toFixed(2) || '0.00',
-            max: analysis.settlementRange?.max?.toFixed(2) || '0.00',
-            basis: analysis.settlementRange?.basis || ''
-          },
-          timeToResolutionMonths: analysis.timeToResolutionMonths,
-          complexityScore: analysis.complexityScore,
-          nextSteps: analysis.nextSteps,
-          jurisdictionNotes: analysis.jurisdictionNotes,
-          improvementSuggestions
+    return successResponse({
+      success: true,
+      meritScore: analysis.meritScore.toFixed(2),
+      meritScoreJustification: analysis.meritScoreJustification,
+      legalCategory: analysis.legalCategory,
+      analysis: {
+        caseLawPrecedents: analysis.caseLawPrecedents || [],
+        strengthFactors: analysis.strengthFactors,
+        weaknessFactors: analysis.weaknessFactors,
+        relevantLaws: analysis.relevantLaws,
+        legalPathway: analysis.legalPathway,
+        requiredForms: analysis.requiredForms,
+        tribunalAppearances: analysis.tribunalAppearances || [],
+        evidenceToGather: analysis.evidenceToGather,
+        filingOptions: analysis.filingOptions,
+        estimatedSuccessRate: analysis.estimatedSuccessRate?.toFixed(2) || "0.00",
+        settlementRange: {
+          min: analysis.settlementRange?.min?.toFixed(2) || "0.00",
+          max: analysis.settlementRange?.max?.toFixed(2) || "0.00",
+          basis: analysis.settlementRange?.basis || ""
         },
-        caseId: caseRecord.id
-      }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    );
+        timeToResolutionMonths: analysis.timeToResolutionMonths,
+        complexityScore: analysis.complexityScore,
+        nextSteps: analysis.nextSteps,
+        jurisdictionNotes: analysis.jurisdictionNotes,
+        improvementSuggestions
+      },
+      caseId: caseRecord.id
+    });
 
   } catch (error) {
-    console.error('Error analyzing case merit:', error);
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
-    return new Response(
-      JSON.stringify({ error: errorMessage }),
-      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    );
+    console.error("Error analyzing case merit:", error);
+    const errorMessage = error instanceof Error ? error.message : "Unknown error occurred";
+    return errorResponse("INTERNAL_ERROR", errorMessage);
   }
 });

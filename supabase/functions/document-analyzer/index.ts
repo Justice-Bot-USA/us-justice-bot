@@ -1,29 +1,21 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { corsHeaders, handleCors } from "../_shared/auth.ts";
+import { successResponse, errorResponse } from "../_shared/errors.ts";
+import { callAI, parseAIJson, RateLimitError, PaymentRequiredError } from "../_shared/ai.ts";
 
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-};
-
-serve(async (req) => {
-  if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders });
-  }
+Deno.serve(async (req: Request) => {
+  // Handle CORS preflight
+  const corsResponse = handleCors(req);
+  if (corsResponse) return corsResponse;
 
   try {
     const { documentText, documentType, analysisType } = await req.json();
 
-    if (!documentText || typeof documentText !== 'string') {
-      throw new Error('Document text is required');
+    if (!documentText || typeof documentText !== "string") {
+      return errorResponse("BAD_REQUEST", "Document text is required");
     }
 
-    console.log('Analyzing document with AI:', { documentType, analysisType, textLength: documentText.length });
-
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
-    if (!LOVABLE_API_KEY) {
-      throw new Error('LOVABLE_API_KEY not configured');
-    }
+    console.log("Analyzing document with AI:", { documentType, analysisType, textLength: documentText.length });
 
     const systemPrompt = `You are an expert legal document analyzer. Your job is to analyze legal documents and provide clear, actionable insights.
 
@@ -36,7 +28,7 @@ For each document, you should:
 
 IMPORTANT: Always emphasize that this is educational analysis only, not legal advice. Recommend consulting with a qualified attorney for specific legal matters.`;
 
-    const userPrompt = `Please analyze the following ${documentType || 'legal'} document:
+    const userPrompt = `Please analyze the following ${documentType || "legal"} document:
 
 ---
 ${documentText.slice(0, 15000)}
@@ -66,73 +58,34 @@ Provide your analysis in the following JSON format:
   "legalDisclaimer": "Standard disclaimer about this being educational analysis only"
 }`;
 
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: userPrompt }
-        ],
-      }),
+    const aiResponse = await callAI({
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: userPrompt }
+      ],
     });
 
-    if (!response.ok) {
-      if (response.status === 429) {
-        return new Response(
-          JSON.stringify({ error: 'Rate limit exceeded. Please try again later.' }),
-          { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        );
-      }
-      if (response.status === 402) {
-        return new Response(
-          JSON.stringify({ error: 'AI usage limit reached. Please try again later.' }),
-          { status: 402, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        );
-      }
-      const errorText = await response.text();
-      console.error('AI gateway error:', response.status, errorText);
-      throw new Error('AI analysis failed');
-    }
+    // Parse AI response with fallback
+    const analysis = parseAIJson(aiResponse.content, {
+      summary: aiResponse.content,
+      keyTerms: [],
+      risks: [],
+      actionItems: [],
+      legalDisclaimer: "This is educational analysis only, not legal advice. Please consult with a qualified attorney."
+    });
 
-    const data = await response.json();
-    const aiContent = data.choices[0].message.content;
+    console.log("Document analysis completed successfully");
 
-    // Parse AI response
-    let analysis;
-    try {
-      const jsonMatch = aiContent.match(/```json\n([\s\S]*?)\n```/) || aiContent.match(/```\n([\s\S]*?)\n```/);
-      const jsonString = jsonMatch ? jsonMatch[1] : aiContent;
-      analysis = JSON.parse(jsonString);
-    } catch (parseError) {
-      console.error('Failed to parse AI response:', parseError);
-      // Return the raw response if parsing fails
-      analysis = {
-        summary: aiContent,
-        keyTerms: [],
-        risks: [],
-        actionItems: [],
-        legalDisclaimer: "This is educational analysis only, not legal advice. Please consult with a qualified attorney."
-      };
-    }
-
-    console.log('Document analysis completed successfully');
-
-    return new Response(
-      JSON.stringify({ success: true, analysis }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    );
-
+    return successResponse({ success: true, analysis });
   } catch (error) {
-    console.error('Error analyzing document:', error);
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
-    return new Response(
-      JSON.stringify({ error: errorMessage }),
-      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    );
+    if (error instanceof RateLimitError) {
+      return errorResponse("RATE_LIMITED", error.message);
+    }
+    if (error instanceof PaymentRequiredError) {
+      return errorResponse("PAYMENT_REQUIRED", error.message);
+    }
+    console.error("Error analyzing document:", error);
+    const errorMessage = error instanceof Error ? error.message : "Unknown error occurred";
+    return errorResponse("INTERNAL_ERROR", errorMessage);
   }
 });
