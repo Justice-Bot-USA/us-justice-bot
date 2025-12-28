@@ -21,6 +21,9 @@ enabled = true
 port = 54322
 major_version = 15
 
+[functions.admin-create-user]
+verify_jwt = true
+
 [functions.legal-assistance]
 verify_jwt = false
 

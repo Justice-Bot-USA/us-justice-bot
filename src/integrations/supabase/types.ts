@@ -770,6 +770,33 @@ export type Database = {
         }
         Relationships: []
       }
+      user_activity_archive_deletions: {
+        Row: {
+          deleted_at: string
+          deleted_by: string
+          details: Json | null
+          id: string
+          reason: string | null
+          target_id: string
+        }
+        Insert: {
+          deleted_at?: string
+          deleted_by: string
+          details?: Json | null
+          id?: string
+          reason?: string | null
+          target_id: string
+        }
+        Update: {
+          deleted_at?: string
+          deleted_by?: string
+          details?: Json | null
+          id?: string
+          reason?: string | null
+          target_id?: string
+        }
+        Relationships: []
+      }
       user_activity_logs: {
         Row: {
           action: string
@@ -817,6 +844,8 @@ export type Database = {
           action: string
           anonymized_at: string | null
           created_at: string
+          deleted_at: string | null
+          deleted_by: string | null
           details: Json | null
           id: string
           ip_address: unknown
@@ -830,6 +859,8 @@ export type Database = {
           action: string
           anonymized_at?: string | null
           created_at?: string
+          deleted_at?: string | null
+          deleted_by?: string | null
           details?: Json | null
           id?: string
           ip_address?: unknown
@@ -843,6 +874,8 @@ export type Database = {
           action?: string
           anonymized_at?: string | null
           created_at?: string
+          deleted_at?: string | null
+          deleted_by?: string | null
           details?: Json | null
           id?: string
           ip_address?: unknown
@@ -944,6 +977,12 @@ export type Database = {
         }[]
       }
       calculate_case_merit_score: { Args: { case_id: string }; Returns: number }
+      compute_ip_hash: { Args: { ip: string }; Returns: string }
+      delete_user_activity_archive_tombstone: {
+        Args: { admin_user: string; reason: string; target_id: string }
+        Returns: undefined
+      }
+      get_ip_pepper: { Args: never; Returns: string }
       get_user_role: {
         Args: { _user_id: string }
         Returns: Database["public"]["Enums"]["app_role"]

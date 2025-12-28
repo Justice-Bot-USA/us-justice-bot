@@ -1,39 +1,42 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { corsHeaders, handleCors, requireUser } from "../_shared/auth.ts";
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-};
-
-serve(async (req) => {
-  if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
-  }
+Deno.serve(async (req: Request) => {
+  // Handle CORS preflight
+  const corsResponse = handleCors(req);
+  if (corsResponse) return corsResponse;
 
   try {
-    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-    const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    const anonKey = Deno.env.get("SUPABASE_ANON_KEY")!;
-
-    // Check for service role key in authorization header for admin access
-    const authHeader = req.headers.get("authorization");
-    const providedKey = authHeader?.replace("Bearer ", "");
+    // Verify the requesting user is authenticated and is an admin
+    const { userId } = await requireUser(req);
     
-    // Allow access with anon key (for testing) or service role key
-    if (providedKey !== anonKey && providedKey !== serviceRoleKey) {
+    // Check if user has admin role
+    const supabaseClient = createClient(
+      Deno.env.get("SUPABASE_URL") ?? "",
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
+      {
+        auth: {
+          autoRefreshToken: false,
+          persistSession: false,
+        },
+      }
+    );
+
+    // Verify admin role
+    const { data: roleData, error: roleError } = await supabaseClient
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", userId)
+      .eq("role", "admin")
+      .single();
+
+    if (roleError || !roleData) {
+      console.error("Admin check failed:", roleError);
       return new Response(
-        JSON.stringify({ error: "Unauthorized" }),
-        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        JSON.stringify({ error: "Unauthorized: Admin access required" }),
+        { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
-
-    const supabaseAdmin = createClient(supabaseUrl, serviceRoleKey, {
-      auth: {
-        autoRefreshToken: false,
-        persistSession: false,
-      },
-    });
 
     const { email, password, firstName, lastName } = await req.json();
 
@@ -45,7 +48,7 @@ serve(async (req) => {
     }
 
     // Create the user with admin API
-    const { data: userData, error: createError } = await supabaseAdmin.auth.admin.createUser({
+    const { data: userData, error: createError } = await supabaseClient.auth.admin.createUser({
       email,
       password,
       email_confirm: true,
@@ -63,7 +66,7 @@ serve(async (req) => {
       );
     }
 
-    console.log("User created successfully:", userData.user?.id);
+    console.log("User created successfully by admin:", userId, "New user:", userData.user?.id);
 
     return new Response(
       JSON.stringify({ 
@@ -79,7 +82,7 @@ serve(async (req) => {
     console.error("Unexpected error:", message);
     return new Response(
       JSON.stringify({ error: message }),
-      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }
 });
