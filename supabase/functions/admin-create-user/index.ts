@@ -1,5 +1,6 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { corsHeaders, handleCors, requireUser } from "../_shared/auth.ts";
+import { corsHeaders, handleCors, requireAdmin } from "../_shared/auth.ts";
+import { successResponse, errorResponse, handleError } from "../_shared/errors.ts";
 
 Deno.serve(async (req: Request) => {
   // Handle CORS preflight
@@ -8,10 +9,17 @@ Deno.serve(async (req: Request) => {
 
   try {
     // Verify the requesting user is authenticated and is an admin
-    const { userId } = await requireUser(req);
+    const { userId } = await requireAdmin(req);
     
-    // Check if user has admin role
-    const supabaseClient = createClient(
+    // Parse request body
+    const { email, password, firstName, lastName } = await req.json();
+
+    if (!email || !password) {
+      return errorResponse("BAD_REQUEST", "Email and password are required");
+    }
+
+    // Create admin client to create user
+    const adminClient = createClient(
       Deno.env.get("SUPABASE_URL") ?? "",
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
       {
@@ -22,33 +30,8 @@ Deno.serve(async (req: Request) => {
       }
     );
 
-    // Verify admin role
-    const { data: roleData, error: roleError } = await supabaseClient
-      .from("user_roles")
-      .select("role")
-      .eq("user_id", userId)
-      .eq("role", "admin")
-      .single();
-
-    if (roleError || !roleData) {
-      console.error("Admin check failed:", roleError);
-      return new Response(
-        JSON.stringify({ error: "Unauthorized: Admin access required" }),
-        { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
-
-    const { email, password, firstName, lastName } = await req.json();
-
-    if (!email || !password) {
-      return new Response(
-        JSON.stringify({ error: "Email and password are required" }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
-
     // Create the user with admin API
-    const { data: userData, error: createError } = await supabaseClient.auth.admin.createUser({
+    const { data: userData, error: createError } = await adminClient.auth.admin.createUser({
       email,
       password,
       email_confirm: true,
@@ -60,29 +43,18 @@ Deno.serve(async (req: Request) => {
 
     if (createError) {
       console.error("Error creating user:", createError);
-      return new Response(
-        JSON.stringify({ error: createError.message }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+      return errorResponse("BAD_REQUEST", createError.message);
     }
 
     console.log("User created successfully by admin:", userId, "New user:", userData.user?.id);
 
-    return new Response(
-      JSON.stringify({ 
-        success: true, 
-        message: "User created successfully",
-        userId: userData.user?.id,
-        email: userData.user?.email
-      }),
-      { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
+    return successResponse({ 
+      success: true, 
+      message: "User created successfully",
+      userId: userData.user?.id,
+      email: userData.user?.email
+    });
   } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : "Unknown error";
-    console.error("Unexpected error:", message);
-    return new Response(
-      JSON.stringify({ error: message }),
-      { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
+    return handleError(error);
   }
 });

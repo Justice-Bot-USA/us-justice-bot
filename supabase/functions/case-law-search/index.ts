@@ -1,41 +1,46 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
-import "https://deno.land/x/xhr@0.1.0/mod.ts"
+import "https://deno.land/x/xhr@0.1.0/mod.ts";
+import { corsHeaders, handleCors } from "../_shared/auth.ts";
+import { successResponse, errorResponse } from "../_shared/errors.ts";
+import { callAI, parseAIJson, RateLimitError, PaymentRequiredError } from "../_shared/ai.ts";
 
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-}
-
-serve(async (req) => {
-  if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders })
-  }
+Deno.serve(async (req: Request) => {
+  // Handle CORS preflight
+  const corsResponse = handleCors(req);
+  if (corsResponse) return corsResponse;
 
   try {
-    const { state, legalArea, legalCategory, caseDescription } = await req.json()
+    const { state, legalArea, legalCategory, caseDescription } = await req.json();
 
     // Input validation
-    if (!state || typeof state !== 'string' || state.length > 50) {
-      throw new Error('Invalid state')
+    if (!state || typeof state !== "string" || state.length > 50) {
+      return errorResponse("BAD_REQUEST", "Invalid state");
     }
-    if (!legalArea || typeof legalArea !== 'string' || legalArea.length > 100) {
-      throw new Error('Invalid legal area')
+    if (!legalArea || typeof legalArea !== "string" || legalArea.length > 100) {
+      return errorResponse("BAD_REQUEST", "Invalid legal area");
     }
-    if (!caseDescription || typeof caseDescription !== 'string' || caseDescription.length > 5000) {
-      throw new Error('Invalid case description')
+    if (!caseDescription || typeof caseDescription !== "string" || caseDescription.length > 5000) {
+      return errorResponse("BAD_REQUEST", "Invalid case description");
     }
 
-    const sanitizedState = state.replace(/[^a-zA-Z\s]/g, '').trim()
-    const sanitizedLegalArea = legalArea.replace(/[^a-zA-Z\s&-]/g, '').trim()
-    const sanitizedDescription = caseDescription.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '').replace(/<[^>]*>/g, '').trim()
+    const sanitizedState = state.replace(/[^a-zA-Z\s]/g, "").trim();
+    const sanitizedLegalArea = legalArea.replace(/[^a-zA-Z\s&-]/g, "").trim();
+    const sanitizedDescription = caseDescription
+      .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "")
+      .replace(/<[^>]*>/g, "")
+      .trim();
 
-    const isCriminal = legalCategory === 'criminal'
+    const isCriminal = legalCategory === "criminal";
+
+    const stateReporter = sanitizedState === "California" ? "Cal.App.4th" :
+                          sanitizedState === "New York" ? "N.Y.2d" :
+                          sanitizedState === "Texas" ? "S.W.3d" :
+                          sanitizedState === "Florida" ? "So.3d" : "State Reporter";
 
     const prompt = `You are a legal research expert with comprehensive knowledge of US case law, legal precedents, and court decisions across all 50 states and federal courts.
 
 JURISDICTION: ${sanitizedState}
 LEGAL AREA: ${sanitizedLegalArea}
-CASE TYPE: ${isCriminal ? 'Criminal' : 'Civil'}
+CASE TYPE: ${isCriminal ? "Criminal" : "Civil"}
 
 USER'S CASE DESCRIPTION:
 ${sanitizedDescription}
@@ -65,7 +70,7 @@ RESPONSE FORMAT (JSON):
   "precedents": [
     {
       "caseName": "Full case name (e.g., Smith v. Jones)",
-      "citation": "Proper Bluebook citation (e.g., 123 ${sanitizedState === 'Federal' ? 'F.3d' : sanitizedState.substring(0,3) + '.'} 456 (2020))",
+      "citation": "Proper Bluebook citation (e.g., 123 ${stateReporter} 456 (2020))",
       "year": "Year decided",
       "court": "Court name (e.g., ${sanitizedState} Supreme Court, ${sanitizedState} Court of Appeals)",
       "relevance": "Why this case is relevant to the user's situation",
@@ -90,91 +95,37 @@ IMPORTANT GUIDELINES:
 7. Focus on cases that would actually help this specific situation
 8. Include both favorable and potentially adverse precedents for complete analysis
 
-Respond ONLY with the JSON object, no additional text.`
+Respond ONLY with the JSON object, no additional text.`;
 
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY')
-    if (!LOVABLE_API_KEY) {
-      throw new Error('LOVABLE_API_KEY not configured')
-    }
+    console.log("Searching case law for:", sanitizedState, sanitizedLegalArea);
 
-    console.log('Searching case law for:', sanitizedState, sanitizedLegalArea)
+    const aiResponse = await callAI({
+      messages: [
+        { role: "system", content: "You are a legal research expert. Respond only with valid JSON." },
+        { role: "user", content: prompt }
+      ],
+    });
 
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
-        messages: [
-          {
-            role: 'system',
-            content: 'You are a legal research expert. Respond only with valid JSON.'
-          },
-          {
-            role: 'user',
-            content: prompt
-          }
-        ],
-      }),
-    })
+    // Parse response with fallback
+    const parsedResponse = parseAIJson(aiResponse.content, {
+      precedents: [],
+      legalPrinciples: [],
+      relevantStatutes: [],
+      searchSummary: "Unable to parse search results. Please try again with a more specific description.",
+      recommendedStrategy: "Please refine your case description and try again."
+    });
 
-    if (!response.ok) {
-      if (response.status === 429) {
-        return new Response(
-          JSON.stringify({ error: 'Rate limit exceeded. Please try again later.' }),
-          { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        )
-      }
-      if (response.status === 402) {
-        return new Response(
-          JSON.stringify({ error: 'AI usage limit reached. Please try again later.' }),
-          { status: 402, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        )
-      }
-      const errorText = await response.text()
-      console.error('AI gateway error:', response.status, errorText)
-      throw new Error('AI gateway error')
-    }
+    console.log("Case law search completed successfully");
 
-    const data = await response.json()
-    let aiResponse = data.choices[0].message.content
-
-    // Clean up the response - remove markdown code blocks if present
-    aiResponse = aiResponse.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim()
-
-    let parsedResponse
-    try {
-      parsedResponse = JSON.parse(aiResponse)
-    } catch (parseError) {
-      console.error('Failed to parse AI response:', aiResponse)
-      // Return a structured fallback
-      parsedResponse = {
-        precedents: [],
-        legalPrinciples: [],
-        relevantStatutes: [],
-        searchSummary: "Unable to parse search results. Please try again with a more specific description.",
-        recommendedStrategy: "Please refine your case description and try again."
-      }
-    }
-
-    console.log('Case law search completed successfully')
-
-    return new Response(
-      JSON.stringify(parsedResponse),
-      {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      },
-    )
+    return successResponse(parsedResponse);
   } catch (error) {
-    console.error('Error:', error)
-    return new Response(
-      JSON.stringify({ error: 'Failed to search case law' }),
-      {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 500,
-      },
-    )
+    if (error instanceof RateLimitError) {
+      return errorResponse("RATE_LIMITED", error.message);
+    }
+    if (error instanceof PaymentRequiredError) {
+      return errorResponse("PAYMENT_REQUIRED", error.message);
+    }
+    console.error("Error:", error);
+    return errorResponse("INTERNAL_ERROR", "Failed to search case law");
   }
-})
+});
