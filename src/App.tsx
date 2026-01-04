@@ -25,6 +25,7 @@ import BookOfDocuments from "./pages/BookOfDocuments";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import LegalDisclaimer from "./pages/LegalDisclaimer";
+import FAQ from "./pages/FAQ";
 
 const queryClient = new QueryClient();
 
@@ -55,6 +56,7 @@ export default function App() {
             <Route path="/privacy" element={<PrivacyPolicy />} />
             <Route path="/terms" element={<TermsOfService />} />
             <Route path="/disclaimer" element={<LegalDisclaimer />} />
+            <Route path="/faq" element={<FAQ />} />
             {/* add more routes above this */}
             <Route path="*" element={<NotFound />} />
           </Routes>

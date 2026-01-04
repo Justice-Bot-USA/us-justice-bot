@@ -30,6 +30,7 @@ const Footer = () => {
               <li><Link to="/forms-library" className="hover:opacity-100 transition-opacity">Forms Library</Link></li>
               <li><Link to="/ai-tools" className="hover:opacity-100 transition-opacity">AI Tools</Link></li>
               <li><Link to="/pricing" className="hover:opacity-100 transition-opacity">Pricing</Link></li>
+              <li><Link to="/faq" className="hover:opacity-100 transition-opacity">FAQ</Link></li>
               <li><Link to="/support" className="hover:opacity-100 transition-opacity">Support</Link></li>
             </ul>
           </div>
