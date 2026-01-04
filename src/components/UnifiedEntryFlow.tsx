@@ -12,12 +12,43 @@ import {
   Shield, 
   FileText,
   AlertTriangle,
-  X
+  X,
+  Loader2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { trackFunnelEvent, generateSessionId } from "@/lib/funnels/analytics";
+
+// ============ GEO DETECTION ============
+
+const useGeoDetection = () => {
+  const [detectedCountry, setDetectedCountry] = useState<"US" | "CA" | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const detectCountry = async () => {
+      try {
+        const response = await fetch('https://ipapi.co/json/');
+        const data = await response.json();
+        
+        if (data.country_code === 'CA') {
+          setDetectedCountry('CA');
+        } else if (data.country_code === 'US') {
+          setDetectedCountry('US');
+        }
+      } catch (error) {
+        console.log('Geo detection failed, user will select manually');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    detectCountry();
+  }, []);
+
+  return { detectedCountry, isLoading };
+};
 
 // ============ CONFIGURATION ============
 
@@ -89,6 +120,7 @@ const trackEntryEvent = async (
 
 const UnifiedEntryFlow = ({ isOpen, onClose }: UnifiedEntryFlowProps) => {
   const navigate = useNavigate();
+  const { detectedCountry, isLoading: geoLoading } = useGeoDetection();
   const [step, setStep] = useState(0);
   const [state, setState] = useState<EntryFlowState>({
     country: null,
@@ -102,9 +134,12 @@ const UnifiedEntryFlow = ({ isOpen, onClose }: UnifiedEntryFlowProps) => {
   // Track funnel_start when modal opens
   useEffect(() => {
     if (isOpen && step === 0) {
-      trackEntryEvent('funnel_start', { timestamp: Date.now() });
+      trackEntryEvent('funnel_start', { 
+        timestamp: Date.now(),
+        detected_country: detectedCountry 
+      });
     }
-  }, [isOpen]);
+  }, [isOpen, detectedCountry]);
 
   // ============ HANDLERS ============
 
@@ -222,31 +257,74 @@ const UnifiedEntryFlow = ({ isOpen, onClose }: UnifiedEntryFlowProps) => {
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.2 }}
               >
-                <div className="flex items-center gap-2 mb-6">
+                <div className="flex items-center gap-2 mb-4">
                   <MapPin className="h-5 w-5 text-primary" />
                   <h2 className="text-xl font-semibold">Where is your legal issue?</h2>
                 </div>
-                
-                <div className="grid grid-cols-2 gap-4">
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    onClick={() => handleCountrySelect("CA")}
-                    className="h-24 flex flex-col items-center justify-center gap-2 hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all text-lg"
-                  >
-                    <span className="text-3xl">🇨🇦</span>
-                    <span>Canada</span>
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    onClick={() => handleCountrySelect("US")}
-                    className="h-24 flex flex-col items-center justify-center gap-2 hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all text-lg"
-                  >
-                    <span className="text-3xl">🇺🇸</span>
-                    <span>United States</span>
-                  </Button>
-                </div>
+
+                {geoLoading ? (
+                  <div className="flex items-center justify-center py-8">
+                    <Loader2 className="h-6 w-6 animate-spin text-primary" />
+                    <span className="ml-2 text-muted-foreground">Detecting your location...</span>
+                  </div>
+                ) : detectedCountry ? (
+                  <div className="space-y-4">
+                    <p className="text-sm text-muted-foreground text-center">
+                      We detected you're in {detectedCountry === 'CA' ? 'Canada' : 'the United States'}
+                    </p>
+                    <div className="grid grid-cols-2 gap-4">
+                      <Button
+                        variant={detectedCountry === "CA" ? "default" : "outline"}
+                        size="lg"
+                        onClick={() => handleCountrySelect("CA")}
+                        className={`h-24 flex flex-col items-center justify-center gap-2 transition-all text-lg ${
+                          detectedCountry === "CA" 
+                            ? "ring-2 ring-primary ring-offset-2" 
+                            : "hover:bg-primary hover:text-primary-foreground hover:border-primary"
+                        }`}
+                      >
+                        <span className="text-3xl">🇨🇦</span>
+                        <span>Canada</span>
+                        {detectedCountry === "CA" && <span className="text-xs opacity-80">(Detected)</span>}
+                      </Button>
+                      <Button
+                        variant={detectedCountry === "US" ? "default" : "outline"}
+                        size="lg"
+                        onClick={() => handleCountrySelect("US")}
+                        className={`h-24 flex flex-col items-center justify-center gap-2 transition-all text-lg ${
+                          detectedCountry === "US" 
+                            ? "ring-2 ring-primary ring-offset-2" 
+                            : "hover:bg-primary hover:text-primary-foreground hover:border-primary"
+                        }`}
+                      >
+                        <span className="text-3xl">🇺🇸</span>
+                        <span>United States</span>
+                        {detectedCountry === "US" && <span className="text-xs opacity-80">(Detected)</span>}
+                      </Button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-2 gap-4">
+                    <Button
+                      variant="outline"
+                      size="lg"
+                      onClick={() => handleCountrySelect("CA")}
+                      className="h-24 flex flex-col items-center justify-center gap-2 hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all text-lg"
+                    >
+                      <span className="text-3xl">🇨🇦</span>
+                      <span>Canada</span>
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="lg"
+                      onClick={() => handleCountrySelect("US")}
+                      className="h-24 flex flex-col items-center justify-center gap-2 hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all text-lg"
+                    >
+                      <span className="text-3xl">🇺🇸</span>
+                      <span>United States</span>
+                    </Button>
+                  </div>
+                )}
               </motion.div>
             )}
 
