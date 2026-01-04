@@ -117,10 +117,12 @@ export const FileUpload: React.FC<FileUploadProps> = ({
 
         if (error) throw error;
 
-        // Get public URL
-        const { data: urlData } = supabase.storage
+        // Get signed URL for private bucket (1 hour expiration)
+        const { data: urlData, error: urlError } = await supabase.storage
           .from(bucketType)
-          .getPublicUrl(fileName);
+          .createSignedUrl(fileName, 3600);
+        
+        if (urlError) throw urlError;
 
         // Save file metadata to database
         const { data: fileRecord, error: dbError } = await supabase
@@ -144,7 +146,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
         // Update file entry with success
         setFiles(prev => prev.map(f => 
           f.id === tempFile.id 
-            ? { ...f, id: fileRecord.id, url: urlData.publicUrl, uploadProgress: 100 }
+            ? { ...f, id: fileRecord.id, url: urlData.signedUrl, uploadProgress: 100 }
             : f
         ));
 
