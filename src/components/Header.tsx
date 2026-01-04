@@ -7,7 +7,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { Globe, User, LogOut, Settings, Briefcase, Sparkles, FileText, TrendingUp, Menu, Gavel, BookOpen, FolderOpen } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useAdminAccess } from "@/hooks/useAdminAccess";
-import logoImage from "@/assets/us-justice-bot-logo.png";
+import logoImage from "@/assets/justicebot-logo.png";
 import ThemeToggle from "./ThemeToggle";
 
 interface HeaderProps {
@@ -46,8 +46,8 @@ const Header = ({ language, onLanguageChange }: HeaderProps) => {
       <div className="container mx-auto px-4 py-6">
         <div className="flex items-center justify-between gap-4">
           <div className="flex min-w-0 items-center gap-3">
-            <div className="flex items-center justify-center w-12 h-12 bg-white/10 rounded-lg shrink-0">
-              <img src={logoImage} alt="US Justice Bot logo" className="w-8 h-8" />
+            <div className="shrink-0">
+              <img src={logoImage} alt="JusticeBot.com logo" className="w-14 h-14 object-contain" />
             </div>
             <div className="min-w-0">
               <h1 className="text-2xl font-bold truncate">{text[language].title}</h1>
