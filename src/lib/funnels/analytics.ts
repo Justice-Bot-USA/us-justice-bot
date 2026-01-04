@@ -35,8 +35,22 @@ export const trackFunnelEvent = async (
       metadata,
     };
 
-    // Log to console for now (will be saved to DB once table is created)
+    // Log to console for debugging
     console.log('[Funnel Analytics]', event);
+
+    // Insert into funnel_analytics table
+    const { error } = await supabase.from('funnel_analytics').insert([{
+      funnel_id: funnelId,
+      session_id: sessionId,
+      user_id: user?.id || null,
+      step,
+      action,
+      metadata: (metadata || {}) as Record<string, string | number | boolean | null>,
+    }]);
+
+    if (error) {
+      console.error('Error inserting funnel analytics:', error);
+    }
 
     // Also track in Google Analytics if available
     if (typeof window !== 'undefined' && (window as any).gtag) {
@@ -47,9 +61,6 @@ export const trackFunnelEvent = async (
         ...metadata,
       });
     }
-
-    // TODO: Insert into funnel_analytics table once created
-    // await supabase.from('funnel_analytics').insert(event);
     
   } catch (error) {
     console.error('Error tracking funnel event:', error);
@@ -84,7 +95,7 @@ export const trackFormGenerated = (funnelId: string, formIds: string[]) =>
 export const trackConversion = (funnelId: string, value?: number) => 
   trackFunnelEvent(funnelId, 'next_steps', 'complete', { converted: true, value });
 
-// Get funnel analytics summary (placeholder - will query DB)
+// Get funnel analytics summary
 export interface FunnelAnalyticsSummary {
   funnelId: string;
   totalStarts: number;
@@ -95,7 +106,28 @@ export interface FunnelAnalyticsSummary {
 }
 
 export const getFunnelAnalytics = async (funnelId: string): Promise<FunnelAnalyticsSummary | null> => {
-  // TODO: Implement once funnel_analytics table is created
-  console.log('Fetching analytics for funnel:', funnelId);
-  return null;
+  try {
+    const { data, error } = await supabase
+      .from('funnel_analytics')
+      .select('*')
+      .eq('funnel_id', funnelId);
+
+    if (error) throw error;
+    if (!data || data.length === 0) return null;
+
+    const starts = data.filter(e => e.action === 'start').length;
+    const conversions = data.filter(e => e.step === 'next_steps' && e.action === 'complete').length;
+
+    return {
+      funnelId,
+      totalStarts: starts,
+      completedSteps: {} as Record<FunnelStep, number>,
+      dropOffRates: {} as Record<FunnelStep, number>,
+      conversionRate: starts > 0 ? (conversions / starts) * 100 : 0,
+      averageTimeToConversion: 0,
+    };
+  } catch (error) {
+    console.error('Error fetching funnel analytics:', error);
+    return null;
+  }
 };

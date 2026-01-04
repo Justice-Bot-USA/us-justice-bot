@@ -361,6 +361,39 @@ export type Database = {
         }
         Relationships: []
       }
+      funnel_analytics: {
+        Row: {
+          action: string
+          created_at: string
+          funnel_id: string
+          id: string
+          metadata: Json | null
+          session_id: string
+          step: string
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          funnel_id: string
+          id?: string
+          metadata?: Json | null
+          session_id: string
+          step: string
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          funnel_id?: string
+          id?: string
+          metadata?: Json | null
+          session_id?: string
+          step?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       journey_steps: {
         Row: {
           completed_at: string | null
