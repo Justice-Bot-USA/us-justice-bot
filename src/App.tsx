@@ -28,6 +28,7 @@ import LegalDisclaimer from "./pages/LegalDisclaimer";
 import FAQ from "./pages/FAQ";
 import StateFunnelPage from "./pages/StateFunnelPage";
 import StateLandingPage from "./pages/StateLandingPage";
+import DemoJourney from "./pages/DemoJourney";
 
 const queryClient = new QueryClient();
 
@@ -59,6 +60,7 @@ export default function App() {
             <Route path="/terms" element={<TermsOfService />} />
             <Route path="/disclaimer" element={<LegalDisclaimer />} />
             <Route path="/faq" element={<FAQ />} />
+            <Route path="/demo-journey" element={<DemoJourney />} />
             
             {/* State landing pages */}
             <Route path="/states/:stateCode" element={<StateLandingPage />} />
