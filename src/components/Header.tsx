@@ -4,10 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Scale, Globe, User, LogOut, Settings, Briefcase, Sparkles, FileText, TrendingUp, Menu, Gavel, BookOpen, FolderOpen } from "lucide-react";
+import { Globe, User, LogOut, Settings, Briefcase, Sparkles, FileText, TrendingUp, Menu, Gavel, BookOpen, FolderOpen } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useAdminAccess } from "@/hooks/useAdminAccess";
 import logoImage from "@/assets/us-justice-bot-logo.png";
+import ThemeToggle from "./ThemeToggle";
 
 interface HeaderProps {
   language: 'en' | 'es';
@@ -59,6 +60,8 @@ const Header = ({ language, onLanguageChange }: HeaderProps) => {
             <Badge variant="secondary" className="bg-secondary">
               🇺🇸 All 50 States
             </Badge>
+
+            <ThemeToggle />
 
             <div className="flex items-center gap-2">
               <Globe className="w-4 h-4" aria-hidden="true" />
