@@ -1,7 +1,7 @@
 import { useState, Suspense, lazy } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
-import HeroSection from "@/components/HeroSection";
+import USAHeroMicroDecisions from "@/components/USAHeroMicroDecisions";
 import HowItWorks from "@/components/HowItWorks";
 import WarningBanner from "@/components/WarningBanner";
 import LegalSections from "@/components/LegalSections";
@@ -140,12 +140,13 @@ const Index = () => {
       <Header language={language} onLanguageChange={setLanguage} />
       
       <main id="main-content" className="space-y-0">
-        {/* Stats Bar - matches Canada */}
+        {/* USA-Optimized Hero with Micro-Decisions Above the Fold */}
+        <USAHeroMicroDecisions language={language} />
+        
+        {/* Stats Bar - social proof after first action */}
         <Suspense fallback={null}>
           <StatsBar />
         </Suspense>
-        
-        <HeroSection language={language} onGetStarted={handleGetStarted} />
         
         {/* States Banner */}
         <Suspense fallback={null}>
