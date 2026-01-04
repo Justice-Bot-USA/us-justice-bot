@@ -177,12 +177,18 @@ const BookOfDocuments = () => {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
 
-  const getPublicUrl = (file: typeof caseFiles[0]) => {
+  const getSignedUrl = async (file: typeof caseFiles[0]) => {
     if (file.file_type.startsWith('cloud/')) {
       return file.file_path;
     }
-    const { data } = supabase.storage.from(file.bucket_name).getPublicUrl(file.file_path);
-    return data.publicUrl;
+    const { data, error } = await supabase.storage
+      .from(file.bucket_name)
+      .createSignedUrl(file.file_path, 3600);
+    if (error) {
+      console.error('Error getting signed URL:', error);
+      return null;
+    }
+    return data.signedUrl;
   };
 
   const handleDelete = async (fileId: string, filePath: string, bucketName: string) => {
@@ -205,7 +211,26 @@ const BookOfDocuments = () => {
   };
 
   const FileCard = ({ file }: { file: typeof caseFiles[0] }) => {
-    const url = getPublicUrl(file);
+    const [fileUrl, setFileUrl] = React.useState<string | null>(null);
+    
+    React.useEffect(() => {
+      getSignedUrl(file).then(setFileUrl);
+    }, [file]);
+    
+    const handleView = async () => {
+      const url = fileUrl || await getSignedUrl(file);
+      if (url) window.open(url, '_blank');
+    };
+    
+    const handleDownload = async () => {
+      const url = fileUrl || await getSignedUrl(file);
+      if (url) {
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = file.file_name;
+        a.click();
+      }
+    };
     
     return (
       <Card className="hover:shadow-md transition-shadow">
@@ -233,18 +258,13 @@ const BookOfDocuments = () => {
               )}
             </div>
             <div className="flex gap-1">
-              <Button variant="ghost" size="icon" onClick={() => window.open(url, '_blank')} title="View">
+              <Button variant="ghost" size="icon" onClick={handleView} title="View">
                 <Eye className="h-4 w-4" />
               </Button>
               <Button 
                 variant="ghost" 
                 size="icon" 
-                onClick={() => {
-                  const a = document.createElement('a');
-                  a.href = url;
-                  a.download = file.file_name;
-                  a.click();
-                }}
+                onClick={handleDownload}
                 title="Download"
               >
                 <Download className="h-4 w-4" />
