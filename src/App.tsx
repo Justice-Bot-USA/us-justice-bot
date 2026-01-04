@@ -26,6 +26,8 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import LegalDisclaimer from "./pages/LegalDisclaimer";
 import FAQ from "./pages/FAQ";
+import StateFunnelPage from "./pages/StateFunnelPage";
+import StateLandingPage from "./pages/StateLandingPage";
 
 const queryClient = new QueryClient();
 
@@ -57,7 +59,14 @@ export default function App() {
             <Route path="/terms" element={<TermsOfService />} />
             <Route path="/disclaimer" element={<LegalDisclaimer />} />
             <Route path="/faq" element={<FAQ />} />
-            {/* add more routes above this */}
+            
+            {/* State landing pages */}
+            <Route path="/states/:stateCode" element={<StateLandingPage />} />
+            
+            {/* State-specific funnel routes (CA, TX, NY, FL) */}
+            <Route path="/:slug" element={<StateFunnelPage />} />
+            
+            {/* 404 fallback */}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
