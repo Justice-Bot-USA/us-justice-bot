@@ -13,6 +13,7 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { toast } from 'sonner';
+import { FunnelAnalyticsDashboard } from '@/components/admin/FunnelAnalyticsDashboard';
 import { 
   Users, 
   MessageSquare, 
@@ -552,51 +553,64 @@ const AdminDashboard = () => {
 
           {hasPermission('view_analytics') && (
             <TabsContent value="analytics">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Analytics Overview</CardTitle>
-                  <CardDescription>
-                    System performance and usage metrics
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-4">
-                      <h3 className="text-lg font-semibold">Usage Statistics</h3>
-                      <div className="space-y-2">
-                        <div className="flex justify-between">
-                          <span>Average sessions per user:</span>
-                          <span className="font-medium">
-                            {stats.totalUsers > 0 ? (stats.totalSessions / stats.totalUsers).toFixed(1) : '0'}
-                          </span>
+              <Tabs defaultValue="overview" className="space-y-4">
+                <TabsList>
+                  <TabsTrigger value="overview">Overview</TabsTrigger>
+                  <TabsTrigger value="funnels">Funnel Analytics</TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="overview">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Analytics Overview</CardTitle>
+                      <CardDescription>
+                        System performance and usage metrics
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-4">
+                          <h3 className="text-lg font-semibold">Usage Statistics</h3>
+                          <div className="space-y-2">
+                            <div className="flex justify-between">
+                              <span>Average sessions per user:</span>
+                              <span className="font-medium">
+                                {stats.totalUsers > 0 ? (stats.totalSessions / stats.totalUsers).toFixed(1) : '0'}
+                              </span>
+                            </div>
+                            {hasPermission('manage_payments') && (
+                              <div className="flex justify-between">
+                                <span>Average revenue per payment:</span>
+                                <span className="font-medium">
+                                  ${stats.totalPayments > 0 ? (stats.totalRevenue / stats.totalPayments).toFixed(2) : '0.00'}
+                                </span>
+                              </div>
+                            )}
+                          </div>
                         </div>
-                        {hasPermission('manage_payments') && (
-                          <div className="flex justify-between">
-                            <span>Average revenue per payment:</span>
-                            <span className="font-medium">
-                              ${stats.totalPayments > 0 ? (stats.totalRevenue / stats.totalPayments).toFixed(2) : '0.00'}
-                            </span>
-                          </div>
-                        )}
-                      </div>
-                    </div>
 
-                    <div className="space-y-4">
-                      <h3 className="text-lg font-semibold">Recent Activity</h3>
-                      <div className="space-y-2 text-sm">
-                        {chatSessions.slice(0, 5).map((session) => (
-                          <div key={session.id} className="flex justify-between">
-                            <span>New chat session</span>
-                            <span className="text-muted-foreground">
-                              {new Date(session.created_at).toLocaleDateString()}
-                            </span>
+                        <div className="space-y-4">
+                          <h3 className="text-lg font-semibold">Recent Activity</h3>
+                          <div className="space-y-2 text-sm">
+                            {chatSessions.slice(0, 5).map((session) => (
+                              <div key={session.id} className="flex justify-between">
+                                <span>New chat session</span>
+                                <span className="text-muted-foreground">
+                                  {new Date(session.created_at).toLocaleDateString()}
+                                </span>
+                              </div>
+                            ))}
                           </div>
-                        ))}
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+                
+                <TabsContent value="funnels">
+                  <FunnelAnalyticsDashboard />
+                </TabsContent>
+              </Tabs>
             </TabsContent>
           )}
 
