@@ -3,7 +3,7 @@
   <!-- Main Pages -->
   <url>
     <loc>https://justicebot-usa.com/</loc>
-    <lastmod>2025-12-13</lastmod>
+    <lastmod>2026-01-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -27,11 +27,22 @@
   </url>
   <url>
     <loc>https://justicebot-usa.com/ai-tools</loc>
-    <lastmod>2025-12-13</lastmod>
+    <lastmod>2026-01-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://justicebot-usa.com/case-law-search</loc>
+    <lastmod>2026-01-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://justicebot-usa.com/criminal-defense-guide</loc>
+    <lastmod>2026-01-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
     <loc>https://justicebot-usa.com/ai-tools/use</loc>
     <lastmod>2025-12-13</lastmod>
     <changefreq>weekly</changefreq>

@@ -35,6 +35,9 @@ const AIToolsShowcase = lazy(() => import("@/components/AIToolsShowcase"));
 const CourtLocator = lazy(() => import("@/components/CourtLocator"));
 const FeatureGrid = lazy(() => import("@/components/FeatureGrid"));
 const LegalChatbot = lazy(() => import("@/components/LegalChatbot"));
+const WhatWeDoSection = lazy(() => import("@/components/WhatWeDoSection"));
+const VideoShowcase = lazy(() => import("@/components/VideoShowcase"));
+const PrivacyConsentBanner = lazy(() => import("@/components/PrivacyConsentBanner"));
 
 // Lazy load engagement widgets
 const SocialProofTicker = lazy(() => import("@/components/SocialProofTicker"));
@@ -91,35 +94,43 @@ const Index = () => {
 
   const faqData = [
     {
-      question: "What states does US Justice Bot serve?",
-      answer: "US Justice Bot serves all 50 US states with state-specific court forms, procedures, and legal guidance for family law, small claims, housing, employment, and more.",
+      question: "Do I need to sign up to use this?",
+      answer: "No! You can start your free assessment immediately without creating an account. If you want to save your progress or access premium features, you can create an account later.",
     },
     {
-      question: "How much does US Justice Bot cost?",
-      answer: "Individual forms are $4.99 each. Monthly subscription is $9.99/month for unlimited access. Annual subscription is $79/year (save over 30%).",
+      question: "Is this a lawyer?",
+      answer: "No, US Justice Bot is not a law firm and does not provide legal advice or representation. We provide legal information, form guidance, and AI-powered case analysis tools to help you understand your options.",
     },
     {
-      question: "Is US Justice Bot a law firm?",
-      answer: "No, US Justice Bot is not a law firm and does not provide legal advice or representation. We provide legal information, form guidance, and AI-powered case analysis tools.",
+      question: "Is my information private?",
+      answer: "Yes! We use 256-bit SSL encryption (the same as banks) to protect your data. We never sell your information and comply with US privacy laws.",
     },
     {
-      question: "Can an AI assistant replace a lawyer?",
-      answer: "US Justice Bot is not a replacement for legal advice from a qualified lawyer. We help you understand forms, rules, and procedures. For complex cases, consult with a licensed attorney.",
+      question: "What does it cost?",
+      answer: "The initial assessment is 100% free. Individual forms are $4.99 each. Monthly subscription is $9.99/month for unlimited access. Annual subscription is $79/year (save over 30%).",
+    },
+    {
+      question: "How accurate is the legal guidance?",
+      answer: "Our AI is trained on current US federal and state laws, court procedures, and official forms. We update our database daily with new case law and regulatory changes. However, for complex cases, we always recommend consulting with a licensed attorney.",
+    },
+    {
+      question: "How long does it take?",
+      answer: "Most users complete their initial assessment in under 90 seconds. Full case preparation typically takes 15-30 minutes depending on complexity.",
     },
   ];
 
   return (
     <div className="min-h-screen bg-background">
       <SEOHead 
-        title="US Justice Bot - Equal Justice Under Law - Affordable Legal Guidance"
-        description="Professional legal assistance at a fraction of attorney costs. We care about your justice, not billable hours. Expert guidance for all 50 US states."
-        keywords="affordable legal assistance, legal advice, legal help, US law, legal guidance, constitutional law, legal bot, legal AI, attorney alternative"
+        title="US Justice Bot - Your Legal Ally in America | Affordable AI Legal Assistance"
+        description="When people are expected to follow the law, ignorance should not be an option. AI-powered legal help for all 50 US states. Court forms from $4.99."
+        keywords="affordable legal assistance, legal advice, legal help, US law, legal guidance, court forms, small claims, housing court, EEOC, legal AI, attorney alternative, self-representation"
         url="https://justicebot-usa.com"
       />
       <EnhancedSEO
-        title="US Justice Bot - Legal Help for All 50 States | Court Forms $4.99"
-        description="AI-powered legal form helper for all 50 US states. Get court forms for just $4.99 each. Family law, small claims, employment, housing. Not a law firm - practical tools to prepare your case."
-        keywords="legal help USA, court forms, legal forms, small claims court, family court forms, tenant rights, employment law, legal self-help"
+        title="US Justice Bot - Your Legal Ally in America | Court Forms $4.99"
+        description="When people are expected to follow the law, ignorance should not be an option. US Justice Bot helps you understand your legal situation and next steps in plain language. All 50 states."
+        keywords="legal help USA, court forms, legal forms, small claims court, family court forms, tenant rights, employment law, EEOC complaint, housing court, legal self-help, pro se, self-representation"
         canonicalUrl="https://justicebot-usa.com/"
         structuredData={structuredData}
         faqData={faqData}
@@ -141,6 +152,11 @@ const Index = () => {
           <StatesBanner />
         </Suspense>
         
+        {/* What We Do Section - matches Canada's "Clear About What We Do" */}
+        <Suspense fallback={<LoadingSection />}>
+          <WhatWeDoSection />
+        </Suspense>
+        
         {/* AI Tools Showcase - matches Canada */}
         <Suspense fallback={<LoadingSection />}>
           <AIToolsShowcase />
@@ -154,6 +170,11 @@ const Index = () => {
         <div className="py-8">
           <HowItWorks language={language} />
         </div>
+        
+        {/* Video Showcase - matches Canada */}
+        <Suspense fallback={<LoadingSection />}>
+          <VideoShowcase />
+        </Suspense>
         
         {/* Pricing Comparison */}
         <Suspense fallback={<LoadingSection />}>
@@ -261,6 +282,10 @@ const Index = () => {
       {/* Engagement Widgets */}
       <Suspense fallback={null}>
         <AccessibilityPanel />
+      </Suspense>
+      
+      <Suspense fallback={null}>
+        <PrivacyConsentBanner />
       </Suspense>
       
       <Suspense fallback={null}>

@@ -70,6 +70,57 @@ export type Database = {
           },
         ]
       }
+      case_law_results: {
+        Row: {
+          citation: string | null
+          cluster_id: number | null
+          court: string | null
+          created_at: string | null
+          decision_date: string | null
+          docket_number: string | null
+          opinion_id: number
+          pdf_url: string | null
+          raw_json: Json | null
+          summary: string | null
+          sweep_id: string | null
+          title: string | null
+          updated_at: string | null
+          url: string | null
+        }
+        Insert: {
+          citation?: string | null
+          cluster_id?: number | null
+          court?: string | null
+          created_at?: string | null
+          decision_date?: string | null
+          docket_number?: string | null
+          opinion_id: number
+          pdf_url?: string | null
+          raw_json?: Json | null
+          summary?: string | null
+          sweep_id?: string | null
+          title?: string | null
+          updated_at?: string | null
+          url?: string | null
+        }
+        Update: {
+          citation?: string | null
+          cluster_id?: number | null
+          court?: string | null
+          created_at?: string | null
+          decision_date?: string | null
+          docket_number?: string | null
+          opinion_id?: number
+          pdf_url?: string | null
+          raw_json?: Json | null
+          summary?: string | null
+          sweep_id?: string | null
+          title?: string | null
+          updated_at?: string | null
+          url?: string | null
+        }
+        Relationships: []
+      }
       case_merit_scores: {
         Row: {
           archived_at: string | null
