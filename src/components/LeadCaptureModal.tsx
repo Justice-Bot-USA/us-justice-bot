@@ -8,6 +8,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface LeadCaptureModalProps {
   trigger: "time" | "exit";
@@ -21,8 +22,12 @@ export const LeadCaptureModal = ({
   const [isOpen, setIsOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
+    // Don't show on mobile - too intrusive
+    if (isMobile) return;
+    
     // Check if already shown
     const alreadyShown = localStorage.getItem("leadModalShown");
     if (alreadyShown) return;
@@ -34,7 +39,7 @@ export const LeadCaptureModal = ({
       }, delaySeconds * 1000);
       return () => clearTimeout(timer);
     }
-  }, [trigger, delaySeconds]);
+  }, [trigger, delaySeconds, isMobile]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
