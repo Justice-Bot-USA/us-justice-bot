@@ -546,6 +546,343 @@ export const generateCourtReadyPDF = (caseData: CaseExportData): jsPDF => {
   return doc;
 };
 
+// Book of Documents PDF with numbered exhibits and table of contents
+interface BookOfDocumentsFile {
+  id: string;
+  file_name: string;
+  file_type: string;
+  file_size: number;
+  description?: string | null;
+  tags?: string[] | null;
+  created_at?: string | null;
+  bucket_name: string;
+}
+
+interface BookOfDocumentsCase {
+  case_title: string;
+  legal_area: string;
+  state: string;
+  county?: string | null;
+}
+
+interface ExhibitItem {
+  exhibitNumber: string;
+  fileName: string;
+  fileType: string;
+  description: string;
+  dateAdded: string;
+  pageNumber: number;
+}
+
+export const generateBookOfDocumentsPDF = (
+  files: BookOfDocumentsFile[],
+  caseInfo?: BookOfDocumentsCase
+): jsPDF => {
+  const doc = new jsPDF();
+  const pageWidth = doc.internal.pageSize.width;
+  const pageHeight = doc.internal.pageSize.height;
+  const margin = 20;
+  const contentWidth = pageWidth - margin * 2;
+  
+  // Build exhibit list with numbering
+  const exhibits: ExhibitItem[] = files.map((file, idx) => ({
+    exhibitNumber: `${String.fromCharCode(65 + Math.floor(idx / 26))}${(idx % 26) + 1}`.replace('A', ''),
+    fileName: file.file_name,
+    fileType: file.file_type,
+    description: file.description || getDefaultDescription(file.file_type),
+    dateAdded: file.created_at ? format(new Date(file.created_at), 'MMM d, yyyy') : 'N/A',
+    pageNumber: 0 // Will be calculated
+  }));
+
+  // Renumber exhibits as Exhibit 1, Exhibit 2, etc.
+  exhibits.forEach((exhibit, idx) => {
+    exhibit.exhibitNumber = `${idx + 1}`;
+  });
+
+  let currentPage = 1;
+
+  // ============ COVER PAGE ============
+  let yPos = 60;
+  
+  // Title
+  doc.setFontSize(28);
+  doc.setTextColor(0);
+  doc.setFont('helvetica', 'bold');
+  doc.text('BOOK OF DOCUMENTS', pageWidth / 2, yPos, { align: 'center' });
+  
+  yPos += 20;
+  doc.setFontSize(14);
+  doc.setFont('helvetica', 'normal');
+  doc.setTextColor(60);
+  doc.text('Evidence & Supporting Materials', pageWidth / 2, yPos, { align: 'center' });
+
+  yPos += 40;
+  
+  // Case info box
+  if (caseInfo) {
+    doc.setDrawColor(200);
+    doc.setFillColor(248, 250, 252);
+    doc.roundedRect(margin + 20, yPos, contentWidth - 40, 50, 3, 3, 'FD');
+    
+    yPos += 15;
+    doc.setFontSize(11);
+    doc.setTextColor(0);
+    doc.setFont('helvetica', 'bold');
+    doc.text('RE:', margin + 30, yPos);
+    doc.setFont('helvetica', 'normal');
+    doc.text(caseInfo.case_title, margin + 45, yPos);
+    
+    yPos += 12;
+    doc.text(`Legal Area: ${caseInfo.legal_area}`, margin + 30, yPos);
+    
+    yPos += 12;
+    doc.text(`Jurisdiction: ${caseInfo.state}${caseInfo.county ? `, ${caseInfo.county} County` : ''}`, margin + 30, yPos);
+  }
+
+  yPos += 50;
+  
+  // Document stats
+  doc.setFontSize(12);
+  doc.setTextColor(0);
+  doc.setFont('helvetica', 'bold');
+  doc.text('Document Summary', pageWidth / 2, yPos, { align: 'center' });
+  
+  yPos += 15;
+  doc.setFontSize(10);
+  doc.setFont('helvetica', 'normal');
+  doc.setTextColor(60);
+  doc.text(`Total Exhibits: ${exhibits.length}`, pageWidth / 2, yPos, { align: 'center' });
+  
+  yPos += 8;
+  doc.text(`Date Compiled: ${format(new Date(), 'MMMM d, yyyy')}`, pageWidth / 2, yPos, { align: 'center' });
+
+  // Footer on cover
+  doc.setFontSize(9);
+  doc.setTextColor(100);
+  doc.text('Prepared using US Justice Bot', pageWidth / 2, pageHeight - 30, { align: 'center' });
+  doc.text('justicebot-usa.com', pageWidth / 2, pageHeight - 22, { align: 'center' });
+
+  currentPage++;
+
+  // ============ TABLE OF CONTENTS ============
+  doc.addPage();
+  yPos = 30;
+
+  doc.setFontSize(18);
+  doc.setTextColor(0);
+  doc.setFont('helvetica', 'bold');
+  doc.text('TABLE OF CONTENTS', pageWidth / 2, yPos, { align: 'center' });
+  
+  yPos += 5;
+  doc.setDrawColor(0);
+  doc.setLineWidth(0.5);
+  doc.line(margin + 40, yPos, pageWidth - margin - 40, yPos);
+  
+  yPos += 20;
+
+  // Table header
+  doc.setFontSize(10);
+  doc.setFont('helvetica', 'bold');
+  doc.text('Exhibit', margin, yPos);
+  doc.text('Description', margin + 25, yPos);
+  doc.text('Type', pageWidth - margin - 50, yPos);
+  doc.text('Page', pageWidth - margin - 10, yPos);
+  
+  yPos += 3;
+  doc.setLineWidth(0.2);
+  doc.line(margin, yPos, pageWidth - margin, yPos);
+  yPos += 8;
+
+  // Calculate page numbers (each exhibit gets its own page for now)
+  let tocStartPage = currentPage + 1; // TOC is page 2, exhibits start after
+  
+  // List exhibits in TOC
+  doc.setFont('helvetica', 'normal');
+  exhibits.forEach((exhibit, idx) => {
+    if (yPos > pageHeight - 40) {
+      doc.addPage();
+      currentPage++;
+      yPos = 30;
+      
+      // Repeat header
+      doc.setFontSize(10);
+      doc.setFont('helvetica', 'bold');
+      doc.text('Exhibit', margin, yPos);
+      doc.text('Description', margin + 25, yPos);
+      doc.text('Type', pageWidth - margin - 50, yPos);
+      doc.text('Page', pageWidth - margin - 10, yPos);
+      yPos += 3;
+      doc.line(margin, yPos, pageWidth - margin, yPos);
+      yPos += 8;
+      doc.setFont('helvetica', 'normal');
+    }
+
+    const exhibitPageNum = tocStartPage + idx;
+    exhibit.pageNumber = exhibitPageNum;
+
+    doc.setFontSize(9);
+    doc.text(`Ex. ${exhibit.exhibitNumber}`, margin, yPos);
+    
+    // Truncate description if too long
+    const maxDescWidth = pageWidth - margin - 90;
+    let desc = exhibit.description;
+    while (doc.getTextWidth(desc) > maxDescWidth && desc.length > 10) {
+      desc = desc.substring(0, desc.length - 4) + '...';
+    }
+    doc.text(desc, margin + 25, yPos);
+    
+    // File type badge
+    const typeLabel = getFileTypeLabel(exhibit.fileType);
+    doc.text(typeLabel, pageWidth - margin - 50, yPos);
+    
+    doc.text(String(exhibitPageNum), pageWidth - margin - 5, yPos);
+    
+    yPos += 8;
+  });
+
+  currentPage++;
+
+  // ============ EXHIBIT PAGES ============
+  exhibits.forEach((exhibit, idx) => {
+    doc.addPage();
+    currentPage++;
+    yPos = 25;
+
+    // Exhibit header
+    doc.setFillColor(30, 64, 175); // Blue header
+    doc.rect(0, 0, pageWidth, 45, 'F');
+    
+    doc.setFontSize(14);
+    doc.setTextColor(255);
+    doc.setFont('helvetica', 'bold');
+    doc.text(`EXHIBIT ${exhibit.exhibitNumber}`, margin, 20);
+    
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    doc.text(exhibit.fileName, margin, 32);
+    
+    // Page indicator on right
+    doc.setFontSize(10);
+    doc.text(`Page ${exhibit.pageNumber}`, pageWidth - margin - 20, 20);
+
+    yPos = 60;
+
+    // Document details box
+    doc.setDrawColor(200);
+    doc.setFillColor(250, 250, 250);
+    doc.roundedRect(margin, yPos, contentWidth, 70, 3, 3, 'FD');
+    
+    yPos += 15;
+    doc.setFontSize(11);
+    doc.setTextColor(0);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Document Information', margin + 10, yPos);
+    
+    yPos += 12;
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(60);
+    
+    doc.text(`File Name:`, margin + 10, yPos);
+    doc.setTextColor(0);
+    doc.text(exhibit.fileName, margin + 50, yPos);
+    
+    yPos += 10;
+    doc.setTextColor(60);
+    doc.text(`Type:`, margin + 10, yPos);
+    doc.setTextColor(0);
+    doc.text(getFileTypeLabel(exhibit.fileType), margin + 50, yPos);
+    
+    yPos += 10;
+    doc.setTextColor(60);
+    doc.text(`Date Added:`, margin + 10, yPos);
+    doc.setTextColor(0);
+    doc.text(exhibit.dateAdded, margin + 50, yPos);
+    
+    yPos += 10;
+    doc.setTextColor(60);
+    doc.text(`Description:`, margin + 10, yPos);
+    doc.setTextColor(0);
+    const descLines = doc.splitTextToSize(exhibit.description, contentWidth - 60);
+    doc.text(descLines[0] || 'N/A', margin + 50, yPos);
+
+    yPos += 30;
+
+    // Placeholder for actual document
+    doc.setDrawColor(180);
+    doc.setFillColor(255, 255, 255);
+    doc.setLineDashPattern([3, 3], 0);
+    doc.roundedRect(margin, yPos, contentWidth, 120, 3, 3, 'FD');
+    doc.setLineDashPattern([], 0);
+    
+    doc.setFontSize(12);
+    doc.setTextColor(150);
+    doc.text('[Document Content]', pageWidth / 2, yPos + 50, { align: 'center' });
+    doc.setFontSize(10);
+    doc.text('Attach original document here', pageWidth / 2, yPos + 65, { align: 'center' });
+    doc.text('or reference the uploaded file in your digital records', pageWidth / 2, yPos + 77, { align: 'center' });
+
+    // Bottom note
+    doc.setFontSize(8);
+    doc.setTextColor(100);
+    doc.text(
+      `This exhibit page serves as a cover sheet for ${exhibit.fileName}`,
+      pageWidth / 2,
+      pageHeight - 25,
+      { align: 'center' }
+    );
+  });
+
+  // ============ ADD PAGE NUMBERS TO ALL PAGES ============
+  const totalPages = doc.getNumberOfPages();
+  for (let i = 1; i <= totalPages; i++) {
+    doc.setPage(i);
+    doc.setFontSize(8);
+    doc.setTextColor(150);
+    
+    if (i > 1) { // Skip cover page
+      doc.text(
+        `Page ${i} of ${totalPages}`,
+        pageWidth / 2,
+        pageHeight - 10,
+        { align: 'center' }
+      );
+    }
+    
+    // Add disclaimer to all pages
+    doc.text(
+      'US Justice Bot | justicebot-usa.com',
+      pageWidth / 2,
+      pageHeight - 5,
+      { align: 'center' }
+    );
+  }
+
+  return doc;
+};
+
+// Helper to get default description based on file type
+function getDefaultDescription(fileType: string): string {
+  if (fileType.startsWith('image/')) return 'Photographic evidence';
+  if (fileType.includes('pdf')) return 'PDF document';
+  if (fileType.includes('word') || fileType.includes('document')) return 'Word document';
+  if (fileType.startsWith('video/')) return 'Video recording';
+  if (fileType.startsWith('audio/')) return 'Audio recording';
+  if (fileType.startsWith('cloud/')) return 'Cloud-linked document';
+  return 'Supporting document';
+}
+
+// Helper to get readable file type label
+function getFileTypeLabel(fileType: string): string {
+  if (fileType.startsWith('image/')) return 'Image';
+  if (fileType.includes('pdf')) return 'PDF';
+  if (fileType.includes('word') || fileType.includes('document')) return 'Document';
+  if (fileType.startsWith('video/')) return 'Video';
+  if (fileType.startsWith('audio/')) return 'Audio';
+  if (fileType.startsWith('cloud/')) return 'Cloud Link';
+  return 'File';
+}
+
 export const downloadPDF = (doc: jsPDF, filename: string) => {
   doc.save(filename);
 };
