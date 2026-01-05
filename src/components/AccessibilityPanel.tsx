@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Accessibility, Plus, Minus, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,30 +12,90 @@ import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 
+const STORAGE_KEY = "accessibility-preferences";
+
+interface AccessibilityPreferences {
+  fontSize: number;
+  highContrast: boolean;
+  reducedMotion: boolean;
+}
+
+const defaultPreferences: AccessibilityPreferences = {
+  fontSize: 100,
+  highContrast: false,
+  reducedMotion: false,
+};
+
+const loadPreferences = (): AccessibilityPreferences => {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      return { ...defaultPreferences, ...JSON.parse(stored) };
+    }
+  } catch {
+    // Ignore parse errors
+  }
+  return defaultPreferences;
+};
+
+const savePreferences = (prefs: AccessibilityPreferences) => {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(prefs));
+  } catch {
+    // Ignore storage errors
+  }
+};
+
 export const AccessibilityPanel = () => {
   const [fontSize, setFontSize] = useState(100);
   const [highContrast, setHighContrast] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [initialized, setInitialized] = useState(false);
+
+  // Load preferences on mount and apply them
+  useEffect(() => {
+    const prefs = loadPreferences();
+    setFontSize(prefs.fontSize);
+    setHighContrast(prefs.highContrast);
+    setReducedMotion(prefs.reducedMotion);
+    
+    // Apply saved preferences
+    document.documentElement.style.fontSize = `${prefs.fontSize}%`;
+    document.documentElement.classList.toggle("high-contrast", prefs.highContrast);
+    document.documentElement.classList.toggle("reduce-motion", prefs.reducedMotion);
+    
+    setInitialized(true);
+  }, []);
 
   const applyFontSize = (size: number) => {
     document.documentElement.style.fontSize = `${size}%`;
     setFontSize(size);
+    if (initialized) {
+      savePreferences({ fontSize: size, highContrast, reducedMotion });
+    }
   };
 
   const toggleHighContrast = (enabled: boolean) => {
     document.documentElement.classList.toggle("high-contrast", enabled);
     setHighContrast(enabled);
+    if (initialized) {
+      savePreferences({ fontSize, highContrast: enabled, reducedMotion });
+    }
   };
 
   const toggleReducedMotion = (enabled: boolean) => {
     document.documentElement.classList.toggle("reduce-motion", enabled);
     setReducedMotion(enabled);
+    if (initialized) {
+      savePreferences({ fontSize, highContrast, reducedMotion: enabled });
+    }
   };
 
   const resetAll = () => {
     applyFontSize(100);
     toggleHighContrast(false);
     toggleReducedMotion(false);
+    savePreferences(defaultPreferences);
   };
 
   return (
