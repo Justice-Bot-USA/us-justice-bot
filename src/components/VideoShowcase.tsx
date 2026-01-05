@@ -14,27 +14,27 @@ interface VideoData {
 
 const videos: VideoData[] = [
   {
-    id: "housing",
-    title: "Housing Court",
-    description: "Learn how to file a housing complaint and understand your tenant rights in the US court system.",
+    id: "getting-started",
+    title: "Getting Started",
+    description: "Learn how to create your account, navigate the platform, and begin your legal journey with US Justice Bot.",
     youtubeId: "dQw4w9WgXcQ" // Placeholder - replace with real video IDs
   },
   {
-    id: "small-claims",
-    title: "Small Claims Court",
-    description: "Step-by-step guide to filing a small claims case, from filling out forms to presenting your case.",
+    id: "ai-case-analysis",
+    title: "AI Case Analysis",
+    description: "See how our AI analyzes your legal situation, calculates merit scores, and provides personalized recommendations.",
     youtubeId: "dQw4w9WgXcQ" // Placeholder - replace with real video IDs
   },
   {
-    id: "eeoc",
-    title: "EEOC Complaints",
-    description: "How to file a workplace discrimination complaint with the Equal Employment Opportunity Commission.",
+    id: "downloading-forms",
+    title: "Downloading Forms",
+    description: "Step-by-step guide to finding, filling out, and downloading the correct legal forms for your jurisdiction.",
     youtubeId: "dQw4w9WgXcQ" // Placeholder - replace with real video IDs
   },
   {
-    id: "family-law",
-    title: "Family Court",
-    description: "Understanding family court procedures for custody, child support, and divorce matters.",
+    id: "legal-journey",
+    title: "Legal Journey Wizard",
+    description: "Follow along as we walk through the complete case filing process from triage to court-ready documents.",
     youtubeId: "dQw4w9WgXcQ" // Placeholder - replace with real video IDs
   }
 ];
