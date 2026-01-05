@@ -98,13 +98,14 @@ export const AccessibilityPanel = () => {
     savePreferences(defaultPreferences);
   };
 
+  // Only show on desktop - reduces mobile clutter
   return (
     <Sheet>
       <SheetTrigger asChild>
         <Button
           variant="outline"
           size="icon"
-          className="fixed bottom-20 right-4 z-50 rounded-full"
+          className="fixed bottom-20 right-4 z-50 rounded-full hidden md:flex"
           aria-label="Accessibility options"
         >
           <Accessibility className="h-5 w-5" />

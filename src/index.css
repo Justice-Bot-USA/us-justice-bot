@@ -143,18 +143,38 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    /* Prevent iOS overscroll bounce */
+    overscroll-behavior: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Safe area support for iOS devices */
+  .safe-area-bottom {
+    padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+  }
+
+  .safe-area-top {
+    padding-top: max(0.75rem, env(safe-area-inset-top));
   }
 
   /* Improve touch targets on mobile */
   @media (max-width: 768px) {
     button,
     a,
-    input,
-    select,
-    textarea,
     [role="button"] {
       min-height: 44px;
-      min-width: 44px;
+    }
+    
+    /* Prevent text size adjustment on orientation change */
+    html {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
+    
+    /* Smoother scrolling on mobile */
+    html, body {
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
     }
   }
 }

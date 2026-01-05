@@ -8,12 +8,17 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useNavigate } from "react-router-dom";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export const ChurnPreventionNudge = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
 
   useEffect(() => {
+    // Don't show on mobile - too intrusive and beforeunload doesn't work well
+    if (isMobile) return;
+    
     // Show after user has been on site for 2 minutes and is about to leave
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       const timeOnSite = Date.now() - (window as any).siteEntryTime;
@@ -30,7 +35,7 @@ export const ChurnPreventionNudge = () => {
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
-  }, []);
+  }, [isMobile]);
 
   const handleAccept = () => {
     localStorage.setItem("hasInteracted", "true");
