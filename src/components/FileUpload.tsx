@@ -26,6 +26,7 @@ import {
 
 interface FileUploadProps {
   sessionId?: string;
+  caseId?: string;
   onUploadComplete?: (files: any[]) => void;
   bucketType?: 'evidence-files' | 'case-documents' | 'user-uploads';
 }
@@ -43,6 +44,7 @@ interface UploadedFile {
 
 export const FileUpload: React.FC<FileUploadProps> = ({ 
   sessionId, 
+  caseId,
   onUploadComplete,
   bucketType = 'user-uploads' 
 }) => {
@@ -124,20 +126,27 @@ export const FileUpload: React.FC<FileUploadProps> = ({
         
         if (urlError) throw urlError;
 
-        // Save file metadata to database
+        // Save file metadata to database with case_id for direct linking
+        const insertData: any = {
+          user_id: user.id,
+          session_id: sessionId,
+          file_name: file.name,
+          file_path: fileName,
+          file_type: file.type,
+          file_size: file.size,
+          bucket_name: bucketType,
+          description: '',
+          tags: []
+        };
+        
+        // Add case_id if provided for direct case linking
+        if (caseId) {
+          insertData.case_id = caseId;
+        }
+        
         const { data: fileRecord, error: dbError } = await supabase
           .from('case_files')
-          .insert({
-            user_id: user.id,
-            session_id: sessionId,
-            file_name: file.name,
-            file_path: fileName,
-            file_type: file.type,
-            file_size: file.size,
-            bucket_name: bucketType,
-            description: '',
-            tags: []
-          })
+          .insert(insertData)
           .select()
           .single();
 

@@ -80,7 +80,7 @@ const BookOfDocuments = () => {
     enabled: !!user
   });
 
-  // Group files by case/session
+  // Group files by case_id (primary) or session_id (fallback)
   const groupedFiles = useMemo(() => {
     if (!caseFiles) return {};
     
@@ -89,18 +89,30 @@ const BookOfDocuments = () => {
     };
 
     caseFiles.forEach(file => {
+      // First try to match by case_id (new direct linking)
+      if ((file as any).case_id && cases) {
+        const matchingCase = cases.find(c => c.id === (file as any).case_id);
+        if (matchingCase) {
+          const key = matchingCase.case_title;
+          if (!groups[key]) groups[key] = [];
+          groups[key].push(file);
+          return;
+        }
+      }
+      
+      // Fallback to session_id matching (legacy)
       if (file.session_id && cases) {
         const matchingCase = cases.find(c => c.session_id === file.session_id);
         if (matchingCase) {
           const key = matchingCase.case_title;
           if (!groups[key]) groups[key] = [];
           groups[key].push(file);
-        } else {
-          groups['Uncategorized'].push(file);
+          return;
         }
-      } else {
-        groups['Uncategorized'].push(file);
       }
+      
+      // No match - put in uncategorized
+      groups['Uncategorized'].push(file);
     });
 
     // Remove empty groups

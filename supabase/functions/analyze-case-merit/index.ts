@@ -396,6 +396,24 @@ For CRIMINAL cases, always include:
       throw insertError;
     }
 
+    // Link any uploaded files to this case for better organization
+    if (uploadedFiles && uploadedFiles.length > 0 && caseRecord.id) {
+      const fileIds = uploadedFiles.map((f: any) => f.id).filter(Boolean);
+      if (fileIds.length > 0) {
+        const { error: linkError } = await supabaseClient
+          .from('case_files')
+          .update({ case_id: caseRecord.id })
+          .in('id', fileIds);
+        
+        if (linkError) {
+          console.error('Error linking files to case:', linkError);
+          // Don't throw - case was created successfully, file linking is secondary
+        } else {
+          console.log(`Linked ${fileIds.length} files to case ${caseRecord.id}`);
+        }
+      }
+    }
+
     console.log('Case analysis completed successfully');
 
     return successResponse({
