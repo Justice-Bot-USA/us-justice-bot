@@ -715,36 +715,6 @@ export type Database = {
         }
         Relationships: []
       }
-      profiles_email_backup: {
-        Row: {
-          created_at: string | null
-          email: string | null
-          first_name: string | null
-          id: string | null
-          last_name: string | null
-          updated_at: string | null
-          user_id: string | null
-        }
-        Insert: {
-          created_at?: string | null
-          email?: string | null
-          first_name?: string | null
-          id?: string | null
-          last_name?: string | null
-          updated_at?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          email?: string | null
-          first_name?: string | null
-          id?: string | null
-          last_name?: string | null
-          updated_at?: string | null
-          user_id?: string | null
-        }
-        Relationships: []
-      }
       subscriptions: {
         Row: {
           amount: number
