@@ -1,10 +1,11 @@
-import { ReactNode } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { usePaywallAccess } from '@/hooks/usePaywallAccess';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Lock, Shield } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
+import { trackAddToCart, getDetectedCountry } from '@/hooks/useAnalytics';
 
 interface PaywallGuardProps {
   children: ReactNode;
@@ -19,6 +20,13 @@ export function PaywallGuard({
 }: PaywallGuardProps) {
   const { hasAccess, isAdmin, loading } = usePaywallAccess();
   const navigate = useNavigate();
+
+  // 🔥 Track add_to_cart when paywall is shown (user hit an "unlock" point)
+  useEffect(() => {
+    if (!loading && !hasAccess) {
+      trackAddToCart(feature, '', getDetectedCountry(), 7.99);
+    }
+  }, [loading, hasAccess, feature]);
 
   if (loading) {
     return (

@@ -19,6 +19,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { trackFunnelEvent, generateSessionId } from "@/lib/funnels/analytics";
+import { setDetectedCountry as setAnalyticsCountry } from "@/hooks/useAnalytics";
 
 // ============ GEO DETECTION ============
 
@@ -34,8 +35,10 @@ const useGeoDetection = () => {
         
         if (data.country_code === 'CA') {
           setDetectedCountry('CA');
+          setAnalyticsCountry('CA');
         } else if (data.country_code === 'US') {
           setDetectedCountry('US');
+          setAnalyticsCountry('US');
         }
       } catch (error) {
         console.log('Geo detection failed, user will select manually');
@@ -145,6 +148,8 @@ const UnifiedEntryFlow = ({ isOpen, onClose }: UnifiedEntryFlowProps) => {
 
   const handleCountrySelect = (country: "CA" | "US") => {
     setState(prev => ({ ...prev, country }));
+    // Store selected country for GA4 funnel tracking
+    setAnalyticsCountry(country);
     trackEntryEvent('country_selected', { country });
     setStep(1);
   };

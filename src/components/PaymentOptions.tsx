@@ -6,6 +6,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Check, Star, Crown } from 'lucide-react';
+import { trackAddToCart, trackBeginCheckout, getDetectedCountry } from '@/hooks/useAnalytics';
 
 interface PaymentOptionsProps {
   onPaymentSuccess?: () => void;
@@ -26,8 +27,18 @@ export const PaymentOptions: React.FC<PaymentOptionsProps> = ({ onPaymentSuccess
       return;
     }
 
+    const country = getDetectedCountry();
+    const value = planType === 'monthly' ? 9.99 : 79;
+    const itemName = planType === 'monthly' ? 'Monthly Subscription' : 'Annual Subscription';
+
+    // 🔥 GA4 add_to_cart conversion event
+    trackAddToCart(itemName, '', country, value);
+
     setLoading(planType);
     try {
+      // 🔥 GA4 begin_checkout event
+      trackBeginCheckout(value, country);
+
       const { data, error } = await supabase.functions.invoke('paypal-payments', {
         body: {
           action: 'create_subscription',
