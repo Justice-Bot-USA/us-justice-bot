@@ -42,7 +42,15 @@ const Pricing = () => {
         description: 'Thank you for subscribing. You now have full access.',
       });
       refreshAccess();
-      navigate('/pricing', { replace: true });
+      
+      // Check if there's a pending case to return to
+      const pendingCaseId = sessionStorage.getItem('pending_case_id');
+      if (pendingCaseId) {
+        sessionStorage.removeItem('pending_case_id');
+        navigate(`/case-journey?caseId=${pendingCaseId}`, { replace: true });
+      } else {
+        navigate('/case-analysis', { replace: true });
+      }
     } else if (subscription === 'cancelled') {
       sessionStorage.removeItem('pending_plan_type');
       toast({
@@ -53,13 +61,22 @@ const Pricing = () => {
       navigate('/pricing', { replace: true });
     } else if (payment === 'success') {
       // 🔥 GA4 purchase conversion event for one-time payments
-      trackPurchase('Case Assessment', '', getDetectedCountry(), 4.99);
+      trackPurchase('Case Assessment', '', getDetectedCountry(), 7.99);
       
       toast({
         title: 'Payment Successful!',
-        description: 'Thank you for your purchase.',
+        description: 'Thank you for your purchase. Access unlocked!',
       });
-      navigate('/pricing', { replace: true });
+      
+      // Check if there's a pending case to return to
+      const pendingCaseId = sessionStorage.getItem('pending_case_id');
+      if (pendingCaseId) {
+        sessionStorage.removeItem('pending_case_id');
+        navigate(`/case-journey?caseId=${pendingCaseId}`, { replace: true });
+      } else {
+        refreshAccess();
+        navigate('/my-cases', { replace: true });
+      }
     } else if (payment === 'cancelled') {
       toast({
         title: 'Payment Cancelled',
