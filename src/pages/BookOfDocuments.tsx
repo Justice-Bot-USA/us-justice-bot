@@ -30,10 +30,13 @@ import {
   Upload,
   Briefcase,
   Cloud,
-  ArrowLeft
+  ArrowLeft,
+  FileDown,
+  Loader2
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
+import { generateBookOfDocumentsPDF, downloadPDF } from '@/lib/pdfGenerator';
 
 const BookOfDocuments = () => {
   const [language, setLanguage] = useState<'en' | 'es'>('en');
@@ -43,6 +46,7 @@ const BookOfDocuments = () => {
   const [bucketFilter, setBucketFilter] = useState<string>('all');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const [sortBy, setSortBy] = useState<'date' | 'name' | 'size'>('date');
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
 
   // Fetch all case files for the user
   const { data: caseFiles, isLoading, refetch } = useQuery({
@@ -222,6 +226,45 @@ const BookOfDocuments = () => {
     }
   };
 
+  const handleDownloadPDF = async () => {
+    if (!caseFiles?.length) {
+      toast.error('No documents to export');
+      return;
+    }
+
+    setIsGeneratingPDF(true);
+    try {
+      // Get case info if files are associated with a case
+      const firstCaseFile = caseFiles.find((f: any) => f.case_id);
+      let caseInfo = undefined;
+      
+      if (firstCaseFile && cases?.length) {
+        const matchingCase = cases.find(c => c.id === (firstCaseFile as any).case_id);
+        if (matchingCase) {
+          caseInfo = {
+            case_title: matchingCase.case_title,
+            legal_area: matchingCase.legal_area,
+            state: matchingCase.state,
+            county: undefined
+          };
+        }
+      }
+
+      const doc = generateBookOfDocumentsPDF(caseFiles, caseInfo);
+      const filename = caseInfo 
+        ? `Book_of_Documents_${caseInfo.case_title.replace(/[^a-zA-Z0-9]/g, '_')}.pdf`
+        : `Book_of_Documents_${format(new Date(), 'yyyy-MM-dd')}.pdf`;
+      
+      downloadPDF(doc, filename);
+      toast.success('Book of Documents PDF downloaded');
+    } catch (error) {
+      console.error('PDF generation error:', error);
+      toast.error('Failed to generate PDF');
+    } finally {
+      setIsGeneratingPDF(false);
+    }
+  };
+
   const FileCard = ({ file }: { file: typeof caseFiles[0] }) => {
     const [fileUrl, setFileUrl] = React.useState<string | null>(null);
     
@@ -344,12 +387,26 @@ const BookOfDocuments = () => {
                 All your uploaded evidence and documents in one place
               </p>
             </div>
-            <Button asChild>
-              <Link to="/case-analysis">
-                <Upload className="h-4 w-4 mr-2" />
-                Upload New Evidence
-              </Link>
-            </Button>
+            <div className="flex gap-2">
+              <Button 
+                variant="outline"
+                onClick={handleDownloadPDF}
+                disabled={isGeneratingPDF || !caseFiles?.length}
+              >
+                {isGeneratingPDF ? (
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                ) : (
+                  <FileDown className="h-4 w-4 mr-2" />
+                )}
+                Download PDF
+              </Button>
+              <Button asChild>
+                <Link to="/case-analysis">
+                  <Upload className="h-4 w-4 mr-2" />
+                  Upload New Evidence
+                </Link>
+              </Button>
+            </div>
           </div>
         </div>
 
