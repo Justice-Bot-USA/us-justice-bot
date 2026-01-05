@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -80,6 +81,7 @@ const legalAreaOptions = [
 ];
 
 export const SmartTriageWizard: React.FC<SmartTriageWizardProps> = ({ onAnalysisComplete }) => {
+  const navigate = useNavigate();
   const { user } = useAuth();
   const [currentStep, setCurrentStep] = useState(1);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -166,11 +168,13 @@ export const SmartTriageWizard: React.FC<SmartTriageWizardProps> = ({ onAnalysis
       setMeritScore(parseFloat(data.meritScore));
       setAnalysisResult(data);
       
-      // Generate channel options based on analysis
-      generateChannelOptions(data);
-      setShowChannels(true);
-      
       toast.success('Case analysis complete!');
+      
+      // Redirect to the guided case journey - single path, no confusion
+      if (data.caseId) {
+        onAnalysisComplete(data.caseId);
+        navigate(`/case-journey?caseId=${data.caseId}`);
+      }
       
     } catch (error) {
       console.error('Error analyzing case:', error);

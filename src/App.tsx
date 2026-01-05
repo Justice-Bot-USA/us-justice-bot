@@ -29,6 +29,7 @@ import FAQ from "./pages/FAQ";
 import StateFunnelPage from "./pages/StateFunnelPage";
 import StateLandingPage from "./pages/StateLandingPage";
 import DemoJourney from "./pages/DemoJourney";
+import CaseJourney from "./pages/CaseJourney";
 
 const queryClient = new QueryClient();
 
@@ -56,6 +57,7 @@ export default function App() {
             <Route path="/criminal-defense-guide" element={<CriminalDefenseGuide />} />
             <Route path="/case-law-search" element={<CaseLawSearch />} />
             <Route path="/book-of-documents" element={<BookOfDocuments />} />
+            <Route path="/case-journey" element={<CaseJourney />} />
             <Route path="/privacy" element={<PrivacyPolicy />} />
             <Route path="/terms" element={<TermsOfService />} />
             <Route path="/disclaimer" element={<LegalDisclaimer />} />
