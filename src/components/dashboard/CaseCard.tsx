@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { CaseStatusBadge } from './CaseStatusBadge';
 import { CaseTimeline } from './CaseTimeline';
 import { CaseNotes } from './CaseNotes';
+import { RelatedCasesDisplay } from './RelatedCasesDisplay';
 import { DocumentExportButton } from '@/components/export/DocumentExportButton';
 import { 
   Select,
@@ -202,6 +203,9 @@ export function CaseCard({
                 </p>
               </div>
             )}
+
+            {/* Related Cases */}
+            <RelatedCasesDisplay caseId={caseData.id} className="mt-4" />
           </CardContent>
         </CollapsibleContent>
       </Collapsible>

@@ -15,6 +15,7 @@ import {
 import { FunnelConfig, FunnelState, US_STATE_NAMES } from '@/lib/funnels';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { useRelatedCases } from '@/hooks/useRelatedCases';
 
 interface FunnelMeritStepProps {
   config: FunnelConfig;
@@ -42,6 +43,7 @@ export const FunnelMeritStep: React.FC<FunnelMeritStepProps> = ({
   setIsProcessing,
 }) => {
   const { user } = useAuth();
+  const { saveRelatedCases } = useRelatedCases();
   const [analysis, setAnalysis] = useState<AnalysisResult | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(true);
   const [progressValue, setProgressValue] = useState(0);
@@ -103,6 +105,19 @@ export const FunnelMeritStep: React.FC<FunnelMeritStepProps> = ({
 
       setAnalysis(result);
       updateData({ meritScore: result.meritScore });
+
+      // Save related cases if the case was created and we have related case data
+      if (data.caseId && state.data.relatedCases && state.data.relatedCases.length > 0) {
+        console.log('Saving related cases for case:', data.caseId);
+        await saveRelatedCases(data.caseId, state.data.relatedCases.map(rc => ({
+          courtName: rc.courtName,
+          state: rc.state,
+          county: rc.county,
+          docketNumber: rc.docketNumber,
+          caseType: rc.caseType,
+          relationshipDescription: rc.relationshipDescription,
+        })));
+      }
 
     } catch (error) {
       console.error('Analysis error:', error);

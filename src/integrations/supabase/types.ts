@@ -715,6 +715,56 @@ export type Database = {
         }
         Relationships: []
       }
+      related_case_references: {
+        Row: {
+          case_id: string
+          case_type: string | null
+          county: string | null
+          court_name: string | null
+          created_at: string
+          docket_number: string | null
+          id: string
+          relationship_description: string | null
+          state: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          case_id: string
+          case_type?: string | null
+          county?: string | null
+          court_name?: string | null
+          created_at?: string
+          docket_number?: string | null
+          id?: string
+          relationship_description?: string | null
+          state: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          case_id?: string
+          case_type?: string | null
+          county?: string | null
+          court_name?: string | null
+          created_at?: string
+          docket_number?: string | null
+          id?: string
+          relationship_description?: string | null
+          state?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "related_case_references_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "case_merit_scores"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       subscriptions: {
         Row: {
           amount: number

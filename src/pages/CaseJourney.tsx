@@ -27,6 +27,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
 import { EvidenceUploader } from '@/components/EvidenceUploader';
+import { RelatedCasesDisplay } from '@/components/dashboard/RelatedCasesDisplay';
 import { trackAddToCart, trackBeginCheckout, getDetectedCountry } from '@/hooks/useAnalytics';
 
 interface CaseData {
@@ -309,6 +310,9 @@ const CaseJourney = () => {
                       </p>
                     </div>
                   </div>
+
+                  {/* Related Cases Display */}
+                  {caseId && <RelatedCasesDisplay caseId={caseId} />}
 
                   {/* Merit Score Display */}
                   <Card className={`border-2 ${
