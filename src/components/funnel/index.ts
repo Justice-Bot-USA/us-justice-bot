@@ -6,3 +6,7 @@ export { FunnelMeritStep } from './steps/FunnelMeritStep';
 export { FunnelFormsStep } from './steps/FunnelFormsStep';
 export { FunnelGenerateStep } from './steps/FunnelGenerateStep';
 export { FunnelNextStepsStep } from './steps/FunnelNextStepsStep';
+export { RelatedCasesPrompt } from './RelatedCasesPrompt';
+export { ConsistencyCheckPrompts } from './ConsistencyCheckPrompts';
+export type { RelatedCase } from './RelatedCasesPrompt';
+export type { ConsistencyCheckAnswer } from './ConsistencyCheckPrompts';

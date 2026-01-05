@@ -45,6 +45,16 @@ interface FilingOptions {
   recommendation?: string;
 }
 
+// Related case reference for PDF generation
+interface RelatedCaseForPDF {
+  courtName?: string | null;
+  state: string;
+  county?: string | null;
+  docketNumber?: string | null;
+  caseType?: string | null;
+  relationshipDescription?: string | null;
+}
+
 // Helper to safely parse JSON data
 const parseJsonField = <T>(field: unknown): T | null => {
   if (!field) return null;
@@ -390,7 +400,10 @@ export const generateFormsChecklistPDF = (caseData: CaseExportData): jsPDF => {
   return doc;
 };
 
-export const generateCourtReadyPDF = (caseData: CaseExportData): jsPDF => {
+export const generateCourtReadyPDF = (
+  caseData: CaseExportData,
+  relatedCases?: RelatedCaseForPDF[]
+): jsPDF => {
   const doc = new jsPDF();
   const pageWidth = doc.internal.pageSize.width;
   const margin = 25;
@@ -501,15 +514,84 @@ export const generateCourtReadyPDF = (caseData: CaseExportData): jsPDF => {
     }
   }
 
+  // Related Proceedings Section
+  if (relatedCases && relatedCases.length > 0) {
+    yPos = checkNewPage(doc, yPos);
+    yPos += 5;
+
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'bold');
+    doc.text('IV. RELATED PROCEEDINGS', margin, yPos);
+    yPos += 10;
+
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(60);
+    doc.text('The following related matters exist, as provided by the user:', margin + 5, yPos);
+    yPos += 10;
+
+    relatedCases.forEach((rc, idx) => {
+      yPos = checkNewPage(doc, yPos);
+      
+      const caseTypeName = rc.caseType ? rc.caseType.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : 'Related Case';
+      doc.setTextColor(0);
+      doc.setFont('helvetica', 'bold');
+      doc.text(`${idx + 1}. ${caseTypeName}`, margin + 5, yPos);
+      yPos += 6;
+      
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(60);
+      
+      if (rc.courtName) {
+        doc.text(`Court: ${rc.courtName}`, margin + 10, yPos);
+        yPos += 5;
+      }
+      
+      if (rc.docketNumber) {
+        doc.text(`Case Number: ${rc.docketNumber}`, margin + 10, yPos);
+        yPos += 5;
+      }
+      
+      const jurisdiction = [rc.county, rc.state].filter(Boolean).join(', ');
+      if (jurisdiction) {
+        doc.text(`Jurisdiction: ${jurisdiction}`, margin + 10, yPos);
+        yPos += 5;
+      }
+      
+      if (rc.relationshipDescription) {
+        yPos = addWrappedText(doc, `Relationship: ${rc.relationshipDescription}`, margin + 10, yPos, contentWidth - 20, 5);
+      }
+      
+      yPos += 5;
+    });
+
+    // Disclaimer about related cases
+    yPos = checkNewPage(doc, yPos);
+    doc.setFontSize(9);
+    doc.setTextColor(100);
+    doc.setFont('helvetica', 'italic');
+    yPos = addWrappedText(
+      doc,
+      'Note: The above related proceedings are based on user-provided information. No outcomes or determinations are stated unless supported by uploaded evidence.',
+      margin + 5,
+      yPos,
+      contentWidth - 10,
+      4
+    );
+    yPos += 10;
+  }
+
   // Relevant Laws
   const laws = parseJsonField<string[]>(caseData.relevant_laws) || [];
   if (laws.length > 0) {
     yPos = checkNewPage(doc, yPos);
     yPos += 5;
 
+    const sectionNumber = relatedCases && relatedCases.length > 0 ? 'V' : 'IV';
     doc.setFontSize(12);
     doc.setFont('helvetica', 'bold');
-    doc.text('IV. RELEVANT LAWS & STATUTES', margin, yPos);
+    doc.setTextColor(0);
+    doc.text(`${sectionNumber}. RELEVANT LAWS & STATUTES`, margin, yPos);
     yPos += 10;
 
     doc.setFontSize(10);
@@ -576,7 +658,8 @@ interface ExhibitItem {
 
 export const generateBookOfDocumentsPDF = (
   files: BookOfDocumentsFile[],
-  caseInfo?: BookOfDocumentsCase
+  caseInfo?: BookOfDocumentsCase,
+  relatedCases?: RelatedCaseForPDF[]
 ): jsPDF => {
   const doc = new jsPDF();
   const pageWidth = doc.internal.pageSize.width;
@@ -655,6 +738,12 @@ export const generateBookOfDocumentsPDF = (
   
   yPos += 8;
   doc.text(`Date Compiled: ${format(new Date(), 'MMMM d, yyyy')}`, pageWidth / 2, yPos, { align: 'center' });
+
+  // Related Cases Count
+  if (relatedCases && relatedCases.length > 0) {
+    yPos += 8;
+    doc.text(`Related Proceedings: ${relatedCases.length}`, pageWidth / 2, yPos, { align: 'center' });
+  }
 
   // Footer on cover
   doc.setFontSize(9);
@@ -741,6 +830,114 @@ export const generateBookOfDocumentsPDF = (
   });
 
   currentPage++;
+
+  // ============ RELATED PROCEEDINGS PAGE ============
+  if (relatedCases && relatedCases.length > 0) {
+    doc.addPage();
+    currentPage++;
+    yPos = 30;
+
+    doc.setFontSize(18);
+    doc.setTextColor(0);
+    doc.setFont('helvetica', 'bold');
+    doc.text('RELATED PROCEEDINGS', pageWidth / 2, yPos, { align: 'center' });
+    
+    yPos += 5;
+    doc.setDrawColor(0);
+    doc.setLineWidth(0.5);
+    doc.line(margin + 40, yPos, pageWidth - margin - 40, yPos);
+    
+    yPos += 15;
+
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(60);
+    yPos = addWrappedText(
+      doc,
+      'The following related matters exist, as provided by the user. These proceedings may affect or be affected by the primary case.',
+      margin,
+      yPos,
+      contentWidth,
+      5
+    );
+    yPos += 15;
+
+    relatedCases.forEach((rc, idx) => {
+      yPos = checkNewPage(doc, yPos, 60);
+      
+      // Related case box
+      doc.setDrawColor(200);
+      doc.setFillColor(250, 250, 250);
+      const boxStartY = yPos;
+      
+      doc.setFontSize(11);
+      doc.setTextColor(0);
+      doc.setFont('helvetica', 'bold');
+      
+      const caseTypeName = rc.caseType 
+        ? rc.caseType.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) 
+        : 'Related Case';
+      doc.text(`${idx + 1}. ${caseTypeName}`, margin + 5, yPos + 5);
+      yPos += 12;
+
+      doc.setFontSize(10);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(60);
+
+      if (rc.courtName) {
+        doc.text(`Court: ${rc.courtName}`, margin + 10, yPos);
+        yPos += 7;
+      }
+      
+      if (rc.docketNumber) {
+        doc.setFont('helvetica', 'bold');
+        doc.text(`Case Number: `, margin + 10, yPos);
+        doc.setFont('courier', 'normal');
+        doc.text(rc.docketNumber, margin + 45, yPos);
+        doc.setFont('helvetica', 'normal');
+        yPos += 7;
+      }
+      
+      const jurisdiction = [rc.county, rc.state].filter(Boolean).join(', ');
+      if (jurisdiction) {
+        doc.text(`Jurisdiction: ${jurisdiction}`, margin + 10, yPos);
+        yPos += 7;
+      }
+      
+      if (rc.relationshipDescription) {
+        yPos = addWrappedText(
+          doc, 
+          `Relationship: ${rc.relationshipDescription}`, 
+          margin + 10, 
+          yPos, 
+          contentWidth - 20, 
+          5
+        );
+        yPos += 2;
+      }
+
+      // Draw box around this entry
+      const boxHeight = yPos - boxStartY + 5;
+      doc.roundedRect(margin, boxStartY - 8, contentWidth, boxHeight, 2, 2, 'D');
+      
+      yPos += 10;
+    });
+
+    // Disclaimer
+    yPos = checkNewPage(doc, yPos);
+    yPos += 5;
+    doc.setFontSize(9);
+    doc.setTextColor(100);
+    doc.setFont('helvetica', 'italic');
+    yPos = addWrappedText(
+      doc,
+      'Note: Related proceedings are based on user-provided information only. No outcomes or determinations are stated unless supported by uploaded evidence.',
+      margin,
+      yPos,
+      contentWidth,
+      4
+    );
+  }
 
   // ============ EXHIBIT PAGES ============
   exhibits.forEach((exhibit, idx) => {

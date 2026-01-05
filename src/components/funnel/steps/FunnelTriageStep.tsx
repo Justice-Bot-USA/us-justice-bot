@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -7,8 +7,10 @@ import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { CheckCircle2, ChevronDown, Scale } from 'lucide-react';
-import { FunnelConfig, FunnelState, US_STATE_NAMES, LEGAL_AREA_NAMES, RelatedCaseData } from '@/lib/funnels';
+import { FunnelConfig, FunnelState, US_STATE_NAMES, LEGAL_AREA_NAMES, RelatedCaseData, LegalCategory } from '@/lib/funnels';
 import { RelatedCasesPrompt, RelatedCase } from '../RelatedCasesPrompt';
+import { ConsistencyCheckPrompts, ConsistencyCheckAnswer } from '../ConsistencyCheckPrompts';
+import { getApplicableConsistencyChecks, ConsistencyCheck } from '@/lib/relatedCaseSuggestions';
 
 interface FunnelTriageStepProps {
   config: FunnelConfig;
@@ -40,6 +42,25 @@ export const FunnelTriageStep: React.FC<FunnelTriageStepProps> = ({
   );
   const [relatedCasesOpen, setRelatedCasesOpen] = useState(false);
   const relatedCases: RelatedCase[] = state.data.relatedCases || [];
+  
+  // Consistency checks state
+  const [consistencyChecks, setConsistencyChecks] = useState<ConsistencyCheck[]>([]);
+  const [consistencyAnswers, setConsistencyAnswers] = useState<ConsistencyCheckAnswer[]>(
+    (state.data as any).consistencyAnswers || []
+  );
+
+  // Update consistency checks when description changes
+  useEffect(() => {
+    if (state.data.caseDescription && config.legalArea) {
+      const checks = getApplicableConsistencyChecks(
+        config.legalArea as LegalCategory,
+        state.data.caseDescription
+      );
+      setConsistencyChecks(checks);
+    } else {
+      setConsistencyChecks([]);
+    }
+  }, [state.data.caseDescription, config.legalArea]);
 
   const handleHasExistingCaseChange = (value: string) => {
     setHasExistingCase(value);
@@ -53,6 +74,20 @@ export const FunnelTriageStep: React.FC<FunnelTriageStepProps> = ({
 
   const handleRelatedCasesChange = (cases: RelatedCase[]) => {
     updateData({ relatedCases: cases });
+  };
+
+  const handleConsistencyAnswerChange = (checkId: string, answer: 'yes' | 'no' | 'unsure') => {
+    const newAnswers = consistencyAnswers.filter(a => a.checkId !== checkId);
+    newAnswers.push({ checkId, answer });
+    setConsistencyAnswers(newAnswers);
+    updateData({ consistencyAnswers: newAnswers } as any);
+    
+    // If user answers yes to a consistency check, suggest opening related cases
+    if (answer === 'yes' && !hasExistingCase) {
+      setHasExistingCase('yes');
+      updateData({ hasExistingCase: 'yes' });
+      setRelatedCasesOpen(true);
+    }
   };
 
   return (
@@ -140,6 +175,15 @@ The more detail you provide, the better our AI can analyze your case.`}
         </p>
       </div>
 
+      {/* Consistency Checks - Show after description is entered */}
+      {consistencyChecks.length > 0 && (
+        <ConsistencyCheckPrompts
+          checks={consistencyChecks}
+          answers={consistencyAnswers}
+          onAnswerChange={handleConsistencyAnswerChange}
+        />
+      )}
+
       {/* Related Court Cases Section */}
       <Card className="border-2">
         <CardContent className="p-4 space-y-4">
@@ -196,6 +240,8 @@ The more detail you provide, the better our AI can analyze your case.`}
                   relatedCases={relatedCases}
                   onChange={handleRelatedCasesChange}
                   currentState={config.jurisdiction}
+                  legalArea={config.legalArea as LegalCategory}
+                  caseDescription={state.data.caseDescription}
                 />
               </CollapsibleContent>
             </Collapsible>
