@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent } from '@/components/ui/card';
-import { CheckCircle2 } from 'lucide-react';
-import { FunnelConfig, FunnelState, US_STATE_NAMES, LEGAL_AREA_NAMES } from '@/lib/funnels';
+import { Label } from '@/components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { CheckCircle2, ChevronDown, Scale } from 'lucide-react';
+import { FunnelConfig, FunnelState, US_STATE_NAMES, LEGAL_AREA_NAMES, RelatedCaseData } from '@/lib/funnels';
+import { RelatedCasesPrompt, RelatedCase } from '../RelatedCasesPrompt';
 
 interface FunnelTriageStepProps {
   config: FunnelConfig;
@@ -29,6 +33,27 @@ export const FunnelTriageStep: React.FC<FunnelTriageStepProps> = ({
 }) => {
   const stateName = US_STATE_NAMES[config.jurisdiction];
   const legalAreaName = LEGAL_AREA_NAMES[config.legalArea];
+  
+  // Related cases state
+  const [hasExistingCase, setHasExistingCase] = useState<string | undefined>(
+    state.data.hasExistingCase
+  );
+  const [relatedCasesOpen, setRelatedCasesOpen] = useState(false);
+  const relatedCases: RelatedCase[] = state.data.relatedCases || [];
+
+  const handleHasExistingCaseChange = (value: string) => {
+    setHasExistingCase(value);
+    updateData({ hasExistingCase: value });
+    
+    // Auto-open the related cases section if user says yes
+    if (value === 'yes') {
+      setRelatedCasesOpen(true);
+    }
+  };
+
+  const handleRelatedCasesChange = (cases: RelatedCase[]) => {
+    updateData({ relatedCases: cases });
+  };
 
   return (
     <div className="space-y-6">
@@ -107,13 +132,76 @@ export const FunnelTriageStep: React.FC<FunnelTriageStepProps> = ({
 The more detail you provide, the better our AI can analyze your case.`}
           value={state.data.caseDescription || ''}
           onChange={(e) => updateData({ caseDescription: e.target.value })}
-          rows={10}
+          rows={8}
           className="resize-none"
         />
         <p className="text-xs text-muted-foreground">
           Your information is confidential and protected by our privacy policy
         </p>
       </div>
+
+      {/* Related Court Cases Section */}
+      <Card className="border-2">
+        <CardContent className="p-4 space-y-4">
+          <div className="space-y-3">
+            <div className="flex items-center gap-2">
+              <Scale className="h-5 w-5 text-primary" />
+              <Label className="text-base font-medium">Related Court Cases</Label>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Do you have any existing court cases related to this matter? This includes prior, 
+              current, or pending cases involving the same parties or similar issues.
+            </p>
+            
+            <RadioGroup
+              value={hasExistingCase}
+              onValueChange={handleHasExistingCaseChange}
+              className="flex gap-4"
+            >
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="yes" id="existing-yes" />
+                <Label htmlFor="existing-yes" className="cursor-pointer">
+                  Yes, I have related case(s)
+                </Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="no" id="existing-no" />
+                <Label htmlFor="existing-no" className="cursor-pointer">
+                  No related cases
+                </Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="unsure" id="existing-unsure" />
+                <Label htmlFor="existing-unsure" className="cursor-pointer">
+                  I'm not sure
+                </Label>
+              </div>
+            </RadioGroup>
+          </div>
+
+          {/* Collapsible Related Cases Form */}
+          {(hasExistingCase === 'yes' || relatedCases.length > 0) && (
+            <Collapsible open={relatedCasesOpen} onOpenChange={setRelatedCasesOpen}>
+              <CollapsibleTrigger className="flex items-center justify-between w-full py-2 text-sm font-medium hover:text-primary transition-colors">
+                <span>
+                  {relatedCases.length > 0 
+                    ? `${relatedCases.length} related case${relatedCases.length !== 1 ? 's' : ''} added`
+                    : 'Add related case details'
+                  }
+                </span>
+                <ChevronDown className={`h-4 w-4 transition-transform ${relatedCasesOpen ? 'rotate-180' : ''}`} />
+              </CollapsibleTrigger>
+              <CollapsibleContent className="pt-4">
+                <RelatedCasesPrompt
+                  relatedCases={relatedCases}
+                  onChange={handleRelatedCasesChange}
+                  currentState={config.jurisdiction}
+                />
+              </CollapsibleContent>
+            </Collapsible>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 };

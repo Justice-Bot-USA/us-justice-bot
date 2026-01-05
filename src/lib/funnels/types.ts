@@ -58,6 +58,17 @@ export interface FunnelAnalyticsEvent {
   metadata?: Record<string, unknown>;
 }
 
+// Related case reference for triage
+export interface RelatedCaseData {
+  id: string;
+  courtName: string;
+  state: string;
+  county: string;
+  docketNumber: string;
+  caseType: string;
+  relationshipDescription: string;
+}
+
 export interface FunnelState {
   currentStep: FunnelStep;
   completedSteps: FunnelStep[];
@@ -72,6 +83,9 @@ export interface FunnelState {
     meritScore?: number;
     recommendedForms?: string[];
     selectedChannel?: string;
+    // Related cases fields
+    hasExistingCase?: string;
+    relatedCases?: RelatedCaseData[];
   };
 }
 
