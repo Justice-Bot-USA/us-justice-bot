@@ -15,11 +15,13 @@ import {
 
 interface EvidenceUploaderProps {
   sessionId?: string;
+  caseId?: string;
   onFilesUploaded?: (files: any[]) => void;
 }
 
 export const EvidenceUploader: React.FC<EvidenceUploaderProps> = ({ 
   sessionId, 
+  caseId,
   onFilesUploaded 
 }) => {
   return (
@@ -53,6 +55,7 @@ export const EvidenceUploader: React.FC<EvidenceUploaderProps> = ({
           <TabsContent value="direct" className="space-y-4">
             <FileUpload 
               sessionId={sessionId} 
+              caseId={caseId}
               onUploadComplete={onFilesUploaded}
               bucketType="evidence-files"
             />
@@ -67,6 +70,7 @@ export const EvidenceUploader: React.FC<EvidenceUploaderProps> = ({
               </p>
               <FileUpload 
                 sessionId={sessionId} 
+                caseId={caseId}
                 onUploadComplete={onFilesUploaded}
                 bucketType="evidence-files"
               />

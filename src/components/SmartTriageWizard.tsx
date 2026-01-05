@@ -36,6 +36,7 @@ import {
 } from 'lucide-react';
 import { states, stateAbbreviations } from '@/lib/states';
 import { EvidenceUploader } from './EvidenceUploader';
+import { SimilarCases } from './SimilarCases';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
@@ -607,6 +608,15 @@ export const SmartTriageWizard: React.FC<SmartTriageWizardProps> = ({ onAnalysis
                       <Progress value={meritScore} className="h-3 mt-4" />
                     </CardContent>
                   </Card>
+                )}
+
+                {/* Similar Cases in Region */}
+                {triageData.state && triageData.legalArea && (
+                  <SimilarCases 
+                    state={triageData.state}
+                    legalArea={triageData.legalArea}
+                    currentCaseId={analysisResult?.caseId}
+                  />
                 )}
 
                 {/* Channel Options */}

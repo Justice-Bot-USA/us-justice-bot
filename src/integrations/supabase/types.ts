@@ -17,6 +17,7 @@ export type Database = {
       case_files: {
         Row: {
           bucket_name: string
+          case_id: string | null
           created_at: string | null
           description: string | null
           file_name: string
@@ -32,6 +33,7 @@ export type Database = {
         }
         Insert: {
           bucket_name: string
+          case_id?: string | null
           created_at?: string | null
           description?: string | null
           file_name: string
@@ -47,6 +49,7 @@ export type Database = {
         }
         Update: {
           bucket_name?: string
+          case_id?: string | null
           created_at?: string | null
           description?: string | null
           file_name?: string
@@ -61,6 +64,13 @@ export type Database = {
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "case_files_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "case_merit_scores"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "case_files_session_id_fkey"
             columns: ["session_id"]
