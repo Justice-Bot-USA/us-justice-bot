@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { z } from 'zod';
+import { trackSignUp, getDetectedCountry } from '@/hooks/useAnalytics';
 
 const authSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -50,6 +51,9 @@ const Auth = () => {
             variant: "destructive",
           });
         } else {
+          // 🔥 GA4 sign_up conversion event
+          trackSignUp('email', getDetectedCountry());
+          
           toast({
             title: "Success",
             description: "Account created successfully! Please check your email for verification.",

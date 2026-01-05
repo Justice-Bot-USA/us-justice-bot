@@ -9,6 +9,12 @@ import { usePaywallAccess } from '@/hooks/usePaywallAccess';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import Header from '@/components/Header';
+import { 
+  trackPurchase, 
+  trackAddToCart, 
+  trackBeginCheckout, 
+  getDetectedCountry 
+} from '@/hooks/useAnalytics';
 
 const Pricing = () => {
   const navigate = useNavigate();
@@ -25,6 +31,12 @@ const Pricing = () => {
     const payment = searchParams.get('payment');
     
     if (subscription === 'success') {
+      // 🔥 GA4 purchase conversion event for subscriptions
+      const planType = sessionStorage.getItem('pending_plan_type') || 'subscription';
+      const planValue = planType === 'annual' ? 79 : 9.99;
+      trackPurchase(planType === 'annual' ? 'Annual Subscription' : 'Monthly Subscription', '', getDetectedCountry(), planValue);
+      sessionStorage.removeItem('pending_plan_type');
+      
       toast({
         title: 'Subscription Activated!',
         description: 'Thank you for subscribing. You now have full access.',
@@ -32,6 +44,7 @@ const Pricing = () => {
       refreshAccess();
       navigate('/pricing', { replace: true });
     } else if (subscription === 'cancelled') {
+      sessionStorage.removeItem('pending_plan_type');
       toast({
         title: 'Subscription Cancelled',
         description: 'Your subscription was not completed.',
@@ -39,6 +52,9 @@ const Pricing = () => {
       });
       navigate('/pricing', { replace: true });
     } else if (payment === 'success') {
+      // 🔥 GA4 purchase conversion event for one-time payments
+      trackPurchase('Case Assessment', '', getDetectedCountry(), 4.99);
+      
       toast({
         title: 'Payment Successful!',
         description: 'Thank you for your purchase.',
@@ -67,7 +83,20 @@ const Pricing = () => {
 
     setLoading(planType);
     
+    const country = getDetectedCountry();
+    const value = planType === 'annual' ? 79 : 9.99;
+    const itemName = planType === 'annual' ? 'Annual Subscription' : 'Monthly Subscription';
+    
+    // 🔥 GA4 add_to_cart conversion event
+    trackAddToCart(itemName, '', country, value);
+    
     try {
+      // 🔥 GA4 begin_checkout event
+      trackBeginCheckout(value, country);
+      
+      // Store plan type for purchase event after redirect
+      sessionStorage.setItem('pending_plan_type', planType);
+      
       const { data, error } = await supabase.functions.invoke('paypal-payments', {
         body: {
           action: 'create_subscription',
@@ -109,7 +138,15 @@ const Pricing = () => {
 
     setLoading('form');
     
+    const country = getDetectedCountry();
+    
+    // 🔥 GA4 add_to_cart conversion event
+    trackAddToCart('Case Assessment', '', country, 4.99);
+    
     try {
+      // 🔥 GA4 begin_checkout event
+      trackBeginCheckout(4.99, country);
+      
       const { data, error } = await supabase.functions.invoke('paypal-payments', {
         body: {
           action: 'create_one_time_payment',

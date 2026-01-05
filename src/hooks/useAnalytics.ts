@@ -13,6 +13,7 @@ type GAEventParams = {
   value?: number;
 };
 
+// Generic event tracker
 export const trackEvent = ({ action, category, label, value }: GAEventParams) => {
   if (typeof window !== 'undefined' && window.gtag) {
     window.gtag('event', action, {
@@ -20,6 +21,91 @@ export const trackEvent = ({ action, category, label, value }: GAEventParams) =>
       event_label: label,
       value: value,
     });
+  }
+};
+
+// Detect user country (cached)
+let detectedCountry: 'US' | 'CA' | null = null;
+
+export const getDetectedCountry = (): 'US' | 'CA' => {
+  return detectedCountry || 'US';
+};
+
+export const setDetectedCountry = (country: 'US' | 'CA') => {
+  detectedCountry = country;
+};
+
+// ===============================
+// USA PURCHASE FUNNEL EVENTS
+// ===============================
+
+// 1️⃣ Signup Conversion (USA)
+export const trackSignUp = (method: string = 'email', country: 'US' | 'CA' = 'US') => {
+  if (typeof window !== 'undefined' && window.gtag) {
+    window.gtag('event', 'sign_up', {
+      method,
+      country,
+    });
+    console.log('[GA4] sign_up event fired:', { method, country });
+  }
+};
+
+// 2️⃣ Add to Cart Conversion (Critical for Funnel)
+export const trackAddToCart = (
+  itemName: string = 'Case Assessment',
+  state: string = '',
+  country: 'US' | 'CA' = 'US',
+  value: number = 7.99
+) => {
+  if (typeof window !== 'undefined' && window.gtag) {
+    const currency = country === 'US' ? 'USD' : 'CAD';
+    window.gtag('event', 'add_to_cart', {
+      currency,
+      value,
+      items: [{
+        item_name: itemName,
+        item_category: 'Legal',
+        country,
+        state,
+      }],
+    });
+    console.log('[GA4] add_to_cart event fired:', { itemName, state, country, value, currency });
+  }
+};
+
+// 3️⃣ Checkout Started
+export const trackBeginCheckout = (value: number = 7.99, country: 'US' | 'CA' = 'US') => {
+  if (typeof window !== 'undefined' && window.gtag) {
+    const currency = country === 'US' ? 'USD' : 'CAD';
+    window.gtag('event', 'begin_checkout', {
+      currency,
+      value,
+    });
+    console.log('[GA4] begin_checkout event fired:', { value, currency });
+  }
+};
+
+// 4️⃣ Purchase Completed (Required)
+export const trackPurchase = (
+  itemName: string = 'Case Assessment',
+  state: string = '',
+  country: 'US' | 'CA' = 'US',
+  value: number = 7.99
+) => {
+  if (typeof window !== 'undefined' && window.gtag) {
+    const currency = country === 'US' ? 'USD' : 'CAD';
+    const transactionId = crypto.randomUUID();
+    window.gtag('event', 'purchase', {
+      transaction_id: transactionId,
+      currency,
+      value,
+      items: [{
+        item_name: itemName,
+        country,
+        state,
+      }],
+    });
+    console.log('[GA4] purchase event fired:', { transactionId, itemName, state, country, value, currency });
   }
 };
 
