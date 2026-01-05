@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -6,9 +6,15 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Trash2, Scale, Info, FileText } from 'lucide-react';
-import { US_STATE_NAMES } from '@/lib/funnels/types';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Plus, Trash2, Scale, Info, FileText, Upload, CheckCircle2, Lightbulb } from 'lucide-react';
+import { US_STATE_NAMES, LegalCategory } from '@/lib/funnels/types';
 import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  getSuggestedRelatedCases, 
+  RelatedCaseSuggestion,
+  ALL_RELATED_CASE_TYPES 
+} from '@/lib/relatedCaseSuggestions';
 
 export interface RelatedCase {
   id: string;
@@ -18,45 +24,80 @@ export interface RelatedCase {
   docketNumber: string;
   caseType: string;
   relationshipDescription: string;
+  /** IDs of uploaded supporting documents */
+  supportingUploadIds?: string[];
+  /** Whether this was auto-suggested */
+  wasSuggested?: boolean;
 }
 
 interface RelatedCasesPromptProps {
   relatedCases: RelatedCase[];
   onChange: (cases: RelatedCase[]) => void;
   currentState?: string;
+  /** The primary legal area to show relevant suggestions */
+  legalArea?: LegalCategory;
+  /** Case description for keyword matching */
+  caseDescription?: string;
 }
 
-const CASE_TYPE_OPTIONS = [
-  { value: 'family', label: 'Family Court' },
-  { value: 'divorce', label: 'Divorce' },
-  { value: 'custody', label: 'Custody / Visitation' },
-  { value: 'child-support', label: 'Child Support' },
-  { value: 'eviction', label: 'Eviction / Housing' },
-  { value: 'small-claims', label: 'Small Claims' },
-  { value: 'protection-order', label: 'Protection / Restraining Order' },
-  { value: 'cps', label: 'CPS / Child Welfare' },
-  { value: 'criminal', label: 'Criminal Case' },
-  { value: 'civil', label: 'Civil Case' },
-  { value: 'appeal', label: 'Appeal' },
-  { value: 'bankruptcy', label: 'Bankruptcy' },
-  { value: 'other', label: 'Other' },
-];
-
-const createEmptyCase = (): RelatedCase => ({
+const createEmptyCase = (caseType?: string, wasSuggested?: boolean): RelatedCase => ({
   id: crypto.randomUUID(),
   courtName: '',
   state: '',
   county: '',
   docketNumber: '',
-  caseType: '',
+  caseType: caseType || '',
   relationshipDescription: '',
+  supportingUploadIds: [],
+  wasSuggested: wasSuggested || false,
 });
 
 export const RelatedCasesPrompt: React.FC<RelatedCasesPromptProps> = ({
   relatedCases,
   onChange,
   currentState,
+  legalArea,
+  caseDescription,
 }) => {
+  const [suggestions, setSuggestions] = useState<RelatedCaseSuggestion[]>([]);
+  const [selectedSuggestions, setSelectedSuggestions] = useState<Set<string>>(new Set());
+
+  // Get suggestions based on legal area and description
+  useEffect(() => {
+    if (legalArea) {
+      const suggested = getSuggestedRelatedCases(legalArea, caseDescription);
+      setSuggestions(suggested);
+      
+      // Mark already-added cases as selected
+      const existing = new Set<string>();
+      relatedCases.forEach(rc => {
+        if (rc.caseType) existing.add(rc.caseType);
+      });
+      setSelectedSuggestions(existing);
+    }
+  }, [legalArea, caseDescription, relatedCases]);
+
+  const handleSuggestionToggle = (suggestion: RelatedCaseSuggestion, checked: boolean) => {
+    const newSelected = new Set(selectedSuggestions);
+    
+    if (checked) {
+      newSelected.add(suggestion.caseType);
+      // Add a new related case entry with this type
+      const existingWithType = relatedCases.find(rc => rc.caseType === suggestion.caseType);
+      if (!existingWithType) {
+        const newCase = createEmptyCase(suggestion.caseType, true);
+        if (currentState) newCase.state = currentState;
+        onChange([...relatedCases, newCase]);
+      }
+    } else {
+      newSelected.delete(suggestion.caseType);
+      // Remove the related case with this type
+      onChange(relatedCases.filter(rc => rc.caseType !== suggestion.caseType));
+    }
+    
+    setSelectedSuggestions(newSelected);
+  };
+
   const addCase = () => {
     const newCase = createEmptyCase();
     if (currentState) {
@@ -66,6 +107,13 @@ export const RelatedCasesPrompt: React.FC<RelatedCasesPromptProps> = ({
   };
 
   const removeCase = (id: string) => {
+    const caseToRemove = relatedCases.find(c => c.id === id);
+    if (caseToRemove?.caseType) {
+      // Also uncheck from suggestions
+      const newSelected = new Set(selectedSuggestions);
+      newSelected.delete(caseToRemove.caseType);
+      setSelectedSuggestions(newSelected);
+    }
     onChange(relatedCases.filter(c => c.id !== id));
   };
 
@@ -94,6 +142,50 @@ export const RelatedCasesPrompt: React.FC<RelatedCasesPromptProps> = ({
         </CardContent>
       </Card>
 
+      {/* Auto-Suggested Related Cases */}
+      {suggestions.length > 0 && (
+        <Card className="bg-amber-50/50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-800">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base flex items-center gap-2">
+              <Lightbulb className="h-4 w-4 text-amber-600" />
+              Common Related Cases for Your Situation
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="pt-0">
+            <p className="text-sm text-muted-foreground mb-3">
+              Many people in your situation also have related cases. Do any of these apply?
+            </p>
+            <div className="space-y-2">
+              {suggestions.map((suggestion) => (
+                <div 
+                  key={suggestion.caseType} 
+                  className="flex items-start gap-3 p-2 rounded-lg hover:bg-background/50 transition-colors"
+                >
+                  <Checkbox
+                    id={`suggestion-${suggestion.caseType}`}
+                    checked={selectedSuggestions.has(suggestion.caseType)}
+                    onCheckedChange={(checked) => handleSuggestionToggle(suggestion, checked as boolean)}
+                    className="mt-0.5"
+                  />
+                  <div className="flex-1">
+                    <label 
+                      htmlFor={`suggestion-${suggestion.caseType}`}
+                      className="text-sm font-medium cursor-pointer"
+                    >
+                      {suggestion.label}
+                    </label>
+                    <p className="text-xs text-muted-foreground">{suggestion.description}</p>
+                  </div>
+                  {selectedSuggestions.has(suggestion.caseType) && (
+                    <CheckCircle2 className="h-4 w-4 text-green-600 flex-shrink-0" />
+                  )}
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Related Cases List */}
       <AnimatePresence>
         {relatedCases.map((relatedCase, index) => (
@@ -110,6 +202,9 @@ export const RelatedCasesPrompt: React.FC<RelatedCasesPromptProps> = ({
                   <CardTitle className="text-base flex items-center gap-2">
                     <Scale className="h-4 w-4 text-primary" />
                     Related Case #{index + 1}
+                    {relatedCase.wasSuggested && (
+                      <Badge variant="secondary" className="text-xs">Suggested</Badge>
+                    )}
                   </CardTitle>
                   <Button
                     variant="ghost"
@@ -123,17 +218,6 @@ export const RelatedCasesPrompt: React.FC<RelatedCasesPromptProps> = ({
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {/* Court Name */}
-                  <div className="space-y-2">
-                    <Label htmlFor={`court-${relatedCase.id}`}>Court Name</Label>
-                    <Input
-                      id={`court-${relatedCase.id}`}
-                      placeholder="e.g., Los Angeles Superior Court"
-                      value={relatedCase.courtName}
-                      onChange={(e) => updateCase(relatedCase.id, { courtName: e.target.value })}
-                    />
-                  </div>
-
                   {/* Case Type */}
                   <div className="space-y-2">
                     <Label htmlFor={`type-${relatedCase.id}`}>Case Type</Label>
@@ -145,7 +229,7 @@ export const RelatedCasesPrompt: React.FC<RelatedCasesPromptProps> = ({
                         <SelectValue placeholder="Select case type" />
                       </SelectTrigger>
                       <SelectContent>
-                        {CASE_TYPE_OPTIONS.map((option) => (
+                        {ALL_RELATED_CASE_TYPES.map((option) => (
                           <SelectItem key={option.value} value={option.value}>
                             {option.label}
                           </SelectItem>
@@ -154,9 +238,20 @@ export const RelatedCasesPrompt: React.FC<RelatedCasesPromptProps> = ({
                     </Select>
                   </div>
 
+                  {/* Court Name */}
+                  <div className="space-y-2">
+                    <Label htmlFor={`court-${relatedCase.id}`}>Court Name (Optional)</Label>
+                    <Input
+                      id={`court-${relatedCase.id}`}
+                      placeholder="e.g., Los Angeles Superior Court"
+                      value={relatedCase.courtName}
+                      onChange={(e) => updateCase(relatedCase.id, { courtName: e.target.value })}
+                    />
+                  </div>
+
                   {/* State */}
                   <div className="space-y-2">
-                    <Label htmlFor={`state-${relatedCase.id}`}>State</Label>
+                    <Label htmlFor={`state-${relatedCase.id}`}>State (Optional)</Label>
                     <Select
                       value={relatedCase.state}
                       onValueChange={(value) => updateCase(relatedCase.id, { state: value })}
@@ -176,7 +271,7 @@ export const RelatedCasesPrompt: React.FC<RelatedCasesPromptProps> = ({
 
                   {/* County */}
                   <div className="space-y-2">
-                    <Label htmlFor={`county-${relatedCase.id}`}>County</Label>
+                    <Label htmlFor={`county-${relatedCase.id}`}>County (Optional)</Label>
                     <Input
                       id={`county-${relatedCase.id}`}
                       placeholder="e.g., Los Angeles"
@@ -189,7 +284,7 @@ export const RelatedCasesPrompt: React.FC<RelatedCasesPromptProps> = ({
                   <div className="space-y-2 md:col-span-2">
                     <Label htmlFor={`docket-${relatedCase.id}`} className="flex items-center gap-2">
                       <FileText className="h-4 w-4" />
-                      Docket / Case Number
+                      Docket / Case Number (Optional)
                     </Label>
                     <Input
                       id={`docket-${relatedCase.id}`}
@@ -216,6 +311,12 @@ export const RelatedCasesPrompt: React.FC<RelatedCasesPromptProps> = ({
                     rows={2}
                     className="resize-none"
                   />
+                </div>
+
+                {/* Document Upload Hint */}
+                <div className="flex items-center gap-2 text-sm text-muted-foreground p-2 bg-muted/50 rounded-lg">
+                  <Upload className="h-4 w-4" />
+                  <span>You can upload related court documents in the Evidence step</span>
                 </div>
               </CardContent>
             </Card>

@@ -726,6 +726,7 @@ export type Database = {
           id: string
           relationship_description: string | null
           state: string
+          supporting_upload_ids: string[] | null
           updated_at: string
           user_id: string
         }
@@ -739,6 +740,7 @@ export type Database = {
           id?: string
           relationship_description?: string | null
           state: string
+          supporting_upload_ids?: string[] | null
           updated_at?: string
           user_id: string
         }
@@ -752,6 +754,7 @@ export type Database = {
           id?: string
           relationship_description?: string | null
           state?: string
+          supporting_upload_ids?: string[] | null
           updated_at?: string
           user_id?: string
         }

@@ -67,6 +67,14 @@ export interface RelatedCaseData {
   docketNumber: string;
   caseType: string;
   relationshipDescription: string;
+  supportingUploadIds?: string[];
+  wasSuggested?: boolean;
+}
+
+// Consistency check answer
+export interface ConsistencyCheckAnswerData {
+  checkId: string;
+  answer: 'yes' | 'no' | 'unsure';
 }
 
 export interface FunnelState {
@@ -86,6 +94,7 @@ export interface FunnelState {
     // Related cases fields
     hasExistingCase?: string;
     relatedCases?: RelatedCaseData[];
+    consistencyAnswers?: ConsistencyCheckAnswerData[];
   };
 }
 
