@@ -134,7 +134,7 @@ const UnifiedEntryFlow = ({ isOpen, onClose }: UnifiedEntryFlowProps) => {
   const totalSteps = 4;
   const progress = ((step + 1) / totalSteps) * 100;
 
-  // Track funnel_start when modal opens
+  // Track funnel_start when modal opens - only track once
   useEffect(() => {
     if (isOpen && step === 0) {
       trackEntryEvent('funnel_start', { 
@@ -142,7 +142,8 @@ const UnifiedEntryFlow = ({ isOpen, onClose }: UnifiedEntryFlowProps) => {
         detected_country: detectedCountry 
       });
     }
-  }, [isOpen, detectedCountry]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen]); // Only depend on isOpen to prevent re-triggering
 
   // ============ HANDLERS ============
 
