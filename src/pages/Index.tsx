@@ -36,7 +36,7 @@ const CourtLocator = lazy(() => import("@/components/CourtLocator"));
 const FeatureGrid = lazy(() => import("@/components/FeatureGrid"));
 const LegalChatbot = lazy(() => import("@/components/LegalChatbot"));
 const WhatWeDoSection = lazy(() => import("@/components/WhatWeDoSection"));
-const VideoShowcase = lazy(() => import("@/components/VideoShowcase"));
+
 const PrivacyConsentBanner = lazy(() => import("@/components/PrivacyConsentBanner"));
 
 // Lazy load engagement widgets
@@ -172,10 +172,6 @@ const Index = () => {
           <HowItWorks language={language} />
         </div>
         
-        {/* Video Showcase - matches Canada */}
-        <Suspense fallback={<LoadingSection />}>
-          <VideoShowcase />
-        </Suspense>
         
         {/* Pricing Comparison */}
         <Suspense fallback={<LoadingSection />}>
