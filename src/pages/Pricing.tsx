@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Check, Shield, CheckCircle } from 'lucide-react';
+import { Check, Shield, CreditCard } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { usePaywallAccess } from '@/hooks/usePaywallAccess';
 import { supabase } from '@/integrations/supabase/client';
@@ -29,55 +29,56 @@ const Pricing = () => {
   useEffect(() => {
     const subscription = searchParams.get('subscription');
     const payment = searchParams.get('payment');
+    const sessionId = searchParams.get('session_id');
     
-    if (subscription === 'success') {
-      // 🔥 GA4 purchase conversion event for subscriptions
-      const planType = sessionStorage.getItem('pending_plan_type') || 'subscription';
-      const planValue = planType === 'annual' ? 79 : 9.99;
-      trackPurchase(planType === 'annual' ? 'Annual Subscription' : 'Monthly Subscription', '', getDetectedCountry(), planValue);
-      sessionStorage.removeItem('pending_plan_type');
+    const verifyAndComplete = async () => {
+      if (!user || !sessionId) return;
       
-      toast({
-        title: 'Subscription Activated!',
-        description: 'Thank you for subscribing. You now have full access.',
-      });
-      refreshAccess();
-      
-      // Check if there's a pending case to return to
-      const pendingCaseId = sessionStorage.getItem('pending_case_id');
-      if (pendingCaseId) {
-        sessionStorage.removeItem('pending_case_id');
-        navigate(`/case-journey?caseId=${pendingCaseId}`, { replace: true });
-      } else {
-        navigate('/case-analysis', { replace: true });
+      try {
+        const { data, error } = await supabase.functions.invoke('stripe-checkout', {
+          body: { action: 'verify_session', sessionId },
+        });
+        
+        if (error) throw error;
+        
+        if (data.success) {
+          if (data.type === 'subscription') {
+            trackPurchase(
+              data.planType === 'annual' ? 'Annual Subscription' : 'Monthly Subscription',
+              '',
+              getDetectedCountry(),
+              data.planType === 'annual' ? 79.99 : 9.99
+            );
+            toast({
+              title: 'Subscription Activated!',
+              description: 'Thank you for subscribing. You now have full access.',
+            });
+          } else {
+            trackPurchase('Case Assessment', '', getDetectedCountry(), 4.99);
+            toast({
+              title: 'Payment Successful!',
+              description: 'Thank you for your purchase. Access unlocked!',
+            });
+          }
+          
+          refreshAccess();
+          
+          const pendingCaseId = sessionStorage.getItem('pending_case_id');
+          if (pendingCaseId) {
+            sessionStorage.removeItem('pending_case_id');
+            navigate(`/case-journey?caseId=${pendingCaseId}`, { replace: true });
+          } else {
+            navigate(data.type === 'subscription' ? '/case-analysis' : '/my-cases', { replace: true });
+          }
+        }
+      } catch (error) {
+        console.error('Verification error:', error);
       }
-    } else if (subscription === 'cancelled') {
-      sessionStorage.removeItem('pending_plan_type');
-      toast({
-        title: 'Subscription Cancelled',
-        description: 'Your subscription was not completed.',
-        variant: 'destructive',
-      });
-      navigate('/pricing', { replace: true });
-    } else if (payment === 'success') {
-      // 🔥 GA4 purchase conversion event for one-time payments
-      trackPurchase('Case Assessment', '', getDetectedCountry(), 7.99);
-      
-      toast({
-        title: 'Payment Successful!',
-        description: 'Thank you for your purchase. Access unlocked!',
-      });
-      
-      // Check if there's a pending case to return to
-      const pendingCaseId = sessionStorage.getItem('pending_case_id');
-      if (pendingCaseId) {
-        sessionStorage.removeItem('pending_case_id');
-        navigate(`/case-journey?caseId=${pendingCaseId}`, { replace: true });
-      } else {
-        refreshAccess();
-        navigate('/my-cases', { replace: true });
-      }
-    } else if (payment === 'cancelled') {
+    };
+
+    if ((subscription === 'success' || payment === 'success') && sessionId) {
+      verifyAndComplete();
+    } else if (subscription === 'cancelled' || payment === 'cancelled') {
       toast({
         title: 'Payment Cancelled',
         description: 'Your payment was not completed.',
@@ -85,7 +86,7 @@ const Pricing = () => {
       });
       navigate('/pricing', { replace: true });
     }
-  }, [searchParams, toast, navigate, refreshAccess]);
+  }, [searchParams, user, toast, navigate, refreshAccess]);
 
   const handleSubscription = async (planType: 'monthly' | 'annual') => {
     if (!user) {
@@ -101,34 +102,24 @@ const Pricing = () => {
     setLoading(planType);
     
     const country = getDetectedCountry();
-    const value = planType === 'annual' ? 79 : 9.99;
+    const value = planType === 'annual' ? 79.99 : 9.99;
     const itemName = planType === 'annual' ? 'Annual Subscription' : 'Monthly Subscription';
     
-    // 🔥 GA4 add_to_cart conversion event
     trackAddToCart(itemName, '', country, value);
     
     try {
-      // 🔥 GA4 begin_checkout event
       trackBeginCheckout(value, country);
       
-      // Store plan type for purchase event after redirect
-      sessionStorage.setItem('pending_plan_type', planType);
-      
-      const { data, error } = await supabase.functions.invoke('paypal-payments', {
-        body: {
-          action: 'create_subscription',
-          planType,
-          userId: user.id,
-          email: user.email,
-        },
+      const { data, error } = await supabase.functions.invoke('stripe-checkout', {
+        body: { action: 'create_subscription', planType },
       });
 
       if (error) throw error;
 
-      if (data.approvalUrl) {
-        window.location.href = data.approvalUrl;
+      if (data.url) {
+        window.location.href = data.url;
       } else {
-        throw new Error('No approval URL received');
+        throw new Error('No checkout URL received');
       }
     } catch (error) {
       console.error('Subscription error:', error);
@@ -156,28 +147,21 @@ const Pricing = () => {
     setLoading('form');
     
     const country = getDetectedCountry();
-    
-    // 🔥 GA4 add_to_cart conversion event
     trackAddToCart('Case Assessment', '', country, 4.99);
     
     try {
-      // 🔥 GA4 begin_checkout event
       trackBeginCheckout(4.99, country);
       
-      const { data, error } = await supabase.functions.invoke('paypal-payments', {
-        body: {
-          action: 'create_one_time_payment',
-          userId: user.id,
-          formType: 'general',
-        },
+      const { data, error } = await supabase.functions.invoke('stripe-checkout', {
+        body: { action: 'create_one_time_payment', formType: 'general' },
       });
 
       if (error) throw error;
 
-      if (data.approvalUrl) {
-        window.location.href = data.approvalUrl;
+      if (data.url) {
+        window.location.href = data.url;
       } else {
-        throw new Error('No approval URL received');
+        throw new Error('No checkout URL received');
       }
     } catch (error) {
       console.error('Payment error:', error);
@@ -244,6 +228,7 @@ const Pricing = () => {
                 onClick={handleFormPayment}
                 disabled={loading === 'form' || isAdmin}
               >
+                <CreditCard className="w-4 h-4 mr-2" />
                 {isAdmin ? 'Free Access' : loading === 'form' ? 'Processing...' : 'Purchase Form'}
               </Button>
             </CardContent>
@@ -290,6 +275,7 @@ const Pricing = () => {
                 onClick={() => handleSubscription('monthly')}
                 disabled={loading === 'monthly' || isAdmin || hasActiveSubscription}
               >
+                <CreditCard className="w-4 h-4 mr-2" />
                 {isAdmin ? 'Free Access' : hasActiveSubscription ? 'Current Plan' : loading === 'monthly' ? 'Processing...' : 'Subscribe Monthly'}
               </Button>
             </CardContent>
@@ -340,6 +326,7 @@ const Pricing = () => {
                 onClick={() => handleSubscription('annual')}
                 disabled={loading === 'annual' || isAdmin || hasActiveSubscription}
               >
+                <CreditCard className="w-4 h-4 mr-2" />
                 {isAdmin ? 'Free Access' : hasActiveSubscription ? 'Current Plan' : loading === 'annual' ? 'Processing...' : 'Subscribe Annually'}
               </Button>
             </CardContent>
@@ -347,8 +334,11 @@ const Pricing = () => {
         </div>
 
         <div className="mt-12 text-center text-sm text-muted-foreground">
-          <p>All payments are securely processed through PayPal</p>
-          <p className="mt-2">Cancel anytime • No hidden fees • 100% satisfaction guaranteed</p>
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <CreditCard className="w-4 h-4" />
+            <span>Secure payments powered by Stripe</span>
+          </div>
+          <p>Cancel anytime • No hidden fees • 100% satisfaction guaranteed</p>
         </div>
       </div>
     </div>

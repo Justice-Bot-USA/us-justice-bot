@@ -66,14 +66,13 @@ export const FunnelPaywallStep: React.FC<FunnelPaywallStepProps> = ({
     const country = getDetectedCountry();
     
     // Track GA4 events
-    trackAddToCart('Case Assessment', config.jurisdiction, country, 7.99);
-    trackBeginCheckout(7.99, country);
+    trackAddToCart('Case Assessment', config.jurisdiction, country, 4.99);
+    trackBeginCheckout(4.99, country);
 
     try {
-      const { data, error } = await supabase.functions.invoke('paypal-payments', {
+      const { data, error } = await supabase.functions.invoke('stripe-checkout', {
         body: {
           action: 'create_one_time_payment',
-          userId: user.id,
           formType: 'case_assessment',
           caseId: state.data.caseId,
         },
@@ -81,13 +80,13 @@ export const FunnelPaywallStep: React.FC<FunnelPaywallStepProps> = ({
 
       if (error) throw error;
 
-      if (data.approvalUrl) {
+      if (data.url) {
         // Store context for redirect
         sessionStorage.setItem('pending_case_id', state.data.caseId || '');
         sessionStorage.setItem('pending_funnel_config', JSON.stringify(config));
-        window.location.href = data.approvalUrl;
+        window.location.href = data.url;
       } else {
-        throw new Error('No approval URL received');
+        throw new Error('No checkout URL received');
       }
     } catch (error) {
       console.error('Payment error:', error);
@@ -183,7 +182,7 @@ export const FunnelPaywallStep: React.FC<FunnelPaywallStepProps> = ({
       <Card className="border-primary bg-gradient-to-r from-primary/5 to-primary/10">
         <CardContent className="p-6 text-center">
           <div className="mb-4">
-            <span className="text-4xl font-bold">$7.99</span>
+            <span className="text-4xl font-bold">$4.99</span>
             <span className="text-muted-foreground ml-2">one-time</span>
           </div>
           <p className="text-sm text-muted-foreground mb-6">
@@ -204,7 +203,7 @@ export const FunnelPaywallStep: React.FC<FunnelPaywallStepProps> = ({
             ) : (
               <>
                 <Unlock className="mr-2 h-4 w-4" />
-                Unlock Now — $7.99
+                Unlock Now — $4.99
               </>
             )}
           </Button>
