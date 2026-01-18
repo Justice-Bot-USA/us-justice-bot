@@ -6,11 +6,13 @@ export type Country = 'US' | 'CA';
 export type FunnelStep = 
   | 'triage'
   | 'evidence'
-  | 'merit_score'
+  | 'results'      // Combined merit + pathway + forms teaser (FREE)
+  | 'paywall'      // Payment gate
+  | 'merit_score'  // Legacy - kept for backwards compat
   | 'form_recommendation'
   | 'generate'
   | 'next_steps'
-  | 'payment';
+  | 'payment';     // Legacy alias
 
 export type LegalCategory = 
   | 'family'
@@ -95,6 +97,10 @@ export interface FunnelState {
     hasExistingCase?: string;
     relatedCases?: RelatedCaseData[];
     consistencyAnswers?: ConsistencyCheckAnswerData[];
+    // Analysis results
+    caseId?: string;
+    legalPathway?: Array<{ step?: number; action?: string; timeline?: string }>;
+    requiredForms?: Array<{ formName?: string; formNumber?: string; purpose?: string }>;
   };
 }
 

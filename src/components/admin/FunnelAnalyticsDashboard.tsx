@@ -30,10 +30,12 @@ interface StepMetrics {
   dropOffRate: number;
 }
 
-const STEP_ORDER: FunnelStep[] = ['triage', 'evidence', 'merit_score', 'form_recommendation', 'payment', 'generate', 'next_steps'];
+const STEP_ORDER: FunnelStep[] = ['triage', 'evidence', 'results', 'paywall', 'merit_score', 'form_recommendation', 'payment', 'generate', 'next_steps'];
 const STEP_LABELS: Record<FunnelStep, string> = {
   triage: 'Triage',
   evidence: 'Evidence',
+  results: 'Results',
+  paywall: 'Paywall',
   merit_score: 'Merit Score',
   form_recommendation: 'Forms',
   payment: 'Payment',

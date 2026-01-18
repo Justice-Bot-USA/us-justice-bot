@@ -14,7 +14,9 @@ import {
   Upload,
   DollarSign,
   ClipboardList,
-  Sparkles
+  Sparkles,
+  Unlock,
+  BarChart3
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -34,6 +36,8 @@ import { toast } from 'sonner';
 import { FunnelTriageStep } from './steps/FunnelTriageStep';
 import { FunnelEvidenceStep } from './steps/FunnelEvidenceStep';
 import { FunnelMeritStep } from './steps/FunnelMeritStep';
+import { FunnelResultsStep } from './steps/FunnelResultsStep';
+import { FunnelPaywallStep } from './steps/FunnelPaywallStep';
 import { FunnelFormsStep } from './steps/FunnelFormsStep';
 import { FunnelGenerateStep } from './steps/FunnelGenerateStep';
 import { FunnelNextStepsStep } from './steps/FunnelNextStepsStep';
@@ -47,6 +51,8 @@ interface FunnelEngineProps {
 const STEP_ICONS: Record<FunnelStep, React.ReactNode> = {
   triage: <Scale className="h-5 w-5" />,
   evidence: <Upload className="h-5 w-5" />,
+  results: <BarChart3 className="h-5 w-5" />,
+  paywall: <Unlock className="h-5 w-5" />,
   merit_score: <Sparkles className="h-5 w-5" />,
   form_recommendation: <FileText className="h-5 w-5" />,
   generate: <ClipboardList className="h-5 w-5" />,
@@ -57,6 +63,8 @@ const STEP_ICONS: Record<FunnelStep, React.ReactNode> = {
 const STEP_LABELS: Record<FunnelStep, string> = {
   triage: 'Describe Your Case',
   evidence: 'Upload Evidence',
+  results: 'Your Results',
+  paywall: 'Unlock Access',
   merit_score: 'Case Analysis',
   form_recommendation: 'Recommended Forms',
   generate: 'Generate Documents',
@@ -151,6 +159,11 @@ export const FunnelEngine: React.FC<FunnelEngineProps> = ({
         return <FunnelTriageStep {...stepProps} />;
       case 'evidence':
         return <FunnelEvidenceStep {...stepProps} />;
+      case 'results':
+        return <FunnelResultsStep {...stepProps} />;
+      case 'paywall':
+      case 'payment':
+        return <FunnelPaywallStep {...stepProps} />;
       case 'merit_score':
         return <FunnelMeritStep {...stepProps} />;
       case 'form_recommendation':
@@ -159,20 +172,6 @@ export const FunnelEngine: React.FC<FunnelEngineProps> = ({
         return <FunnelGenerateStep {...stepProps} />;
       case 'next_steps':
         return <FunnelNextStepsStep {...stepProps} />;
-      case 'payment':
-        // TODO: Payment step component
-        return (
-          <div className="text-center py-12">
-            <DollarSign className="h-12 w-12 mx-auto text-primary mb-4" />
-            <h3 className="text-xl font-semibold mb-2">Unlock Full Access</h3>
-            <p className="text-muted-foreground mb-6">
-              Get complete case analysis and document generation
-            </p>
-            <Button onClick={goToNextStep} size="lg">
-              Continue Free Trial
-            </Button>
-          </div>
-        );
       default:
         return null;
     }
