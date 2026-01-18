@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
 import { z } from 'zod';
-import { trackSignUp, getDetectedCountry } from '@/hooks/useAnalytics';
+import { trackSignUp, trackSignupCompleted, getDetectedCountry } from '@/hooks/useAnalytics';
 import { AlertCircle, Check } from 'lucide-react';
 
 const signUpSchema = z.object({
@@ -138,8 +138,8 @@ const Auth = () => {
             });
           }
         } else {
-          // 🔥 GA4 sign_up conversion event
-          trackSignUp('email', getDetectedCountry());
+          // 🔥 GA4 signup_completed conversion event (CA/US parity)
+          trackSignupCompleted('email', getDetectedCountry());
           setSignupSuccess(true);
           
           // Show success briefly then redirect

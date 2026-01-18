@@ -9,6 +9,7 @@ import { Progress } from "@/components/ui/progress";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { analytics } from "@/hooks/useAnalytics";
 import { 
   Upload, 
   File, 
@@ -160,6 +161,9 @@ export const FileUpload: React.FC<FileUploadProps> = ({
         ));
 
         uploadedFiles.push(fileRecord);
+
+        // 🔥 Track evidence_uploaded event for funnel parity
+        analytics.evidenceUploaded(file.type, 1);
 
         toast.success(`${file.name} uploaded successfully`);
       } catch (error) {

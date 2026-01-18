@@ -19,7 +19,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { trackFunnelEvent, generateSessionId } from "@/lib/funnels/analytics";
-import { setDetectedCountry as setAnalyticsCountry } from "@/hooks/useAnalytics";
+import { setDetectedCountry as setAnalyticsCountry, trackCountrySelected, trackTriageStarted } from "@/hooks/useAnalytics";
 
 // ============ GEO DETECTION ============
 
@@ -151,6 +151,8 @@ const UnifiedEntryFlow = ({ isOpen, onClose }: UnifiedEntryFlowProps) => {
     setState(prev => ({ ...prev, country }));
     // Store selected country for GA4 funnel tracking
     setAnalyticsCountry(country);
+    // 🔥 Track country_selected event (CA/US parity)
+    trackCountrySelected(country);
     trackEntryEvent('country_selected', { country });
     setStep(1);
   };

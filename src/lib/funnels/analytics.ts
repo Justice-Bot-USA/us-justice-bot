@@ -52,9 +52,15 @@ export const trackFunnelEvent = async (
       console.error('Error inserting funnel analytics:', error);
     }
 
-    // Also track in Google Analytics if available
+    // Also track in Google Analytics if available with standardized event names
     if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', `funnel_${action}`, {
+      // Map funnel steps to standardized event names for CA/US parity
+      let eventName = `funnel_${action}`;
+      if (step === 'triage' && action === 'start') eventName = 'triage_started';
+      else if (step === 'triage' && action === 'complete') eventName = 'triage_completed';
+      else if (step === 'generate' && action === 'complete') eventName = 'generate_document';
+      
+      (window as any).gtag('event', eventName, {
         event_category: 'funnel',
         event_label: funnelId,
         funnel_step: step,

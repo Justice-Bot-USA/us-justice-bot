@@ -1,4 +1,5 @@
 // Google Analytics event tracking hook
+// GA4 Event Naming Parity with Canadian Site
 
 declare global {
   interface Window {
@@ -36,21 +37,98 @@ export const setDetectedCountry = (country: 'US' | 'CA') => {
 };
 
 // ===============================
+// CORE FUNNEL EVENTS (CA/US PARITY)
+// These events must match exactly between CA and US sites
+// ===============================
+
+// 1️⃣ triage_started - Fired when user begins triage flow
+export const trackTriageStarted = (legalArea: string, jurisdiction: string, country: 'US' | 'CA' = 'US') => {
+  if (typeof window !== 'undefined' && window.gtag) {
+    window.gtag('event', 'triage_started', {
+      legal_area: legalArea,
+      jurisdiction,
+      country,
+    });
+    console.log('[GA4] triage_started:', { legalArea, jurisdiction, country });
+  }
+};
+
+// 2️⃣ triage_completed - Fired when triage/assessment is complete
+export const trackTriageCompleted = (meritScore: number, legalArea: string, jurisdiction: string, country: 'US' | 'CA' = 'US') => {
+  if (typeof window !== 'undefined' && window.gtag) {
+    window.gtag('event', 'triage_completed', {
+      merit_score: meritScore,
+      legal_area: legalArea,
+      jurisdiction,
+      country,
+    });
+    console.log('[GA4] triage_completed:', { meritScore, legalArea, jurisdiction, country });
+  }
+};
+
+// 3️⃣ evidence_uploaded - Fired when user uploads evidence during triage
+export const trackEvidenceUploaded = (fileType: string, fileCount: number, country: 'US' | 'CA' = 'US') => {
+  if (typeof window !== 'undefined' && window.gtag) {
+    window.gtag('event', 'evidence_uploaded', {
+      file_type: fileType,
+      file_count: fileCount,
+      country,
+    });
+    console.log('[GA4] evidence_uploaded:', { fileType, fileCount, country });
+  }
+};
+
+// 4️⃣ signup_completed - Fired after successful account creation
+export const trackSignupCompleted = (method: string = 'email', country: 'US' | 'CA' = 'US') => {
+  if (typeof window !== 'undefined' && window.gtag) {
+    window.gtag('event', 'signup_completed', {
+      method,
+      country,
+    });
+    console.log('[GA4] signup_completed:', { method, country });
+  }
+};
+
+// 5️⃣ generate_document - Fired ONLY after successful document generation
+export const trackGenerateDocument = (documentType: string, legalArea: string, jurisdiction: string, country: 'US' | 'CA' = 'US') => {
+  if (typeof window !== 'undefined' && window.gtag) {
+    window.gtag('event', 'generate_document', {
+      document_type: documentType,
+      legal_area: legalArea,
+      jurisdiction,
+      country,
+    });
+    console.log('[GA4] generate_document:', { documentType, legalArea, jurisdiction, country });
+  }
+};
+
+// 6️⃣ country_selected - Fired when user selects country (with parameter)
+export const trackCountrySelected = (country: 'US' | 'CA') => {
+  if (typeof window !== 'undefined' && window.gtag) {
+    window.gtag('event', 'country_selected', {
+      country,
+    });
+    console.log('[GA4] country_selected:', { country });
+  }
+};
+
+// ===============================
 // USA PURCHASE FUNNEL EVENTS
 // ===============================
 
-// 1️⃣ Signup Conversion (USA)
+// Legacy sign_up (keep for backwards compatibility, but use signup_completed for funnel parity)
 export const trackSignUp = (method: string = 'email', country: 'US' | 'CA' = 'US') => {
+  // Fire both events for transition period
+  trackSignupCompleted(method, country);
   if (typeof window !== 'undefined' && window.gtag) {
     window.gtag('event', 'sign_up', {
       method,
       country,
     });
-    console.log('[GA4] sign_up event fired:', { method, country });
   }
 };
 
-// 2️⃣ Add to Cart Conversion (Critical for Funnel)
+// Add to Cart Conversion (Critical for Funnel)
 export const trackAddToCart = (
   itemName: string = 'Case Assessment',
   state: string = '',
@@ -73,7 +151,7 @@ export const trackAddToCart = (
   }
 };
 
-// 3️⃣ Checkout Started
+// Checkout Started
 export const trackBeginCheckout = (value: number = 7.99, country: 'US' | 'CA' = 'US') => {
   if (typeof window !== 'undefined' && window.gtag) {
     const currency = country === 'US' ? 'USD' : 'CAD';
@@ -85,7 +163,7 @@ export const trackBeginCheckout = (value: number = 7.99, country: 'US' | 'CA' = 
   }
 };
 
-// 4️⃣ Purchase Completed (Required)
+// Purchase Completed
 export const trackPurchase = (
   itemName: string = 'Case Assessment',
   state: string = '',
@@ -109,9 +187,54 @@ export const trackPurchase = (
   }
 };
 
+// ===============================
+// FUNNEL STAGES (for reporting)
+// first_visit → triage_started → triage_completed → signup_completed → generate_document
+// ===============================
+export const trackFirstVisit = (country: 'US' | 'CA' = 'US') => {
+  if (typeof window !== 'undefined' && window.gtag) {
+    // Check if already tracked this session
+    const alreadyTracked = sessionStorage.getItem('first_visit_tracked');
+    if (!alreadyTracked) {
+      window.gtag('event', 'first_visit', { country });
+      sessionStorage.setItem('first_visit_tracked', 'true');
+      console.log('[GA4] first_visit:', { country });
+    }
+  }
+};
+
 // Pre-defined tracking events for consistency
 export const analytics = {
-  // Form interactions
+  // Core funnel events (CA/US parity)
+  triageStarted: (legalArea: string, jurisdiction: string) => {
+    trackTriageStarted(legalArea, jurisdiction, getDetectedCountry());
+  },
+
+  triageCompleted: (meritScore: number, legalArea: string, jurisdiction: string) => {
+    trackTriageCompleted(meritScore, legalArea, jurisdiction, getDetectedCountry());
+  },
+
+  evidenceUploaded: (fileType: string, fileCount: number = 1) => {
+    trackEvidenceUploaded(fileType, fileCount, getDetectedCountry());
+  },
+
+  signupCompleted: (method: string = 'email') => {
+    trackSignupCompleted(method, getDetectedCountry());
+  },
+
+  generateDocument: (documentType: string, legalArea: string, jurisdiction: string) => {
+    trackGenerateDocument(documentType, legalArea, jurisdiction, getDetectedCountry());
+  },
+
+  countrySelected: (country: 'US' | 'CA') => {
+    trackCountrySelected(country);
+  },
+
+  firstVisit: () => {
+    trackFirstVisit(getDetectedCountry());
+  },
+
+  // Form interactions (legacy, but kept for backwards compatibility)
   formSubmission: (formType: string, state?: string) => {
     trackEvent({
       action: 'form_submission',
@@ -128,8 +251,10 @@ export const analytics = {
     });
   },
 
-  // Case analysis
+  // Case analysis (legacy names, now map to triage events)
   caseAnalysisStarted: (legalArea: string, state: string) => {
+    // Fire both legacy and new event for transition
+    trackTriageStarted(legalArea, state, getDetectedCountry());
     trackEvent({
       action: 'case_analysis_started',
       category: 'Case Analysis',
@@ -137,7 +262,9 @@ export const analytics = {
     });
   },
 
-  caseAnalysisCompleted: (meritScore: number) => {
+  caseAnalysisCompleted: (meritScore: number, legalArea?: string, jurisdiction?: string) => {
+    // Fire both legacy and new event for transition
+    trackTriageCompleted(meritScore, legalArea || '', jurisdiction || '', getDetectedCountry());
     trackEvent({
       action: 'case_analysis_completed',
       category: 'Case Analysis',
@@ -171,8 +298,10 @@ export const analytics = {
     });
   },
 
-  // Document uploads
+  // Document uploads (legacy, now maps to evidence_uploaded)
   documentUpload: (fileType: string) => {
+    // Fire both legacy and new event
+    trackEvidenceUploaded(fileType, 1, getDetectedCountry());
     trackEvent({
       action: 'document_upload',
       category: 'Documents',
@@ -200,11 +329,7 @@ export const analytics = {
 
   // Authentication
   signUp: (method: string) => {
-    trackEvent({
-      action: 'sign_up',
-      category: 'Authentication',
-      label: method,
-    });
+    trackSignUp(method, getDetectedCountry());
   },
 
   login: (method: string) => {
