@@ -45,8 +45,8 @@ const HeroSection = ({ language, onGetStarted }: HeroSectionProps) => {
         style={{ backgroundImage: `url(${usFlagHero})` }}
       />
       
-      {/* Dark Overlay */}
-      <div className="absolute inset-0 bg-black/60" />
+      {/* Dark Blue/Black Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[hsl(220,30%,8%)]/80 via-[hsl(220,30%,10%)]/70 to-[hsl(220,30%,6%)]/90" />
       
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4 py-20 text-center">
