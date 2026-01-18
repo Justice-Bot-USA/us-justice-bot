@@ -37,10 +37,11 @@ interface FieldError {
 }
 
 const Auth = () => {
-  const { user, signIn, signUp, loading } = useAuth();
+  const { user, signIn, signUp, resetPassword, loading } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
   const [isSignUp, setIsSignUp] = useState(false);
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -51,6 +52,7 @@ const Auth = () => {
   const [fieldErrors, setFieldErrors] = useState<FieldError>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [signupSuccess, setSignupSuccess] = useState(false);
+  const [resetEmailSent, setResetEmailSent] = useState(false);
 
   // Redirect if already authenticated
   useEffect(() => {
@@ -60,11 +62,12 @@ const Auth = () => {
     }
   }, [user, loading, navigate]);
 
-  // Clear errors when switching between sign in and sign up
+  // Clear errors when switching between sign in, sign up, and forgot password
   useEffect(() => {
     setFieldErrors({});
     setFormData(prev => ({ ...prev, acceptTerms: false }));
-  }, [isSignUp]);
+    setResetEmailSent(false);
+  }, [isSignUp, isForgotPassword]);
 
   const validateField = (field: string, value: any): string | undefined => {
     try {
@@ -194,6 +197,43 @@ const Auth = () => {
     }
   };
 
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (isSubmitting) return;
+    
+    setIsSubmitting(true);
+    setFieldErrors({});
+
+    try {
+      // Validate email
+      const emailSchema = z.string().trim().email('Please enter a valid email address');
+      emailSchema.parse(formData.email);
+
+      const { error } = await resetPassword(formData.email);
+      
+      if (error) {
+        toast({
+          title: "Error",
+          description: error.message,
+          variant: "destructive",
+        });
+      } else {
+        setResetEmailSent(true);
+        toast({
+          title: "Reset Email Sent!",
+          description: "Check your email for a password reset link.",
+        });
+      }
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        setFieldErrors({ email: error.issues[0]?.message });
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -207,6 +247,90 @@ const Auth = () => {
   // Redirect if already logged in
   if (user) {
     return <Navigate to="/case-analysis" replace />;
+  }
+
+  // Forgot Password View
+  if (isForgotPassword) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background px-4 py-8">
+        <Card className="w-full max-w-md">
+          <CardHeader className="text-center">
+            <CardTitle className="text-2xl font-bold">Reset Password</CardTitle>
+            <CardDescription>
+              Enter your email address and we'll send you a link to reset your password
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {resetEmailSent ? (
+              <div className="space-y-4 text-center">
+                <div className="flex items-center justify-center gap-2 text-green-600">
+                  <Check className="h-8 w-8" />
+                </div>
+                <p className="text-lg font-medium">Check Your Email</p>
+                <p className="text-muted-foreground">
+                  We've sent a password reset link to <strong>{formData.email}</strong>
+                </p>
+                <Button
+                  variant="outline"
+                  className="w-full mt-4"
+                  onClick={() => {
+                    setIsForgotPassword(false);
+                    setResetEmailSent(false);
+                  }}
+                >
+                  Back to Sign In
+                </Button>
+              </div>
+            ) : (
+              <form onSubmit={handleForgotPassword} className="space-y-4" noValidate>
+                <div className="space-y-2">
+                  <Label htmlFor="reset-email">
+                    Email <span className="text-destructive">*</span>
+                  </Label>
+                  <Input
+                    id="reset-email"
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => handleInputChange('email', e.target.value)}
+                    placeholder="john@example.com"
+                    required
+                    autoComplete="email"
+                    className={fieldErrors.email ? 'border-destructive' : ''}
+                    aria-invalid={!!fieldErrors.email}
+                  />
+                  {fieldErrors.email && (
+                    <p className="text-sm text-destructive flex items-center gap-1">
+                      <AlertCircle className="h-3 w-3" />
+                      {fieldErrors.email}
+                    </p>
+                  )}
+                </div>
+                
+                <Button 
+                  type="submit" 
+                  className="w-full"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? 'Sending...' : 'Send Reset Link'}
+                </Button>
+              </form>
+            )}
+            
+            {!resetEmailSent && (
+              <div className="mt-6 text-center">
+                <button
+                  type="button"
+                  onClick={() => setIsForgotPassword(false)}
+                  className="text-sm text-primary hover:underline"
+                >
+                  Back to Sign In
+                </button>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+    );
   }
 
   return (
@@ -296,9 +420,20 @@ const Auth = () => {
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="password">
-                Password <span className="text-destructive">*</span>
-              </Label>
+              <div className="flex items-center justify-between">
+                <Label htmlFor="password">
+                  Password <span className="text-destructive">*</span>
+                </Label>
+                {!isSignUp && (
+                  <button
+                    type="button"
+                    onClick={() => setIsForgotPassword(true)}
+                    className="text-xs text-primary hover:underline"
+                  >
+                    Forgot password?
+                  </button>
+                )}
+              </div>
               <Input
                 id="password"
                 type="password"
