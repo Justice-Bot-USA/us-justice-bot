@@ -18,7 +18,7 @@ import LocalBusinessSchema from "@/components/LocalBusinessSchema";
 const MeritScoreCalculator = lazy(() => import("@/components/MeritScoreCalculator"));
 const TriageSection = lazy(() => import("@/components/TriageSection"));
 const FeaturesSection = lazy(() => import("@/components/FeaturesSection"));
-const InteractiveTutorial = lazy(() => import("@/components/InteractiveTutorial"));
+
 const PricingComparison = lazy(() => import("@/components/PricingComparison"));
 const JourneyFlowchart = lazy(() => import("@/components/JourneyFlowchart"));
 const CompetitorComparison = lazy(() => import("@/components/CompetitorComparison"));
@@ -179,15 +179,6 @@ const Index = () => {
             <PricingComparison />
           </div>
         </Suspense>
-        
-        {/* Interactive Tutorial */}
-        <section className="py-20 bg-muted/30">
-          <div className="container mx-auto px-4">
-            <Suspense fallback={<LoadingSection />}>
-              <InteractiveTutorial />
-            </Suspense>
-          </div>
-        </section>
         
         {/* US Court Triage - matches Canada tribunals */}
         <Suspense fallback={<LoadingSection />}>
