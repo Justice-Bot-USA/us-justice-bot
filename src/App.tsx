@@ -30,6 +30,7 @@ import StateFunnelPage from "./pages/StateFunnelPage";
 import StateLandingPage from "./pages/StateLandingPage";
 import DemoJourney from "./pages/DemoJourney";
 import CaseJourney from "./pages/CaseJourney";
+import ResetPassword from "./pages/ResetPassword";
 
 const queryClient = new QueryClient();
 
@@ -43,6 +44,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<AuthPage />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/admin" element={<AdminDashboardSimple />} />
             <Route path="/admin-setup" element={<AdminSetup />} />
             <Route path="/support" element={<Support />} />
