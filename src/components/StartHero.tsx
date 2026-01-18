@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, PlayCircle, Shield, CheckCircle, Clock } from "lucide-react";
+import { ArrowRight, Scale, FileText, Users } from "lucide-react";
 import UnifiedEntryFlow from "./UnifiedEntryFlow";
+import usFlagHero from "@/assets/us-flag-hero.png";
 
 interface StartHeroProps {
   language: 'en' | 'es';
@@ -12,23 +13,29 @@ const StartHero = ({ language }: StartHeroProps) => {
 
   const text = {
     en: {
-      headline: "Get the right legal help for your situation",
-      subheadline: "We guide you to the correct forms, courts, and next steps. No guesswork.",
-      cta: "Start — it takes 2 minutes",
-      secondary: "See how it works",
-      trustBadge1: "No signup required",
-      trustBadge2: "100% free assessment",
-      time: "2 minutes to your personalized plan",
+      slogan: "IGNORANCE IS NOT AN OPTION",
+      title: "Know Your Rights. Protect Yourself and Your Family.",
+      subtitle: "US Justice Bot helps Americans understand their legal rights and navigate the justice system with confidence.",
+      cta: "GET STARTED FREE",
+      learnMore: "Learn More",
+      features: [
+        { icon: Scale, label: "Know Your Rights" },
+        { icon: FileText, label: "Find Legal Forms" },
+        { icon: Users, label: "Protect Your Family" }
+      ]
     },
     es: {
-      headline: "Obtén la ayuda legal correcta para tu situación",
-      subheadline: "Te guiamos a los formularios, tribunales y próximos pasos correctos. Sin adivinanzas.",
-      cta: "Comenzar — toma 2 minutos",
-      secondary: "Ver cómo funciona",
-      trustBadge1: "Sin registro requerido",
-      trustBadge2: "Evaluación 100% gratis",
-      time: "2 minutos para tu plan personalizado",
-    },
+      slogan: "LA IGNORANCIA NO ES UNA OPCIÓN",
+      title: "Conoce Tus Derechos. Protégete a Ti y a Tu Familia.",
+      subtitle: "US Justice Bot ayuda a los americanos a entender sus derechos legales y navegar el sistema de justicia con confianza.",
+      cta: "COMENZAR GRATIS",
+      learnMore: "Más Información",
+      features: [
+        { icon: Scale, label: "Conoce Tus Derechos" },
+        { icon: FileText, label: "Encuentra Formularios" },
+        { icon: Users, label: "Protege a Tu Familia" }
+      ]
+    }
   };
 
   const t = text[language];
@@ -37,73 +44,84 @@ const StartHero = ({ language }: StartHeroProps) => {
     setIsFlowOpen(true);
   };
 
-  const handleSeeHow = () => {
+  const handleLearnMore = () => {
     const howSection = document.getElementById('how-it-works');
-    howSection?.scrollIntoView({ behavior: 'smooth' });
+    if (howSection) {
+      howSection.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      // Scroll down to next section
+      window.scrollBy({ top: window.innerHeight * 0.8, behavior: 'smooth' });
+    }
   };
 
   return (
     <>
-      <section className="relative py-16 md:py-24 overflow-hidden bg-gradient-to-b from-rose-50 via-white to-background">
-        {/* Background pattern */}
-        <div className="absolute inset-0 opacity-30">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-rose-100 via-transparent to-transparent" />
-        </div>
-
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-3xl mx-auto text-center">
-            {/* Headline */}
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 leading-tight text-foreground">
-              {t.headline}
+      <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
+        {/* Background Image */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: `url(${usFlagHero})` }}
+        />
+        
+        {/* Dark Blue/Black Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[hsl(220,30%,8%)]/80 via-[hsl(220,30%,10%)]/70 to-[hsl(220,30%,6%)]/90" />
+        
+        {/* Content */}
+        <div className="relative z-10 container mx-auto px-4 py-20 text-center">
+          <div className="max-w-4xl mx-auto">
+            {/* Slogan Badge */}
+            <div className="inline-block mb-6">
+              <span className="bg-primary/90 text-primary-foreground px-6 py-2 rounded-full text-sm md:text-base font-bold tracking-wider uppercase">
+                {t.slogan}
+              </span>
+            </div>
+            
+            {/* Main Title */}
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight drop-shadow-lg">
+              {t.title}
             </h1>
             
-            {/* Subheadline */}
-            <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              {t.subheadline}
+            {/* Subtitle */}
+            <p className="text-lg md:text-xl text-white/90 mb-10 max-w-2xl mx-auto drop-shadow">
+              {t.subtitle}
             </p>
 
-            {/* Time indicator */}
-            <div className="flex items-center justify-center gap-2 text-muted-foreground mb-6">
-              <Clock className="h-4 w-4" />
-              <span className="text-sm">{t.time}</span>
-            </div>
-
-            {/* Primary CTA - BIG and dominant */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
               <Button 
-                size="lg"
-                onClick={handleStart}
-                className="text-lg px-10 py-7 h-auto bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all w-full sm:w-auto"
+                size="lg" 
+                onClick={handleStart} 
+                className="text-lg px-10 py-6 h-auto bg-primary hover:bg-primary/90 shadow-xl hover:shadow-2xl transition-all font-bold"
               >
                 {t.cta}
                 <ArrowRight className="h-5 w-5 ml-2" />
               </Button>
-              
-              {/* Secondary CTA */}
-              <Button
-                variant="ghost"
-                size="lg"
-                onClick={handleSeeHow}
-                className="text-muted-foreground hover:text-foreground"
+              <Button 
+                size="lg" 
+                variant="outline"
+                onClick={handleLearnMore}
+                className="text-lg px-10 py-6 h-auto bg-white/10 backdrop-blur border-white/30 text-white hover:bg-white/20 hover:text-white shadow-xl transition-all font-bold"
               >
-                <PlayCircle className="h-5 w-5 mr-2" />
-                {t.secondary}
+                {t.learnMore}
               </Button>
             </div>
 
-            {/* Trust Badges */}
-            <div className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground">
-              <span className="flex items-center gap-1">
-                <Shield className="h-4 w-4 text-primary" />
-                {t.trustBadge1}
-              </span>
-              <span className="flex items-center gap-1">
-                <CheckCircle className="h-4 w-4 text-primary" />
-                {t.trustBadge2}
-              </span>
+            {/* Feature Icons */}
+            <div className="flex flex-wrap justify-center gap-8 md:gap-12">
+              {t.features.map((feature, i) => (
+                <div key={i} className="flex flex-col items-center gap-2">
+                  <div className="w-14 h-14 rounded-full bg-white/10 backdrop-blur border border-white/20 flex items-center justify-center">
+                    <feature.icon className="h-7 w-7 text-white" />
+                  </div>
+                  <span className="text-white/90 text-sm font-medium">{feature.label}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
+
+        {/* Bottom Gradient Fade */}
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent" />
       </section>
 
       {/* Entry Flow Modal */}
