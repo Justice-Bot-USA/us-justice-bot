@@ -11,23 +11,23 @@ import {
   LEGAL_AREA_NAMES
 } from './types';
 
-// Default steps for most funnels
+// Default steps - NEW CONTINUOUS FLOW
+// triage → evidence → results (merit+pathway+forms teaser FREE) → paywall → generate → next_steps
 const STANDARD_STEPS: FunnelStep[] = [
   'triage',
   'evidence',
-  'merit_score',
-  'form_recommendation',
+  'results',      // Shows merit score, pathway teaser, form names (FREE)
+  'paywall',      // Payment gate
   'generate',
   'next_steps'
 ];
 
-// Steps with payment
+// Steps with payment (same as standard now)
 const PAID_STEPS: FunnelStep[] = [
   'triage',
   'evidence',
-  'merit_score',
-  'payment',
-  'form_recommendation',
+  'results',
+  'paywall',
   'generate',
   'next_steps'
 ];
