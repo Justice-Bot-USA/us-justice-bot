@@ -153,6 +153,11 @@ export const CaseMeritAnalyzer: React.FC = () => {
 
       if (error) throw error;
 
+      // 🔥 Track triage_completed event (CA/US parity)
+      if (data?.meritScore) {
+        analytics.caseAnalysisCompleted(data.meritScore, legalArea, state);
+      }
+
       toast.success('Case analysis complete');
       await fetchCaseMeritScores();
       
