@@ -16,36 +16,19 @@ import LocalBusinessSchema from "@/components/LocalBusinessSchema";
 
 // Lazy load below-the-fold components for better performance
 const MeritScoreCalculator = lazy(() => import("@/components/MeritScoreCalculator"));
-const TriageSection = lazy(() => import("@/components/TriageSection"));
 const FeaturesSection = lazy(() => import("@/components/FeaturesSection"));
-
 const PricingComparison = lazy(() => import("@/components/PricingComparison"));
-const JourneyFlowchart = lazy(() => import("@/components/JourneyFlowchart"));
 const CompetitorComparison = lazy(() => import("@/components/CompetitorComparison"));
 const MoneyBackGuarantee = lazy(() => import("@/components/MoneyBackGuarantee"));
-const UrgencyTimer = lazy(() => import("@/components/UrgencyTimer"));
-const FeatureHighlightBanner = lazy(() => import("@/components/FeatureHighlightBanner"));
 const StatesBanner = lazy(() => import("@/components/StatesBanner"));
 
-// New Canada-matching components
+// Canada-matching components
 const StatsBar = lazy(() => import("@/components/StatsBar"));
 const QuickLegalTools = lazy(() => import("@/components/QuickLegalTools"));
 const USCourtTriage = lazy(() => import("@/components/USCourtTriage"));
 const AIToolsShowcase = lazy(() => import("@/components/AIToolsShowcase"));
-const CourtLocator = lazy(() => import("@/components/CourtLocator"));
-const FeatureGrid = lazy(() => import("@/components/FeatureGrid"));
 const LegalChatbot = lazy(() => import("@/components/LegalChatbot"));
 const WhatWeDoSection = lazy(() => import("@/components/WhatWeDoSection"));
-
-const PrivacyConsentBanner = lazy(() => import("@/components/PrivacyConsentBanner"));
-
-// Lazy load engagement widgets
-const SocialProofTicker = lazy(() => import("@/components/SocialProofTicker"));
-const LeadCaptureModal = lazy(() => import("@/components/LeadCaptureModal"));
-const StickyBottomCTA = lazy(() => import("@/components/StickyBottomCTA"));
-const LiveSupportWidget = lazy(() => import("@/components/LiveSupportWidget"));
-const AccessibilityPanel = lazy(() => import("@/components/AccessibilityPanel"));
-const ChurnPreventionNudge = lazy(() => import("@/components/ChurnPreventionNudge"));
 
 const LoadingSection = () => (
   <div className="py-8 flex items-center justify-center min-h-[100px]">
@@ -266,35 +249,6 @@ const Index = () => {
       </main>
       
       <Footer />
-      
-      {/* Engagement Widgets */}
-      <Suspense fallback={null}>
-        <AccessibilityPanel />
-      </Suspense>
-      
-      <Suspense fallback={null}>
-        <PrivacyConsentBanner />
-      </Suspense>
-      
-      <Suspense fallback={null}>
-        <LeadCaptureModal trigger="time" delaySeconds={45} />
-      </Suspense>
-      
-      <Suspense fallback={null}>
-        <SocialProofTicker />
-      </Suspense>
-      
-      <Suspense fallback={null}>
-        <LiveSupportWidget />
-      </Suspense>
-      
-      <Suspense fallback={null}>
-        <StickyBottomCTA />
-      </Suspense>
-      
-      <Suspense fallback={null}>
-        <ChurnPreventionNudge />
-      </Suspense>
     </div>
   );
 };
