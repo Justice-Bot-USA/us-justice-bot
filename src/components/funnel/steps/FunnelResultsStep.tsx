@@ -110,6 +110,8 @@ export const FunnelResultsStep: React.FC<FunnelResultsStepProps> = ({
     }
 
     try {
+      console.log('Calling analyze-case-merit edge function...');
+      
       // Call the AI analysis function
       const { data, error } = await supabase.functions.invoke('analyze-case-merit', {
         body: {
@@ -125,22 +127,32 @@ export const FunnelResultsStep: React.FC<FunnelResultsStepProps> = ({
         }
       });
 
-      if (error) throw error;
+      console.log('Edge function response:', { data, error });
+
+      if (error) {
+        console.error('Edge function error:', error);
+        throw error;
+      }
+
+      if (!data || !data.meritScore) {
+        console.error('Invalid response from edge function:', data);
+        throw new Error('Invalid analysis response');
+      }
 
       // Track triage_completed
       if (data?.meritScore) {
-        analytics.trackTriageCompleted(data.meritScore, config.legalArea, config.jurisdiction);
+        analytics.trackTriageCompleted(parseFloat(data.meritScore), config.legalArea, config.jurisdiction);
       }
 
       const result: AnalysisResult = {
         meritScore: parseFloat(data.meritScore) || 65,
         strengths: data.analysis?.strengthFactors?.map((f: any) => f.factor || f) || ['Clear documentation'],
         weaknesses: data.analysis?.weaknessFactors?.map((f: any) => f.factor || f) || ['May need additional evidence'],
-        estimatedSuccessRate: data.analysis?.estimatedSuccessRate || 70,
+        estimatedSuccessRate: parseFloat(data.analysis?.estimatedSuccessRate) || 70,
         timeToResolution: data.analysis?.timeToResolutionMonths ? `${data.analysis.timeToResolutionMonths} months` : '3-6 months',
         settlementRange: {
-          min: data.analysis?.settlementRangeMin || 5000,
-          max: data.analysis?.settlementRangeMax || 25000,
+          min: parseFloat(data.analysis?.settlementRange?.min) || 5000,
+          max: parseFloat(data.analysis?.settlementRange?.max) || 25000,
         },
         legalPathway: data.analysis?.legalPathway || [],
         requiredForms: data.analysis?.requiredForms || [],
@@ -167,25 +179,46 @@ export const FunnelResultsStep: React.FC<FunnelResultsStepProps> = ({
 
     } catch (error) {
       console.error('Analysis error:', error);
-      // Fallback result
+      // Use DETAILED fallback result based on the legal area
+      const fallbackForms = config.forms.slice(0, 4).map((f, idx) => ({ 
+        formNumber: f, 
+        formName: f,
+        purpose: `Required for ${legalAreaName.toLowerCase()} filing in ${stateName}`,
+        filingOrder: idx + 1
+      }));
+      
       const fallbackResult: AnalysisResult = {
         meritScore: 68,
-        strengths: ['Documentation provided', 'Clear legal issue identified'],
-        weaknesses: ['Additional evidence may strengthen case'],
+        strengths: [
+          'Case details provided for analysis',
+          'Clear legal issue identified',
+          `${stateName} jurisdiction established`
+        ],
+        weaknesses: [
+          'Additional evidence may strengthen case',
+          'Consider consulting with a licensed attorney'
+        ],
         estimatedSuccessRate: 65,
         timeToResolution: '4-8 months',
         settlementRange: { min: 5000, max: 20000 },
         legalPathway: [
-          { step: 1, action: 'File initial complaint', timeline: 'Week 1' },
-          { step: 2, action: 'Serve opposing party', timeline: 'Week 2-3' },
-          { step: 3, action: 'Discovery phase', timeline: 'Weeks 4-12' },
+          { step: 1, action: 'File initial complaint/petition', timeline: 'Week 1-2' },
+          { step: 2, action: 'Serve opposing party', timeline: 'Week 2-4' },
+          { step: 3, action: 'Wait for response period', timeline: 'Week 4-8' },
+          { step: 4, action: 'Discovery and preparation', timeline: 'Months 2-4' },
+          { step: 5, action: 'Settlement negotiations or trial', timeline: 'Months 4-8' },
         ],
-        requiredForms: config.forms.slice(0, 4).map(f => ({ formNumber: f, formName: f })),
-        filingOptions: {},
+        requiredForms: fallbackForms,
+        filingOptions: {
+          proSe: `You can represent yourself in ${stateName} ${courtType}`,
+          withAttorney: 'An attorney can help navigate complex procedures',
+          recommendation: 'Consider your case complexity when deciding'
+        },
         forum: courtType,
       };
       setAnalysis(fallbackResult);
       setProgressValue(100);
+      setProgressMessage('Basic analysis complete');
       updateData({ meritScore: fallbackResult.meritScore });
     } finally {
       setIsAnalyzing(false);
