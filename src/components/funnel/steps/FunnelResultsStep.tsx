@@ -264,7 +264,23 @@ export const FunnelResultsStep: React.FC<FunnelResultsStepProps> = ({
     );
   }
 
-  if (!analysis) return null;
+  // If analysis failed to load, show fallback content
+  if (!analysis) {
+    return (
+      <div className="space-y-6 py-8">
+        <div className="text-center">
+          <Scale className="h-12 w-12 mx-auto text-primary mb-4" />
+          <h3 className="text-xl font-semibold mb-2">Analysis in Progress</h3>
+          <p className="text-muted-foreground mb-4">
+            If this is taking too long, please click Continue below to proceed with basic guidance.
+          </p>
+          <Button onClick={onNext} className="mt-4">
+            Continue to Legal Pathway
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">

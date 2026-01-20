@@ -163,7 +163,20 @@ export const FunnelMeritStep: React.FC<FunnelMeritStepProps> = ({
     );
   }
 
-  if (!analysis) return null;
+  // If analysis failed to load, show fallback UI
+  if (!analysis) {
+    return (
+      <div className="space-y-6 py-8">
+        <div className="text-center">
+          <Scale className="h-12 w-12 mx-auto text-primary mb-4" />
+          <h3 className="text-xl font-semibold mb-2">Analysis in Progress</h3>
+          <p className="text-muted-foreground mb-4">
+            If this is taking too long, please click Continue below to proceed.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
