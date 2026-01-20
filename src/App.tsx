@@ -17,6 +17,7 @@ import LegalJourney from "./pages/LegalJourney";
 import CaseDashboard from "./pages/CaseDashboard";
 import AITools from "./pages/AITools";
 import AIToolsInteractive from "./pages/AIToolsInteractive";
+import PersonalInjuryCalculator from "./pages/PersonalInjuryCalculator";
 import LegalAreaPage from "./pages/LegalAreaPage";
 import FormsLibrary from "./pages/FormsLibrary";
 import CriminalDefenseGuide from "./pages/CriminalDefenseGuide";
@@ -54,6 +55,8 @@ export default function App() {
             <Route path="/my-cases" element={<CaseDashboard />} />
             <Route path="/ai-tools" element={<AITools />} />
             <Route path="/ai-tools/use" element={<AIToolsInteractive />} />
+            <Route path="/injury-settlement-calculator" element={<PersonalInjuryCalculator />} />
+            <Route path="/personal-injury-calculator" element={<PersonalInjuryCalculator />} />
             <Route path="/legal-areas/:areaId" element={<LegalAreaPage />} />
             <Route path="/forms-library" element={<FormsLibrary />} />
             <Route path="/criminal-defense-guide" element={<CriminalDefenseGuide />} />
