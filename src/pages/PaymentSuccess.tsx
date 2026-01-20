@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -13,7 +13,9 @@ import {
   Sparkles,
   Shield,
   Clock,
-  AlertTriangle
+  AlertTriangle,
+  Package,
+  ExternalLink
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -22,6 +24,8 @@ import { toast } from 'sonner';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { FunnelConfig, US_STATE_NAMES, LEGAL_AREA_NAMES } from '@/lib/funnels';
+import { useFormsPdfGenerator } from '@/hooks/useFormsPdfGenerator';
+import type { CourtForm } from '@/lib/forms';
 
 interface VerificationResult {
   success: boolean;
@@ -31,16 +35,30 @@ interface VerificationResult {
   planType?: string;
 }
 
+interface GeneratedForm {
+  id: string;
+  name: string;
+  formNumber: string;
+  blob: Blob;
+  url: string;
+  category: string;
+}
+
 const PaymentSuccess: React.FC = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { generateForms, generateFormsPackage, downloadPdf, getFormsList } = useFormsPdfGenerator();
   const [language, setLanguage] = useState<'en' | 'es'>('en');
   
   const [isVerifying, setIsVerifying] = useState(true);
   const [verificationResult, setVerificationResult] = useState<VerificationResult | null>(null);
   const [funnelConfig, setFunnelConfig] = useState<FunnelConfig | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [availableForms, setAvailableForms] = useState<CourtForm[]>([]);
+  const [generatedForms, setGeneratedForms] = useState<GeneratedForm[]>([]);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [hasGenerated, setHasGenerated] = useState(false);
 
   const sessionId = searchParams.get('session_id');
   const paymentType = searchParams.get('payment') || searchParams.get('subscription');
@@ -116,6 +134,59 @@ const PaymentSuccess: React.FC = () => {
 
     verifyPayment();
   }, [sessionId, user]);
+
+  // Load available forms when funnel config is set
+  useEffect(() => {
+    if (funnelConfig) {
+      const forms = getFormsList(funnelConfig.jurisdiction, funnelConfig.legalArea);
+      setAvailableForms(forms);
+    }
+  }, [funnelConfig, getFormsList]);
+
+  const handleGenerateForms = useCallback(async () => {
+    if (!funnelConfig) {
+      toast.error('No case configuration found');
+      return;
+    }
+
+    setIsGenerating(true);
+    try {
+      const forms = generateForms({
+        state: funnelConfig.jurisdiction,
+        legalArea: funnelConfig.legalArea,
+        caseTitle: funnelConfig.forms?.[0] || `${LEGAL_AREA_NAMES[funnelConfig.legalArea]} Case`,
+      });
+      
+      setGeneratedForms(forms);
+      setHasGenerated(true);
+      toast.success(`Generated ${forms.length} court forms`);
+    } catch (err) {
+      console.error('Form generation error:', err);
+      toast.error('Failed to generate forms. Please try again.');
+    } finally {
+      setIsGenerating(false);
+    }
+  }, [funnelConfig, generateForms]);
+
+  const handleDownloadSingleForm = (form: GeneratedForm) => {
+    const filename = `${form.formNumber.replace(/[^a-zA-Z0-9]/g, '-')}-${form.name.substring(0, 30).replace(/[^a-zA-Z0-9]/g, '-')}.pdf`;
+    downloadPdf(form.blob, filename);
+    toast.success(`Downloaded ${form.formNumber}`);
+  };
+
+  const handleDownloadAllForms = () => {
+    if (!funnelConfig) return;
+    
+    const { blob } = generateFormsPackage({
+      state: funnelConfig.jurisdiction,
+      legalArea: funnelConfig.legalArea,
+      caseTitle: funnelConfig.forms?.[0] || `${LEGAL_AREA_NAMES[funnelConfig.legalArea]} Case`,
+    });
+
+    const filename = `Court-Forms-Package-${funnelConfig.jurisdiction}-${funnelConfig.legalArea}.pdf`;
+    downloadPdf(blob, filename);
+    toast.success('Downloaded complete forms package');
+  };
 
   const stateName = funnelConfig ? US_STATE_NAMES[funnelConfig.jurisdiction] : '';
   const legalAreaName = funnelConfig ? LEGAL_AREA_NAMES[funnelConfig.legalArea] : '';
@@ -223,48 +294,106 @@ const PaymentSuccess: React.FC = () => {
             <CardHeader className="pb-3">
               <CardTitle className="flex items-center gap-2">
                 <FileText className="h-5 w-5 text-primary" />
-                Your Forms Are Ready
+                {hasGenerated ? 'Your Generated Forms' : 'Forms Available for Your Case'}
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-3 mb-6">
-                {(verificationResult?.forms || funnelConfig?.forms || []).slice(0, 6).map((form, idx) => (
-                  <div key={idx} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 bg-green-100 dark:bg-green-900 rounded-lg">
-                        <FileText className="h-4 w-4 text-green-600" />
+              {!hasGenerated ? (
+                <>
+                  {/* Show available forms before generation */}
+                  <div className="space-y-3 mb-6">
+                    {availableForms.slice(0, 6).map((form, idx) => (
+                      <div key={idx} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 bg-blue-100 dark:bg-blue-900 rounded-lg">
+                            <FileText className="h-4 w-4 text-blue-600" />
+                          </div>
+                          <div>
+                            <span className="font-medium block">{form.formNumber}</span>
+                            <span className="text-sm text-muted-foreground">{form.name}</span>
+                          </div>
+                        </div>
+                        <Badge variant="outline" className="text-blue-600 border-blue-300">
+                          Available
+                        </Badge>
                       </div>
-                      <span className="font-medium">{form}</span>
-                    </div>
-                    <Badge variant="outline" className="text-green-600 border-green-300">
-                      Ready
-                    </Badge>
+                    ))}
+                    {availableForms.length > 6 && (
+                      <p className="text-sm text-muted-foreground text-center">
+                        + {availableForms.length - 6} more forms available
+                      </p>
+                    )}
                   </div>
-                ))}
-              </div>
 
-              {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Button 
-                  size="lg" 
-                  className="flex-1"
-                  onClick={() => navigate(verificationResult?.caseId 
-                    ? `/case-journey?caseId=${verificationResult.caseId}` 
-                    : '/my-cases')}
-                >
-                  <Download className="mr-2 h-4 w-4" />
-                  Generate & Download Forms
-                </Button>
-                <Button 
-                  size="lg" 
-                  variant="outline"
-                  className="flex-1"
-                  onClick={() => navigate('/my-cases')}
-                >
-                  View All Cases
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </div>
+                  {/* Generate Button */}
+                  <Button 
+                    size="lg" 
+                    className="w-full"
+                    onClick={handleGenerateForms}
+                    disabled={isGenerating || !funnelConfig}
+                  >
+                    {isGenerating ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Generating Forms...
+                      </>
+                    ) : (
+                      <>
+                        <Sparkles className="mr-2 h-4 w-4" />
+                        Generate Court Forms Package
+                      </>
+                    )}
+                  </Button>
+                </>
+              ) : (
+                <>
+                  {/* Show generated forms with download options */}
+                  <div className="space-y-3 mb-6">
+                    {generatedForms.map((form) => (
+                      <div key={form.id} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 bg-green-100 dark:bg-green-900 rounded-lg">
+                            <FileText className="h-4 w-4 text-green-600" />
+                          </div>
+                          <div>
+                            <span className="font-medium block">{form.formNumber}</span>
+                            <span className="text-sm text-muted-foreground line-clamp-1">{form.name}</span>
+                          </div>
+                        </div>
+                        <Button 
+                          size="sm" 
+                          variant="outline"
+                          onClick={() => handleDownloadSingleForm(form)}
+                        >
+                          <Download className="h-3 w-3 mr-1" />
+                          PDF
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Download All Button */}
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <Button 
+                      size="lg" 
+                      className="flex-1"
+                      onClick={handleDownloadAllForms}
+                    >
+                      <Package className="mr-2 h-4 w-4" />
+                      Download All Forms (Package)
+                    </Button>
+                    <Button 
+                      size="lg" 
+                      variant="outline"
+                      className="flex-1"
+                      onClick={() => navigate('/forms-library')}
+                    >
+                      <ExternalLink className="mr-2 h-4 w-4" />
+                      Browse Forms Library
+                    </Button>
+                  </div>
+                </>
+              )}
             </CardContent>
           </Card>
 
@@ -279,13 +408,15 @@ const PaymentSuccess: React.FC = () => {
             <CardContent>
               <ol className="space-y-4">
                 <li className="flex items-start gap-3">
-                  <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-semibold">
-                    1
+                  <span className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-sm font-semibold ${hasGenerated ? 'bg-green-500 text-white' : 'bg-primary text-primary-foreground'}`}>
+                    {hasGenerated ? <CheckCircle2 className="h-4 w-4" /> : '1'}
                   </span>
                   <div>
                     <p className="font-medium">Generate Your Forms</p>
                     <p className="text-sm text-muted-foreground">
-                      Click the button above to generate your court forms pre-filled with your case details.
+                      {hasGenerated 
+                        ? 'Forms generated! Download them individually or as a package.'
+                        : 'Click the button above to generate your court forms.'}
                     </p>
                   </div>
                 </li>
@@ -294,9 +425,9 @@ const PaymentSuccess: React.FC = () => {
                     2
                   </span>
                   <div>
-                    <p className="font-medium">Review & Sign</p>
+                    <p className="font-medium">Download Official Forms</p>
                     <p className="text-sm text-muted-foreground">
-                      Review all forms carefully and sign where indicated before filing.
+                      Use the links in each PDF to get the official court forms from your state.
                     </p>
                   </div>
                 </li>
@@ -305,9 +436,9 @@ const PaymentSuccess: React.FC = () => {
                     3
                   </span>
                   <div>
-                    <p className="font-medium">File at Court</p>
+                    <p className="font-medium">Fill, Sign & File</p>
                     <p className="text-sm text-muted-foreground">
-                      Follow the filing instructions to submit your forms to the appropriate court.
+                      Complete the forms, make copies, and file at your local courthouse.
                     </p>
                   </div>
                 </li>
