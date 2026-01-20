@@ -76,7 +76,7 @@ async function handleCreateSubscription(
     mode: "subscription",
     userId: data.userId,
     email: data.email,
-    successUrl: `${origin}/pricing?subscription=success&session_id={CHECKOUT_SESSION_ID}`,
+    successUrl: `${origin}/payment-success?subscription=success&session_id={CHECKOUT_SESSION_ID}`,
     cancelUrl: `${origin}/pricing?subscription=cancelled`,
     metadata: { plan_type: data.planType },
   });
@@ -95,7 +95,7 @@ async function handleCreateOneTimePayment(
     mode: "payment",
     userId: data.userId,
     email: data.email,
-    successUrl: `${origin}/pricing?payment=success&session_id={CHECKOUT_SESSION_ID}`,
+    successUrl: `${origin}/payment-success?payment=success&session_id={CHECKOUT_SESSION_ID}`,
     cancelUrl: `${origin}/pricing?payment=cancelled`,
     metadata: {
       access_type: "single_form",

@@ -32,6 +32,7 @@ import StateLandingPage from "./pages/StateLandingPage";
 import DemoJourney from "./pages/DemoJourney";
 import CaseJourney from "./pages/CaseJourney";
 import ResetPassword from "./pages/ResetPassword";
+import PaymentSuccess from "./pages/PaymentSuccess";
 
 const queryClient = new QueryClient();
 
@@ -51,6 +52,7 @@ export default function App() {
             <Route path="/support" element={<Support />} />
             <Route path="/case-analysis" element={<CaseAnalysis />} />
             <Route path="/pricing" element={<Pricing />} />
+            <Route path="/payment-success" element={<PaymentSuccess />} />
             <Route path="/legal-journey" element={<LegalJourney />} />
             <Route path="/my-cases" element={<CaseDashboard />} />
             <Route path="/ai-tools" element={<AITools />} />
