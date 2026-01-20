@@ -24,6 +24,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useRelatedCases } from '@/hooks/useRelatedCases';
 import * as analytics from '@/hooks/useAnalytics';
+import { trackMeritScoreViewed } from '@/hooks/useAnalytics';
 
 interface FunnelResultsStepProps {
   config: FunnelConfig;
@@ -164,6 +165,9 @@ export const FunnelResultsStep: React.FC<FunnelResultsStepProps> = ({
       setAnalysis(result);
       setProgressValue(100);
       setProgressMessage('Analysis complete!');
+
+      // Track merit_score_viewed event (per brief requirements)
+      trackMeritScoreViewed(result.meritScore, config.legalArea, config.jurisdiction, 'US');
       
       updateData({ 
         meritScore: result.meritScore,

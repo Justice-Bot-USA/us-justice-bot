@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -11,7 +11,7 @@ import { FunnelConfig, FunnelState, US_STATE_NAMES, LEGAL_AREA_NAMES, RelatedCas
 import { RelatedCasesPrompt, RelatedCase } from '../RelatedCasesPrompt';
 import { ConsistencyCheckPrompts, ConsistencyCheckAnswer } from '../ConsistencyCheckPrompts';
 import { getApplicableConsistencyChecks, ConsistencyCheck } from '@/lib/relatedCaseSuggestions';
-
+import { trackTriageStarted } from '@/hooks/useAnalytics';
 interface FunnelTriageStepProps {
   config: FunnelConfig;
   state: FunnelState;
@@ -35,6 +35,15 @@ export const FunnelTriageStep: React.FC<FunnelTriageStepProps> = ({
 }) => {
   const stateName = US_STATE_NAMES[config.jurisdiction];
   const legalAreaName = LEGAL_AREA_NAMES[config.legalArea];
+  const hasTrackedStart = useRef(false);
+
+  // Track triage_started on component mount (per brief requirements)
+  useEffect(() => {
+    if (!hasTrackedStart.current) {
+      trackTriageStarted(config.legalArea, config.jurisdiction, 'US');
+      hasTrackedStart.current = true;
+    }
+  }, [config.legalArea, config.jurisdiction]);
   
   // Related cases state
   const [hasExistingCase, setHasExistingCase] = useState<string | undefined>(
