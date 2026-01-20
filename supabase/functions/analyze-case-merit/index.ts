@@ -9,8 +9,17 @@ Deno.serve(async (req: Request) => {
   if (corsResponse) return corsResponse;
 
   try {
-    // Require authentication
-    await requireUser(req);
+    // Optional authentication - allow guest analysis but don't save to DB
+    let userId: string | null = null;
+    let userEmail: string | null = null;
+    
+    try {
+      const authResult = await requireUser(req);
+      userId = authResult.userId;
+      userEmail = authResult.email || null;
+    } catch (authError) {
+      console.log('Running as guest (unauthenticated) - results will not be saved');
+    }
     
     // Use admin client to bypass RLS for inserting case records
     const supabaseClient = createAdminClient();
@@ -359,45 +368,54 @@ For CRIMINAL cases, always include:
       });
     }
 
-    // Create case merit score record with comprehensive AI analysis including case law
-    const { data: caseRecord, error: insertError } = await supabaseClient
-      .from('case_merit_scores')
-      .insert({
-        user_id: caseData.userId,
-        session_id: caseData.sessionId,
-        case_title: caseData.title,
-        case_description: caseData.description,
-        state: caseData.state,
-        county: caseData.county,
-        legal_area: analysis.legalCategory || caseData.legalArea,
-        merit_score: analysis.meritScore,
-        strength_factors: analysis.strengthFactors,
-        weakness_factors: analysis.weaknessFactors,
-        relevant_laws: analysis.relevantLaws,
-        supporting_evidence: uploadedFiles || [],
-        estimated_success_rate: analysis.estimatedSuccessRate,
-        settlement_range_min: analysis.settlementRange?.min || 0,
-        settlement_range_max: analysis.settlementRange?.max || 0,
-        time_to_resolution_months: analysis.timeToResolutionMonths,
-        complexity_score: analysis.complexityScore,
-        legal_pathway: analysis.legalPathway || [],
-        required_forms: analysis.requiredForms || [],
-        evidence_to_gather: analysis.evidenceToGather || [],
-        filing_options: analysis.filingOptions || {},
-        next_steps: analysis.nextSteps || [],
-        improvement_suggestions: improvementSuggestions,
-        status: 'analyzed'
-      })
-      .select()
-      .single();
+    // Only save to database if user is authenticated
+    let caseRecord = null;
+    
+    if (userId) {
+      // Create case merit score record with comprehensive AI analysis including case law
+      const { data: savedCase, error: insertError } = await supabaseClient
+        .from('case_merit_scores')
+        .insert({
+          user_id: userId,
+          session_id: caseData.sessionId,
+          case_title: caseData.title,
+          case_description: caseData.description,
+          state: caseData.state,
+          county: caseData.county,
+          legal_area: analysis.legalCategory || caseData.legalArea,
+          merit_score: analysis.meritScore,
+          strength_factors: analysis.strengthFactors,
+          weakness_factors: analysis.weaknessFactors,
+          relevant_laws: analysis.relevantLaws,
+          supporting_evidence: uploadedFiles || [],
+          estimated_success_rate: analysis.estimatedSuccessRate,
+          settlement_range_min: analysis.settlementRange?.min || 0,
+          settlement_range_max: analysis.settlementRange?.max || 0,
+          time_to_resolution_months: analysis.timeToResolutionMonths,
+          complexity_score: analysis.complexityScore,
+          legal_pathway: analysis.legalPathway || [],
+          required_forms: analysis.requiredForms || [],
+          evidence_to_gather: analysis.evidenceToGather || [],
+          filing_options: analysis.filingOptions || {},
+          next_steps: analysis.nextSteps || [],
+          improvement_suggestions: improvementSuggestions,
+          status: 'analyzed'
+        })
+        .select()
+        .single();
 
-    if (insertError) {
-      console.error('Error inserting case merit score:', insertError);
-      throw insertError;
+      if (insertError) {
+        console.error('Error inserting case merit score:', insertError);
+        // Don't throw - return analysis without saved case
+      } else {
+        caseRecord = savedCase;
+      }
+    } else {
+      console.log('Guest user - analysis results not saved to database');
     }
 
     // Link any uploaded files to this case for better organization
-    if (uploadedFiles && uploadedFiles.length > 0 && caseRecord.id) {
+    if (caseRecord && uploadedFiles && uploadedFiles.length > 0) {
       const fileIds = uploadedFiles.map((f: any) => f.id).filter(Boolean);
       if (fileIds.length > 0) {
         const { error: linkError } = await supabaseClient
@@ -414,13 +432,14 @@ For CRIMINAL cases, always include:
       }
     }
 
-    console.log('Case analysis completed successfully');
+    console.log('Case analysis completed successfully', userId ? '(authenticated)' : '(guest)');
 
     return successResponse({
       success: true,
       meritScore: analysis.meritScore.toFixed(2),
       meritScoreJustification: analysis.meritScoreJustification,
       legalCategory: analysis.legalCategory,
+      isGuest: !userId,
       analysis: {
         caseLawPrecedents: analysis.caseLawPrecedents || [],
         strengthFactors: analysis.strengthFactors,
@@ -443,7 +462,7 @@ For CRIMINAL cases, always include:
         jurisdictionNotes: analysis.jurisdictionNotes,
         improvementSuggestions
       },
-      caseId: caseRecord.id
+      caseId: caseRecord?.id || null
     });
 
   } catch (error) {
