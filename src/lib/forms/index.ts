@@ -11,7 +11,8 @@ import { getWorkersRightsForms } from './workersRightsFormsData';
 import { getHumanRightsForms } from './humanRightsFormsData';
 import { getAllAgencyComplaintForms } from './agencyComplaintsData';
 import { getAdditionalStateData } from './additionalStatesData';
-import { stateFormsLibrary, StateFormsData, CourtForm } from '../formsLibraryData';
+import { stateFormsLibrary, type StateFormsData, type CourtForm } from '../formsLibraryData';
+export type { CourtForm, StateFormsData } from '../formsLibraryData';
 
 export interface ExpandedStateFormsData extends StateFormsData {
   forms: Record<string, CourtForm[]>;
