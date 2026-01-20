@@ -112,6 +112,24 @@ export const trackCountrySelected = (country: 'US' | 'CA') => {
   }
 };
 
+// 7️⃣ merit_score_viewed - Fired when user views their merit score results (per brief)
+export const trackMeritScoreViewed = (
+  meritScore: number,
+  legalArea: string,
+  jurisdiction: string,
+  country: 'US' | 'CA' = 'US'
+) => {
+  if (typeof window !== 'undefined' && window.gtag) {
+    window.gtag('event', 'merit_score_viewed', {
+      merit_score: meritScore,
+      legal_area: legalArea,
+      jurisdiction,
+      country,
+    });
+    console.log('[GA4] merit_score_viewed:', { meritScore, legalArea, jurisdiction, country });
+  }
+};
+
 // ===============================
 // USA PURCHASE FUNNEL EVENTS
 // ===============================
@@ -228,6 +246,10 @@ export const analytics = {
 
   countrySelected: (country: 'US' | 'CA') => {
     trackCountrySelected(country);
+  },
+
+  meritScoreViewed: (meritScore: number, legalArea: string, jurisdiction: string) => {
+    trackMeritScoreViewed(meritScore, legalArea, jurisdiction, getDetectedCountry());
   },
 
   firstVisit: () => {
