@@ -4,9 +4,9 @@ import { corsHeaders, handleCors, requireUser } from "../_shared/auth.ts";
 import { successResponse, errorResponse, handleError } from "../_shared/errors.ts";
 import { createAdminClient } from "../_shared/db.ts";
 
-// Stripe price IDs
+// Stripe price IDs (Live)
 const PRICE_IDS = {
-  per_form: "price_1Sqzf0Q3mIAd2Ri5vsVhaPfd", // $4.99 one-time
+  per_form: "price_1SrM4dQ3mIAd2Ri5wjSAeicH", // $5.99 one-time
   monthly: "price_1SqzlRQ3mIAd2Ri5MIbqnOSE",  // $9.99/month
   annual: "price_1SqzniQ3mIAd2Ri5FykTH9a7",   // $79.99/year
 };
