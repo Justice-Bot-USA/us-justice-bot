@@ -19,25 +19,9 @@ const CaseAnalysis = () => {
     setAnalysisComplete(true);
   };
 
-  if (!user) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center p-4">
-        <Card className="max-w-md w-full">
-          <CardHeader>
-            <CardTitle>Sign In Required</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-muted-foreground mb-4">
-              Please sign in to analyze your case merit
-            </p>
-            <Button onClick={() => navigate('/auth')} className="w-full">
-              Sign In
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
+  // Allow guest access for free analysis - per brief, free portion includes:
+  // Upload document, receive explanation, identify correct court, preview forms
+  // Sign-in only required for $4.99 form generation
 
   return (
     <div className="min-h-screen bg-background">

@@ -87,7 +87,7 @@ const StateFunnelPage: React.FC = () => {
         <meta name="twitter:description" content={seo.description} />
 
         {/* Canonical */}
-        <link rel="canonical" href={`https://usjusticebot.com${route}`} />
+        <link rel="canonical" href={`https://justicebot-usa.com${route}`} />
 
         {/* Structured Data */}
         <script type="application/ld+json">
