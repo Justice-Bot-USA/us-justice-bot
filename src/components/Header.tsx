@@ -23,7 +23,7 @@ const Header = ({ language, onLanguageChange }: HeaderProps) => {
   const showSignedIn = !loading && user;
   const text = {
     en: {
-      title: "US Justice Bot",
+      title: "USA Justice Bot",
       subtitle: "Equal Justice Under Law - Accessible Legal Guidance",
       languageLabel: "Language"
     },
