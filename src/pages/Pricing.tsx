@@ -6,9 +6,9 @@ import { Badge } from '@/components/ui/badge';
 import { Check, Shield, CreditCard } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { usePaywallAccess } from '@/hooks/usePaywallAccess';
-import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import Header from '@/components/Header';
+import { invokeAuthed } from '@/lib/supabaseInvoke';
 import { 
   trackPurchase, 
   trackAddToCart, 
@@ -35,7 +35,7 @@ const Pricing = () => {
       if (!user || !sessionId) return;
       
       try {
-        const { data, error } = await supabase.functions.invoke('stripe-checkout', {
+        const { data, error } = await invokeAuthed('stripe-checkout', {
           body: { action: 'verify_session', sessionId },
         });
         
@@ -110,9 +110,9 @@ const Pricing = () => {
     try {
       trackBeginCheckout(value, country);
       
-      const { data, error } = await supabase.functions.invoke('stripe-checkout', {
-        body: { action: 'create_subscription', planType },
-      });
+       const { data, error } = await invokeAuthed('stripe-checkout', {
+         body: { action: 'create_subscription', planType },
+       });
 
       if (error) throw error;
 
@@ -152,9 +152,9 @@ const Pricing = () => {
     try {
       trackBeginCheckout(4.99, country);
       
-      const { data, error } = await supabase.functions.invoke('stripe-checkout', {
-        body: { action: 'create_one_time_payment', formType: 'general' },
-      });
+       const { data, error } = await invokeAuthed('stripe-checkout', {
+         body: { action: 'create_one_time_payment', formType: 'general' },
+       });
 
       if (error) throw error;
 

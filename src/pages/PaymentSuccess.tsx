@@ -17,7 +17,6 @@ import {
   Package,
   ExternalLink
 } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { trackPurchase, getDetectedCountry } from '@/hooks/useAnalytics';
 import { toast } from 'sonner';
@@ -26,6 +25,7 @@ import Footer from '@/components/Footer';
 import { FunnelConfig, US_STATE_NAMES, LEGAL_AREA_NAMES } from '@/lib/funnels';
 import { useFormsPdfGenerator } from '@/hooks/useFormsPdfGenerator';
 import type { CourtForm } from '@/lib/forms';
+import { invokeAuthed } from '@/lib/supabaseInvoke';
 
 interface VerificationResult {
   success: boolean;
@@ -85,7 +85,7 @@ const PaymentSuccess: React.FC = () => {
         }
 
         // Verify payment with Stripe
-        const { data, error: verifyError } = await supabase.functions.invoke('stripe-checkout', {
+        const { data, error: verifyError } = await invokeAuthed('stripe-checkout', {
           body: { action: 'verify_session', sessionId },
         });
 
