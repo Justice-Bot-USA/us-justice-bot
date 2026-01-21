@@ -449,6 +449,39 @@ export type Database = {
         }
         Relationships: []
       }
+      jobs: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          error: string | null
+          id: number
+          payload: Json
+          started_at: string | null
+          status: Database["public"]["Enums"]["job_status"]
+          type: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          error?: string | null
+          id?: number
+          payload: Json
+          started_at?: string | null
+          status?: Database["public"]["Enums"]["job_status"]
+          type: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          error?: string | null
+          id?: number
+          payload?: Json
+          started_at?: string | null
+          status?: Database["public"]["Enums"]["job_status"]
+          type?: string
+        }
+        Relationships: []
+      }
       journey_steps: {
         Row: {
           completed_at: string | null
@@ -1160,6 +1193,7 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
+      job_status: "queued" | "running" | "done" | "error"
       sweep_status: "queued" | "running" | "done" | "error"
     }
     CompositeTypes: {
@@ -1289,6 +1323,7 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "moderator", "user"],
+      job_status: ["queued", "running", "done", "error"],
       sweep_status: ["queued", "running", "done", "error"],
     },
   },

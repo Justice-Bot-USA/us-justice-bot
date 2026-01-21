@@ -17,8 +17,17 @@ export interface SweepRow {
   user_id: string;
 }
 
+export interface MeritScore {
+  case_id: string;
+  merit_score: number;
+  estimated_success_rate: number | null;
+  strength_factors: unknown[] | null;
+  weakness_factors: unknown[] | null;
+}
+
 export interface SweepRealtimeState {
   sweeps: Record<SweepName, SweepRow | null>;
+  meritScore: MeritScore | null;
   isLoading: boolean;
   isComplete: boolean;
   hasError: boolean;
@@ -33,6 +42,7 @@ export interface SweepRealtimeState {
 export function useSweepRealtime(caseId: string | null) {
   const [state, setState] = useState<SweepRealtimeState>({
     sweeps: {} as Record<SweepName, SweepRow | null>,
+    meritScore: null,
     isLoading: true,
     isComplete: false,
     hasError: false,
@@ -97,11 +107,32 @@ export function useSweepRealtime(caseId: string | null) {
       });
 
       const derived = calculateDerivedState(sweepMap);
-      setState({
+      setState(prev => ({
+        ...prev,
         sweeps: sweepMap,
         isLoading: false,
         ...derived,
-      });
+      }));
+
+      // Also fetch merit score
+      const { data: meritData } = await supabase
+        .from('case_merit_scores')
+        .select('id, merit_score, estimated_success_rate, strength_factors, weakness_factors')
+        .eq('id', caseId)
+        .single();
+
+      if (meritData) {
+        setState(prev => ({
+          ...prev,
+          meritScore: {
+            case_id: caseId,
+            merit_score: meritData.merit_score,
+            estimated_success_rate: meritData.estimated_success_rate,
+            strength_factors: meritData.strength_factors as unknown[] | null,
+            weakness_factors: meritData.weakness_factors as unknown[] | null,
+          },
+        }));
+      }
     };
 
     fetchSweeps();
@@ -135,11 +166,37 @@ export function useSweepRealtime(caseId: string | null) {
               const derived = calculateDerivedState(newSweeps);
               
               return {
+                ...prev,
                 sweeps: newSweeps,
                 isLoading: false,
                 ...derived,
               };
             });
+          }
+        )
+        // Also subscribe to merit score updates
+        .on(
+          'postgres_changes',
+          {
+            event: '*',
+            schema: 'public',
+            table: 'case_merit_scores',
+            filter: `id=eq.${caseId}`,
+          },
+          (payload) => {
+            const row = payload.new as { id: string; merit_score: number; estimated_success_rate: number | null; strength_factors: unknown[] | null; weakness_factors: unknown[] | null };
+            if (row) {
+              setState(prev => ({
+                ...prev,
+                meritScore: {
+                  case_id: row.id,
+                  merit_score: row.merit_score,
+                  estimated_success_rate: row.estimated_success_rate,
+                  strength_factors: row.strength_factors,
+                  weakness_factors: row.weakness_factors,
+                },
+              }));
+            }
           }
         )
         .subscribe((status) => {
@@ -225,6 +282,15 @@ export async function createCaseWithSweeps(
     console.error('Failed to seed sweep rows:', sweepError);
     // Don't throw - sweeps can still work without pre-seeded rows
   }
+
+  // Queue a job for the worker to pick up (optional - for background processing)
+  await supabase
+    .from('jobs')
+    .insert({
+      type: 'RUN_SWEEPS',
+      status: 'queued',
+      payload: { case_id: caseId, user_id: userId },
+    });
 
   return caseId;
 }

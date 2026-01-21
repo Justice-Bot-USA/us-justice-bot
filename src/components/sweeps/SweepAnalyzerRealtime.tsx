@@ -34,6 +34,7 @@ export const SweepAnalyzerRealtime: React.FC<SweepAnalyzerRealtimeProps> = ({ on
   // Subscribe to realtime updates for the case
   const {
     sweeps,
+    meritScore,
     isLoading,
     isComplete,
     hasError,
@@ -295,6 +296,27 @@ export const SweepAnalyzerRealtime: React.FC<SweepAnalyzerRealtimeProps> = ({ on
               );
             })}
           </div>
+
+          {/* Live Merit Score */}
+          {meritScore && meritScore.merit_score > 0 && (
+            <div className="mt-4 p-4 bg-primary/5 rounded-lg border border-primary/20">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium">Case Strength Score</span>
+                <span className="text-2xl font-bold text-primary">{meritScore.merit_score}/100</span>
+              </div>
+              <div className="h-2 bg-muted rounded-full overflow-hidden">
+                <div 
+                  className="h-full bg-primary transition-all duration-500"
+                  style={{ width: `${meritScore.merit_score}%` }}
+                />
+              </div>
+              {meritScore.estimated_success_rate && (
+                <p className="text-xs text-muted-foreground mt-2">
+                  Estimated success rate: {Math.round(meritScore.estimated_success_rate * 100)}%
+                </p>
+              )}
+            </div>
+          )}
 
           {/* Partial Results */}
           {profile?.intake && (
