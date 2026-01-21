@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useSweepRealtime, createCaseWithSweeps } from '@/hooks/useSweepRealtime';
 import { SweepProgressDisplay } from './SweepProgressDisplay';
 import { CaseProfileDisplay } from './CaseProfileDisplay';
-import { EvidenceUploader } from '@/components/EvidenceUploader';
+import { EvidenceUploaderRealtime } from './EvidenceUploaderRealtime';
 import { useAuth } from '@/hooks/useAuth';
 import { Scale, Upload, Zap, AlertCircle } from 'lucide-react';
 import { US_STATES } from '@/lib/states';
@@ -27,7 +27,6 @@ export const SweepAnalyzerRealtime: React.FC<SweepAnalyzerRealtimeProps> = ({ on
   const [state, setState] = useState('');
   const [county, setCounty] = useState('');
   const [uploadedFileIds, setUploadedFileIds] = useState<string[]>([]);
-  const [showUploader, setShowUploader] = useState(false);
   const [isStarting, setIsStarting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -177,7 +176,6 @@ export const SweepAnalyzerRealtime: React.FC<SweepAnalyzerRealtimeProps> = ({ on
     setState('');
     setCounty('');
     setUploadedFileIds([]);
-    setShowUploader(false);
     setError(null);
   };
 
@@ -318,6 +316,18 @@ export const SweepAnalyzerRealtime: React.FC<SweepAnalyzerRealtimeProps> = ({ on
             </div>
           )}
 
+          {/* Evidence Uploader - Upload during analysis for re-processing */}
+          <div className="mt-6 pt-6 border-t">
+            <EvidenceUploaderRealtime
+              caseId={caseId}
+              userId={user?.id || null}
+              onFilesChanged={() => {
+                // Files uploaded - sweeps will be invalidated automatically
+                toast.info('New evidence uploaded - re-analyzing...');
+              }}
+            />
+          </div>
+
           {/* Partial Results */}
           {profile?.intake && (
             <div className="mt-6 pt-6 border-t">
@@ -395,27 +405,20 @@ export const SweepAnalyzerRealtime: React.FC<SweepAnalyzerRealtimeProps> = ({ on
           </div>
         </div>
 
-        {/* Evidence Upload */}
+        {/* Evidence Upload - upload after starting analysis */}
         <div className="space-y-2">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => setShowUploader(!showUploader)}
-            className="w-full"
-          >
-            <Upload className="h-4 w-4 mr-2" />
-            {uploadedFileIds.length > 0 
-              ? `${uploadedFileIds.length} file(s) uploaded` 
-              : 'Upload Supporting Documents'}
-          </Button>
-          
-          {showUploader && (
-            <div className="mt-4 p-4 border rounded-lg">
-              <EvidenceUploader 
-                onFilesUploaded={handleFilesUploaded}
-              />
+          <Label>Supporting Documents (Optional)</Label>
+          <div className="border rounded-lg p-4 bg-muted/20">
+            <div className="text-center text-sm text-muted-foreground mb-2">
+              <Upload className="h-8 w-8 mx-auto mb-2 opacity-50" />
+              <p>Upload evidence after starting analysis for real-time re-processing</p>
             </div>
-          )}
+            {uploadedFileIds.length > 0 && (
+              <p className="text-xs text-center text-primary font-medium">
+                {uploadedFileIds.length} file(s) ready
+              </p>
+            )}
+          </div>
         </div>
 
         {/* Error Display */}
