@@ -238,6 +238,51 @@ export type Database = {
           },
         ]
       }
+      case_sweeps: {
+        Row: {
+          case_id: string
+          completed_at: string | null
+          created_at: string
+          error: string | null
+          id: number
+          output: Json | null
+          progress: number
+          started_at: string | null
+          status: Database["public"]["Enums"]["sweep_status"]
+          sweep_name: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          case_id: string
+          completed_at?: string | null
+          created_at?: string
+          error?: string | null
+          id?: number
+          output?: Json | null
+          progress?: number
+          started_at?: string | null
+          status?: Database["public"]["Enums"]["sweep_status"]
+          sweep_name: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          case_id?: string
+          completed_at?: string | null
+          created_at?: string
+          error?: string | null
+          id?: number
+          output?: Json | null
+          progress?: number
+          started_at?: string | null
+          status?: Database["public"]["Enums"]["sweep_status"]
+          sweep_name?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       case_timeline_events: {
         Row: {
           case_id: string
@@ -1115,6 +1160,7 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
+      sweep_status: "queued" | "running" | "done" | "error"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1243,6 +1289,7 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "moderator", "user"],
+      sweep_status: ["queued", "running", "done", "error"],
     },
   },
 } as const

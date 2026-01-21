@@ -3,6 +3,9 @@ import { corsHeaders, handleCors, requireUser } from "../_shared/auth.ts";
 import { successResponse, errorResponse, handleError } from "../_shared/errors.ts";
 import { createAdminClient } from "../_shared/db.ts";
 import { SWEEP_SYSTEM_PROMPT, getAnalysisPrompt } from "../_shared/sweepPrompts.ts";
+import { startSweep, completeSweep, failSweep, updateSweepProgress } from "../_shared/sweepDb.ts";
+
+const SWEEP_NAME = 'analysis';
 
 // Sweep 6: Final Analysis Report
 Deno.serve(async (req: Request) => {
@@ -10,25 +13,50 @@ Deno.serve(async (req: Request) => {
   if (corsResponse) return corsResponse;
 
   try {
-    // Optional auth - save to DB only if authenticated
-    let userId: string | null = null;
-    try {
-      const auth = await requireUser(req);
-      userId = auth.userId;
-    } catch {
-      console.log("Running analysis as guest - won't save to DB");
-    }
-
-    const { caseProfile, saveToDb } = await req.json();
+    const { caseProfile, saveToDb, caseId, userId } = await req.json();
     
     console.log("Running Sweep 6: Final Analysis Report");
+
+    // Mark sweep as running
+    if (caseId && userId) {
+      await startSweep(caseId, SWEEP_NAME, userId);
+    }
 
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) {
       throw new Error("LOVABLE_API_KEY not configured");
     }
 
-    const prompt = getAnalysisPrompt(JSON.stringify(caseProfile, null, 2));
+    // If we have a caseId, fetch the sweep outputs from DB to build caseProfile
+    let profileToAnalyze = caseProfile;
+    if (caseId && !caseProfile) {
+      const supabase = createAdminClient();
+      
+      // Fetch all completed sweeps for this case
+      const { data: sweeps, error: sweepsError } = await supabase
+        .from('case_sweeps')
+        .select('sweep_name, output')
+        .eq('case_id', caseId)
+        .eq('status', 'done');
+      
+      if (!sweepsError && sweeps) {
+        profileToAnalyze = {
+          caseId,
+          intake: sweeps.find(s => s.sweep_name === 'intake')?.output,
+          evidenceIndex: sweeps.find(s => s.sweep_name === 'evidenceIndex')?.output,
+          classification: sweeps.find(s => s.sweep_name === 'classification')?.output,
+          venue: sweeps.find(s => s.sweep_name === 'venue')?.output,
+          timeline: sweeps.find(s => s.sweep_name === 'timeline')?.output,
+          authoritySweep: sweeps.find(s => s.sweep_name === 'authority')?.output,
+        };
+      }
+    }
+
+    if (caseId && userId) {
+      await updateSweepProgress(caseId, SWEEP_NAME, userId, 20);
+    }
+
+    const prompt = getAnalysisPrompt(JSON.stringify(profileToAnalyze, null, 2));
 
     const aiResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: 'POST',
@@ -50,7 +78,14 @@ Deno.serve(async (req: Request) => {
     if (!aiResponse.ok) {
       const errorText = await aiResponse.text();
       console.error('AI API error:', errorText);
+      if (caseId && userId) {
+        await failSweep(caseId, SWEEP_NAME, userId, `AI API error: ${aiResponse.status}`);
+      }
       throw new Error(`AI API error: ${aiResponse.status}`);
+    }
+
+    if (caseId && userId) {
+      await updateSweepProgress(caseId, SWEEP_NAME, userId, 70);
     }
 
     const aiData = await aiResponse.json();
@@ -72,50 +107,36 @@ Deno.serve(async (req: Request) => {
       successRate: analysisReport.estimatedSuccessRate
     });
 
-    // Optionally save to database
-    let savedCaseId: string | null = null;
-    if (saveToDb && userId) {
+    // Update the case_merit_scores record if we have a caseId
+    if (caseId && userId) {
       const supabase = createAdminClient();
       
-      const { data: savedCase, error: saveError } = await supabase
+      await supabase
         .from('case_merit_scores')
-        .insert({
-          user_id: userId,
-          case_title: caseProfile.intake?.issueSummary?.slice(0, 100) || 'Case Analysis',
-          case_description: caseProfile.userStory,
-          state: caseProfile.venue?.jurisdiction?.state || 'Unknown',
-          county: caseProfile.venue?.jurisdiction?.county,
-          legal_area: caseProfile.classification?.primaryCategory || 'other',
+        .update({
           merit_score: analysisReport.meritScore || 50,
           estimated_success_rate: analysisReport.estimatedSuccessRate,
           strength_factors: analysisReport.strongestClaims,
           weakness_factors: analysisReport.weakestPoints,
           legal_pathway: analysisReport.nextSteps,
           required_forms: analysisReport.requiredForms,
-          evidence_to_gather: caseProfile.evidenceIndex?.gapsIdentified,
-          filing_options: caseProfile.venue?.filingFees,
+          next_steps: analysisReport.nextSteps,
           settlement_range_min: analysisReport.settlementRange?.min,
           settlement_range_max: analysisReport.settlementRange?.max,
           time_to_resolution_months: analysisReport.timeToResolution?.maxMonths,
-          next_steps: analysisReport.nextSteps,
-          relevant_laws: caseProfile.authoritySweep?.statutes,
-          status: 'pending'
+          status: 'pending', // Ready for user action
+          legal_area: profileToAnalyze?.classification?.primaryCategory || 'other',
         })
-        .select('id')
-        .single();
-
-      if (saveError) {
-        console.error('Error saving case:', saveError);
-      } else {
-        savedCaseId = savedCase?.id;
-        console.log('Case saved:', savedCaseId);
-      }
+        .eq('id', caseId);
+      
+      // Mark sweep as done
+      await completeSweep(caseId, SWEEP_NAME, userId, analysisReport);
     }
 
     return successResponse({
       sweep: 'analysis',
       data: analysisReport,
-      caseId: savedCaseId
+      caseId: caseId
     });
   } catch (error) {
     console.error("Sweep 6 error:", error);

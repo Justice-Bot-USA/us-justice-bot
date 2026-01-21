@@ -3,6 +3,9 @@ import { corsHeaders, handleCors } from "../_shared/auth.ts";
 import { successResponse, errorResponse, handleError } from "../_shared/errors.ts";
 import { createAdminClient } from "../_shared/db.ts";
 import { SWEEP_SYSTEM_PROMPT, getEvidenceIndexPrompt } from "../_shared/sweepPrompts.ts";
+import { startSweep, completeSweep, failSweep, updateSweepProgress } from "../_shared/sweepDb.ts";
+
+const SWEEP_NAME = 'evidenceIndex';
 
 // Sweep 1: Evidence Indexing
 Deno.serve(async (req: Request) => {
@@ -10,21 +13,32 @@ Deno.serve(async (req: Request) => {
   if (corsResponse) return corsResponse;
 
   try {
-    const { fileIds } = await req.json();
+    const { fileIds, caseId, userId } = await req.json();
     
     console.log("Running Sweep 1: Evidence Indexing", { fileIds });
 
+    // Mark sweep as running
+    if (caseId && userId) {
+      await startSweep(caseId, SWEEP_NAME, userId);
+    }
+
     // If no files, return empty index
     if (!fileIds || fileIds.length === 0) {
+      const emptyResult = {
+        items: [],
+        totalDocuments: 0,
+        strongestEvidence: [],
+        gapsIdentified: ['No documents uploaded - consider adding supporting evidence'],
+        indexedAt: new Date().toISOString()
+      };
+
+      if (caseId && userId) {
+        await completeSweep(caseId, SWEEP_NAME, userId, emptyResult);
+      }
+
       return successResponse({
         sweep: 'evidenceIndex',
-        data: {
-          items: [],
-          totalDocuments: 0,
-          strongestEvidence: [],
-          gapsIdentified: ['No documents uploaded - consider adding supporting evidence'],
-          indexedAt: new Date().toISOString()
-        }
+        data: emptyResult
       });
     }
 
@@ -38,7 +52,14 @@ Deno.serve(async (req: Request) => {
 
     if (filesError) {
       console.error('Error fetching files:', filesError);
+      if (caseId && userId) {
+        await failSweep(caseId, SWEEP_NAME, userId, filesError.message);
+      }
       throw filesError;
+    }
+
+    if (caseId && userId) {
+      await updateSweepProgress(caseId, SWEEP_NAME, userId, 30);
     }
 
     const documents = (files || []).map(f => ({
@@ -54,6 +75,10 @@ Deno.serve(async (req: Request) => {
     }
 
     const prompt = getEvidenceIndexPrompt(documents);
+
+    if (caseId && userId) {
+      await updateSweepProgress(caseId, SWEEP_NAME, userId, 50);
+    }
 
     const aiResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: 'POST',
@@ -75,7 +100,14 @@ Deno.serve(async (req: Request) => {
     if (!aiResponse.ok) {
       const errorText = await aiResponse.text();
       console.error('AI API error:', errorText);
+      if (caseId && userId) {
+        await failSweep(caseId, SWEEP_NAME, userId, `AI API error: ${aiResponse.status}`);
+      }
       throw new Error(`AI API error: ${aiResponse.status}`);
+    }
+
+    if (caseId && userId) {
+      await updateSweepProgress(caseId, SWEEP_NAME, userId, 80);
     }
 
     const aiData = await aiResponse.json();
@@ -93,6 +125,11 @@ Deno.serve(async (req: Request) => {
     evidenceIndex.indexedAt = new Date().toISOString();
     
     console.log("Sweep 1 complete:", { totalDocuments: evidenceIndex.totalDocuments });
+
+    // Mark sweep as done
+    if (caseId && userId) {
+      await completeSweep(caseId, SWEEP_NAME, userId, evidenceIndex);
+    }
 
     return successResponse({
       sweep: 'evidenceIndex',

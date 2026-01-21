@@ -2,6 +2,9 @@ import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { corsHeaders, handleCors } from "../_shared/auth.ts";
 import { successResponse, errorResponse, handleError } from "../_shared/errors.ts";
 import { SWEEP_SYSTEM_PROMPT, getAuthorityPrompt } from "../_shared/sweepPrompts.ts";
+import { startSweep, completeSweep, failSweep, updateSweepProgress } from "../_shared/sweepDb.ts";
+
+const SWEEP_NAME = 'authority';
 
 // Sweep 5: Authority/Precedent Search
 Deno.serve(async (req: Request) => {
@@ -9,9 +12,14 @@ Deno.serve(async (req: Request) => {
   if (corsResponse) return corsResponse;
 
   try {
-    const { classification, venue, timeline, state } = await req.json();
+    const { classification, venue, timeline, state, caseId, userId } = await req.json();
     
     console.log("Running Sweep 5: Authority Search", { state });
+
+    // Mark sweep as running
+    if (caseId && userId) {
+      await startSweep(caseId, SWEEP_NAME, userId);
+    }
 
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) {
@@ -28,6 +36,10 @@ Deno.serve(async (req: Request) => {
       timelineSummary,
       state || venue?.jurisdiction?.state || 'Unknown'
     );
+
+    if (caseId && userId) {
+      await updateSweepProgress(caseId, SWEEP_NAME, userId, 30);
+    }
 
     const aiResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: 'POST',
@@ -49,7 +61,14 @@ Deno.serve(async (req: Request) => {
     if (!aiResponse.ok) {
       const errorText = await aiResponse.text();
       console.error('AI API error:', errorText);
+      if (caseId && userId) {
+        await failSweep(caseId, SWEEP_NAME, userId, `AI API error: ${aiResponse.status}`);
+      }
       throw new Error(`AI API error: ${aiResponse.status}`);
+    }
+
+    if (caseId && userId) {
+      await updateSweepProgress(caseId, SWEEP_NAME, userId, 70);
     }
 
     const aiData = await aiResponse.json();
@@ -71,6 +90,11 @@ Deno.serve(async (req: Request) => {
       favorable: authority.favorablePrecedentCount,
       unfavorable: authority.unfavorablePrecedentCount
     });
+
+    // Mark sweep as done
+    if (caseId && userId) {
+      await completeSweep(caseId, SWEEP_NAME, userId, authority);
+    }
 
     return successResponse({
       sweep: 'authority',
