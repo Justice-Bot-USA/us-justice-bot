@@ -4,11 +4,11 @@ import { corsHeaders, handleCors, requireUser } from "../_shared/auth.ts";
 import { successResponse, errorResponse, handleError } from "../_shared/errors.ts";
 import { createAdminClient } from "../_shared/db.ts";
 
-// Stripe price IDs (Live) - Per brief: $4.99 one-time, $9.99/month, $79.99/year
+// Stripe price IDs (Live Mode) - $4.99 one-time, $9.99/month, $79.99/year
 const PRICE_IDS = {
-  per_form: "price_1Sqzf0Q3mIAd2Ri5vsVhaPfd", // $4.99 one-time (primary conversion)
-  monthly: "price_1SqzlRQ3mIAd2Ri5MIbqnOSE",  // $9.99/month (optional)
-  annual: "price_1SqzniQ3mIAd2Ri5FykTH9a7",   // $79.99/year (optional)
+  per_form: "price_1SrvdIQ3mIAd2Ri5NuId7QA1", // $4.99 one-time (primary conversion)
+  monthly: "price_1SrvccQ3mIAd2Ri5DDqXhhpE",  // $9.99/month
+  annual: "price_1SrvctQ3mIAd2Ri5Q4DwaJRf",   // $79.99/year
 };
 
 function getStripe(): Stripe {
