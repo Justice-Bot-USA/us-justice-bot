@@ -2,6 +2,9 @@ import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { corsHeaders, handleCors } from "../_shared/auth.ts";
 import { successResponse, errorResponse, handleError } from "../_shared/errors.ts";
 import { SWEEP_SYSTEM_PROMPT, getIntakePrompt } from "../_shared/sweepPrompts.ts";
+import { startSweep, completeSweep, failSweep, updateSweepProgress } from "../_shared/sweepDb.ts";
+
+const SWEEP_NAME = 'intake';
 
 // Sweep 0: Intake & Normalization
 Deno.serve(async (req: Request) => {
@@ -9,9 +12,14 @@ Deno.serve(async (req: Request) => {
   if (corsResponse) return corsResponse;
 
   try {
-    const { userStory, documentTexts } = await req.json();
+    const { userStory, documentTexts, caseId, userId } = await req.json();
     
     console.log("Running Sweep 0: Intake & Normalization");
+
+    // Mark sweep as running in DB (triggers UI update)
+    if (caseId && userId) {
+      await startSweep(caseId, SWEEP_NAME, userId);
+    }
 
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) {
@@ -19,6 +27,11 @@ Deno.serve(async (req: Request) => {
     }
 
     const prompt = getIntakePrompt(userStory, documentTexts || []);
+
+    // Update progress
+    if (caseId && userId) {
+      await updateSweepProgress(caseId, SWEEP_NAME, userId, 30);
+    }
 
     const aiResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: 'POST',
@@ -40,7 +53,15 @@ Deno.serve(async (req: Request) => {
     if (!aiResponse.ok) {
       const errorText = await aiResponse.text();
       console.error('AI API error:', errorText);
+      if (caseId && userId) {
+        await failSweep(caseId, SWEEP_NAME, userId, `AI API error: ${aiResponse.status}`);
+      }
       throw new Error(`AI API error: ${aiResponse.status}`);
+    }
+
+    // Update progress
+    if (caseId && userId) {
+      await updateSweepProgress(caseId, SWEEP_NAME, userId, 70);
     }
 
     const aiData = await aiResponse.json();
@@ -59,8 +80,13 @@ Deno.serve(async (req: Request) => {
     
     console.log("Sweep 0 complete:", { confidence: intake.confidence });
 
+    // Mark sweep as done in DB (triggers UI update)
+    if (caseId && userId) {
+      await completeSweep(caseId, SWEEP_NAME, userId, intake);
+    }
+
     return successResponse({
-      sweep: 'intake',
+      sweep: SWEEP_NAME,
       data: intake
     });
   } catch (error) {
