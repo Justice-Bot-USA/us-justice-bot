@@ -15,11 +15,11 @@ import {
   Loader2
 } from 'lucide-react';
 import { FunnelConfig, FunnelState, US_STATE_NAMES, LEGAL_AREA_NAMES } from '@/lib/funnels';
-import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { trackAddToCart, trackBeginCheckout, getDetectedCountry } from '@/hooks/useAnalytics';
 import { toast } from 'sonner';
+import { invokeAuthed } from '@/lib/supabaseInvoke';
 
 interface FunnelPaywallStepProps {
   config: FunnelConfig;
@@ -70,7 +70,7 @@ export const FunnelPaywallStep: React.FC<FunnelPaywallStepProps> = ({
     trackBeginCheckout(4.99, country);
 
     try {
-      const { data, error } = await supabase.functions.invoke('stripe-checkout', {
+      const { data, error } = await invokeAuthed('stripe-checkout', {
         body: {
           action: 'create_one_time_payment',
           formType: 'case_assessment',
