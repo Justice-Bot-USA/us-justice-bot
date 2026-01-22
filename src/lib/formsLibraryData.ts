@@ -77,6 +77,17 @@ export const stateFormsLibrary: Record<string, StateFormsData> = {
         { formNumber: "POS-030", name: "Proof of Service by First-Class Mail", description: "Confirm mailed service", url: "https://www.courts.ca.gov/documents/pos030.pdf", category: "Service" },
         { formNumber: "CM-010", name: "Civil Case Cover Sheet", description: "Required for civil cases", url: "https://www.courts.ca.gov/documents/cm010.pdf", category: "Civil" },
       ],
+      "personal-injury": [
+        { formNumber: "CM-010", name: "Civil Case Cover Sheet", description: "Required cover sheet for all civil cases including personal injury", url: "https://www.courts.ca.gov/documents/cm010.pdf", category: "Filing", feeAmount: "$435-$450", feeWaiverAvailable: true },
+        { formNumber: "PLD-PI-001", name: "Complaint - Personal Injury, Property Damage, Wrongful Death", description: "Main complaint form for personal injury lawsuits", url: "https://www.courts.ca.gov/documents/pldpi001.pdf", category: "Filing" },
+        { formNumber: "PLD-PI-002", name: "Cause of Action - Motor Vehicle", description: "Attachment for motor vehicle accident claims", url: "https://www.courts.ca.gov/documents/pldpi002.pdf", category: "Auto Accident" },
+        { formNumber: "PLD-PI-003", name: "Cause of Action - Premises Liability", description: "Attachment for slip and fall/property injuries", url: "https://www.courts.ca.gov/documents/pldpi003.pdf", category: "Premises Liability" },
+        { formNumber: "SUM-100", name: "Summons", description: "Notice to defendant of lawsuit", url: "https://www.courts.ca.gov/documents/sum100.pdf", category: "Service" },
+        { formNumber: "POS-010", name: "Proof of Service of Summons", description: "Confirm defendant was properly served", url: "https://www.courts.ca.gov/documents/pos010.pdf", category: "Service" },
+        { formNumber: "CM-110", name: "Case Management Statement", description: "Required case management document", url: "https://www.courts.ca.gov/documents/cm110.pdf", category: "Case Management" },
+        { formNumber: "DISC-001", name: "Form Interrogatories - General", description: "Standard discovery questions for opposing party", url: "https://www.courts.ca.gov/documents/disc001.pdf", category: "Discovery" },
+        { formNumber: "FW-001", name: "Request to Waive Court Fees", description: "Apply for fee waiver if low income", url: "https://www.courts.ca.gov/documents/fw001.pdf", category: "Fee Waiver", feeAmount: "Free" },
+      ],
     }
   },
 
@@ -118,6 +129,15 @@ export const stateFormsLibrary: Record<string, StateFormsData> = {
       "general": [
         { formNumber: "Statement of Inability", name: "Statement of Inability to Afford Payment", description: "Request fee waiver", url: "https://texaslawhelp.org/form/fee-waiver", category: "Fee Waiver", feeAmount: "Free" },
         { formNumber: "Affidavit of Service", name: "Affidavit of Service", description: "Confirm service of process", url: "https://texaslawhelp.org", category: "Service" },
+      ],
+      "personal-injury": [
+        { formNumber: "Original Petition", name: "Original Petition (Personal Injury)", description: "Main complaint for personal injury cases in Texas district court", url: "https://texaslawhelp.org/legal-help/personal-injury", category: "Filing", feeAmount: "$300-$350", feeWaiverAvailable: true },
+        { formNumber: "Citation", name: "Citation", description: "Official notice to defendant", url: "https://texaslawhelp.org/legal-help/personal-injury", category: "Service" },
+        { formNumber: "Discovery Request", name: "Request for Disclosure", description: "Standard Texas discovery requesting basic case information", url: "https://texaslawhelp.org/legal-help/personal-injury", category: "Discovery" },
+        { formNumber: "Interrogatories", name: "Interrogatories to Defendant", description: "Written questions to opposing party", url: "https://texaslawhelp.org/legal-help/personal-injury", category: "Discovery" },
+        { formNumber: "Request for Production", name: "Request for Production of Documents", description: "Request defendant's documents and records", url: "https://texaslawhelp.org/legal-help/personal-injury", category: "Discovery" },
+        { formNumber: "Medical Authorization", name: "Authorization for Release of Medical Records", description: "HIPAA-compliant medical records release", url: "https://texaslawhelp.org/legal-help/personal-injury", category: "Medical Records" },
+        { formNumber: "Statement of Inability", name: "Statement of Inability to Afford Payment", description: "Texas fee waiver application", url: "https://texaslawhelp.org/form/fee-waiver", category: "Fee Waiver", feeAmount: "Free" },
       ],
     }
   },
@@ -161,6 +181,16 @@ export const stateFormsLibrary: Record<string, StateFormsData> = {
       "general": [
         { formNumber: "Fee Waiver Application", name: "Poor Person Application", description: "Request court fee waiver", url: "https://www.nycourts.gov/courthelp/goingtocourt/feeWaiver.shtml", category: "Fee Waiver", feeAmount: "Free" },
         { formNumber: "Affidavit of Service", name: "Affidavit of Service", description: "Prove papers were served", url: "https://www.nycourts.gov/courthelp/goingtocourt/serving.shtml", category: "Service" },
+      ],
+      "personal-injury": [
+        { formNumber: "Summons", name: "Summons in Supreme Court", description: "Official notice initiating personal injury lawsuit", url: "https://www.nycourts.gov/forms/", category: "Filing", feeAmount: "$335", feeWaiverAvailable: true },
+        { formNumber: "Verified Complaint", name: "Verified Complaint (Personal Injury)", description: "Detailed complaint for personal injury claims", url: "https://www.nycourts.gov/forms/", category: "Filing" },
+        { formNumber: "RJI", name: "Request for Judicial Intervention", description: "Requests court assignment for case management", url: "https://www.nycourts.gov/forms/", category: "Case Management", feeAmount: "$95" },
+        { formNumber: "Bill of Particulars", name: "Bill of Particulars", description: "Detailed statement of injuries and damages claimed", url: "https://www.nycourts.gov/forms/", category: "Pleadings" },
+        { formNumber: "Demand for Discovery", name: "Combined Demands for Discovery", description: "Request for interrogatories, documents, and admissions", url: "https://www.nycourts.gov/forms/", category: "Discovery" },
+        { formNumber: "Notice of Medical Exam", name: "Notice of Independent Medical Examination", description: "Notice for defense medical examination (IME)", url: "https://www.nycourts.gov/forms/", category: "Discovery" },
+        { formNumber: "Note of Issue", name: "Note of Issue and Certificate of Readiness", description: "Certifies case is ready for trial", url: "https://www.nycourts.gov/forms/", category: "Trial Prep", feeAmount: "$125" },
+        { formNumber: "Poor Person Application", name: "Poor Persons Application", description: "Fee waiver for low-income litigants", url: "https://www.nycourts.gov/courthelp/Financial/feeWaiver.shtml", category: "Fee Waiver", feeAmount: "Free" },
       ],
     }
   },
@@ -206,6 +236,16 @@ export const stateFormsLibrary: Record<string, StateFormsData> = {
       "general": [
         { formNumber: "1.996", name: "Application for Civil Indigent Status", description: "Request court fee waiver", url: "https://www.flcourts.gov/content/download/403076", category: "Fee Waiver", feeAmount: "Free" },
         { formNumber: "1.902", name: "Summons: Personal Service", description: "Civil case summons", url: "https://www.flcourts.gov/content/download/403068", category: "Service" },
+      ],
+      "personal-injury": [
+        { formNumber: "Civil Cover Sheet", name: "Civil Cover Sheet", description: "Required cover sheet for circuit court civil filings", url: "https://www.flcourts.gov/content/download/403019", category: "Filing", feeAmount: "$400", feeWaiverAvailable: true },
+        { formNumber: "Complaint", name: "Complaint for Negligence/Personal Injury", description: "Main complaint form for PI cases in Florida", url: "https://www.flcourts.gov/", category: "Filing" },
+        { formNumber: "1.902", name: "Summons: Personal Service on Natural Person", description: "Official summons for personal service", url: "https://www.flcourts.gov/content/download/403068", category: "Service" },
+        { formNumber: "Interrogatories", name: "Standard Interrogatories (Negligence)", description: "Form 1.977 - Standard discovery interrogatories", url: "https://www.flcourts.gov/content/download/403049", category: "Discovery" },
+        { formNumber: "Request for Production", name: "Request for Production of Documents", description: "Request defendant's documents and records", url: "https://www.flcourts.gov/", category: "Discovery" },
+        { formNumber: "Authorization", name: "Medical Records Authorization", description: "HIPAA-compliant authorization for medical records", url: "https://www.flcourts.gov/", category: "Medical Records" },
+        { formNumber: "1.996", name: "Application for Civil Indigent Status", description: "Florida fee waiver application", url: "https://www.flcourts.gov/content/download/403076", category: "Fee Waiver", feeAmount: "Free" },
+        { formNumber: "PIP Forms", name: "PIP Insurance Claim Forms", description: "Personal Injury Protection insurance forms", url: "https://www.floir.com/", category: "Insurance" },
       ],
     }
   },
@@ -808,6 +848,7 @@ export function getStateFormsData(stateCode: string): StateFormsData {
 export const legalAreaCategories = [
   { id: "family", name: "Family Law / Divorce", icon: "Heart" },
   { id: "small-claims", name: "Small Claims", icon: "DollarSign" },
+  { id: "personal-injury", name: "Personal Injury", icon: "HeartPulse" },
   { id: "employment", name: "Employment", icon: "Briefcase" },
   { id: "housing", name: "Housing & Eviction", icon: "Home" },
   { id: "criminal", name: "Criminal Defense", icon: "Shield" },
