@@ -600,6 +600,138 @@ const texasSmallClaims: StateGuidance = {
   ],
 };
 
+// ==================== PERSONAL INJURY STATE-SPECIFIC ====================
+
+const californiaPersonalInjury: StateGuidance = {
+  forms: [
+    { name: "Judicial Council Form CM-010", description: "Civil Case Cover Sheet (required for all PI cases)", url: "https://www.courts.ca.gov/documents/cm010.pdf" },
+    { name: "Judicial Council Form PLD-PI-001", description: "Complaint—Personal Injury, Property Damage, Wrongful Death", url: "https://www.courts.ca.gov/documents/pldpi001.pdf" },
+    { name: "Judicial Council Form SUM-100", description: "Summons", url: "https://www.courts.ca.gov/documents/sum100.pdf" },
+    { name: "Judicial Council Form POS-010", description: "Proof of Service of Summons", url: "https://www.courts.ca.gov/documents/pos010.pdf" },
+    { name: "Judicial Council Form MC-030", description: "Declaration (for witness statements)", url: "https://www.courts.ca.gov/documents/mc030.pdf" },
+    { name: "Form FW-001", description: "Fee Waiver Request", url: "https://www.courts.ca.gov/documents/fw001.pdf" },
+  ],
+  deadlines: [
+    { name: "Personal Injury (General)", timeframe: "2 years from date of injury (CCP § 335.1)" },
+    { name: "Medical Malpractice", timeframe: "3 years from injury OR 1 year from discovery, whichever is earlier (CCP § 340.5)" },
+    { name: "Government Claims (vs. city/county/state)", timeframe: "6 months to file administrative claim, then 6 months to sue if rejected (Gov Code § 911.2)" },
+    { name: "Wrongful Death", timeframe: "2 years from date of death (CCP § 335.1)" },
+    { name: "Product Liability", timeframe: "2 years from injury (CCP § 335.1)" },
+    { name: "Minor's Claims", timeframe: "Tolled until age 18, then 2 years" },
+  ],
+  fees: [
+    { name: "Unlimited Civil Filing (over $25K)", amount: "$435" },
+    { name: "Limited Civil Filing (under $25K)", amount: "$225" },
+    { name: "Service of Process", amount: "$40-$150" },
+    { name: "Jury Fees (deposit)", amount: "$150" },
+    { name: "Fee Waiver", amount: "Available for low income (Form FW-001)" },
+  ],
+  laws: [
+    { name: "CCP § 335.1", summary: "2-year statute of limitations for personal injury" },
+    { name: "Civil Code § 1714", summary: "General negligence liability standard" },
+    { name: "CCP § 340.5", summary: "Special medical malpractice limitations" },
+    { name: "Pure Comparative Fault", summary: "Recovery reduced by your percentage of fault (Li v. Yellow Cab)" },
+    { name: "MICRA (Medical Injury Compensation Reform Act)", summary: "Caps non-economic damages in med mal at $350K (increasing to $750K by 2033)" },
+  ],
+};
+
+const texasPersonalInjury: StateGuidance = {
+  forms: [
+    { name: "Original Petition", description: "Initial complaint document (no standard form)", url: "https://www.txcourts.gov/programs-services/self-help/" },
+    { name: "Citation", description: "Official summons to defendant", url: "https://www.txcourts.gov/programs-services/self-help/" },
+    { name: "Statement of Inability to Afford Payment of Court Costs", description: "Fee waiver form", url: "https://www.txcourts.gov/rules-forms/rules-standards/" },
+    { name: "Discovery Requests", description: "Interrogatories, Requests for Production, Admissions", url: "https://www.txcourts.gov/programs-services/self-help/" },
+    { name: "Motion for Summary Judgment", description: "Request judgment without trial", url: "https://www.txcourts.gov/programs-services/self-help/" },
+  ],
+  deadlines: [
+    { name: "Personal Injury (General)", timeframe: "2 years from date of injury (CPRC § 16.003)" },
+    { name: "Medical Malpractice", timeframe: "2 years from date of injury or last treatment (CPRC § 74.251)" },
+    { name: "Wrongful Death", timeframe: "2 years from date of death (CPRC § 16.003)" },
+    { name: "Government Claims", timeframe: "6 months notice required under Tort Claims Act" },
+    { name: "Product Liability", timeframe: "2 years, with 15-year statute of repose (CPRC § 16.012)" },
+    { name: "Minor's Claims", timeframe: "Tolled until age 18, then 2 years (max toll: until age 20)" },
+  ],
+  fees: [
+    { name: "District Court Filing", amount: "$250-$350" },
+    { name: "County Court Filing", amount: "$200-$275" },
+    { name: "Service of Citation", amount: "$75-$125" },
+    { name: "Jury Fee", amount: "$30-$40" },
+    { name: "Fee Waiver", amount: "Statement of Inability to Afford" },
+  ],
+  laws: [
+    { name: "CPRC § 16.003", summary: "2-year statute of limitations for personal injury" },
+    { name: "Modified Comparative Fault (51% Bar)", summary: "No recovery if you're 51%+ at fault" },
+    { name: "CPRC Chapter 74", summary: "Medical liability reform (caps, expert reports required)" },
+    { name: "Non-Economic Damage Cap (Med Mal)", summary: "$250K per defendant, $500K total for non-economic damages" },
+    { name: "CPRC § 41.008", summary: "Exemplary damages cap (2x economic + up to $750K non-economic)" },
+  ],
+};
+
+const floridaPersonalInjury: StateGuidance = {
+  forms: [
+    { name: "Civil Cover Sheet", description: "Required for all civil filings", url: "https://www.flcourts.gov/Resources-Services/Court-Improvement/Self-Help-Information" },
+    { name: "Summons", description: "Official notice to defendant", url: "https://www.flcourts.gov/Resources-Services/Court-Improvement/Self-Help-Information" },
+    { name: "Complaint for Negligence", description: "Personal injury complaint (no standard form)", url: "https://www.flcourts.gov/Resources-Services/Court-Improvement/Self-Help-Information" },
+    { name: "Form 1.997", description: "Civil Cover Sheet for Complex Litigation", url: "https://www.flcourts.gov/Resources-Services/Court-Improvement/Family-Courts/Family-Law-Self-Help-Information/Family-Law-Forms" },
+    { name: "Application to Sue as Indigent", description: "Fee waiver application", url: "https://www.flcourts.gov/Resources-Services/Court-Improvement/Self-Help-Information" },
+  ],
+  deadlines: [
+    { name: "Personal Injury (General)", timeframe: "2 years from date of injury (NEW: reduced from 4 years as of 3/24/2023)" },
+    { name: "Medical Malpractice", timeframe: "2 years from incident, or 2 years from discovery (max 4 years)" },
+    { name: "Wrongful Death", timeframe: "2 years from date of death (F.S. § 95.11)" },
+    { name: "Government Claims", timeframe: "3 years, but 6-month pre-suit notice required" },
+    { name: "Product Liability", timeframe: "2 years, with 12-year statute of repose" },
+    { name: "Minor's Claims", timeframe: "Tolled until age 18 (must file by age 25 for med mal)" },
+  ],
+  fees: [
+    { name: "Circuit Court Filing (over $30K)", amount: "$400" },
+    { name: "County Court Filing (under $30K)", amount: "$300" },
+    { name: "Service of Process", amount: "$40-$100" },
+    { name: "Jury Demand", amount: "$10-$50" },
+    { name: "Fee Waiver", amount: "Available for indigent litigants" },
+  ],
+  laws: [
+    { name: "F.S. § 95.11", summary: "2-year statute of limitations (changed 2023)" },
+    { name: "Modified Comparative Negligence (NEW 2023)", summary: "No recovery if you're 51%+ at fault (changed from pure comparative)" },
+    { name: "F.S. § 768.81", summary: "Comparative fault statute" },
+    { name: "PIP/No-Fault Law", summary: "Florida is a no-fault auto insurance state" },
+    { name: "Bad Faith Insurance Claims", summary: "3rd party bad faith claims allowed in FL" },
+  ],
+};
+
+const newYorkPersonalInjury: StateGuidance = {
+  forms: [
+    { name: "Summons with Notice", description: "Initiates lawsuit without complaint", url: "https://nycourts.gov/courts/nycivil/forms.shtml" },
+    { name: "Verified Complaint", description: "Detailed allegations of negligence", url: "https://nycourts.gov/courts/nycivil/forms.shtml" },
+    { name: "Request for Judicial Intervention (RJI)", description: "Assigns judge to case", url: "https://nycourts.gov/courts/nycivil/forms.shtml" },
+    { name: "Statement of Readiness", description: "Certificate case is ready for trial", url: "https://nycourts.gov/courts/nycivil/forms.shtml" },
+    { name: "Poor Person Application", description: "Fee waiver for indigent litigants", url: "https://nycourts.gov/forms/filingfees.shtml" },
+    { name: "Bill of Particulars", description: "Detailed breakdown of damages claimed", url: "https://nycourts.gov/courts/nycivil/forms.shtml" },
+  ],
+  deadlines: [
+    { name: "Personal Injury (General)", timeframe: "3 years from date of injury (CPLR § 214)" },
+    { name: "Medical Malpractice", timeframe: "2.5 years from act OR last treatment in continuous course (CPLR § 214-a)" },
+    { name: "Wrongful Death", timeframe: "2 years from date of death (EPTL § 5-4.1)" },
+    { name: "Government Claims (Notice of Claim)", timeframe: "90 days to file Notice of Claim, then 1 year + 90 days to sue" },
+    { name: "Product Liability", timeframe: "3 years from injury" },
+    { name: "Motor Vehicle Accidents", timeframe: "3 years (serious injury threshold applies for pain/suffering)" },
+  ],
+  fees: [
+    { name: "Supreme Court Filing (Index Number)", amount: "$210" },
+    { name: "Request for Judicial Intervention", amount: "$95" },
+    { name: "Civil Court Filing (under $25K)", amount: "$45" },
+    { name: "Service of Process", amount: "$75-$150" },
+    { name: "Poor Person Status", amount: "Fee waiver available" },
+  ],
+  laws: [
+    { name: "CPLR § 214", summary: "3-year statute of limitations for negligence" },
+    { name: "Pure Comparative Fault", summary: "Recovery reduced by your percentage of fault (even if 99%)" },
+    { name: "No-Fault Insurance Law (VTL § 5102)", summary: "Serious injury threshold for non-economic damages in auto cases" },
+    { name: "CPLR § 1602", summary: "Joint and several liability rules" },
+    { name: "Labor Law §§ 240, 241", summary: "Strict liability for construction accidents (Scaffold Law)" },
+  ],
+};
+
 // Remaining states get default guidance
 const remainingStates = ["AL", "AK", "AZ", "AR", "CO", "CT", "DE", "GA", "HI", "ID", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "UT", "VT", "VA", "WA", "WV", "WI", "WY", "DC"];
 
@@ -750,9 +882,13 @@ export const legalAreaData: Record<string, LegalAreaData> = {
       "Dog Bites", "Wrongful Death", "Workers Compensation",
       "Insurance Claims", "Settlement Negotiation", "Pain and Suffering",
     ],
-    stateGuidance: Object.fromEntries(
-      ["CA", "TX", "NY", "FL", "IL", ...remainingStates].map(s => [s, createDefaultGuidance("personal-injury")])
-    ),
+    stateGuidance: {
+      "CA": californiaPersonalInjury,
+      "TX": texasPersonalInjury,
+      "FL": floridaPersonalInjury,
+      "NY": newYorkPersonalInjury,
+      ...Object.fromEntries(["IL", ...remainingStates].map(s => [s, createDefaultGuidance("personal-injury")])),
+    },
   },
   "immigration": {
     title: "Immigration",
