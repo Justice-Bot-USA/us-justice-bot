@@ -1,154 +1,210 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <!-- Main Pages -->
-  <url><loc>https://usjusticebot.com/</loc><lastmod>2026-01-04</lastmod><priority>1.0</priority></url>
-  <url><loc>https://usjusticebot.com/demo-journey</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/case-analysis</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/forms-library</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/ai-tools</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/pricing</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
-  <url><loc>https://usjusticebot.com/faq</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
-  <url><loc>https://usjusticebot.com/privacy</loc><lastmod>2026-01-04</lastmod><priority>0.6</priority></url>
-  <url><loc>https://usjusticebot.com/terms</loc><lastmod>2026-01-04</lastmod><priority>0.6</priority></url>
-  <url><loc>https://usjusticebot.com/disclaimer</loc><lastmod>2026-01-04</lastmod><priority>0.6</priority></url>
+  <url><loc>https://justicebot-usa.com/</loc><lastmod>2026-01-22</lastmod><priority>1.0</priority></url>
+  <url><loc>https://justicebot-usa.com/demo-journey</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/case-analysis</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/forms-library</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/ai-tools</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/pricing</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/faq</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/privacy</loc><lastmod>2026-01-22</lastmod><priority>0.6</priority></url>
+  <url><loc>https://justicebot-usa.com/terms</loc><lastmod>2026-01-22</lastmod><priority>0.6</priority></url>
+  <url><loc>https://justicebot-usa.com/disclaimer</loc><lastmod>2026-01-22</lastmod><priority>0.6</priority></url>
+
+  <!-- SEO Tools Pages -->
+  <url><loc>https://justicebot-usa.com/injury-settlement-calculator</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/personal-injury-calculator</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
 
   <!-- State Landing Pages - All 50 States + DC -->
-  <url><loc>https://usjusticebot.com/states/al</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/ak</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/az</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/ar</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/ca</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/co</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/ct</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/de</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/dc</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/fl</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/ga</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/hi</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/id</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/il</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/in</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/ia</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/ks</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/ky</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/la</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/me</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/md</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/ma</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/mi</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/mn</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/ms</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/mo</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/mt</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/ne</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/nv</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/nh</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/nj</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/nm</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/ny</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/nc</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/nd</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/oh</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/ok</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/or</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/pa</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/ri</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/sc</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/sd</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/tn</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/tx</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/ut</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/vt</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/va</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/wa</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/wv</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/wi</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/states/wy</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/al</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/ak</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/az</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/ar</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/ca</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/co</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/ct</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/de</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/dc</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/fl</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/ga</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/hi</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/id</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/il</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/in</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/ia</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/ks</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/ky</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/la</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/me</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/md</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/ma</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/mi</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/mn</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/ms</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/mo</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/mt</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/ne</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/nv</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/nh</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/nj</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/nm</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/ny</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/nc</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/nd</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/oh</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/ok</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/or</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/pa</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/ri</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/sc</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/sd</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/tn</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/tx</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/ut</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/vt</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/va</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/wa</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/wv</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/wi</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/states/wy</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
 
   <!-- High-traffic State Funnels (Top 10 by population) -->
   <!-- California -->
-  <url><loc>https://usjusticebot.com/california-family-help</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/california-small-claims-help</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/california-employment-help</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/california-housing-help</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/california-criminal-help</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/california-cps-help</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
-  <url><loc>https://usjusticebot.com/california-workers-rights-help</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
-  <url><loc>https://usjusticebot.com/california-human-rights-help</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
-  <url><loc>https://usjusticebot.com/california-agency-complaints-help</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/california-family-help</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/california-small-claims-help</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/california-employment-help</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/california-housing-help</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/california-criminal-help</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/california-cps-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/california-workers-rights-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/california-human-rights-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/california-agency-complaints-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/california-personal-injury-help</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
 
   <!-- Texas -->
-  <url><loc>https://usjusticebot.com/texas-family-help</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/texas-small-claims-help</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/texas-employment-help</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/texas-housing-help</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/texas-criminal-help</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/texas-cps-help</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
-  <url><loc>https://usjusticebot.com/texas-workers-rights-help</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
-  <url><loc>https://usjusticebot.com/texas-human-rights-help</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
-  <url><loc>https://usjusticebot.com/texas-agency-complaints-help</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/texas-family-help</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/texas-small-claims-help</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/texas-employment-help</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/texas-housing-help</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/texas-criminal-help</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/texas-cps-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/texas-workers-rights-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/texas-human-rights-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/texas-agency-complaints-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/texas-personal-injury-help</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
 
   <!-- Florida -->
-  <url><loc>https://usjusticebot.com/florida-family-help</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/florida-small-claims-help</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/florida-employment-help</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/florida-housing-help</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/florida-criminal-help</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/florida-cps-help</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
-  <url><loc>https://usjusticebot.com/florida-workers-rights-help</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
-  <url><loc>https://usjusticebot.com/florida-human-rights-help</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
-  <url><loc>https://usjusticebot.com/florida-agency-complaints-help</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/florida-family-help</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/florida-small-claims-help</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/florida-employment-help</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/florida-housing-help</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/florida-criminal-help</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/florida-cps-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/florida-workers-rights-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/florida-human-rights-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/florida-agency-complaints-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/florida-personal-injury-help</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
 
   <!-- New York -->
-  <url><loc>https://usjusticebot.com/new-york-family-help</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/new-york-small-claims-help</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/new-york-employment-help</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/new-york-housing-help</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/new-york-criminal-help</loc><lastmod>2026-01-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://usjusticebot.com/new-york-cps-help</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
-  <url><loc>https://usjusticebot.com/new-york-workers-rights-help</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
-  <url><loc>https://usjusticebot.com/new-york-human-rights-help</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
-  <url><loc>https://usjusticebot.com/new-york-agency-complaints-help</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/new-york-family-help</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/new-york-small-claims-help</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/new-york-employment-help</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/new-york-housing-help</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/new-york-criminal-help</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
+  <url><loc>https://justicebot-usa.com/new-york-cps-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/new-york-workers-rights-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/new-york-human-rights-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/new-york-agency-complaints-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/new-york-personal-injury-help</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
 
   <!-- Pennsylvania -->
-  <url><loc>https://usjusticebot.com/pennsylvania-family-help</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
-  <url><loc>https://usjusticebot.com/pennsylvania-small-claims-help</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
-  <url><loc>https://usjusticebot.com/pennsylvania-employment-help</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
-  <url><loc>https://usjusticebot.com/pennsylvania-housing-help</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
-  <url><loc>https://usjusticebot.com/pennsylvania-criminal-help</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/pennsylvania-family-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/pennsylvania-small-claims-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/pennsylvania-employment-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/pennsylvania-housing-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/pennsylvania-criminal-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/pennsylvania-personal-injury-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
 
   <!-- Illinois -->
-  <url><loc>https://usjusticebot.com/illinois-family-help</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
-  <url><loc>https://usjusticebot.com/illinois-small-claims-help</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
-  <url><loc>https://usjusticebot.com/illinois-employment-help</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
-  <url><loc>https://usjusticebot.com/illinois-housing-help</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
-  <url><loc>https://usjusticebot.com/illinois-criminal-help</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/illinois-family-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/illinois-small-claims-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/illinois-employment-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/illinois-housing-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/illinois-criminal-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/illinois-personal-injury-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
 
   <!-- Ohio -->
-  <url><loc>https://usjusticebot.com/ohio-family-help</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
-  <url><loc>https://usjusticebot.com/ohio-small-claims-help</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
-  <url><loc>https://usjusticebot.com/ohio-employment-help</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
-  <url><loc>https://usjusticebot.com/ohio-housing-help</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
-  <url><loc>https://usjusticebot.com/ohio-criminal-help</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/ohio-family-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/ohio-small-claims-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/ohio-employment-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/ohio-housing-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/ohio-criminal-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/ohio-personal-injury-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
 
   <!-- Georgia -->
-  <url><loc>https://usjusticebot.com/georgia-family-help</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
-  <url><loc>https://usjusticebot.com/georgia-small-claims-help</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
-  <url><loc>https://usjusticebot.com/georgia-employment-help</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
-  <url><loc>https://usjusticebot.com/georgia-housing-help</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
-  <url><loc>https://usjusticebot.com/georgia-criminal-help</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/georgia-family-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/georgia-small-claims-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/georgia-employment-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/georgia-housing-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/georgia-criminal-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/georgia-personal-injury-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
 
   <!-- North Carolina -->
-  <url><loc>https://usjusticebot.com/north-carolina-family-help</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
-  <url><loc>https://usjusticebot.com/north-carolina-small-claims-help</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
-  <url><loc>https://usjusticebot.com/north-carolina-employment-help</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
-  <url><loc>https://usjusticebot.com/north-carolina-housing-help</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
-  <url><loc>https://usjusticebot.com/north-carolina-criminal-help</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/north-carolina-family-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/north-carolina-small-claims-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/north-carolina-employment-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/north-carolina-housing-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/north-carolina-criminal-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/north-carolina-personal-injury-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
 
   <!-- Michigan -->
-  <url><loc>https://usjusticebot.com/michigan-family-help</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
-  <url><loc>https://usjusticebot.com/michigan-small-claims-help</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
-  <url><loc>https://usjusticebot.com/michigan-employment-help</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
-  <url><loc>https://usjusticebot.com/michigan-housing-help</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
-  <url><loc>https://usjusticebot.com/michigan-criminal-help</loc><lastmod>2026-01-04</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/michigan-family-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/michigan-small-claims-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/michigan-employment-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/michigan-housing-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/michigan-criminal-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/michigan-personal-injury-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+
+  <!-- New Jersey -->
+  <url><loc>https://justicebot-usa.com/new-jersey-family-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/new-jersey-small-claims-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/new-jersey-personal-injury-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+
+  <!-- Arizona -->
+  <url><loc>https://justicebot-usa.com/arizona-family-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/arizona-small-claims-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/arizona-personal-injury-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+
+  <!-- Washington -->
+  <url><loc>https://justicebot-usa.com/washington-family-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/washington-small-claims-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/washington-personal-injury-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+
+  <!-- Massachusetts -->
+  <url><loc>https://justicebot-usa.com/massachusetts-family-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/massachusetts-small-claims-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/massachusetts-personal-injury-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+
+  <!-- Colorado -->
+  <url><loc>https://justicebot-usa.com/colorado-family-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/colorado-small-claims-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/colorado-personal-injury-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+
+  <!-- Nevada -->
+  <url><loc>https://justicebot-usa.com/nevada-family-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/nevada-small-claims-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/nevada-personal-injury-help</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+
+  <!-- Legal Area Landing Pages -->
+  <url><loc>https://justicebot-usa.com/legal-areas/family</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/legal-areas/small-claims</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/legal-areas/employment</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/legal-areas/housing</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/legal-areas/criminal</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/legal-areas/cps</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/legal-areas/workers-rights</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/legal-areas/human-rights</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/legal-areas/agency-complaints</loc><lastmod>2026-01-22</lastmod><priority>0.8</priority></url>
+  <url><loc>https://justicebot-usa.com/legal-areas/personal-injury</loc><lastmod>2026-01-22</lastmod><priority>0.9</priority></url>
 </urlset>

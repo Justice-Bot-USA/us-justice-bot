@@ -738,6 +738,22 @@ export const legalAreaData: Record<string, LegalAreaData> = {
       ["CA", "TX", "NY", "FL", "IL", ...remainingStates].map(s => [s, createDefaultGuidance("consumer")])
     ),
   },
+  "personal-injury": {
+    title: "Personal Injury",
+    description: "Get help with accident claims, medical bills, and injury compensation. Navigate insurance claims and understand your rights.",
+    icon: Heart,
+    keywords: ["Car Accident", "Medical Malpractice", "Slip and Fall", "Wrongful Death", "Insurance Claims", "Settlement"],
+    badge: { text: "High Value", variant: "default" },
+    commonTopics: [
+      "Car Accidents", "Truck Accidents", "Motorcycle Accidents",
+      "Slip and Fall", "Medical Malpractice", "Product Liability",
+      "Dog Bites", "Wrongful Death", "Workers Compensation",
+      "Insurance Claims", "Settlement Negotiation", "Pain and Suffering",
+    ],
+    stateGuidance: Object.fromEntries(
+      ["CA", "TX", "NY", "FL", "IL", ...remainingStates].map(s => [s, createDefaultGuidance("personal-injury")])
+    ),
+  },
   "immigration": {
     title: "Immigration",
     description: "Navigate deportation defense, asylum applications, visas, and citizenship with comprehensive guidance.",

@@ -52,6 +52,7 @@ const ALL_LEGAL_AREAS: LegalCategory[] = [
   'workers-rights',
   'human-rights',
   'agency-complaints',
+  'personal-injury',
 ];
 
 // State-specific form mappings for all 50 states + DC
