@@ -8,7 +8,7 @@ import { createAdminClient } from "../_shared/db.ts";
 const PRICE_IDS = {
   per_form: "price_1SspQoPr9cYwQq3CUtFuCkxA", // $4.99 one-time (primary conversion)
   monthly: "price_1SspbEPr9cYwQq3CLNwkxqCN",  // $59.99/month
-  annual: "price_1SrvctQ3mIAd2Ri5Q4DwaJRf",   // $79.99/year
+  annual: "price_1SsptaPr9cYwQq3CFcwxD0Ps",   // $79.99/year
 };
 
 function getStripe(): Stripe {
