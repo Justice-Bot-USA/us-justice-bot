@@ -70,6 +70,7 @@ async function handleCreateSubscription(
   origin: string
 ) {
   const priceId = data.planType === "annual" ? PRICE_IDS.annual : PRICE_IDS.monthly;
+  const accessType = data.planType === "annual" ? "yearly" : "monthly";
   
   const session = await createCheckoutSession(stripe, {
     priceId,
@@ -78,7 +79,12 @@ async function handleCreateSubscription(
     email: data.email,
     successUrl: `${origin}/payment-success?subscription=success&session_id={CHECKOUT_SESSION_ID}`,
     cancelUrl: `${origin}/pricing?subscription=cancelled`,
-    metadata: { plan_type: data.planType },
+    metadata: { 
+      access_type: accessType,
+      plan_type: data.planType,
+      source: "pricing_page",
+      app: "justicebot",
+    },
   });
 
   console.log("Subscription checkout session created:", session.id);
@@ -101,6 +107,8 @@ async function handleCreateOneTimePayment(
       access_type: "single_form",
       form_type: data.formType || "general",
       case_id: data.caseId || "",
+      source: "pricing_page",
+      app: "justicebot",
     },
   });
 
