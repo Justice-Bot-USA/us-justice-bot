@@ -40,12 +40,86 @@ serve(async (req: Request) => {
     switch (event.type) {
       case "checkout.session.completed": {
         const session = event.data.object as Stripe.Checkout.Session;
-        console.log("✅ checkout.session.completed:", session.id);
+        const userId = session.metadata?.user_id;
+        const accessType = session.metadata?.access_type;
         
-        // Payment already handled in stripe-checkout verify_session
-        // This is a backup/confirmation
-        if (session.payment_status === "paid") {
-          console.log(`Payment confirmed for session ${session.id}`);
+        console.log("✅ checkout.session.completed:", {
+          sessionId: session.id,
+          userId,
+          accessType,
+          paymentStatus: session.payment_status,
+          mode: session.mode,
+        });
+
+        if (session.payment_status !== "paid") {
+          console.log(`⏳ Payment not yet complete for session ${session.id}`);
+          break;
+        }
+
+        if (!userId) {
+          console.error("❌ No user_id in session metadata");
+          break;
+        }
+
+        // Route based on access_type metadata (not price ID)
+        switch (accessType) {
+          case "single_form": {
+            const formType = session.metadata?.form_type || "general";
+            const caseId = session.metadata?.case_id;
+            
+            console.log(`📄 Unlocking single form access: ${formType}`);
+            
+            const { error } = await supabase.from("form_payments").insert({
+              user_id: userId,
+              paypal_payment_id: session.payment_intent as string,
+              amount: 4.99,
+              status: "completed",
+              form_type: formType,
+            });
+
+            if (error) {
+              console.error("❌ Error saving form payment:", error);
+            } else {
+              console.log(`✅ Form access unlocked for user ${userId}, form: ${formType}${caseId ? `, case: ${caseId}` : ""}`);
+            }
+            break;
+          }
+
+          case "monthly":
+          case "yearly": {
+            const subscriptionId = session.subscription as string;
+            
+            if (!subscriptionId) {
+              console.error("❌ No subscription ID for subscription access type");
+              break;
+            }
+
+            console.log(`📅 Creating ${accessType} subscription: ${subscriptionId}`);
+            
+            const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+            const endDate = new Date(subscription.current_period_end * 1000);
+            const amount = accessType === "yearly" ? 79.99 : 9.99;
+
+            const { error } = await supabase.from("subscriptions").insert({
+              user_id: userId,
+              plan_type: accessType === "yearly" ? "annual" : "monthly",
+              status: "active",
+              amount,
+              start_date: new Date().toISOString(),
+              end_date: endDate.toISOString(),
+              paypal_subscription_id: subscriptionId, // reusing column for stripe ID
+            });
+
+            if (error) {
+              console.error("❌ Error saving subscription:", error);
+            } else {
+              console.log(`✅ ${accessType} subscription created for user ${userId}, ends: ${endDate.toISOString()}`);
+            }
+            break;
+          }
+
+          default:
+            console.log(`ℹ️ Unknown access_type: ${accessType}, session mode: ${session.mode}`);
         }
         break;
       }
