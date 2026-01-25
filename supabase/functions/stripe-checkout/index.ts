@@ -4,22 +4,11 @@ import { corsHeaders, handleCors, requireUser } from "../_shared/auth.ts";
 import { successResponse, errorResponse, handleError } from "../_shared/errors.ts";
 import { createAdminClient } from "../_shared/db.ts";
 
-// Stripe price IDs (Live Mode) - $4.99 one-time, $59.99/month, $79.99/year
-const PRICE_IDS = {
-  per_form: "price_1SspQoPr9cYwQq3CUtFuCkxA", // $4.99 one-time (primary conversion)
-  monthly: "price_1SspbEPr9cYwQq3CLNwkxqCN",  // $59.99/month
-  annual: "price_1SsptaPr9cYwQq3CFcwxD0Ps",   // $79.99/year
-};
+import { getStripe, PRICE_IDS, validateStripePricesOnce } from "../_shared/stripe.ts";
 
-function getStripe(): Stripe {
-  const secretKey = Deno.env.get("STRIPE_SECRET_KEY");
-  if (!secretKey) {
-    throw new Error("STRIPE_SECRET_KEY not configured");
-  }
-  return new Stripe(secretKey, {
-    apiVersion: "2025-08-27.basil",
-  });
-}
+// Fail fast on cold start if Stripe prices are misconfigured
+const stripe = getStripe();
+const stripePriceValidation = validateStripePricesOnce(stripe);
 
 async function getOrCreateCustomer(stripe: Stripe, email: string, userId: string): Promise<string> {
   // Check if customer already exists
@@ -140,7 +129,7 @@ async function handleVerifySession(
       user_id: data.userId,
       plan_type: planType,
       status: "active",
-      amount: planType === "annual" ? 79.99 : 9.99,
+      amount: planType === "annual" ? 499.99 : 59.99,
       start_date: new Date().toISOString(),
       end_date: endDate.toISOString(),
       paypal_subscription_id: subscriptionId, // reusing column for stripe ID
@@ -160,7 +149,7 @@ async function handleVerifySession(
     const { error } = await supabase.from("form_payments").insert({
       user_id: data.userId,
       paypal_payment_id: session.payment_intent as string, // reusing column
-      amount: 4.99,
+      amount: 9.99,
       status: "completed",
       form_type: formType,
     });
@@ -186,9 +175,10 @@ serve(async (req: Request) => {
   try {
     console.log("Stripe checkout function called");
     
+    await stripePriceValidation;
+
     const { userId, email } = await requireUser(req);
     const { action, ...data } = await req.json();
-    const stripe = getStripe();
     const origin = req.headers.get("origin") || "https://us-justice-bot.lovable.app";
 
     switch (action) {
