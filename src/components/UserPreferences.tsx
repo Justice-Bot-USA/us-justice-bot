@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import { User, Globe, MapPin, Save } from "lucide-react";
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "@/hooks/use-toast";
 import { states } from "@/lib/states";
@@ -88,13 +88,14 @@ export function UserPreferences({
       if (error && error.code !== 'PGRST116') throw error;
 
       if (data) {
+        const lang = data.preferred_language as 'en' | 'es';
         setPreferences({
           preferred_state: data.preferred_state,
-          preferred_language: data.preferred_language
+          preferred_language: lang
         });
         
-        if (data.preferred_language !== language) {
-          onLanguageChange(data.preferred_language);
+        if (lang !== language) {
+          onLanguageChange(lang);
         }
         if (data.preferred_state && data.preferred_state !== selectedState) {
           onStateChange(data.preferred_state);
