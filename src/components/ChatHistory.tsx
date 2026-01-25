@@ -5,7 +5,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Clock, MessageSquare, Trash2 } from "lucide-react";
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "@/hooks/use-toast";
 
@@ -71,11 +71,12 @@ export function ChatHistory({ isOpen, onClose, onSelectSession, language }: Chat
 
       const processedSessions = sessionsData?.map(session => ({
         ...session,
+        language: session.language as 'en' | 'es',
         message_count: session.chat_messages?.length || 0,
         last_message: session.chat_messages?.[session.chat_messages.length - 1]?.content?.substring(0, 100) + '...' || ''
       })) || [];
 
-      setSessions(processedSessions);
+      setSessions(processedSessions as ChatSession[]);
     } catch (error) {
       console.error('Error loading chat history:', error);
       toast({
