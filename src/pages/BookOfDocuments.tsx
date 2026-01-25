@@ -32,7 +32,8 @@ import {
   Cloud,
   ArrowLeft,
   FileDown,
-  Loader2
+  Loader2,
+  Scale
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
@@ -47,6 +48,7 @@ const BookOfDocuments = () => {
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const [sortBy, setSortBy] = useState<'date' | 'name' | 'size'>('date');
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
+  const [courtReadyMode, setCourtReadyMode] = useState(false); // Chronological oldest-first for court filing
 
   // Fetch all case files for the user
   const { data: caseFiles, isLoading, refetch } = useQuery({
@@ -160,21 +162,29 @@ const BookOfDocuments = () => {
       filtered = filtered.filter(file => file.bucket_name === bucketFilter);
     }
 
-    // Sorting
-    filtered.sort((a, b) => {
-      let comparison = 0;
-      if (sortBy === 'date') {
-        comparison = new Date(a.created_at || '').getTime() - new Date(b.created_at || '').getTime();
-      } else if (sortBy === 'name') {
-        comparison = a.file_name.localeCompare(b.file_name);
-      } else if (sortBy === 'size') {
-        comparison = a.file_size - b.file_size;
-      }
-      return sortOrder === 'asc' ? comparison : -comparison;
-    });
+    // Sorting - court-ready mode overrides to chronological (oldest first)
+    if (courtReadyMode) {
+      filtered.sort((a, b) => {
+        const dateA = new Date(a.created_at || '').getTime();
+        const dateB = new Date(b.created_at || '').getTime();
+        return dateA - dateB; // Oldest first for court filing
+      });
+    } else {
+      filtered.sort((a, b) => {
+        let comparison = 0;
+        if (sortBy === 'date') {
+          comparison = new Date(a.created_at || '').getTime() - new Date(b.created_at || '').getTime();
+        } else if (sortBy === 'name') {
+          comparison = a.file_name.localeCompare(b.file_name);
+        } else if (sortBy === 'size') {
+          comparison = a.file_size - b.file_size;
+        }
+        return sortOrder === 'asc' ? comparison : -comparison;
+      });
+    }
 
     return filtered;
-  }, [caseFiles, searchQuery, fileTypeFilter, bucketFilter, sortBy, sortOrder]);
+  }, [caseFiles, searchQuery, fileTypeFilter, bucketFilter, sortBy, sortOrder, courtReadyMode]);
 
   const getFileIcon = (type: string) => {
     if (type.startsWith('image/')) return <Image className="h-5 w-5 text-green-500" />;
@@ -234,8 +244,15 @@ const BookOfDocuments = () => {
 
     setIsGeneratingPDF(true);
     try {
+      // Sort files chronologically (oldest first) for court-ready PDF
+      const sortedFiles = [...caseFiles].sort((a, b) => {
+        const dateA = new Date(a.created_at || '').getTime();
+        const dateB = new Date(b.created_at || '').getTime();
+        return dateA - dateB; // Oldest first
+      });
+
       // Get case info if files are associated with a case
-      const firstCaseFile = caseFiles.find((f: any) => f.case_id);
+      const firstCaseFile = sortedFiles.find((f: any) => f.case_id);
       let caseInfo = undefined;
       
       if (firstCaseFile && cases?.length) {
@@ -250,13 +267,13 @@ const BookOfDocuments = () => {
         }
       }
 
-      const doc = generateBookOfDocumentsPDF(caseFiles, caseInfo);
+      const doc = generateBookOfDocumentsPDF(sortedFiles, caseInfo);
       const filename = caseInfo 
         ? `Book_of_Documents_${caseInfo.case_title.replace(/[^a-zA-Z0-9]/g, '_')}.pdf`
         : `Book_of_Documents_${format(new Date(), 'yyyy-MM-dd')}.pdf`;
       
       downloadPDF(doc, filename);
-      toast.success('Book of Documents PDF downloaded');
+      toast.success('Court-ready Book of Documents downloaded!');
     } catch (error) {
       console.error('PDF generation error:', error);
       toast.error('Failed to generate PDF');
@@ -389,9 +406,22 @@ const BookOfDocuments = () => {
             </div>
             <div className="flex gap-2">
               <Button 
-                variant="outline"
+                variant={courtReadyMode ? "default" : "outline"}
+                onClick={() => {
+                  setCourtReadyMode(!courtReadyMode);
+                  if (!courtReadyMode) {
+                    toast.success('Court-ready mode: Documents sorted oldest → newest');
+                  }
+                }}
+                className={courtReadyMode ? "bg-green-600 hover:bg-green-700" : ""}
+              >
+                <Scale className="h-4 w-4 mr-2" />
+                {courtReadyMode ? "Court-Ready ✓" : "Court-Ready Order"}
+              </Button>
+              <Button 
                 onClick={handleDownloadPDF}
                 disabled={isGeneratingPDF || !caseFiles?.length}
+                className="bg-primary"
               >
                 {isGeneratingPDF ? (
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" />
@@ -400,7 +430,7 @@ const BookOfDocuments = () => {
                 )}
                 Download PDF
               </Button>
-              <Button asChild>
+              <Button asChild variant="outline">
                 <Link to="/case-analysis">
                   <Upload className="h-4 w-4 mr-2" />
                   Upload New Evidence
