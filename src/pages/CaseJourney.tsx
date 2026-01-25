@@ -418,28 +418,68 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
                   {/* Evidence Uploader */}
                   <EvidenceUploader 
                     caseId={caseId || undefined}
-                    onFilesUploaded={(files) => setUploadedFilesCount(files.length)}
+                    onFilesUploaded={async () => {
+                      // Refresh total file count from database
+                      const { count } = await supabase
+                        .from('case_files')
+                        .select('*', { count: 'exact', head: true })
+                        .eq('user_id', user?.id)
+                        .eq('case_id', caseId);
+                      setUploadedFilesCount(count || 0);
+                    }}
                   />
 
+                  {/* Uploaded Files Status */}
                   {uploadedFilesCount > 0 && (
-                    <div className="flex items-center gap-2 text-green-600 dark:text-green-400 justify-center">
-                      <CheckCircle2 className="h-5 w-5" />
-                      <span className="font-medium">{uploadedFilesCount} file(s) uploaded</span>
-                    </div>
+                    <Card className="bg-green-50 dark:bg-green-950 border-green-200 dark:border-green-800">
+                      <CardContent className="p-4">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2 text-green-700 dark:text-green-300">
+                            <CheckCircle2 className="h-5 w-5" />
+                            <span className="font-medium">{uploadedFilesCount} file(s) uploaded to this case</span>
+                          </div>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => navigate('/book-of-documents')}
+                            className="text-green-700 dark:text-green-300 hover:text-green-800"
+                          >
+                            <FileText className="h-4 w-4 mr-1" />
+                            View All
+                          </Button>
+                        </div>
+                        <p className="text-xs text-green-600 dark:text-green-400 mt-2">
+                          All uploads are saved automatically. Add more anytime — your Book of Documents will include everything.
+                        </p>
+                      </CardContent>
+                    </Card>
                   )}
 
-                  {/* Single Primary CTA */}
-                  <Button 
-                    className="w-full h-14 text-lg"
-                    size="lg"
-                    onClick={() => setCurrentStep(3)}
-                  >
-                    Continue to Book of Documents
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
+                  {/* Primary CTAs */}
+                  <div className="space-y-3">
+                    <Button 
+                      className="w-full h-14 text-lg"
+                      size="lg"
+                      onClick={() => setCurrentStep(3)}
+                    >
+                      Continue to Book of Documents
+                      <ArrowRight className="ml-2 h-5 w-5" />
+                    </Button>
+                    
+                    {uploadedFilesCount > 0 && (
+                      <Button 
+                        variant="outline"
+                        className="w-full"
+                        onClick={() => navigate('/book-of-documents')}
+                      >
+                        <FileText className="mr-2 h-4 w-4" />
+                        View & Organize Documents Now
+                      </Button>
+                    )}
+                  </div>
                   
                   <p className="text-center text-sm text-muted-foreground">
-                    You can always add more evidence later
+                    You can always add more evidence later — each upload is saved to your case
                   </p>
                 </CardContent>
               </Card>
@@ -693,14 +733,22 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
                   </div>
 
                   {/* Action Buttons */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <Button 
                       variant="outline" 
                       className="h-12"
                       onClick={() => navigate('/book-of-documents')}
                     >
-                      <Download className="mr-2 h-5 w-5" />
-                      View Documents
+                      <FileText className="mr-2 h-5 w-5" />
+                      Book of Documents
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      className="h-12"
+                      onClick={() => setCurrentStep(2)}
+                    >
+                      <Upload className="mr-2 h-5 w-5" />
+                      Add More Evidence
                     </Button>
                     <Button 
                       variant="outline" 
