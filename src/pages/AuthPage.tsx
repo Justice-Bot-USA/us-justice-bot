@@ -11,15 +11,33 @@ import { Eye, EyeOff, Mail, Lock, User, LogIn, UserPlus } from 'lucide-react';
 
 const AuthPage = () => {
   const navigate = useNavigate();
-  const { user, signIn, signUp, loading } = useAuth();
+  const { user, signIn, signUp, resetPassword, loading } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isResetting, setIsResetting] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
     firstName: '',
     lastName: '',
   });
+
+  const handleForgotPassword = async () => {
+    if (!formData.email) {
+      toast.error('Enter your email first');
+      return;
+    }
+    setIsResetting(true);
+    try {
+      const { error } = await resetPassword(formData.email);
+      if (error) throw error;
+      toast.success('Password reset email sent. Check your inbox.');
+    } catch (e: any) {
+      toast.error(e?.message ?? 'Failed to send reset email');
+    } finally {
+      setIsResetting(false);
+    }
+  };
 
   useEffect(() => {
     if (user) {
@@ -179,6 +197,17 @@ const AuthPage = () => {
                         ) : (
                           <Eye className="h-4 w-4" aria-hidden="true" />
                         )}
+                      </Button>
+                    </div>
+                    <div className="flex justify-end">
+                      <Button
+                        type="button"
+                        variant="link"
+                        className="px-0 text-muted-foreground"
+                        disabled={isResetting}
+                        onClick={handleForgotPassword}
+                      >
+                        {isResetting ? 'Sending reset email…' : 'Forgot password?'}
                       </Button>
                     </div>
                   </div>

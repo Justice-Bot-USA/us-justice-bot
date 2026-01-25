@@ -43,11 +43,17 @@ export function useSweepFileUpload(caseId: string | null, userId: string | null)
 
     try {
       // 1) Upload to Supabase Storage bucket
-      const storagePath = `${caseId}/${Date.now()}-${file.name}`;
+      const safeName = file.name
+        .trim()
+        .replace(/\s+/g, ' ')
+        .replace(/[^a-zA-Z0-9._\- ()]/g, '_');
+      const uniqueId = (globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`)
+        .replace(/[^a-zA-Z0-9\-]/g, '');
+      const storagePath = `${caseId}/${Date.now()}-${uniqueId}-${safeName}`;
       
       const { error: uploadError } = await supabase.storage
         .from('evidence-files')
-        .upload(storagePath, file, { contentType: file.type });
+        .upload(storagePath, file, { contentType: file.type, upsert: true });
 
       if (uploadError) throw uploadError;
       setUploadProgress(40);

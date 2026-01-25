@@ -17,7 +17,8 @@ export function AuthModal({ isOpen, onClose, language }: AuthModalProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const { signIn, signUp } = useAuth();
+  const [resetLoading, setResetLoading] = useState(false);
+  const { signIn, signUp, resetPassword } = useAuth();
 
   const text = {
     en: {
@@ -29,6 +30,8 @@ export function AuthModal({ isOpen, onClose, language }: AuthModalProps) {
       signUpButton: "Create Account",
       signInSuccess: "Successfully signed in!",
       signUpSuccess: "Account created! Please check your email to verify.",
+      forgot: "Forgot password?",
+      resetSent: "Password reset email sent.",
       error: "An error occurred. Please try again."
     },
     es: {
@@ -40,8 +43,37 @@ export function AuthModal({ isOpen, onClose, language }: AuthModalProps) {
       signUpButton: "Crear Cuenta",
       signInSuccess: "¡Sesión iniciada exitosamente!",
       signUpSuccess: "¡Cuenta creada! Por favor revisa tu correo para verificar.",
+      forgot: "¿Olvidaste tu contraseña?",
+      resetSent: "Correo de restablecimiento enviado.",
       error: "Ocurrió un error. Por favor intenta de nuevo."
     }
+  };
+
+  const handleForgotPassword = async () => {
+    if (!email) {
+      toast({
+        title: "Error",
+        description: text[language].error,
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setResetLoading(true);
+    const { error } = await resetPassword(email);
+    if (error) {
+      toast({
+        title: "Error",
+        description: error.message ?? text[language].error,
+        variant: "destructive",
+      });
+    } else {
+      toast({
+        title: "Success",
+        description: text[language].resetSent,
+      });
+    }
+    setResetLoading(false);
   };
 
   const handleSignIn = async (e: React.FormEvent) => {
@@ -127,6 +159,15 @@ export function AuthModal({ isOpen, onClose, language }: AuthModalProps) {
               </div>
               <Button type="submit" className="w-full" disabled={loading}>
                 {text[language].signInButton}
+              </Button>
+              <Button
+                type="button"
+                variant="link"
+                className="w-full text-muted-foreground"
+                disabled={resetLoading}
+                onClick={handleForgotPassword}
+              >
+                {resetLoading ? "Sending…" : text[language].forgot}
               </Button>
             </form>
           </TabsContent>
