@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
@@ -29,6 +29,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { EvidenceUploader } from '@/components/EvidenceUploader';
 import { RelatedCasesDisplay } from '@/components/dashboard/RelatedCasesDisplay';
 import { trackAddToCart, trackBeginCheckout, getDetectedCountry } from '@/hooks/useAnalytics';
+import { isValidUUID } from '@/lib/validation';
 
 interface CaseData {
   id: string;
@@ -52,21 +53,44 @@ const JOURNEY_STEPS = [
   { id: 5, name: 'Complete', icon: CheckCircle2 },
 ];
 
-const CaseJourney = () => {
+function CantAccessCaseCard({
+  description,
+}: {
+  description: string;
+}) {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  return (
+    <div className="min-h-screen bg-background flex items-center justify-center p-4">
+      <Card className="max-w-md w-full">
+        <CardHeader>
+          <CardTitle>Can’t access this case</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-muted-foreground mb-4">{description}</p>
+          <div className="flex flex-col gap-2">
+            <Button onClick={() => navigate('/my-cases')} className="w-full">Go to My Cases</Button>
+            <Button variant="outline" onClick={() => navigate('/case-analysis')} className="w-full">Start New Case</Button>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
+  const navigate = useNavigate();
   const { user } = useAuth();
   const { hasAccess, isAdmin, loading: accessLoading } = usePaywallAccess();
-  
-  const caseId = searchParams.get('caseId');
+
   const [currentStep, setCurrentStep] = useState(1);
   const [caseData, setCaseData] = useState<CaseData | null>(null);
   const [uploadedFilesCount, setUploadedFilesCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [isUnlocking, setIsUnlocking] = useState(false);
+  const [accessDenied, setAccessDenied] = useState(false);
 
   useEffect(() => {
-    if (!caseId || !user) return;
+    if (!user) return;
     
     const fetchCaseData = async () => {
       setIsLoading(true);
@@ -80,6 +104,7 @@ const CaseJourney = () => {
         
         if (error) throw error;
         setCaseData(data);
+        setAccessDenied(false);
         
         // Fetch uploaded files count
         const { count } = await supabase
@@ -90,16 +115,17 @@ const CaseJourney = () => {
         
         setUploadedFilesCount(count || 0);
       } catch (error) {
-        console.error('Error fetching case:', error);
-        toast.error('Failed to load case data');
-        navigate('/case-analysis');
+        // Friendly behavior (no raw errors, no redirect): treat as “not accessible”.
+        console.warn('[case] access denied or not found');
+        setCaseData(null);
+        setAccessDenied(true);
       } finally {
         setIsLoading(false);
       }
     };
     
     fetchCaseData();
-  }, [caseId, user, navigate]);
+  }, [caseId, user]);
 
   const handleUnlock = async () => {
     if (!user) {
@@ -200,19 +226,9 @@ const CaseJourney = () => {
     );
   }
 
-  if (!caseData) {
+  if (accessDenied || !caseData) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center p-4">
-        <Card className="max-w-md w-full">
-          <CardHeader>
-            <CardTitle>Case Not Found</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-muted-foreground mb-4">We couldn't find your case. Please start a new analysis.</p>
-            <Button onClick={() => navigate('/case-analysis')} className="w-full">Start New Case</Button>
-          </CardContent>
-        </Card>
-      </div>
+      <CantAccessCaseCard description="This case link is invalid, expired, or belongs to another account." />
     );
   }
 
@@ -711,6 +727,20 @@ const CaseJourney = () => {
       </div>
     </div>
   );
+};
+
+const CaseJourney = () => {
+  const params = useParams<{ caseId?: string }>();
+  const [searchParams] = useSearchParams();
+
+  const caseId = params.caseId ?? searchParams.get('caseId');
+
+  // Hard rule: do not trigger *any* Supabase-producing hooks/queries unless UUID is valid.
+  if (!caseId || !isValidUUID(caseId)) {
+    return <CantAccessCaseCard description="This case link is invalid." />;
+  }
+
+  return <CaseJourneyInner caseId={caseId} />;
 };
 
 export default CaseJourney;

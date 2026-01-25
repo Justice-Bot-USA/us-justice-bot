@@ -3,9 +3,10 @@ import Stripe from "https://esm.sh/stripe@18.5.0";
 import { corsHeaders } from "../_shared/auth.ts";
 import { createAdminClient } from "../_shared/db.ts";
 
-const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") || "", {
-  apiVersion: "2025-08-27.basil",
-});
+import { getStripe, validateStripePricesOnce } from "../_shared/stripe.ts";
+
+const stripe = getStripe();
+const stripePriceValidation = validateStripePricesOnce(stripe);
 
 serve(async (req: Request) => {
   // Handle CORS preflight
@@ -27,6 +28,9 @@ serve(async (req: Request) => {
   }
 
   try {
+    // Startup Price Validation (hard rule)
+    await stripePriceValidation;
+
     const body = await req.text();
     const event = await stripe.webhooks.constructEventAsync(
       body,
@@ -72,7 +76,7 @@ serve(async (req: Request) => {
             const { error } = await supabase.from("form_payments").insert({
               user_id: userId,
               paypal_payment_id: session.payment_intent as string,
-              amount: 4.99,
+              amount: 9.99,
               status: "completed",
               form_type: formType,
             });
@@ -98,7 +102,7 @@ serve(async (req: Request) => {
             
             const subscription = await stripe.subscriptions.retrieve(subscriptionId);
             const endDate = new Date(subscription.current_period_end * 1000);
-            const amount = accessType === "yearly" ? 79.99 : 59.99;
+            const amount = accessType === "yearly" ? 499.99 : 59.99;
 
             const { error } = await supabase.from("subscriptions").insert({
               user_id: userId,

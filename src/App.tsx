@@ -65,6 +65,7 @@ export default function App() {
             <Route path="/case-law-search" element={<CaseLawSearch />} />
             <Route path="/book-of-documents" element={<BookOfDocuments />} />
             <Route path="/case-journey" element={<CaseJourney />} />
+            <Route path="/case/:caseId" element={<CaseJourney />} />
             <Route path="/privacy" element={<PrivacyPolicy />} />
             <Route path="/terms" element={<TermsOfService />} />
             <Route path="/disclaimer" element={<LegalDisclaimer />} />

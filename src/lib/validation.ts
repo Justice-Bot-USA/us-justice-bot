@@ -1,5 +1,12 @@
 import { z } from 'zod';
 
+// Common validators
+export const uuidSchema = z.string().uuid();
+
+export function isValidUUID(id: string | null | undefined): id is string {
+  return uuidSchema.safeParse(id).success;
+}
+
 // Chat message validation schema
 export const chatMessageSchema = z.object({
   content: z.string()
