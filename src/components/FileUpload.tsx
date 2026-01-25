@@ -55,6 +55,14 @@ export const FileUpload: React.FC<FileUploadProps> = ({
   const [dragActive, setDragActive] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const sanitizeFileName = (name: string) => {
+    // Keep it readable but safe for storage paths
+    return name
+      .trim()
+      .replace(/\s+/g, ' ')
+      .replace(/[^a-zA-Z0-9._\- ()]/g, '_');
+  };
+
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -107,15 +115,20 @@ export const FileUpload: React.FC<FileUploadProps> = ({
 
       try {
         // Generate unique file path
-        const fileExt = file.name.split('.').pop();
-        const fileName = `${user.id}/${Date.now()}-${Math.random()}.${fileExt}`;
+        const safeOriginalName = sanitizeFileName(file.name);
+        const uniqueId = (globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`)
+          .replace(/[^a-zA-Z0-9\-]/g, '');
+        // Keep original name for humans; ensure uniqueness and stable paths
+        const fileName = `${user.id}/${Date.now()}-${uniqueId}-${safeOriginalName}`;
 
         // Upload to Supabase Storage
         const { data, error } = await supabase.storage
           .from(bucketType)
           .upload(fileName, file, {
             cacheControl: '3600',
-            upsert: false
+            // Allow re-uploads with the same chosen file name without hard failure.
+            // Our path is already unique, but this prevents edge collisions.
+            upsert: true
           });
 
         if (error) throw error;
@@ -168,7 +181,11 @@ export const FileUpload: React.FC<FileUploadProps> = ({
         toast.success(`${file.name} uploaded successfully`);
       } catch (error) {
         console.error('Upload error:', error);
-        toast.error(`Failed to upload ${file.name}`);
+        const message =
+          typeof error === 'object' && error && 'message' in error
+            ? String((error as any).message)
+            : 'Upload failed';
+        toast.error(`Failed to upload ${file.name}: ${message}`);
         
         // Remove failed upload from list
         setFiles(prev => prev.filter(f => f.id !== tempFile.id));
