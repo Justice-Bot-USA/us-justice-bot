@@ -282,7 +282,7 @@ const BookOfDocuments = () => {
     }
   };
 
-  const FileCard = ({ file }: { file: typeof caseFiles[0] }) => {
+  const FileCard = ({ file, exhibitNumber }: { file: typeof caseFiles[0]; exhibitNumber?: number }) => {
     const [fileUrl, setFileUrl] = React.useState<string | null>(null);
     
     React.useEffect(() => {
@@ -308,7 +308,14 @@ const BookOfDocuments = () => {
       <Card className="hover:shadow-md transition-shadow">
         <CardContent className="p-4">
           <div className="flex items-start gap-3">
-            <div className="p-2 bg-muted rounded-lg">
+            {/* Exhibit Number Badge - Only shown in court-ready mode */}
+            {exhibitNumber !== undefined && (
+              <div className="flex-shrink-0 w-14 h-14 bg-primary text-primary-foreground rounded-lg flex flex-col items-center justify-center font-bold shadow-sm">
+                <span className="text-[10px] uppercase tracking-wide">Exhibit</span>
+                <span className="text-lg leading-none">{exhibitNumber}</span>
+              </div>
+            )}
+            <div className={`p-2 bg-muted rounded-lg ${exhibitNumber === undefined ? '' : ''}`}>
               {getFileIcon(file.file_type)}
             </div>
             <div className="flex-1 min-w-0">
@@ -586,8 +593,15 @@ const BookOfDocuments = () => {
                     </AccordionTrigger>
                     <AccordionContent>
                       <div className="space-y-3 pt-2">
-                        {files.map(file => (
-                          <FileCard key={file.id} file={file} />
+                        {(courtReadyMode 
+                          ? [...files].sort((a, b) => new Date(a.created_at || '').getTime() - new Date(b.created_at || '').getTime())
+                          : files
+                        ).map((file, index) => (
+                          <FileCard 
+                            key={file.id} 
+                            file={file} 
+                            exhibitNumber={courtReadyMode ? index + 1 : undefined}
+                          />
                         ))}
                       </div>
                     </AccordionContent>
@@ -615,8 +629,12 @@ const BookOfDocuments = () => {
                 </CardContent>
               </Card>
             ) : (
-              filteredFiles.map(file => (
-                <FileCard key={file.id} file={file} />
+              filteredFiles.map((file, index) => (
+                <FileCard 
+                  key={file.id} 
+                  file={file} 
+                  exhibitNumber={courtReadyMode ? index + 1 : undefined}
+                />
               ))
             )}
           </TabsContent>
@@ -630,8 +648,15 @@ const BookOfDocuments = () => {
               </Card>
             ) : (
               <>
-                {caseFiles?.slice(0, 10).map(file => (
-                  <FileCard key={file.id} file={file} />
+                {(courtReadyMode
+                  ? [...(caseFiles || [])].sort((a, b) => new Date(a.created_at || '').getTime() - new Date(b.created_at || '').getTime()).slice(0, 10)
+                  : caseFiles?.slice(0, 10)
+                )?.map((file, index) => (
+                  <FileCard 
+                    key={file.id} 
+                    file={file} 
+                    exhibitNumber={courtReadyMode ? index + 1 : undefined}
+                  />
                 ))}
                 {(!caseFiles || caseFiles.length === 0) && (
                   <Card>
