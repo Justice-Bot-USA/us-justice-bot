@@ -49,7 +49,9 @@ export function useSweepFileUpload(caseId: string | null, userId: string | null)
         .replace(/[^a-zA-Z0-9._\- ()]/g, '_');
       const uniqueId = (globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`)
         .replace(/[^a-zA-Z0-9\-]/g, '');
-      const storagePath = `${caseId}/${Date.now()}-${uniqueId}-${safeName}`;
+      // CRITICAL: Storage RLS policies expect userId as the first folder, NOT caseId
+      // Policy: auth.uid()::text = storage.foldername(name)[1]
+      const storagePath = `${userId}/${caseId}/${Date.now()}-${uniqueId}-${safeName}`;
       
       const { error: uploadError } = await supabase.storage
         .from('evidence-files')
