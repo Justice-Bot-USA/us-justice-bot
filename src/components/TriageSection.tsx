@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, Scale, FileText, Users, Home, Briefcase, Heart, Shield } from "lucide-react";
+import { ArrowRight, Scale, FileText, Users, Home, Briefcase, Heart, Shield, Plane } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const legalAreas = [
@@ -12,6 +12,7 @@ const legalAreas = [
   { id: "small-claims", name: "Small Claims", icon: Scale, description: "Disputes under $10,000" },
   { id: "human-rights", name: "Human Rights", icon: Heart, description: "Discrimination, civil rights" },
   { id: "criminal", name: "Criminal", icon: Shield, description: "Defense, appeals, records" },
+  { id: "immigration", name: "Immigration", icon: Plane, description: "ICE, visas, deportation defense, asylum" },
 ];
 
 const TriageSection = () => {
