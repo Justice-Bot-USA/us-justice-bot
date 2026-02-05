@@ -12,7 +12,6 @@ import {
   Shield, 
   FileText,
   AlertTriangle,
-  X,
   Loader2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -241,14 +240,6 @@ const UnifiedEntryFlow = ({ isOpen, onClose }: UnifiedEntryFlowProps) => {
             <span className="text-sm text-muted-foreground">
               Step {step + 1} of {totalSteps}
             </span>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={onClose}
-              className="h-8 w-8"
-            >
-              <X className="h-4 w-4" />
-            </Button>
           </div>
           <Progress value={progress} className="h-2" />
         </div>

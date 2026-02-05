@@ -2,13 +2,15 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, Scale, FileText, Users, Home, Briefcase, Heart, Shield, Plane } from "lucide-react";
+import { ArrowRight, Scale, FileText, Users, Home, Briefcase, Heart, Shield, Plane, HardHat, Hammer } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const legalAreas = [
   { id: "family", name: "Family Law", icon: Users, description: "Divorce, custody, child support" },
   { id: "housing", name: "Housing", icon: Home, description: "Tenant rights, evictions, landlord disputes" },
   { id: "employment", name: "Employment", icon: Briefcase, description: "Wrongful termination, discrimination" },
+  { id: "workers-comp", name: "Workers Compensation", icon: HardHat, description: "Workplace injuries, benefits claims" },
+  { id: "workers-rights", name: "Workers Rights", icon: Hammer, description: "Wage theft, unsafe conditions, retaliation" },
   { id: "small-claims", name: "Small Claims", icon: Scale, description: "Disputes under $10,000" },
   { id: "human-rights", name: "Human Rights", icon: Heart, description: "Discrimination, civil rights" },
   { id: "criminal", name: "Criminal", icon: Shield, description: "Defense, appeals, records" },
