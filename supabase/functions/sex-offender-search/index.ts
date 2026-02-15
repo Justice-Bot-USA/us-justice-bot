@@ -14,7 +14,26 @@ Deno.serve(async (req) => {
     const { action } = body;
 
     // Return the Mapbox token for client-side use (publishable key)
+    // Restricted to trusted origins to prevent quota abuse
     if (action === "get-mapbox-token") {
+      const origin = req.headers.get("origin") || "";
+      const referer = req.headers.get("referer") || "";
+      const TRUSTED_ORIGINS = [
+        "https://us-justice-bot.lovable.app",
+        "https://id-preview--0fb7fd76-1322-4244-87c6-066cca5bc66d.lovable.app",
+        "http://localhost:5173",
+        "http://localhost:8080",
+      ];
+      const isTrusted = TRUSTED_ORIGINS.some(
+        (o) => origin.startsWith(o) || referer.startsWith(o)
+      );
+      if (!isTrusted) {
+        return new Response(
+          JSON.stringify({ success: false, error: "Unauthorized origin" }),
+          { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+
       const token = Deno.env.get("MAPBOX_ACCESS_TOKEN");
       if (!token) {
         return new Response(
