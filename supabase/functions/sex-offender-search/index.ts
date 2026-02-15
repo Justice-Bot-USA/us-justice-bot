@@ -151,25 +151,42 @@ async function handleMapSearch(lat: number, lng: number, placeName?: string) {
 
   console.log("Map search for location:", locationName);
 
-  // Search for sex offenders near this location
-  const query = `sex offender registry near ${locationName} registered offenders site:nsopw.gov OR site:gov OR site:familywatchdog.us`;
+  // Search for sex offenders and official registries in parallel (no scrapeOptions for speed)
+  const query = `sex offender registry near ${locationName} site:nsopw.gov OR site:gov OR site:familywatchdog.us`;
 
-  const response = await fetch("https://api.firecrawl.dev/v1/search", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      query,
-      limit: 15,
-      country: "us",
-      lang: "en",
-      scrapeOptions: { formats: ["markdown"] },
+  const [response, registryResponse] = await Promise.all([
+    fetch("https://api.firecrawl.dev/v1/search", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        query,
+        limit: 8,
+        country: "us",
+        lang: "en",
+      }),
     }),
-  });
+    fetch("https://api.firecrawl.dev/v1/search", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        query: `${locationName} official sex offender registry site:gov`,
+        limit: 3,
+        country: "us",
+        lang: "en",
+      }),
+    }),
+  ]);
 
-  const data = await response.json();
+  const [data, registryData] = await Promise.all([
+    response.json(),
+    registryResponse.json(),
+  ]);
 
   if (!response.ok) {
     console.error("Firecrawl API error:", data);
@@ -181,8 +198,8 @@ async function handleMapSearch(lat: number, lng: number, placeName?: string) {
 
   // Add approximate coordinates to results (scatter around the search point)
   const results = (data.data || []).map((r: any, i: number) => {
-    const angle = (i / 15) * 2 * Math.PI;
-    const radius = 0.01 + Math.random() * 0.02; // ~1-3km scatter
+    const angle = (i / 8) * 2 * Math.PI;
+    const radius = 0.01 + Math.random() * 0.02;
     return {
       ...r,
       lat: lat + radius * Math.sin(angle),
@@ -190,22 +207,7 @@ async function handleMapSearch(lat: number, lng: number, placeName?: string) {
     };
   });
 
-  // Also get official registry links
-  const registryResponse = await fetch("https://api.firecrawl.dev/v1/search", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      query: `${locationName} official sex offender registry search site:gov`,
-      limit: 3,
-      country: "us",
-      lang: "en",
-    }),
-  });
-
-  const registryData = await registryResponse.json();
+  console.log("Map search complete, results:", results.length);
 
   return new Response(
     JSON.stringify({
