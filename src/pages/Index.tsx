@@ -4,10 +4,6 @@ import Header from "@/components/Header";
 import FreeToolsBar from "@/components/FreeToolsBar";
 import StartHero from "@/components/StartHero";
 import HowItWorks from "@/components/HowItWorks";
-import WarningBanner from "@/components/WarningBanner";
-import LegalSections from "@/components/LegalSections";
-import TrustStats from "@/components/TrustStats";
-import SuccessStories from "@/components/SuccessStories";
 import StateSelector from "@/components/StateSelector";
 import { ChatSection } from "@/components/ChatSection";
 import { SEOHead } from "@/components/SEOHead";
@@ -25,10 +21,7 @@ const StatsBar = lazy(() => import("@/components/StatsBar"));
 const QuickLegalTools = lazy(() => import("@/components/QuickLegalTools"));
 const USCourtTriage = lazy(() => import("@/components/USCourtTriage"));
 const AIToolsShowcase = lazy(() => import("@/components/AIToolsShowcase"));
-const LegalChatbot = lazy(() => import("@/components/LegalChatbot"));
-const WhatWeDoSection = lazy(() => import("@/components/WhatWeDoSection"));
 const MeritScoreCalculator = lazy(() => import("@/components/MeritScoreCalculator"));
-const CompetitorComparison = lazy(() => import("@/components/CompetitorComparison"));
 
 const LoadingSection = () => (
   <div className="py-8 flex items-center justify-center min-h-[100px]">
@@ -161,7 +154,7 @@ const Index = () => {
           <ClosingCTA />
         </Suspense>
         
-        {/* === Below: existing sections preserved === */}
+        {/* === Below: key interactive tools preserved === */}
         
         <Suspense fallback={null}>
           <StatesBanner />
@@ -179,10 +172,6 @@ const Index = () => {
           <AIToolsShowcase />
         </Suspense>
         
-        <Suspense fallback={<LoadingSection />}>
-          <LegalChatbot />
-        </Suspense>
-        
         <section className="py-20 px-4 bg-gradient-to-b from-background to-muted/30">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12">
@@ -196,32 +185,6 @@ const Index = () => {
             </Suspense>
           </div>
         </section>
-        
-        <div className="container mx-auto px-4 py-8">
-          <WarningBanner language={language} />
-        </div>
-        
-        <div className="py-8">
-          <LegalSections language={language} onSectionSelect={handleSectionSelect} />
-        </div>
-        
-        <div className="py-8">
-          <TrustStats language={language} />
-        </div>
-        
-        <Suspense fallback={<LoadingSection />}>
-          <WhatWeDoSection />
-        </Suspense>
-        
-        <div className="py-8">
-          <SuccessStories language={language} />
-        </div>
-        
-        <Suspense fallback={<LoadingSection />}>
-          <div className="py-8">
-            <CompetitorComparison />
-          </div>
-        </Suspense>
         
         {showStateSelector && (
           <div id="state-selector">
