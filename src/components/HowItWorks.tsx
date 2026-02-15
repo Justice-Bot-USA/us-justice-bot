@@ -9,56 +9,56 @@ interface HowItWorksProps {
 const HowItWorks = ({ language }: HowItWorksProps) => {
   const text = {
     en: {
-      title: "How US Justice Bot Works",
-      subtitle: "Get legal help in 4 simple steps. No lawyer required.",
-      demo: "See a Live Demo",
+      title: "How It Works",
+      subtitle: "4 simple steps. No lawyer required.",
+      demo: "Try It Now",
       steps: [
         {
           icon: FileText,
-          title: "Describe Your Issue",
-          description: "Answer simple questions about your legal situation"
+          title: "Search (free)",
+          description: "Run a lookup or choose your state + issue"
         },
         {
           icon: Brain,
-          title: "AI Analysis",
-          description: "Our AI analyzes your case and determines the best legal pathway"
+          title: "Confirm (free)",
+          description: "See what forms and processes apply to your situation"
         },
         {
           icon: FileCheck,
-          title: "Get Your Forms",
-          description: "Receive customized legal forms pre-filled with your information"
+          title: "Prepare (paid)",
+          description: "We generate a clean filing packet + checklist"
         },
         {
           icon: Send,
-          title: "File & Proceed",
-          description: "Follow step-by-step instructions to file your case confidently"
+          title: "File (you)",
+          description: "You submit to the official court or agency"
         }
       ]
     },
     es: {
-      title: "Cómo Funciona US Justice Bot",
-      subtitle: "Obtenga ayuda legal en 4 simples pasos. Sin necesidad de abogado.",
-      demo: "Ver Demostración",
+      title: "Cómo Funciona",
+      subtitle: "4 simples pasos. Sin necesidad de abogado.",
+      demo: "Pruébalo Ahora",
       steps: [
         {
           icon: FileText,
-          title: "Describa Su Problema",
-          description: "Responda preguntas simples sobre su situación legal"
+          title: "Buscar (gratis)",
+          description: "Realice una búsqueda o elija su estado + problema"
         },
         {
           icon: Brain,
-          title: "Análisis de IA",
-          description: "Nuestra IA analiza su caso y determina la mejor vía legal"
+          title: "Confirmar (gratis)",
+          description: "Vea qué formularios y procesos aplican a su situación"
         },
         {
           icon: FileCheck,
-          title: "Obtenga Sus Formularios",
-          description: "Reciba formularios legales personalizados con su información"
+          title: "Preparar (pago)",
+          description: "Generamos un paquete de presentación limpio + lista de verificación"
         },
         {
           icon: Send,
-          title: "Presente y Continúe",
-          description: "Siga instrucciones paso a paso para presentar su caso con confianza"
+          title: "Presentar (usted)",
+          description: "Usted presenta ante la corte u oficina oficial"
         }
       ]
     }
@@ -105,7 +105,12 @@ const HowItWorks = ({ language }: HowItWorksProps) => {
           })}
         </div>
 
-        <div className="text-center mt-12">
+        {/* Disclaimer */}
+        <p className="text-center text-sm text-muted-foreground mt-8 max-w-2xl mx-auto">
+          We provide self-help tools and information. We are not a law firm and do not give legal advice.
+        </p>
+
+        <div className="text-center mt-8">
           <Button asChild variant="outline" size="lg" className="hover-scale">
             <Link to="/case-analysis">{text[language].demo}</Link>
           </Button>
