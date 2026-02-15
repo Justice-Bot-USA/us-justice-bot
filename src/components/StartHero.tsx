@@ -7,9 +7,10 @@ import veritasLogo from "@/assets/veritas-path-logo.png";
 
 interface StartHeroProps {
   language: 'en' | 'es';
+  onPrepareForm?: () => void;
 }
 
-const StartHero = ({ language }: StartHeroProps) => {
+const StartHero = ({ language, onPrepareForm }: StartHeroProps) => {
   const [isFlowOpen, setIsFlowOpen] = useState(false);
 
   const text = {
@@ -58,12 +59,15 @@ const StartHero = ({ language }: StartHeroProps) => {
   };
 
   const handleLearnMore = () => {
-    const howSection = document.getElementById('how-it-works');
-    if (howSection) {
-      howSection.scrollIntoView({ behavior: 'smooth' });
+    if (onPrepareForm) {
+      onPrepareForm();
     } else {
-      // Scroll down to next section
-      window.scrollBy({ top: window.innerHeight * 0.8, behavior: 'smooth' });
+      const howSection = document.getElementById('how-it-works');
+      if (howSection) {
+        howSection.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        window.scrollBy({ top: window.innerHeight * 0.8, behavior: 'smooth' });
+      }
     }
   };
 

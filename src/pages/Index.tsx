@@ -10,6 +10,7 @@ import { SEOHead } from "@/components/SEOHead";
 import Footer from "@/components/Footer";
 import EnhancedSEO from "@/components/EnhancedSEO";
 import LocalBusinessSchema from "@/components/LocalBusinessSchema";
+import PrepareFilingModal from "@/components/PrepareFilingModal";
 
 // Lazy load below-the-fold components
 const FeaturesSection = lazy(() => import("@/components/FeaturesSection"));
@@ -35,6 +36,7 @@ const Index = () => {
   const [selectedState, setSelectedState] = useState<string>('');
   const [selectedSection, setSelectedSection] = useState<string>('');
   const [showStateSelector, setShowStateSelector] = useState(false);
+  const [showPrepareModal, setShowPrepareModal] = useState(false);
 
   const handleGetStarted = () => {
     setShowStateSelector(true);
@@ -116,7 +118,7 @@ const Index = () => {
       
       <main id="main-content" className="space-y-0">
         {/* 1. Hero — Above the fold */}
-        <StartHero language={language} />
+        <StartHero language={language} onPrepareForm={() => setShowPrepareModal(true)} />
         
         {/* 2. Stats Bar — social proof */}
         <Suspense fallback={null}>
@@ -151,7 +153,7 @@ const Index = () => {
         
         {/* 7. Closing CTA */}
         <Suspense fallback={null}>
-          <ClosingCTA />
+          <ClosingCTA onPrepareForm={() => setShowPrepareModal(true)} />
         </Suspense>
         
         {/* === Below: key interactive tools preserved === */}
@@ -206,6 +208,12 @@ const Index = () => {
           />
         </div>
       </main>
+      
+      <PrepareFilingModal
+        open={showPrepareModal}
+        onOpenChange={setShowPrepareModal}
+        source="homepage_cta"
+      />
       
       <Footer />
     </div>

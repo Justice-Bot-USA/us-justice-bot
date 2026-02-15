@@ -2,7 +2,11 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-const ClosingCTA = () => {
+interface ClosingCTAProps {
+  onPrepareForm?: () => void;
+}
+
+const ClosingCTA = ({ onPrepareForm }: ClosingCTAProps) => {
   const navigate = useNavigate();
 
   return (
@@ -23,7 +27,7 @@ const ClosingCTA = () => {
           <Button
             size="lg"
             variant="outline"
-            onClick={() => navigate("/pricing")}
+            onClick={() => onPrepareForm ? onPrepareForm() : navigate("/pricing")}
             className="text-lg px-10 py-6 h-auto font-bold"
           >
             Prepare a Form — $9.99
