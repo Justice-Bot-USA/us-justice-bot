@@ -36,6 +36,7 @@ import ResetPassword from "./pages/ResetPassword";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import WarrantLookup from "./pages/WarrantLookup";
 import SexOffenderRegistry from "./pages/SexOffenderRegistry";
+import CourtRecordsLookup from "./pages/CourtRecordsLookup";
 
 const queryClient = new QueryClient();
 
@@ -77,6 +78,7 @@ export default function App() {
             <Route path="/demo-journey" element={<DemoJourney />} />
             <Route path="/warrant-lookup" element={<WarrantLookup />} />
             <Route path="/sex-offender-registry" element={<SexOffenderRegistry />} />
+            <Route path="/court-records" element={<CourtRecordsLookup />} />
             
             {/* State landing pages */}
             <Route path="/states/:stateCode" element={<StateLandingPage />} />

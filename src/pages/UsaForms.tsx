@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -100,6 +100,30 @@ export default function UsaForms() {
 
   const currentJurisdiction = jurisdictions?.find(j => j.code === selectedJurisdiction);
   const isLaunchState = LAUNCH_STATES.includes(selectedJurisdiction);
+
+  // Auto-sync: trigger sync on first load if no forms exist for the jurisdiction
+  const autoSyncDone = useRef<Set<string>>(new Set());
+  useEffect(() => {
+    if (
+      isLaunchState &&
+      forms !== undefined &&
+      forms.length === 0 &&
+      !autoSyncDone.current.has(selectedJurisdiction)
+    ) {
+      autoSyncDone.current.add(selectedJurisdiction);
+      (async () => {
+        try {
+          toast({ title: 'Auto-syncing forms', description: 'Fetching forms from official sources...' });
+          const { data, error } = await supabase.functions.invoke('sync-us-forms');
+          if (error) throw error;
+          toast({ title: 'Sync complete', description: data?.message || 'Forms updated.' });
+          refetchForms();
+        } catch (err) {
+          console.error('Auto-sync failed:', err);
+        }
+      })();
+    }
+  }, [forms, selectedJurisdiction, isLaunchState, refetchForms]);
 
   const handleSync = async () => {
     toast({ title: 'Sync started', description: 'Fetching forms from official sources...' });
