@@ -1,6 +1,6 @@
 import { states, stateAbbreviations } from './states';
 
-export type StateToolType = 'warrant-lookup' | 'court-forms';
+export type StateToolType = 'warrant-lookup' | 'court-forms' | 'arrest-records';
 
 interface StateToolMatch {
   stateName: string;
@@ -17,7 +17,13 @@ states.forEach(s => {
 const TOOL_SUFFIXES: Record<string, StateToolType> = {
   'warrant-lookup': 'warrant-lookup',
   'court-forms': 'court-forms',
+  'arrest-records': 'arrest-records',
 };
+
+// Tier 1 states — highest conversion ROI
+export const TIER1_STATES = ['Florida', 'Texas', 'California', 'New York', 'Arizona'];
+export const TIER2_STATES = ['Georgia', 'Ohio', 'Pennsylvania', 'Illinois', 'North Carolina'];
+export const TIER3_STATES = ['New Jersey', 'Washington', 'Colorado', 'Michigan', 'Virginia'];
 
 export function parseStateToolSlug(slug: string): StateToolMatch | null {
   for (const [suffix, toolType] of Object.entries(TOOL_SUFFIXES)) {
@@ -35,6 +41,46 @@ export function parseStateToolSlug(slug: string): StateToolMatch | null {
 export function getStateToolSeo(match: StateToolMatch) {
   const { stateName, stateCode, toolType } = match;
   const slug = stateName.toLowerCase().replace(/\s+/g, '-');
+
+  if (toolType === 'arrest-records') {
+    return {
+      title: `How to Request Arrest Records in ${stateName} | Veritas Path`,
+      description: `Request arrest reports, warrant returns, booking records, and court documents in ${stateName} (${stateCode}). Generate a properly worded public records request with correct statutory citations.`,
+      h1: `How to Request Arrest Records in ${stateName}`,
+      keywords: [
+        `${stateName} arrest records request`,
+        `${stateName} public records request`,
+        `${stateCode} FOIA request`,
+        `request arrest report ${stateName}`,
+        `${stateName} warrant return records`,
+        `${stateName} booking records`,
+      ],
+      canonical: `https://justicebot-usa.com/${slug}-arrest-records`,
+      toolPath: '/warrant-lookup',
+      faqItems: [
+        {
+          q: `What arrest-related records can I request in ${stateName}?`,
+          a: `Under ${stateName} public records law, you may be able to request arrest reports, warrant return records, booking/jail intake records, incident reports, court administrative records, and probable cause affidavits (if unsealed). Some records may be sealed or partially redacted.`,
+        },
+        {
+          q: `Who holds arrest records in ${stateName}?`,
+          a: `Arrest records in ${stateName} are typically maintained by local police departments, county sheriff's offices, county jails, and court clerks. Choosing the correct agency is important for a successful request.`,
+        },
+        {
+          q: `How do I request arrest records in ${stateName}?`,
+          a: `Submit a written public records request to the appropriate agency. Identify the correct agency, submit your request citing ${stateName}'s public records statute, wait for a response, and review or appeal if denied. Our tool generates a properly worded request letter for you.`,
+        },
+        {
+          q: `Does this check for active warrants in ${stateName}?`,
+          a: `No. This tool helps you request public records after the fact. It does not check for active warrants, access law enforcement databases, or determine warrant status. If you believe you have an active warrant, consult an attorney.`,
+        },
+        {
+          q: `How much does it cost to request arrest records in ${stateName}?`,
+          a: `Agencies may charge reasonable fees for copying and processing. Our tool generates the request letter for $9.99 (single PDF export) or $29.99 (bundle with follow-up and appeal template). Submitting the request to the agency is free.`,
+        },
+      ],
+    };
+  }
 
   if (toolType === 'warrant-lookup') {
     return {
@@ -102,10 +148,11 @@ export function getStateToolSeo(match: StateToolMatch) {
 export function getAllStateToolSlugs(): string[] {
   const slugs: string[] = [];
   for (const state of states) {
-    if (state === 'District of Columbia') continue; // skip DC for cleaner URLs
+    if (state === 'District of Columbia') continue;
     const slug = state.toLowerCase().replace(/\s+/g, '-');
     slugs.push(`${slug}-warrant-lookup`);
     slugs.push(`${slug}-court-forms`);
+    slugs.push(`${slug}-arrest-records`);
   }
   return slugs;
 }
