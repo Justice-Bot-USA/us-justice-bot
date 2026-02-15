@@ -14,27 +14,39 @@ const StartHero = ({ language }: StartHeroProps) => {
 
   const text = {
     en: {
-      slogan: "IGNORANCE IS NOT AN OPTION",
-      title: "Know Your Rights. Protect Yourself and Your Family.",
-      subtitle: "Veritas Path helps Americans understand their legal rights and navigate the justice system with confidence.",
-      cta: "GET STARTED FREE",
-      learnMore: "Learn More",
+      slogan: "SELF-HELP TOOLS · NOT LEGAL ADVICE",
+      title: "Find out what's going on — then prepare the right official filing.",
+      subtitle: "Free public-record lookups and step-by-step form preparation for your state. Clear instructions. No fluff. No legal advice.",
+      cta: "Start with a Free Lookup",
+      learnMore: "Prepare a Form — from $9.99",
+      trustChips: [
+        "Official sources only (state & court sites)",
+        "Works on mobile",
+        "Save your progress (paid)",
+        "Privacy-first (no selling your data)"
+      ],
       features: [
-        { icon: Scale, label: "Know Your Rights" },
-        { icon: FileText, label: "Find Legal Forms" },
-        { icon: Users, label: "Protect Your Family" }
+        { icon: Scale, label: "Official Sources" },
+        { icon: FileText, label: "State-Specific Forms" },
+        { icon: Users, label: "All 50 States" }
       ]
     },
     es: {
-      slogan: "LA IGNORANCIA NO ES UNA OPCIÓN",
-      title: "Conoce Tus Derechos. Protégete a Ti y a Tu Familia.",
-      subtitle: "Veritas Path ayuda a los americanos a entender sus derechos legales y navegar el sistema de justicia con confianza.",
-      cta: "COMENZAR GRATIS",
-      learnMore: "Más Información",
+      slogan: "HERRAMIENTAS DE AUTOAYUDA · NO ES ASESORÍA LEGAL",
+      title: "Descubre qué está pasando — luego prepara la presentación oficial correcta.",
+      subtitle: "Búsquedas gratuitas de registros públicos y preparación paso a paso de formularios para tu estado. Instrucciones claras. Sin relleno.",
+      cta: "Comenzar con Búsqueda Gratuita",
+      learnMore: "Preparar un Formulario — desde $9.99",
+      trustChips: [
+        "Solo fuentes oficiales (sitios estatales y judiciales)",
+        "Funciona en móvil",
+        "Guarda tu progreso (pago)",
+        "Privacidad primero (no vendemos tus datos)"
+      ],
       features: [
-        { icon: Scale, label: "Conoce Tus Derechos" },
-        { icon: FileText, label: "Encuentra Formularios" },
-        { icon: Users, label: "Protege a Tu Familia" }
+        { icon: Scale, label: "Fuentes Oficiales" },
+        { icon: FileText, label: "Formularios Estatales" },
+        { icon: Users, label: "Los 50 Estados" }
       ]
     }
   };
@@ -92,8 +104,17 @@ const StartHero = ({ language }: StartHeroProps) => {
               {t.subtitle}
             </p>
 
+            {/* Trust Chips */}
+            <div className="flex flex-wrap justify-center gap-3 mb-10">
+              {t.trustChips.map((chip, i) => (
+                <span key={i} className="bg-white/10 backdrop-blur border border-white/20 text-white/90 px-4 py-1.5 rounded-full text-xs md:text-sm">
+                  ✓ {chip}
+                </span>
+              ))}
+            </div>
+
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
               <Button 
                 size="lg" 
                 onClick={handleStart} 
@@ -111,6 +132,11 @@ const StartHero = ({ language }: StartHeroProps) => {
                 {t.learnMore}
               </Button>
             </div>
+
+            {/* Microcopy */}
+            <p className="text-white/60 text-sm mb-8">
+              Most people start free. Pay only when you're ready to export.
+            </p>
 
             {/* Feature Icons */}
             <div className="flex flex-wrap justify-center gap-8 md:gap-12">

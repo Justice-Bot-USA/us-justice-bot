@@ -8,26 +8,28 @@ const plans = [
     name: "Prepared Filing Pack",
     price: "$9.99",
     period: "one-time",
-    description: "Pay only for what you need",
+    description: "Best for first-timers",
+    buttonText: "Prepare a Form — $9.99",
     features: [
-      { text: "Official state-specific forms", included: true },
-      { text: "Plain-language guidance", included: true },
-      { text: "Autofill & download", included: true },
-      { text: "Unlimited forms", included: false },
-      { text: "Saved cases", included: false },
+      { text: "One filing packet export (PDF)", included: true },
+      { text: "Checklist + where to file", included: true },
+      { text: "One re-download window (7 days)", included: true },
+      { text: "Unlimited exports", included: false },
+      { text: "Saved cases & history", included: false },
     ],
   },
   {
     name: "Justice Tools Access",
     price: "$19.99",
     period: "/month",
-    description: "Unlimited access, cancel anytime",
+    description: "Best for repeat filers",
     popular: true,
+    buttonText: "Start Monthly Access",
     features: [
-      { text: "Unlimited form preparation", included: true },
-      { text: "Unlimited record lookups", included: true },
-      { text: "Saved cases & uploads", included: true },
-      { text: "Progress tracking", included: true },
+      { text: "Unlimited exports", included: true },
+      { text: "Save cases + history", included: true },
+      { text: "Re-downloads anytime", included: true },
+      { text: "Priority source updates", included: true },
       { text: "All 50 states", included: true },
     ],
   },
@@ -35,13 +37,14 @@ const plans = [
     name: "Case Preparation Bundle",
     price: "$49.99",
     period: "one-time",
-    description: "Complete multi-form package",
-    savings: "Best for complex cases",
+    description: "Best for complex cases",
+    savings: "High intent",
+    buttonText: "Build My Bundle",
     features: [
-      { text: "Multiple forms & evidence org", included: true },
+      { text: "Multiple forms + organized packet", included: true },
+      { text: "Evidence checklist", included: true },
+      { text: "Step-by-step timeline", included: true },
       { text: "Family court & small claims", included: true },
-      { text: "Protection orders", included: true },
-      { text: "Step-by-step filing", included: true },
       { text: "Immigration & employment", included: true },
     ],
   },
@@ -58,7 +61,7 @@ export const PricingComparison = () => {
             Prepare Your Official Filing — No Lawyer Required
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            90% cheaper than hiring a lawyer. Choose the plan that works for you.
+            Free tools stay free. You pay only for exports + saved workflows.
           </p>
         </div>
 
@@ -120,7 +123,7 @@ export const PricingComparison = () => {
                   variant={plan.popular ? "default" : "outline"}
                   onClick={() => navigate("/pricing")}
                 >
-                  {plan.popular ? "Subscribe Now" : "Get Started"}
+                  {plan.buttonText}
                 </Button>
               </CardContent>
             </Card>

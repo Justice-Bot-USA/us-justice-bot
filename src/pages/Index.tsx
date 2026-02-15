@@ -1,6 +1,7 @@
 import { useState, Suspense, lazy } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
+import FreeToolsBar from "@/components/FreeToolsBar";
 import StartHero from "@/components/StartHero";
 import HowItWorks from "@/components/HowItWorks";
 import WarningBanner from "@/components/WarningBanner";
@@ -14,21 +15,20 @@ import Footer from "@/components/Footer";
 import EnhancedSEO from "@/components/EnhancedSEO";
 import LocalBusinessSchema from "@/components/LocalBusinessSchema";
 
-// Lazy load below-the-fold components for better performance
-const MeritScoreCalculator = lazy(() => import("@/components/MeritScoreCalculator"));
+// Lazy load below-the-fold components
 const FeaturesSection = lazy(() => import("@/components/FeaturesSection"));
 const PricingComparison = lazy(() => import("@/components/PricingComparison"));
-const CompetitorComparison = lazy(() => import("@/components/CompetitorComparison"));
 const MoneyBackGuarantee = lazy(() => import("@/components/MoneyBackGuarantee"));
+const ClosingCTA = lazy(() => import("@/components/ClosingCTA"));
 const StatesBanner = lazy(() => import("@/components/StatesBanner"));
-
-// Canada-matching components
 const StatsBar = lazy(() => import("@/components/StatsBar"));
 const QuickLegalTools = lazy(() => import("@/components/QuickLegalTools"));
 const USCourtTriage = lazy(() => import("@/components/USCourtTriage"));
 const AIToolsShowcase = lazy(() => import("@/components/AIToolsShowcase"));
 const LegalChatbot = lazy(() => import("@/components/LegalChatbot"));
 const WhatWeDoSection = lazy(() => import("@/components/WhatWeDoSection"));
+const MeritScoreCalculator = lazy(() => import("@/components/MeritScoreCalculator"));
+const CompetitorComparison = lazy(() => import("@/components/CompetitorComparison"));
 
 const LoadingSection = () => (
   <div className="py-8 flex items-center justify-center min-h-[100px]">
@@ -70,7 +70,7 @@ const Index = () => {
     url: "https://justicebot-usa.com",
     offers: {
       "@type": "Offer",
-      price: "4.99",
+      price: "9.99",
       priceCurrency: "USD",
     },
   };
@@ -78,102 +78,111 @@ const Index = () => {
   const faqData = [
     {
       question: "Do I need to sign up to use this?",
-      answer: "No! You can start your free assessment immediately without creating an account. If you want to save your progress or access premium features, you can create an account later.",
+      answer: "No! Free lookups require no account. Sign up only when you want to save progress or export documents.",
     },
     {
       question: "Is this a lawyer?",
-      answer: "No, US Justice Bot is not a law firm and does not provide legal advice or representation. We provide legal information, form guidance, and AI-powered case analysis tools to help you understand your options.",
+      answer: "No. We provide self-help tools and information, not legal advice or representation.",
     },
     {
       question: "Is my information private?",
-      answer: "Yes! We use 256-bit SSL encryption (the same as banks) to protect your data. We never sell your information and comply with US privacy laws.",
+      answer: "Yes! We use 256-bit SSL encryption. We never sell your information and comply with US privacy laws.",
     },
     {
       question: "What does it cost?",
-      answer: "The initial assessment is 100% free. Individual forms are $4.99 each. Monthly subscription is $9.99/month for unlimited access. Annual subscription is $79/year (save over 30%).",
-    },
-    {
-      question: "How accurate is the legal guidance?",
-      answer: "Our AI is trained on current US federal and state laws, court procedures, and official forms. We update our database daily with new case law and regulatory changes. However, for complex cases, we always recommend consulting with a licensed attorney.",
+      answer: "Free tools are always free. Prepared Filing Pack is $9.99 one-time. Monthly access is $19.99/mo. Case Bundle is $49.99 one-time.",
     },
     {
       question: "How long does it take?",
-      answer: "Most users complete their initial assessment in under 90 seconds. Full case preparation typically takes 15-30 minutes depending on complexity.",
+      answer: "Free lookups take under 2 minutes. Full form preparation typically takes 15-30 minutes.",
     },
   ];
 
   return (
     <div className="min-h-screen bg-background">
       <SEOHead 
-        title="US Justice Bot - Your Legal Ally in America | Affordable AI Legal Assistance"
-        description="When people are expected to follow the law, ignorance should not be an option. AI-powered legal help for all 50 US states. Court forms from $4.99."
-        keywords="affordable legal assistance, legal advice, legal help, US law, legal guidance, court forms, small claims, housing court, EEOC, legal AI, attorney alternative, self-representation"
+        title="US Justice Bot - Free Lookups & Legal Form Preparation | From $9.99"
+        description="Free public-record lookups and step-by-step form preparation for your state. Official sources. No legal advice. Prepare your filing from $9.99."
+        keywords="legal forms, court forms, warrant lookup, sex offender registry, filing preparation, self-help legal tools, court filing"
         url="https://justicebot-usa.com"
       />
       <EnhancedSEO
-        title="US Justice Bot - Your Legal Ally in America | Court Forms $4.99"
-        description="When people are expected to follow the law, ignorance should not be an option. US Justice Bot helps you understand your legal situation and next steps in plain language. All 50 states."
-        keywords="legal help USA, court forms, legal forms, small claims court, family court forms, tenant rights, employment law, EEOC complaint, housing court, legal self-help, pro se, self-representation"
+        title="US Justice Bot - Free Lookups & Official Filing Preparation"
+        description="Free public-record lookups and step-by-step form preparation for all 50 states. Official sources only. Self-help tools, not legal advice."
+        keywords="legal help USA, court forms, warrant lookup, sex offender registry, filing preparation, pro se, self-representation"
         canonicalUrl="https://justicebot-usa.com/"
         structuredData={structuredData}
         faqData={faqData}
       />
       <LocalBusinessSchema />
       
+      {/* Free Tools Top Bar */}
+      <FreeToolsBar />
+      
       <Header language={language} onLanguageChange={setLanguage} />
       
       <main id="main-content" className="space-y-0">
-        {/* Above-the-fold Start Hero - Forces first decision */}
+        {/* 1. Hero — Above the fold */}
         <StartHero language={language} />
         
-        {/* Stats Bar - social proof after first action */}
+        {/* 2. Stats Bar — social proof */}
         <Suspense fallback={null}>
           <StatsBar />
         </Suspense>
         
-        {/* States Banner */}
-        <Suspense fallback={null}>
-          <StatesBanner />
-        </Suspense>
-        
-        {/* What We Do Section - matches Canada's "Clear About What We Do" */}
+        {/* 3. What You Can Do Today (Free vs Paid) */}
         <Suspense fallback={<LoadingSection />}>
-          <WhatWeDoSection />
+          <FeaturesSection />
         </Suspense>
         
-        {/* AI Tools Showcase - matches Canada */}
-        <Suspense fallback={<LoadingSection />}>
-          <AIToolsShowcase />
-        </Suspense>
-        
-        {/* Quick Legal Tools - matches Canada */}
-        <Suspense fallback={<LoadingSection />}>
-          <QuickLegalTools />
-        </Suspense>
-        
-        <div className="py-8">
+        {/* 4. How It Works (4 steps) */}
+        <div className="py-8" id="how-it-works">
           <HowItWorks language={language} />
         </div>
         
-        
-        {/* Pricing Comparison */}
+        {/* 5. Pricing */}
         <Suspense fallback={<LoadingSection />}>
           <div className="py-8">
             <PricingComparison />
           </div>
         </Suspense>
         
-        {/* US Court Triage - matches Canada tribunals */}
+        {/* 6. Trust + Boundaries + Money-Back */}
+        <section className="py-16 px-4 bg-background">
+          <div className="max-w-4xl mx-auto">
+            <Suspense fallback={null}>
+              <MoneyBackGuarantee />
+            </Suspense>
+          </div>
+        </section>
+        
+        {/* 7. Closing CTA */}
+        <Suspense fallback={null}>
+          <ClosingCTA />
+        </Suspense>
+        
+        {/* === Below: existing sections preserved === */}
+        
+        <Suspense fallback={null}>
+          <StatesBanner />
+        </Suspense>
+        
+        <Suspense fallback={<LoadingSection />}>
+          <QuickLegalTools />
+        </Suspense>
+        
         <Suspense fallback={<LoadingSection />}>
           <USCourtTriage />
         </Suspense>
         
-        {/* Legal Chatbot - Free AI Assistant */}
+        <Suspense fallback={<LoadingSection />}>
+          <AIToolsShowcase />
+        </Suspense>
+        
         <Suspense fallback={<LoadingSection />}>
           <LegalChatbot />
         </Suspense>
         
-        {/* Merit Score Calculator */}
         <section className="py-20 px-4 bg-gradient-to-b from-background to-muted/30">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12">
@@ -200,27 +209,14 @@ const Index = () => {
           <TrustStats language={language} />
         </div>
         
-        {/* Money-Back Guarantee */}
-        <section className="py-16 px-4 bg-background">
-          <div className="max-w-4xl mx-auto">
-            <Suspense fallback={null}>
-              <MoneyBackGuarantee />
-            </Suspense>
-          </div>
-        </section>
+        <Suspense fallback={<LoadingSection />}>
+          <WhatWeDoSection />
+        </Suspense>
         
         <div className="py-8">
           <SuccessStories language={language} />
         </div>
         
-        {/* Features Section */}
-        <Suspense fallback={<LoadingSection />}>
-          <div className="py-8">
-            <FeaturesSection />
-          </div>
-        </Suspense>
-        
-        {/* Competitor Comparison */}
         <Suspense fallback={<LoadingSection />}>
           <div className="py-8">
             <CompetitorComparison />
