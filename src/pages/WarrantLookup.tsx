@@ -14,6 +14,8 @@ import { US_STATES } from '@/lib/states';
 import { trackUSLookupStarted, trackUSLookupCompleted } from '@/hooks/useAnalytics';
 import LookupActionCTA from '@/components/LookupActionCTA';
 import PrepareFilingModal from '@/components/PrepareFilingModal';
+import FOIARecordsModule from '@/components/FOIARecordsModule';
+import FOIARequestGenerator from '@/components/FOIARequestGenerator';
 
 interface SearchResult {
   url?: string;
@@ -32,6 +34,7 @@ export default function WarrantLookup() {
   const [hasSearched, setHasSearched] = useState(false);
   const [disclaimer, setDisclaimer] = useState('');
   const [showPaywall, setShowPaywall] = useState(false);
+  const [showFOIA, setShowFOIA] = useState(false);
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -245,6 +248,14 @@ export default function WarrantLookup() {
           <p className="text-xs text-muted-foreground mt-6 text-center italic">{disclaimer}</p>
         )}
 
+        {/* FOIA Records Module after results */}
+        {hasSearched && !isLoading && (
+          <FOIARecordsModule
+            onGenerateClick={() => setShowFOIA(true)}
+            state={state}
+          />
+        )}
+
         {/* Action CTA after results */}
         {hasSearched && !isLoading && (
           <LookupActionCTA
@@ -252,6 +263,13 @@ export default function WarrantLookup() {
             state={state}
           />
         )}
+
+        <FOIARequestGenerator
+          open={showFOIA}
+          onOpenChange={setShowFOIA}
+          defaultState={state ? US_STATES.find(s => s.label === state)?.value || '' : ''}
+          defaultName={name}
+        />
 
         <PrepareFilingModal
           open={showPaywall}
