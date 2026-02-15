@@ -1,11 +1,11 @@
 import Stripe from "https://esm.sh/stripe@18.5.0";
 
 // USA Live Price IDs (source of truth for server-side checkout creation)
-// Single Form: $9.99 one-time, Monthly: $59.99/month, Yearly: $499.99/year
+// Single Form: $9.99 one-time, Monthly: $19.99/month, Bundle: $49.99 one-time
 export const PRICE_IDS = {
   per_form: "price_1SspQoPr9cYwQq3CUtFuCkxA",
-  monthly: "price_1SspbEPr9cYwQq3CLNwkxqCN",
-  annual: "price_1SsptaPr9cYwQq3CFcwxD0Ps",
+  monthly: "price_1T10c4Pr9cYwQq3CJqfwzpqo",
+  bundle: "price_1T10cbPr9cYwQq3CeyUUzrEM",
 } as const;
 
 export function getStripe(): Stripe {
