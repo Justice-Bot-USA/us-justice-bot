@@ -2,6 +2,7 @@
 export * from './cpsFormsData';
 export * from './workersRightsFormsData';
 export * from './humanRightsFormsData';
+export * from './immigrationFormsData';
 export * from './agencyComplaintsData';
 export * from './additionalStatesData';
 
@@ -9,6 +10,7 @@ export * from './additionalStatesData';
 import { getCPSForms } from './cpsFormsData';
 import { getWorkersRightsForms } from './workersRightsFormsData';
 import { getHumanRightsForms } from './humanRightsFormsData';
+import { getImmigrationForms } from './immigrationFormsData';
 import { getAllAgencyComplaintForms } from './agencyComplaintsData';
 import { getAdditionalStateData } from './additionalStatesData';
 import { stateFormsLibrary, type StateFormsData, type CourtForm } from '../formsLibraryData';
@@ -32,6 +34,7 @@ export function getExpandedStateFormsData(stateCode: string): ExpandedStateForms
         "cps": getCPSForms(stateCode),
         "workers-rights": getWorkersRightsForms(stateCode),
         "human-rights": getHumanRightsForms(stateCode),
+        "immigration": getImmigrationForms(stateCode),
         "agency-complaints": getAllAgencyComplaintForms(stateCode),
       }
     };
@@ -45,6 +48,7 @@ export function getExpandedStateFormsData(stateCode: string): ExpandedStateForms
       "cps": getCPSForms(stateCode),
       "workers-rights": getWorkersRightsForms(stateCode),
       "human-rights": getHumanRightsForms(stateCode),
+      "immigration": getImmigrationForms(stateCode),
       "agency-complaints": getAllAgencyComplaintForms(stateCode),
     }
   };
