@@ -7,7 +7,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { Globe, User, LogOut, Settings, Briefcase, Sparkles, FileText, TrendingUp, Menu, Gavel, BookOpen, FolderOpen, Scale, Shield, ShieldAlert } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useAdminAccess } from "@/hooks/useAdminAccess";
-import logoImage from "@/assets/justicebot-logo.png";
+import logoImage from "@/assets/veritas-path-logo.png";
 import ThemeToggle from "./ThemeToggle";
 
 interface HeaderProps {
