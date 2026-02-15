@@ -5,44 +5,44 @@ import { useNavigate } from "react-router-dom";
 
 const plans = [
   {
-    name: "Per Form",
-    price: "$4.99",
-    period: "per form",
+    name: "Prepared Filing Pack",
+    price: "$9.99",
+    period: "one-time",
     description: "Pay only for what you need",
     features: [
-      { text: "Single form access", included: true },
-      { text: "State-specific guidance", included: true },
-      { text: "Download & print", included: true },
-      { text: "AI case analysis", included: false },
+      { text: "Official state-specific forms", included: true },
+      { text: "Plain-language guidance", included: true },
+      { text: "Autofill & download", included: true },
       { text: "Unlimited forms", included: false },
+      { text: "Saved cases", included: false },
     ],
   },
   {
-    name: "Monthly",
-    price: "$9.99",
+    name: "Justice Tools Access",
+    price: "$19.99",
     period: "/month",
-    description: "Best for active cases",
+    description: "Unlimited access, cancel anytime",
     popular: true,
     features: [
-      { text: "Unlimited forms", included: true },
-      { text: "AI case analysis", included: true },
-      { text: "Legal journey wizard", included: true },
-      { text: "Priority support", included: true },
+      { text: "Unlimited form preparation", included: true },
+      { text: "Unlimited record lookups", included: true },
+      { text: "Saved cases & uploads", included: true },
+      { text: "Progress tracking", included: true },
       { text: "All 50 states", included: true },
     ],
   },
   {
-    name: "Annual",
-    price: "$79",
-    period: "/year",
-    description: "Save over 30%",
-    savings: "Save $40.88",
+    name: "Case Preparation Bundle",
+    price: "$49.99",
+    period: "one-time",
+    description: "Complete multi-form package",
+    savings: "Best for complex cases",
     features: [
-      { text: "Everything in Monthly", included: true },
-      { text: "12 months access", included: true },
-      { text: "Locked-in price", included: true },
-      { text: "Best value", included: true },
-      { text: "Cancel anytime", included: true },
+      { text: "Multiple forms & evidence org", included: true },
+      { text: "Family court & small claims", included: true },
+      { text: "Protection orders", included: true },
+      { text: "Step-by-step filing", included: true },
+      { text: "Immigration & employment", included: true },
     ],
   },
 ];
@@ -55,7 +55,7 @@ export const PricingComparison = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Simple, Transparent Pricing
+            Prepare Your Official Filing — No Lawyer Required
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             90% cheaper than hiring a lawyer. Choose the plan that works for you.
@@ -90,7 +90,7 @@ export const PricingComparison = () => {
                 <CardTitle className="text-xl">{plan.name}</CardTitle>
                 <div className="mt-2">
                   <span className="text-4xl font-bold">{plan.price}</span>
-                  <span className="text-muted-foreground">{plan.period}</span>
+                  <span className="text-muted-foreground"> {plan.period}</span>
                 </div>
                 <p className="text-sm text-muted-foreground mt-2">
                   {plan.description}
@@ -120,7 +120,7 @@ export const PricingComparison = () => {
                   variant={plan.popular ? "default" : "outline"}
                   onClick={() => navigate("/pricing")}
                 >
-                  Get Started
+                  {plan.popular ? "Subscribe Now" : "Get Started"}
                 </Button>
               </CardContent>
             </Card>

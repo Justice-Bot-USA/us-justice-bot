@@ -11,13 +11,10 @@ const stripe = getStripe();
 const stripePriceValidation = validateStripePricesOnce(stripe);
 
 async function getOrCreateCustomer(stripe: Stripe, email: string, userId: string): Promise<string> {
-  // Check if customer already exists
   const customers = await stripe.customers.list({ email, limit: 1 });
   if (customers.data.length > 0) {
     return customers.data[0].id;
   }
-  
-  // Create new customer
   const customer = await stripe.customers.create({
     email,
     metadata: { user_id: userId },
@@ -58,8 +55,8 @@ async function handleCreateSubscription(
   data: { planType: string; userId: string; email: string },
   origin: string
 ) {
-  const priceId = data.planType === "annual" ? PRICE_IDS.annual : PRICE_IDS.monthly;
-  const accessType = data.planType === "annual" ? "yearly" : "monthly";
+  // Only monthly subscription now
+  const priceId = PRICE_IDS.monthly;
   
   const session = await createCheckoutSession(stripe, {
     priceId,
@@ -69,10 +66,12 @@ async function handleCreateSubscription(
     successUrl: `${origin}/payment-success?subscription=success&session_id={CHECKOUT_SESSION_ID}`,
     cancelUrl: `${origin}/pricing?subscription=cancelled`,
     metadata: { 
-      access_type: accessType,
-      plan_type: data.planType,
+      access_type: "monthly",
+      plan_type: "monthly",
+      product_type: "subscription",
+      country: "US",
       source: "pricing_page",
-      app: "justicebot",
+      app: "veritas_path",
     },
   });
 
@@ -94,14 +93,43 @@ async function handleCreateOneTimePayment(
     cancelUrl: `${origin}/pricing?payment=cancelled`,
     metadata: {
       access_type: "single_form",
+      product_type: "single_form",
+      country: "US",
       form_type: data.formType || "general",
       case_id: data.caseId || "",
       source: "pricing_page",
-      app: "justicebot",
+      app: "veritas_path",
     },
   });
 
   console.log("One-time payment checkout session created:", session.id);
+  return successResponse({ url: session.url, sessionId: session.id });
+}
+
+async function handleCreateBundlePayment(
+  stripe: Stripe,
+  data: { userId: string; email: string; caseId?: string; bundleType?: string },
+  origin: string
+) {
+  const session = await createCheckoutSession(stripe, {
+    priceId: PRICE_IDS.bundle,
+    mode: "payment",
+    userId: data.userId,
+    email: data.email,
+    successUrl: `${origin}/payment-success?payment=success&session_id={CHECKOUT_SESSION_ID}`,
+    cancelUrl: `${origin}/pricing?payment=cancelled`,
+    metadata: {
+      access_type: "bundle",
+      product_type: "bundle",
+      country: "US",
+      case_id: data.caseId || "",
+      bundle_type: data.bundleType || "case_prep",
+      source: "pricing_page",
+      app: "veritas_path",
+    },
+  });
+
+  console.log("Bundle payment checkout session created:", session.id);
   return successResponse({ url: session.url, sessionId: session.id });
 }
 
@@ -116,23 +144,21 @@ async function handleVerifySession(
   }
 
   const supabase = createAdminClient();
+  const accessType = session.metadata?.access_type || "single_form";
   
   if (session.mode === "subscription") {
-    // Handle subscription
-    const planType = session.metadata?.plan_type || "monthly";
     const subscriptionId = session.subscription as string;
-    
     const subscription = await stripe.subscriptions.retrieve(subscriptionId);
     const endDate = new Date(subscription.current_period_end * 1000);
     
     const { error } = await supabase.from("subscriptions").insert({
       user_id: data.userId,
-      plan_type: planType,
+      plan_type: "monthly",
       status: "active",
-      amount: planType === "annual" ? 499.99 : 59.99,
+      amount: 19.99,
       start_date: new Date().toISOString(),
       end_date: endDate.toISOString(),
-      paypal_subscription_id: subscriptionId, // reusing column for stripe ID
+      paypal_subscription_id: subscriptionId,
     });
 
     if (error) {
@@ -140,18 +166,19 @@ async function handleVerifySession(
       throw new Error("Failed to save subscription");
     }
 
-    return successResponse({ success: true, type: "subscription", planType });
+    return successResponse({ success: true, type: "subscription", planType: "monthly" });
   } else {
-    // Handle one-time payment
+    // Handle one-time payment (single_form or bundle)
     const formType = session.metadata?.form_type || "general";
     const caseId = session.metadata?.case_id;
+    const amount = accessType === "bundle" ? 49.99 : 9.99;
     
     const { error } = await supabase.from("form_payments").insert({
       user_id: data.userId,
-      paypal_payment_id: session.payment_intent as string, // reusing column
-      amount: 9.99,
+      paypal_payment_id: session.payment_intent as string,
+      amount,
       status: "completed",
-      form_type: formType,
+      form_type: accessType === "bundle" ? "bundle" : formType,
     });
 
     if (error) {
@@ -161,7 +188,7 @@ async function handleVerifySession(
 
     return successResponse({ 
       success: true, 
-      type: "payment", 
+      type: accessType === "bundle" ? "bundle" : "payment", 
       formType,
       caseId: caseId || null,
     });
@@ -186,6 +213,8 @@ serve(async (req: Request) => {
         return await handleCreateSubscription(stripe, { ...data, userId, email }, origin);
       case "create_one_time_payment":
         return await handleCreateOneTimePayment(stripe, { ...data, userId, email }, origin);
+      case "create_bundle_payment":
+        return await handleCreateBundlePayment(stripe, { ...data, userId, email }, origin);
       case "verify_session":
         return await handleVerifySession(stripe, { ...data, userId });
       default:

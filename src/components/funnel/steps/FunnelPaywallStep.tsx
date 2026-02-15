@@ -66,7 +66,7 @@ export const FunnelPaywallStep: React.FC<FunnelPaywallStepProps> = ({
     const country = getDetectedCountry();
     
     // Track GA4 events
-    trackAddToCart('Case Assessment', config.jurisdiction, country, 4.99);
+    trackAddToCart('Case Assessment', config.jurisdiction, country, 9.99);
     trackBeginCheckout(4.99, country);
 
     try {
@@ -182,11 +182,12 @@ export const FunnelPaywallStep: React.FC<FunnelPaywallStepProps> = ({
       <Card className="border-primary bg-gradient-to-r from-primary/5 to-primary/10">
         <CardContent className="p-6 text-center">
           <div className="mb-4">
-            <span className="text-4xl font-bold">$4.99</span>
+            <span className="text-4xl font-bold">$9.99</span>
             <span className="text-muted-foreground ml-2">one-time</span>
           </div>
           <p className="text-sm text-muted-foreground mb-6">
-            Includes all forms, autofill, and filing instructions for this case
+            We'll help you prepare the correct official form and show you exactly how to file it.
+            No legal advice. No lawyer fees.
           </p>
           
           <Button 
@@ -203,7 +204,7 @@ export const FunnelPaywallStep: React.FC<FunnelPaywallStepProps> = ({
             ) : (
               <>
                 <Unlock className="mr-2 h-4 w-4" />
-                Unlock Now — $4.99
+                Prepare My Forms — $9.99
               </>
             )}
           </Button>
