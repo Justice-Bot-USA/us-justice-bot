@@ -37,6 +37,8 @@ import PaymentSuccess from "./pages/PaymentSuccess";
 import WarrantLookup from "./pages/WarrantLookup";
 import SexOffenderRegistry from "./pages/SexOffenderRegistry";
 import CourtRecordsLookup from "./pages/CourtRecordsLookup";
+import StartPage from "./pages/StartPage";
+import JusticeBotPage from "./pages/JusticeBotPage";
 
 const queryClient = new QueryClient();
 
@@ -79,6 +81,8 @@ export default function App() {
             <Route path="/warrant-lookup" element={<WarrantLookup />} />
             <Route path="/sex-offender-registry" element={<SexOffenderRegistry />} />
             <Route path="/court-records" element={<CourtRecordsLookup />} />
+            <Route path="/start" element={<StartPage />} />
+            <Route path="/justice-bot" element={<JusticeBotPage />} />
             
             {/* State landing pages */}
             <Route path="/states/:stateCode" element={<StateLandingPage />} />
