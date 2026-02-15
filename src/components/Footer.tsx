@@ -12,10 +12,10 @@ const Footer = () => {
           <div>
             <div className="flex items-center gap-2 mb-4">
               <Scale className="h-6 w-6" />
-              <span className="text-xl font-bold">US Justice Bot</span>
+              <span className="text-xl font-bold">Veritas Path</span>
             </div>
             <p className="text-sm opacity-80 mb-4">
-              Equal Justice Under Law. AI-powered legal assistance for all 50 states.
+              A Justice-Bot Technologies Platform. AI-powered legal assistance for all 50 states.
             </p>
             <p className="text-xs opacity-60">
               Not a law firm. We provide legal information and form guidance.
@@ -69,7 +69,7 @@ const Footer = () => {
         {/* Bottom */}
         <div className="border-t border-primary-foreground/20 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm opacity-60">
-            © {currentYear} US Justice Bot. All rights reserved.
+            © {currentYear} Veritas Path — A Justice-Bot Technologies Platform. All rights reserved.
           </p>
           <div className="flex gap-6 text-sm opacity-60">
             <Link to="/privacy" className="hover:opacity-100 transition-opacity">Privacy Policy</Link>

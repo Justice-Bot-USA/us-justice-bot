@@ -130,7 +130,7 @@ export default function UsaForms() {
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
-        title={`${currentJurisdiction?.name || 'US'} Court Forms - US Justice Bot`}
+        title={`${currentJurisdiction?.name || 'US'} Court Forms - Veritas Path`}
         description={`Access official court forms for ${currentJurisdiction?.name || 'the United States'}. Federal, state family law, immigration, workers rights, and more.`}
         keywords="US court forms, federal forms, immigration forms, fight ICE, workers rights forms, legal forms USA"
         url="https://justicebot-usa.com/usa-forms"
