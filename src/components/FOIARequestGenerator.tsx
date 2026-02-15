@@ -72,7 +72,9 @@ const FOIARequestGenerator: React.FC<FOIARequestGeneratorProps> = ({
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedLetter, setGeneratedLetter] = useState('');
   const [agencySuggestions, setAgencySuggestions] = useState<string[]>([]);
+  const [agencyDetails, setAgencyDetails] = useState<Array<{ title: string; address: string; email: string; phone: string }>>([]);
   const [isLoadingAgencies, setIsLoadingAgencies] = useState(false);
+  const [apiSource, setApiSource] = useState('');
 
   // Step: 'form' | 'preview'
   const [step, setStep] = useState<'form' | 'preview'>('form');
@@ -97,6 +99,8 @@ const FOIARequestGenerator: React.FC<FOIARequestGeneratorProps> = ({
       );
       if (!error && data?.agencies) {
         setAgencySuggestions(data.agencies);
+        setAgencyDetails(data.agencyDetails || []);
+        setApiSource(data.source || 'fallback');
       }
     } catch {
       // Non-critical, continue without suggestions
