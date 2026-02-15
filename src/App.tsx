@@ -23,6 +23,7 @@ import FormsLibrary from "./pages/FormsLibrary";
 import CriminalDefenseGuide from "./pages/CriminalDefenseGuide";
 import CaseLawSearch from "./pages/CaseLawSearch";
 import BookOfDocuments from "./pages/BookOfDocuments";
+import UsaForms from "./pages/UsaForms";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import LegalDisclaimer from "./pages/LegalDisclaimer";
@@ -61,6 +62,7 @@ export default function App() {
             <Route path="/personal-injury-calculator" element={<PersonalInjuryCalculator />} />
             <Route path="/legal-areas/:areaId" element={<LegalAreaPage />} />
             <Route path="/forms-library" element={<FormsLibrary />} />
+            <Route path="/usa-forms" element={<UsaForms />} />
             <Route path="/criminal-defense-guide" element={<CriminalDefenseGuide />} />
             <Route path="/case-law-search" element={<CaseLawSearch />} />
             <Route path="/book-of-documents" element={<BookOfDocuments />} />

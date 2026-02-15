@@ -70,3 +70,6 @@ verify_jwt = false
 verify_jwt = false
 enabled = true
 port = 54323
+
+[functions.sync-us-forms]
+verify_jwt = false
