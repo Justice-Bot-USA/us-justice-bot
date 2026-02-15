@@ -43,21 +43,19 @@ const Header = ({ language, onLanguageChange }: HeaderProps) => {
         Skip to main content
       </a>
 
-      <div className="container mx-auto px-4 py-6">
+      <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between gap-4">
-          <div className="flex min-w-0 items-center gap-3">
-            <div className="shrink-0">
-              <img src={logoImage} alt="Veritas Path logo" className="w-14 h-14 object-contain rounded-full bg-white p-1" />
+          <Link to="/" className="flex items-center gap-3 shrink-0">
+            <img src={logoImage} alt="Veritas Path logo" className="w-12 h-12 object-contain rounded-full bg-white p-1" />
+            <div className="hidden sm:block">
+              <h1 className="text-xl font-bold leading-tight">{text[language].title}</h1>
+              <p className="text-xs text-primary-foreground/80">{text[language].subtitle}</p>
             </div>
-            <div className="min-w-0">
-              <h1 className="text-2xl font-bold truncate">{text[language].title}</h1>
-              <p className="text-primary-foreground/80 truncate">{text[language].subtitle}</p>
-            </div>
-          </div>
+          </Link>
 
           {/* Desktop nav */}
           <div className="hidden lg:flex items-center gap-4">
-            <Badge variant="secondary" className="bg-secondary">
+            <Badge variant="secondary" className="bg-secondary shrink-0">
               🇺🇸 All 50 States
             </Badge>
 
