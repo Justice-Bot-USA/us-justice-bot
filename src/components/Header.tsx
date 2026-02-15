@@ -23,13 +23,13 @@ const Header = ({ language, onLanguageChange }: HeaderProps) => {
   const showSignedIn = !loading && user;
   const text = {
     en: {
-      title: "USA Justice Bot",
-      subtitle: "Equal Justice Under Law - Accessible Legal Guidance",
+      title: "Veritas Path",
+      subtitle: "A Justice-Bot Technologies Platform",
       languageLabel: "Language"
     },
     es: {
-      title: "Bot de Justicia de EE.UU.",
-      subtitle: "Justicia Igual Bajo la Ley - Orientación Legal Accesible",
+      title: "Veritas Path",
+      subtitle: "Una Plataforma de Justice-Bot Technologies",
       languageLabel: "Idioma"
     }
   };

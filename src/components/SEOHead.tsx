@@ -10,8 +10,8 @@ interface SEOHeadProps {
 }
 
 export const SEOHead: React.FC<SEOHeadProps> = ({
-  title = "USA Justice Bot - Fight ICE | Immigration Defense & Legal Help for All 50 States",
-  description = "Fight ICE. Know your rights. USA Justice Bot provides AI-powered immigration defense, asylum help, deportation defense, and affordable legal guidance for all 50 US states. Court forms from $4.99.",
+  title = "Veritas Path - Fight ICE | Immigration Defense & Legal Help for All 50 States",
+  description = "Fight ICE. Know your rights. Veritas Path provides AI-powered immigration defense, asylum help, deportation defense, and affordable legal guidance for all 50 US states. A Justice-Bot Technologies Platform.",
   keywords = "fight ICE, ICE defense, immigration lawyer alternative, deportation defense, asylum application, know your rights ICE, DACA renewal, U-visa, VAWA, sanctuary city, affordable legal assistance, human rights, workers compensation, workers rights, family law, small claims court, employment law, housing rights, civil rights, legal AI",
   image = "https://justicebot-usa.com/icon-512.png",
   url = "https://justicebot-usa.com",
