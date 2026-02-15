@@ -79,3 +79,6 @@ verify_jwt = false
 
 [functions.sex-offender-search]
 verify_jwt = false
+
+[functions.foia-request-generator]
+verify_jwt = false
