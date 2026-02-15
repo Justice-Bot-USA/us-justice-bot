@@ -24,12 +24,12 @@ const Header = ({ language, onLanguageChange }: HeaderProps) => {
   const text = {
     en: {
       title: "Veritas Path",
-      subtitle: "A Justice-Bot Technologies Platform",
+      subtitle: "Powered by Justice-Bot Technology",
       languageLabel: "Language"
     },
     es: {
       title: "Veritas Path",
-      subtitle: "Una Plataforma de Justice-Bot Technologies",
+      subtitle: "Impulsado por Justice-Bot Technology",
       languageLabel: "Idioma"
     }
   };
