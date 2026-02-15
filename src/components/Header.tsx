@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Globe, User, LogOut, Settings, Briefcase, Sparkles, FileText, TrendingUp, Menu, Gavel, BookOpen, FolderOpen, Scale, Shield, ShieldAlert } from "lucide-react";
+import { Globe, User, LogOut, Settings, Briefcase, Sparkles, FileText, TrendingUp, Menu, Gavel, BookOpen, FolderOpen, Scale, Shield, ShieldAlert, ScrollText } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useAdminAccess } from "@/hooks/useAdminAccess";
 import logoImage from "@/assets/veritas-path-logo.png";
@@ -120,6 +120,13 @@ const Header = ({ language, onLanguageChange }: HeaderProps) => {
               <Link to="/sex-offender-registry">
                 <ShieldAlert className="w-4 h-4 mr-1" aria-hidden="true" />
                 Registry
+              </Link>
+            </Button>
+
+            <Button asChild variant="ghost" size="sm" className="text-primary-foreground hover:bg-white/10">
+              <Link to="/court-records">
+                <ScrollText className="w-4 h-4 mr-1" aria-hidden="true" />
+                Court Records
               </Link>
             </Button>
 
@@ -245,6 +252,12 @@ const Header = ({ language, onLanguageChange }: HeaderProps) => {
                       <Link to="/sex-offender-registry">
                         <ShieldAlert className="w-4 h-4 mr-2" aria-hidden="true" />
                         Sex Offender Registry
+                      </Link>
+                    </Button>
+                    <Button asChild variant="secondary" className="w-full justify-start">
+                      <Link to="/court-records">
+                        <ScrollText className="w-4 h-4 mr-2" aria-hidden="true" />
+                        Court Records Lookup
                       </Link>
                     </Button>
                     <Button asChild variant="secondary" className="w-full justify-start">
