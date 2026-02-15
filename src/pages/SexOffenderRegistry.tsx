@@ -8,6 +8,9 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ArrowLeft, ExternalLink, ShieldAlert, AlertTriangle, Globe, MapIcon } from 'lucide-react';
 import SexOffenderMap from '@/components/SexOffenderMap';
+import { trackUSLookupStarted, trackUSLookupCompleted } from '@/hooks/useAnalytics';
+import LookupActionCTA from '@/components/LookupActionCTA';
+import PrepareFilingModal from '@/components/PrepareFilingModal';
 
 interface SearchResult {
   url?: string;
@@ -23,12 +26,17 @@ export default function SexOffenderRegistry() {
   const [registries, setRegistries] = useState<SearchResult[]>([]);
   const [disclaimer, setDisclaimer] = useState('');
   const [hasSearched, setHasSearched] = useState(false);
+  const [showPaywall, setShowPaywall] = useState(false);
 
   const handleResultsUpdate = (newResults: SearchResult[], newRegistries: SearchResult[], newDisclaimer: string) => {
+    if (!hasSearched) {
+      trackUSLookupStarted('sex_offender', '');
+    }
     setResults(newResults);
     setRegistries(newRegistries);
     setDisclaimer(newDisclaimer);
     setHasSearched(true);
+    trackUSLookupCompleted('sex_offender', '', newResults.length);
   };
 
   return (
@@ -182,6 +190,19 @@ export default function SexOffenderRegistry() {
         {disclaimer && hasSearched && (
           <p className="text-xs text-muted-foreground mt-6 text-center italic">{disclaimer}</p>
         )}
+
+        {/* Action CTA after results */}
+        {hasSearched && (
+          <LookupActionCTA
+            onPrepareClick={() => setShowPaywall(true)}
+          />
+        )}
+
+        <PrepareFilingModal
+          open={showPaywall}
+          onOpenChange={setShowPaywall}
+          source="sex_offender_lookup"
+        />
       </main>
     </div>
   );

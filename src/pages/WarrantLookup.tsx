@@ -11,6 +11,9 @@ import { ArrowLeft, Search, ExternalLink, Shield, AlertTriangle, Loader2, Scale 
 import { toast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { US_STATES } from '@/lib/states';
+import { trackUSLookupStarted, trackUSLookupCompleted } from '@/hooks/useAnalytics';
+import LookupActionCTA from '@/components/LookupActionCTA';
+import PrepareFilingModal from '@/components/PrepareFilingModal';
 
 interface SearchResult {
   url?: string;
@@ -28,6 +31,7 @@ export default function WarrantLookup() {
   const [portals, setPortals] = useState<SearchResult[]>([]);
   const [hasSearched, setHasSearched] = useState(false);
   const [disclaimer, setDisclaimer] = useState('');
+  const [showPaywall, setShowPaywall] = useState(false);
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,6 +42,7 @@ export default function WarrantLookup() {
 
     setIsLoading(true);
     setHasSearched(true);
+    trackUSLookupStarted('warrant', state);
     try {
       const { data, error } = await supabase.functions.invoke('warrant-lookup', {
         body: { name: name.trim(), state, county: county.trim() },
@@ -46,10 +51,12 @@ export default function WarrantLookup() {
       if (error) throw error;
       if (!data.success) throw new Error(data.error);
 
-      setResults(data.results || []);
+      const resultsList = data.results || [];
+      setResults(resultsList);
       setPortals(data.officialPortals || []);
       setDisclaimer(data.disclaimer || '');
-      toast({ title: 'Search complete', description: `Found ${(data.results || []).length} results.` });
+      trackUSLookupCompleted('warrant', state, resultsList.length);
+      toast({ title: 'Search complete', description: `Found ${resultsList.length} results.` });
     } catch (err) {
       toast({ title: 'Search failed', description: String(err), variant: 'destructive' });
     } finally {
@@ -237,6 +244,21 @@ export default function WarrantLookup() {
         {disclaimer && hasSearched && (
           <p className="text-xs text-muted-foreground mt-6 text-center italic">{disclaimer}</p>
         )}
+
+        {/* Action CTA after results */}
+        {hasSearched && !isLoading && (
+          <LookupActionCTA
+            onPrepareClick={() => setShowPaywall(true)}
+            state={state}
+          />
+        )}
+
+        <PrepareFilingModal
+          open={showPaywall}
+          onOpenChange={setShowPaywall}
+          defaultState={state ? US_STATES.find(s => s.label === state)?.value || '' : ''}
+          source="warrant_lookup"
+        />
       </main>
     </div>
   );

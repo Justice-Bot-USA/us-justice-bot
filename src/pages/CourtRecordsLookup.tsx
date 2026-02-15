@@ -14,6 +14,9 @@ import {
 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { US_STATES } from "@/lib/states";
+import { trackUSLookupStarted, trackUSLookupCompleted } from "@/hooks/useAnalytics";
+import LookupActionCTA from "@/components/LookupActionCTA";
+import PrepareFilingModal from "@/components/PrepareFilingModal";
 
 // State court portal directory - official public record websites
 const STATE_COURT_PORTALS: Record<string, { name: string; url: string; hasPublicSearch: boolean; notes: string }> = {
@@ -105,6 +108,7 @@ export default function CourtRecordsLookup() {
   const [disclaimer, setDisclaimer] = useState("");
   const [hasSearched, setHasSearched] = useState(false);
   const [portalFilter, setPortalFilter] = useState("");
+  const [showPaywall, setShowPaywall] = useState(false);
 
   const handleSearch = async () => {
     if (!docketNumber && !partyName) {
@@ -114,6 +118,7 @@ export default function CourtRecordsLookup() {
 
     setIsSearching(true);
     setHasSearched(true);
+    trackUSLookupStarted('court_records', searchState);
 
     try {
       const { data, error } = await supabase.functions.invoke("court-records-search", {
@@ -131,6 +136,7 @@ export default function CourtRecordsLookup() {
         setResults(data.results || []);
         setFederalResults(data.federalResults || []);
         setDisclaimer(data.disclaimer || "");
+        trackUSLookupCompleted('court_records', searchState, (data.results || []).length + (data.federalResults || []).length);
       } else {
         toast({ title: "Search failed", description: data?.error || "Unknown error", variant: "destructive" });
       }
@@ -511,6 +517,21 @@ export default function CourtRecordsLookup() {
             </div>
           </CardContent>
         </Card>
+
+        {/* Action CTA after search */}
+        {hasSearched && !isSearching && (
+          <LookupActionCTA
+            onPrepareClick={() => setShowPaywall(true)}
+            state={searchState}
+          />
+        )}
+
+        <PrepareFilingModal
+          open={showPaywall}
+          onOpenChange={setShowPaywall}
+          defaultState={searchState}
+          source="court_records_lookup"
+        />
       </main>
     </div>
   );
