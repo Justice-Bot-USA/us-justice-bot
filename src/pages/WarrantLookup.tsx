@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { ArrowLeft, Search, ExternalLink, Shield, AlertTriangle, Loader2, Scale } from 'lucide-react';
+import { ArrowLeft, Search, ExternalLink, Shield, AlertTriangle, Loader2 } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { US_STATES } from '@/lib/states';
@@ -95,16 +95,20 @@ export default function WarrantLookup() {
       </header>
 
       <main className="container mx-auto px-4 py-8 max-w-4xl">
+        {/* Top-level disclaimers */}
         <Alert className="mb-6 border-destructive/50 bg-destructive/10">
           <AlertTriangle className="h-4 w-4" />
-          <AlertTitle>Legal Disclaimer</AlertTitle>
-          <AlertDescription>
-            This is legal information, not legal advice. Results are sourced from public records.
-            Always verify with official court or law enforcement sources. If you have an active warrant,
-            consult an attorney immediately.
+          <AlertTitle>Important Disclaimer</AlertTitle>
+          <AlertDescription className="space-y-1">
+            <p>This is legal information, not legal advice. Results are sourced from public records.</p>
+            <p className="text-xs">• This tool does not provide legal advice.</p>
+            <p className="text-xs">• We do not access law enforcement databases.</p>
+            <p className="text-xs">• We do not determine whether an active warrant exists.</p>
+            <p className="text-xs">• If you have an active warrant, consult an attorney immediately.</p>
           </AlertDescription>
         </Alert>
 
+        {/* Search Form */}
         <Card className="mb-8">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -248,7 +252,7 @@ export default function WarrantLookup() {
           <p className="text-xs text-muted-foreground mt-6 text-center italic">{disclaimer}</p>
         )}
 
-        {/* FOIA Records Module after results */}
+        {/* "Request Official Records" module — appears after results */}
         {hasSearched && !isLoading && (
           <FOIARecordsModule
             onGenerateClick={() => setShowFOIA(true)}
@@ -264,6 +268,7 @@ export default function WarrantLookup() {
           />
         )}
 
+        {/* FOIA Request Generator Dialog */}
         <FOIARequestGenerator
           open={showFOIA}
           onOpenChange={setShowFOIA}
