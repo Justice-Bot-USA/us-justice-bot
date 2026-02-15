@@ -29,10 +29,13 @@ import { FunnelConfig, US_STATE_NAMES, LEGAL_AREA_NAMES } from '@/lib/funnels';
 import { useFormsPdfGenerator } from '@/hooks/useFormsPdfGenerator';
 import type { CourtForm } from '@/lib/forms';
 import { invokeAuthed } from '@/lib/supabaseInvoke';
+import jsPDF from 'jspdf';
+import { format } from 'date-fns';
 
 interface VerificationResult {
   success: boolean;
-  type: 'payment' | 'subscription';
+  type: 'payment' | 'subscription' | 'bundle';
+  accessType?: string;
   caseId?: string;
   forms?: string[];
   planType?: string;
@@ -46,6 +49,176 @@ interface GeneratedForm {
   url: string;
   category: string;
 }
+
+// --- FOIA PDF Generation ---
+
+function generateFoiaLetterPdf(letterText: string, isBundle: boolean): Blob {
+  const doc = new jsPDF();
+  const pageWidth = doc.internal.pageSize.width;
+  const pageHeight = doc.internal.pageSize.height;
+  const margin = 20;
+  const contentWidth = pageWidth - margin * 2;
+
+  // Header
+  doc.setFillColor(30, 64, 175);
+  doc.rect(0, 0, pageWidth, 45, 'F');
+  doc.setFontSize(18);
+  doc.setTextColor(255);
+  doc.setFont('helvetica', 'bold');
+  doc.text('PUBLIC RECORDS REQUEST', pageWidth / 2, 22, { align: 'center' });
+  doc.setFontSize(10);
+  doc.setFont('helvetica', 'normal');
+  doc.text(
+    isBundle ? 'Request + Follow-Up + Appeal Template' : 'Official Request Letter',
+    pageWidth / 2,
+    34,
+    { align: 'center' }
+  );
+
+  // Date
+  let yPos = 55;
+  doc.setFontSize(9);
+  doc.setTextColor(120);
+  doc.text(`Generated: ${format(new Date(), 'MMMM d, yyyy')}`, pageWidth - margin, yPos, { align: 'right' });
+  yPos += 10;
+
+  // Letter body
+  doc.setFontSize(10);
+  doc.setTextColor(30);
+  doc.setFont('helvetica', 'normal');
+
+  const lines = doc.splitTextToSize(letterText, contentWidth);
+  const lineHeight = 5;
+
+  for (let i = 0; i < lines.length; i++) {
+    if (yPos > pageHeight - 30) {
+      doc.addPage();
+      yPos = 25;
+    }
+    doc.text(lines[i], margin, yPos);
+    yPos += lineHeight;
+  }
+
+  // If bundle, add follow-up and appeal template pages
+  if (isBundle) {
+    // Follow-Up Template
+    doc.addPage();
+    yPos = 25;
+    doc.setFontSize(14);
+    doc.setTextColor(30, 64, 175);
+    doc.setFont('helvetica', 'bold');
+    doc.text('FOLLOW-UP LETTER TEMPLATE', margin, yPos);
+    yPos += 12;
+
+    doc.setFontSize(10);
+    doc.setTextColor(30);
+    doc.setFont('helvetica', 'normal');
+    const followUp = [
+      '[Your Name]',
+      '[Your Address]',
+      '',
+      '[Date]',
+      '',
+      '[Agency Name]',
+      '[Agency Address]',
+      '',
+      'RE: Follow-Up — Public Records Request Submitted [Original Date]',
+      '',
+      'Dear Records Custodian,',
+      '',
+      'I am writing to follow up on my public records request submitted on [original date].',
+      'As of today, I have not received the requested records nor a response indicating',
+      'the status of my request.',
+      '',
+      'Under applicable state law, agencies are required to respond within a reasonable',
+      'time frame. I respectfully request an update on the status of my request and an',
+      'estimated date for the production of the requested records.',
+      '',
+      'If any records are being withheld, please provide a written explanation citing',
+      'the specific statutory exemption(s) relied upon.',
+      '',
+      'Thank you for your prompt attention to this matter.',
+      '',
+      'Sincerely,',
+      '[Your Name]',
+    ];
+    const followUpText = followUp.join('\n');
+    const followUpLines = doc.splitTextToSize(followUpText, contentWidth);
+    for (const line of followUpLines) {
+      if (yPos > pageHeight - 25) { doc.addPage(); yPos = 25; }
+      doc.text(line, margin, yPos);
+      yPos += lineHeight;
+    }
+
+    // Appeal Template
+    doc.addPage();
+    yPos = 25;
+    doc.setFontSize(14);
+    doc.setTextColor(30, 64, 175);
+    doc.setFont('helvetica', 'bold');
+    doc.text('APPEAL LETTER TEMPLATE', margin, yPos);
+    yPos += 12;
+
+    doc.setFontSize(10);
+    doc.setTextColor(30);
+    doc.setFont('helvetica', 'normal');
+    const appeal = [
+      '[Your Name]',
+      '[Your Address]',
+      '',
+      '[Date]',
+      '',
+      '[Supervising Authority / Attorney General\'s Office]',
+      '[Address]',
+      '',
+      'RE: Appeal of Denied Public Records Request',
+      '',
+      'Dear [Authority],',
+      '',
+      'I am appealing the denial of my public records request originally submitted to',
+      '[Agency Name] on [original date]. The request was denied on [denial date] with',
+      'the following justification: [reason given].',
+      '',
+      'I believe this denial is improper for the following reasons:',
+      '',
+      '1. The records requested are public records under [State] law.',
+      '2. The cited exemption does not apply to the records I requested.',
+      '3. [Additional specific arguments based on your situation].',
+      '',
+      'I respectfully request that you review this denial and order the release of',
+      'the requested records. I am prepared to pursue all available legal remedies',
+      'if this appeal is not resolved satisfactorily.',
+      '',
+      'Sincerely,',
+      '[Your Name]',
+    ];
+    const appealText = appeal.join('\n');
+    const appealLines = doc.splitTextToSize(appealText, contentWidth);
+    for (const line of appealLines) {
+      if (yPos > pageHeight - 25) { doc.addPage(); yPos = 25; }
+      doc.text(line, margin, yPos);
+      yPos += lineHeight;
+    }
+  }
+
+  // Footer on all pages
+  const pageCount = doc.getNumberOfPages();
+  for (let i = 1; i <= pageCount; i++) {
+    doc.setPage(i);
+    doc.setFontSize(7);
+    doc.setTextColor(150);
+    doc.text(
+      `Generated by Veritas Path | Page ${i} of ${pageCount} | Not legal advice`,
+      pageWidth / 2,
+      pageHeight - 8,
+      { align: 'center' }
+    );
+  }
+
+  return doc.output('blob');
+}
+
+// --- Component ---
 
 const PaymentSuccess: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -63,8 +236,15 @@ const PaymentSuccess: React.FC = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [hasGenerated, setHasGenerated] = useState(false);
 
+  // FOIA-specific state
+  const [foiaLetter, setFoiaLetter] = useState<string | null>(null);
+  const [foiaDownloaded, setFoiaDownloaded] = useState(false);
+
   const sessionId = searchParams.get('session_id');
   const paymentType = searchParams.get('payment') || searchParams.get('subscription');
+
+  const isFoiaPurchase = verificationResult?.accessType === 'foia_single' || verificationResult?.accessType === 'foia_bundle';
+  const isFoiaBundle = verificationResult?.accessType === 'foia_bundle';
 
   useEffect(() => {
     const verifyPayment = async () => {
@@ -78,6 +258,7 @@ const PaymentSuccess: React.FC = () => {
         // Retrieve stored funnel context
         const storedCaseId = sessionStorage.getItem('pending_case_id');
         const storedConfig = sessionStorage.getItem('pending_funnel_config');
+        const storedFoiaLetter = sessionStorage.getItem('pending_foia_letter');
         
         if (storedConfig) {
           try {
@@ -85,6 +266,10 @@ const PaymentSuccess: React.FC = () => {
           } catch (e) {
             console.error('Failed to parse funnel config:', e);
           }
+        }
+
+        if (storedFoiaLetter) {
+          setFoiaLetter(storedFoiaLetter);
         }
 
         // Verify payment with Stripe
@@ -98,6 +283,7 @@ const PaymentSuccess: React.FC = () => {
           // Track GA4 purchase event
           const country = getDetectedCountry();
           const isSubscription = data.type === 'subscription';
+          const accessType = data.accessType || 'single_form';
           
           if (isSubscription) {
             const amount = data.planType === 'annual' ? 79.99 : 9.99;
@@ -107,6 +293,12 @@ const PaymentSuccess: React.FC = () => {
               country,
               amount
             );
+          } else if (accessType === 'foia_single') {
+            trackPurchase('FOIA Single Request', '', country, 9.99);
+            trackUSPurchaseSuccess('foia_single', 9.99);
+          } else if (accessType === 'foia_bundle') {
+            trackPurchase('FOIA Bundle', '', country, 29.99);
+            trackUSPurchaseSuccess('foia_bundle', 29.99);
           } else {
             trackPurchase('Case Assessment', funnelConfig?.jurisdiction || '', country, 9.99);
             trackUSPurchaseSuccess('filing_pack', 9.99);
@@ -114,7 +306,8 @@ const PaymentSuccess: React.FC = () => {
 
           setVerificationResult({
             success: true,
-            type: isSubscription ? 'subscription' : 'payment',
+            type: isSubscription ? 'subscription' : data.type || 'payment',
+            accessType,
             caseId: storedCaseId || data.caseId,
             forms: funnelConfig?.forms || [],
             planType: data.planType,
@@ -123,6 +316,7 @@ const PaymentSuccess: React.FC = () => {
           // Clear stored session data
           sessionStorage.removeItem('pending_case_id');
           sessionStorage.removeItem('pending_funnel_config');
+          // Keep pending_foia_letter until download
 
           toast.success(isSubscription ? 'Subscription Activated!' : 'Payment Successful!');
         } else {
@@ -139,14 +333,34 @@ const PaymentSuccess: React.FC = () => {
     verifyPayment();
   }, [sessionId, user]);
 
-  // Load available forms when funnel config is set
+  // Load available forms when funnel config is set (non-FOIA only)
   useEffect(() => {
-    if (funnelConfig) {
+    if (funnelConfig && !isFoiaPurchase) {
       const forms = getFormsList(funnelConfig.jurisdiction, funnelConfig.legalArea);
       setAvailableForms(forms);
     }
-  }, [funnelConfig, getFormsList]);
+  }, [funnelConfig, getFormsList, isFoiaPurchase]);
 
+  // --- FOIA Download Handler ---
+  const handleDownloadFoia = useCallback(() => {
+    if (!foiaLetter) {
+      toast.error('No FOIA letter found. Please contact support.');
+      return;
+    }
+
+    const blob = generateFoiaLetterPdf(foiaLetter, isFoiaBundle);
+    const filename = isFoiaBundle
+      ? `Public-Records-Request-Bundle-${format(new Date(), 'yyyy-MM-dd')}.pdf`
+      : `Public-Records-Request-${format(new Date(), 'yyyy-MM-dd')}.pdf`;
+
+    downloadPdf(blob, filename);
+    setFoiaDownloaded(true);
+    sessionStorage.removeItem('pending_foia_letter');
+    trackUSExportCompleted('pdf', isFoiaBundle ? 3 : 1);
+    toast.success('PDF downloaded!');
+  }, [foiaLetter, isFoiaBundle, downloadPdf]);
+
+  // --- Court Forms Handlers (existing) ---
   const handleGenerateForms = useCallback(async () => {
     if (!funnelConfig) {
       toast.error('No case configuration found');
@@ -249,7 +463,7 @@ const PaymentSuccess: React.FC = () => {
   return (
     <>
       <Helmet>
-        <title>Payment Successful | US Justice Bot</title>
+        <title>Payment Successful | Veritas Path</title>
         <meta name="description" content="Your payment was successful. Access your legal forms and filing instructions." />
       </Helmet>
 
@@ -268,192 +482,358 @@ const PaymentSuccess: React.FC = () => {
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               {verificationResult?.type === 'subscription' 
                 ? 'Your subscription is now active. You have unlimited access to all features.'
-                : 'Your case package is now unlocked. Download your forms and start filing today.'}
+                : isFoiaPurchase
+                  ? 'Your public records request is ready for download.'
+                  : 'Your case package is now unlocked. Download your forms and start filing today.'}
             </p>
           </div>
 
-          {/* Case Summary */}
-          {funnelConfig && (
-            <Card className="max-w-2xl mx-auto mb-8 border-green-200 dark:border-green-800">
-              <CardHeader className="pb-3">
-                <CardTitle className="flex items-center gap-2">
-                  <Sparkles className="h-5 w-5 text-primary" />
-                  Your Case Package
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center justify-between mb-4">
-                  <div>
-                    <p className="font-medium">{legalAreaName} Case</p>
-                    <p className="text-sm text-muted-foreground">{stateName}</p>
+          {/* FOIA Delivery Section */}
+          {isFoiaPurchase && (
+            <>
+              {/* FOIA Package Summary */}
+              <Card className="max-w-2xl mx-auto mb-8 border-green-200 dark:border-green-800">
+                <CardHeader className="pb-3">
+                  <CardTitle className="flex items-center gap-2">
+                    <FileText className="h-5 w-5 text-primary" />
+                    {isFoiaBundle ? 'Public Records Request Bundle' : 'Public Records Request Letter'}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center justify-between mb-4">
+                    <div>
+                      <p className="font-medium">
+                        {isFoiaBundle ? 'Request + Follow-Up + Appeal' : 'Single Request Letter (PDF)'}
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        {isFoiaBundle ? '$29.99 bundle' : '$9.99 single export'}
+                      </p>
+                    </div>
+                    <Badge variant="secondary" className="bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300">
+                      <CheckCircle2 className="h-3 w-3 mr-1" /> Paid
+                    </Badge>
                   </div>
-                  <Badge variant="secondary" className="bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300">
-                    Unlocked
-                  </Badge>
-                </div>
-              </CardContent>
-            </Card>
+
+                  {/* Contents list */}
+                  <div className="space-y-2 mb-6">
+                    <div className="flex items-center gap-3 p-2.5 bg-muted/50 rounded-lg">
+                      <div className="p-1.5 bg-green-100 dark:bg-green-900 rounded">
+                        <FileText className="h-3.5 w-3.5 text-green-600" />
+                      </div>
+                      <span className="text-sm font-medium">Public Records Request Letter</span>
+                      <CheckCircle2 className="h-4 w-4 text-green-500 ml-auto" />
+                    </div>
+                    {isFoiaBundle && (
+                      <>
+                        <div className="flex items-center gap-3 p-2.5 bg-muted/50 rounded-lg">
+                          <div className="p-1.5 bg-blue-100 dark:bg-blue-900 rounded">
+                            <FileText className="h-3.5 w-3.5 text-blue-600" />
+                          </div>
+                          <span className="text-sm font-medium">Follow-Up Letter Template</span>
+                          <CheckCircle2 className="h-4 w-4 text-green-500 ml-auto" />
+                        </div>
+                        <div className="flex items-center gap-3 p-2.5 bg-muted/50 rounded-lg">
+                          <div className="p-1.5 bg-amber-100 dark:bg-amber-900 rounded">
+                            <FileText className="h-3.5 w-3.5 text-amber-600" />
+                          </div>
+                          <span className="text-sm font-medium">Appeal Letter Template</span>
+                          <CheckCircle2 className="h-4 w-4 text-green-500 ml-auto" />
+                        </div>
+                      </>
+                    )}
+                  </div>
+
+                  {/* Download Button */}
+                  {foiaLetter ? (
+                    <Button
+                      size="lg"
+                      className="w-full"
+                      onClick={handleDownloadFoia}
+                      disabled={foiaDownloaded}
+                    >
+                      {foiaDownloaded ? (
+                        <>
+                          <CheckCircle2 className="mr-2 h-4 w-4" />
+                          Downloaded — Check your downloads folder
+                        </>
+                      ) : (
+                        <>
+                          <Download className="mr-2 h-4 w-4" />
+                          Download {isFoiaBundle ? 'Bundle' : 'Request Letter'} (PDF)
+                        </>
+                      )}
+                    </Button>
+                  ) : (
+                    <div className="text-center p-4 bg-muted/50 rounded-lg">
+                      <AlertTriangle className="h-5 w-5 mx-auto text-yellow-500 mb-2" />
+                      <p className="text-sm text-muted-foreground">
+                        Your letter couldn't be retrieved from this browser session. 
+                        Please <Button variant="link" className="h-auto p-0" onClick={() => navigate('/support')}>contact support</Button> with your payment confirmation for assistance.
+                      </p>
+                    </div>
+                  )}
+
+                  {foiaDownloaded && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="w-full mt-3"
+                      onClick={() => {
+                        setFoiaDownloaded(false);
+                        // Re-read from state (still available until navigated away)
+                      }}
+                    >
+                      Download Again
+                    </Button>
+                  )}
+                </CardContent>
+              </Card>
+
+              {/* FOIA What's Next */}
+              <Card className="max-w-2xl mx-auto mb-8">
+                <CardHeader className="pb-3">
+                  <CardTitle className="flex items-center gap-2">
+                    <Clock className="h-5 w-5 text-primary" />
+                    What's Next
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ol className="space-y-4">
+                    <li className="flex items-start gap-3">
+                      <span className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-sm font-semibold ${foiaDownloaded ? 'bg-green-500 text-white' : 'bg-primary text-primary-foreground'}`}>
+                        {foiaDownloaded ? <CheckCircle2 className="h-4 w-4" /> : '1'}
+                      </span>
+                      <div>
+                        <p className="font-medium">Download Your PDF</p>
+                        <p className="text-sm text-muted-foreground">
+                          {foiaDownloaded ? 'Done! Your PDF has been downloaded.' : 'Click the download button above.'}
+                        </p>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-semibold">
+                        2
+                      </span>
+                      <div>
+                        <p className="font-medium">Fill In Your Details</p>
+                        <p className="text-sm text-muted-foreground">
+                          Replace the placeholder fields ([Your Name], [Date], etc.) with your actual information.
+                        </p>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-semibold">
+                        3
+                      </span>
+                      <div>
+                        <p className="font-medium">Submit to the Agency</p>
+                        <p className="text-sm text-muted-foreground">
+                          Mail or email the completed request to the appropriate records custodian. Keep a copy for your records.
+                        </p>
+                      </div>
+                    </li>
+                    {isFoiaBundle && (
+                      <li className="flex items-start gap-3">
+                        <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-semibold">
+                          4
+                        </span>
+                        <div>
+                          <p className="font-medium">Follow Up If Needed</p>
+                          <p className="text-sm text-muted-foreground">
+                            Use the follow-up and appeal templates if the agency doesn't respond within the required time frame.
+                          </p>
+                        </div>
+                      </li>
+                    )}
+                  </ol>
+                </CardContent>
+              </Card>
+            </>
           )}
 
-          {/* Forms Ready to Download */}
-          <Card className="max-w-2xl mx-auto mb-8">
-            <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-2">
-                <FileText className="h-5 w-5 text-primary" />
-                {hasGenerated ? 'Your Generated Forms' : 'Forms Available for Your Case'}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {!hasGenerated ? (
-                <>
-                  {/* Show available forms before generation */}
-                  <div className="space-y-3 mb-6">
-                    {availableForms.slice(0, 6).map((form, idx) => (
-                      <div key={idx} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
-                        <div className="flex items-center gap-3">
-                          <div className="p-2 bg-blue-100 dark:bg-blue-900 rounded-lg">
-                            <FileText className="h-4 w-4 text-blue-600" />
-                          </div>
-                          <div>
-                            <span className="font-medium block">{form.formNumber}</span>
-                            <span className="text-sm text-muted-foreground">{form.name}</span>
-                          </div>
-                        </div>
-                        <Badge variant="outline" className="text-blue-600 border-blue-300">
-                          Available
-                        </Badge>
+          {/* ---- Non-FOIA: Court Forms Delivery (existing logic) ---- */}
+          {!isFoiaPurchase && (
+            <>
+              {/* Case Summary */}
+              {funnelConfig && (
+                <Card className="max-w-2xl mx-auto mb-8 border-green-200 dark:border-green-800">
+                  <CardHeader className="pb-3">
+                    <CardTitle className="flex items-center gap-2">
+                      <Sparkles className="h-5 w-5 text-primary" />
+                      Your Case Package
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex items-center justify-between mb-4">
+                      <div>
+                        <p className="font-medium">{legalAreaName} Case</p>
+                        <p className="text-sm text-muted-foreground">{stateName}</p>
                       </div>
-                    ))}
-                    {availableForms.length > 6 && (
-                      <p className="text-sm text-muted-foreground text-center">
-                        + {availableForms.length - 6} more forms available
-                      </p>
-                    )}
-                  </div>
+                      <Badge variant="secondary" className="bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300">
+                        Unlocked
+                      </Badge>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
 
-                  {/* Generate Button */}
-                  <Button 
-                    size="lg" 
-                    className="w-full"
-                    onClick={handleGenerateForms}
-                    disabled={isGenerating || !funnelConfig}
-                  >
-                    {isGenerating ? (
-                      <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Generating Forms...
-                      </>
-                    ) : (
-                      <>
-                        <Sparkles className="mr-2 h-4 w-4" />
-                        Generate Court Forms Package
-                      </>
-                    )}
-                  </Button>
-                </>
-              ) : (
-                <>
-                  {/* Show generated forms with download options */}
-                  <div className="space-y-3 mb-6">
-                    {generatedForms.map((form) => (
-                      <div key={form.id} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
-                        <div className="flex items-center gap-3">
-                          <div className="p-2 bg-green-100 dark:bg-green-900 rounded-lg">
-                            <FileText className="h-4 w-4 text-green-600" />
+              {/* Forms Ready to Download */}
+              <Card className="max-w-2xl mx-auto mb-8">
+                <CardHeader className="pb-3">
+                  <CardTitle className="flex items-center gap-2">
+                    <FileText className="h-5 w-5 text-primary" />
+                    {hasGenerated ? 'Your Generated Forms' : 'Forms Available for Your Case'}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {!hasGenerated ? (
+                    <>
+                      <div className="space-y-3 mb-6">
+                        {availableForms.slice(0, 6).map((form, idx) => (
+                          <div key={idx} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                            <div className="flex items-center gap-3">
+                              <div className="p-2 bg-blue-100 dark:bg-blue-900 rounded-lg">
+                                <FileText className="h-4 w-4 text-blue-600" />
+                              </div>
+                              <div>
+                                <span className="font-medium block">{form.formNumber}</span>
+                                <span className="text-sm text-muted-foreground">{form.name}</span>
+                              </div>
+                            </div>
+                            <Badge variant="outline" className="text-blue-600 border-blue-300">
+                              Available
+                            </Badge>
                           </div>
-                          <div>
-                            <span className="font-medium block">{form.formNumber}</span>
-                            <span className="text-sm text-muted-foreground line-clamp-1">{form.name}</span>
+                        ))}
+                        {availableForms.length > 6 && (
+                          <p className="text-sm text-muted-foreground text-center">
+                            + {availableForms.length - 6} more forms available
+                          </p>
+                        )}
+                      </div>
+
+                      <Button 
+                        size="lg" 
+                        className="w-full"
+                        onClick={handleGenerateForms}
+                        disabled={isGenerating || !funnelConfig}
+                      >
+                        {isGenerating ? (
+                          <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Generating Forms...
+                          </>
+                        ) : (
+                          <>
+                            <Sparkles className="mr-2 h-4 w-4" />
+                            Generate Court Forms Package
+                          </>
+                        )}
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <div className="space-y-3 mb-6">
+                        {generatedForms.map((form) => (
+                          <div key={form.id} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                            <div className="flex items-center gap-3">
+                              <div className="p-2 bg-green-100 dark:bg-green-900 rounded-lg">
+                                <FileText className="h-4 w-4 text-green-600" />
+                              </div>
+                              <div>
+                                <span className="font-medium block">{form.formNumber}</span>
+                                <span className="text-sm text-muted-foreground line-clamp-1">{form.name}</span>
+                              </div>
+                            </div>
+                            <Button 
+                              size="sm" 
+                              variant="outline"
+                              onClick={() => handleDownloadSingleForm(form)}
+                            >
+                              <Download className="h-3 w-3 mr-1" />
+                              PDF
+                            </Button>
                           </div>
-                        </div>
+                        ))}
+                      </div>
+
+                      <div className="flex flex-col sm:flex-row gap-4">
                         <Button 
-                          size="sm" 
-                          variant="outline"
-                          onClick={() => handleDownloadSingleForm(form)}
+                          size="lg" 
+                          className="flex-1"
+                          onClick={handleDownloadAllForms}
                         >
-                          <Download className="h-3 w-3 mr-1" />
-                          PDF
+                          <Package className="mr-2 h-4 w-4" />
+                          Download All Forms (Package)
+                        </Button>
+                        <Button 
+                          size="lg" 
+                          variant="outline"
+                          className="flex-1"
+                          onClick={() => navigate('/forms-library')}
+                        >
+                          <ExternalLink className="mr-2 h-4 w-4" />
+                          Browse Forms Library
                         </Button>
                       </div>
-                    ))}
-                  </div>
+                    </>
+                  )}
+                </CardContent>
+              </Card>
 
-                  {/* Download All Button */}
-                  <div className="flex flex-col sm:flex-row gap-4">
-                    <Button 
-                      size="lg" 
-                      className="flex-1"
-                      onClick={handleDownloadAllForms}
-                    >
-                      <Package className="mr-2 h-4 w-4" />
-                      Download All Forms (Package)
-                    </Button>
-                    <Button 
-                      size="lg" 
-                      variant="outline"
-                      className="flex-1"
-                      onClick={() => navigate('/forms-library')}
-                    >
-                      <ExternalLink className="mr-2 h-4 w-4" />
-                      Browse Forms Library
-                    </Button>
-                  </div>
-                </>
-              )}
-            </CardContent>
-          </Card>
+              {/* What's Next */}
+              <Card className="max-w-2xl mx-auto mb-8">
+                <CardHeader className="pb-3">
+                  <CardTitle className="flex items-center gap-2">
+                    <Clock className="h-5 w-5 text-primary" />
+                    What's Next
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ol className="space-y-4">
+                    <li className="flex items-start gap-3">
+                      <span className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-sm font-semibold ${hasGenerated ? 'bg-green-500 text-white' : 'bg-primary text-primary-foreground'}`}>
+                        {hasGenerated ? <CheckCircle2 className="h-4 w-4" /> : '1'}
+                      </span>
+                      <div>
+                        <p className="font-medium">Generate Your Forms</p>
+                        <p className="text-sm text-muted-foreground">
+                          {hasGenerated 
+                            ? 'Forms generated! Download them individually or as a package.'
+                            : 'Click the button above to generate your court forms.'}
+                        </p>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-semibold">
+                        2
+                      </span>
+                      <div>
+                        <p className="font-medium">Download Official Forms</p>
+                        <p className="text-sm text-muted-foreground">
+                          Use the links in each PDF to get the official court forms from your state.
+                        </p>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-semibold">
+                        3
+                      </span>
+                      <div>
+                        <p className="font-medium">Fill, Sign & File</p>
+                        <p className="text-sm text-muted-foreground">
+                          Complete the forms, make copies, and file at your local courthouse.
+                        </p>
+                      </div>
+                    </li>
+                  </ol>
+                </CardContent>
+              </Card>
+            </>
+          )}
 
-          {/* What's Next */}
-          <Card className="max-w-2xl mx-auto mb-8">
-            <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-2">
-                <Clock className="h-5 w-5 text-primary" />
-                What's Next
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ol className="space-y-4">
-                <li className="flex items-start gap-3">
-                  <span className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-sm font-semibold ${hasGenerated ? 'bg-green-500 text-white' : 'bg-primary text-primary-foreground'}`}>
-                    {hasGenerated ? <CheckCircle2 className="h-4 w-4" /> : '1'}
-                  </span>
-                  <div>
-                    <p className="font-medium">Generate Your Forms</p>
-                    <p className="text-sm text-muted-foreground">
-                      {hasGenerated 
-                        ? 'Forms generated! Download them individually or as a package.'
-                        : 'Click the button above to generate your court forms.'}
-                    </p>
-                  </div>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-semibold">
-                    2
-                  </span>
-                  <div>
-                    <p className="font-medium">Download Official Forms</p>
-                    <p className="text-sm text-muted-foreground">
-                      Use the links in each PDF to get the official court forms from your state.
-                    </p>
-                  </div>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-semibold">
-                    3
-                  </span>
-                  <div>
-                    <p className="font-medium">Fill, Sign & File</p>
-                    <p className="text-sm text-muted-foreground">
-                      Complete the forms, make copies, and file at your local courthouse.
-                    </p>
-                  </div>
-                </li>
-              </ol>
-            </CardContent>
-          </Card>
-
-          {/* Subscription Upsell — shown after export */}
-          {hasGenerated && verificationResult?.type === 'payment' && (
+          {/* Subscription Upsell — shown after export (both FOIA and court forms) */}
+          {(hasGenerated || foiaDownloaded) && verificationResult?.type !== 'subscription' && (
             <Card className="max-w-2xl mx-auto mb-8 border-primary/30 bg-gradient-to-r from-primary/5 to-primary/10">
               <CardContent className="p-6">
                 <div className="flex items-start gap-4">

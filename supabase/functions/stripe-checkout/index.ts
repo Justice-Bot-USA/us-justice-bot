@@ -196,7 +196,8 @@ async function handleVerifySession(
 
     return successResponse({ 
       success: true, 
-      type: accessType === "bundle" ? "bundle" : "payment", 
+      type: (accessType === "bundle" || accessType === "foia_bundle") ? "bundle" : "payment", 
+      accessType,
       formType,
       caseId: caseId || null,
     });
