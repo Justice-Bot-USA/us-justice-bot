@@ -1,5 +1,8 @@
 project_id = "jhgkshjqgagxfllgvhco"
 
+[storage]
+file_size_limit = "50MiB"
+
 [api]
 enabled = true
 port = 54321

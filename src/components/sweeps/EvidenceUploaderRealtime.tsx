@@ -145,7 +145,7 @@ export function EvidenceUploaderRealtime({
                 Drop files here or click to upload
               </p>
               <p className="text-xs text-muted-foreground">
-                New evidence will trigger automatic re-analysis
+                All file types up to 50MB — photos, PDFs, docs, scans, screenshots
               </p>
             </>
           )}
@@ -153,7 +153,7 @@ export function EvidenceUploaderRealtime({
             ref={fileInputRef}
             type="file"
             multiple
-            accept="*/*"
+            accept="image/*,application/pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.rtf,audio/*,video/*,application/zip,.heic,.heif,.webp,.tiff,.bmp"
             onChange={handleFileInput}
             className="hidden"
             disabled={isUploading}
