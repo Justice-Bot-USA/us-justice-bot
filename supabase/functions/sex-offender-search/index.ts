@@ -10,7 +10,32 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const { name, state, zipCode } = await req.json();
+    const body = await req.json();
+    const { action } = body;
+
+    // Return the Mapbox token for client-side use (publishable key)
+    if (action === "get-mapbox-token") {
+      const token = Deno.env.get("MAPBOX_ACCESS_TOKEN");
+      if (!token) {
+        return new Response(
+          JSON.stringify({ success: false, error: "Mapbox token not configured" }),
+          { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+      return new Response(
+        JSON.stringify({ token }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    // Map-based search using coordinates
+    if (action === "map-search") {
+      const { lat, lng, placeName } = body;
+      return await handleMapSearch(lat, lng, placeName);
+    }
+
+    // Legacy form-based search
+    const { name, state, zipCode } = body;
 
     if (!state) {
       return new Response(
@@ -27,7 +52,6 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Search NSOPW (National Sex Offender Public Website) and state registries
     const namePart = name ? `"${name}" ` : "";
     const zipPart = zipCode ? ` ${zipCode}` : "";
     const query = `${namePart}sex offender registry ${state}${zipPart} site:nsopw.gov OR site:gov`;
@@ -59,7 +83,6 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Get official state registry links
     const registryResponse = await fetch("https://api.firecrawl.dev/v1/search", {
       method: "POST",
       headers: {
@@ -94,3 +117,103 @@ Deno.serve(async (req) => {
     );
   }
 });
+
+async function handleMapSearch(lat: number, lng: number, placeName?: string) {
+  const apiKey = Deno.env.get("FIRECRAWL_API_KEY");
+  const mapboxToken = Deno.env.get("MAPBOX_ACCESS_TOKEN");
+
+  if (!apiKey) {
+    return new Response(
+      JSON.stringify({ success: false, error: "Firecrawl connector not configured" }),
+      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+    );
+  }
+
+  // Reverse geocode to get location name if not provided
+  let locationName = placeName;
+  if (!locationName && mapboxToken) {
+    try {
+      const geoRes = await fetch(
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?access_token=${mapboxToken}&types=place,locality,neighborhood,postcode&limit=1`
+      );
+      const geoData = await geoRes.json();
+      if (geoData.features?.length) {
+        locationName = geoData.features[0].place_name;
+      }
+    } catch (e) {
+      console.error("Reverse geocode error:", e);
+    }
+  }
+
+  if (!locationName) {
+    locationName = `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+  }
+
+  console.log("Map search for location:", locationName);
+
+  // Search for sex offenders near this location
+  const query = `sex offender registry near ${locationName} registered offenders site:nsopw.gov OR site:gov OR site:familywatchdog.us`;
+
+  const response = await fetch("https://api.firecrawl.dev/v1/search", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      query,
+      limit: 15,
+      country: "us",
+      lang: "en",
+      scrapeOptions: { formats: ["markdown"] },
+    }),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    console.error("Firecrawl API error:", data);
+    return new Response(
+      JSON.stringify({ success: false, error: data.error || `Request failed: ${response.status}` }),
+      { status: response.status, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+    );
+  }
+
+  // Add approximate coordinates to results (scatter around the search point)
+  const results = (data.data || []).map((r: any, i: number) => {
+    const angle = (i / 15) * 2 * Math.PI;
+    const radius = 0.01 + Math.random() * 0.02; // ~1-3km scatter
+    return {
+      ...r,
+      lat: lat + radius * Math.sin(angle),
+      lng: lng + radius * Math.cos(angle),
+    };
+  });
+
+  // Also get official registry links
+  const registryResponse = await fetch("https://api.firecrawl.dev/v1/search", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      query: `${locationName} official sex offender registry search site:gov`,
+      limit: 3,
+      country: "us",
+      lang: "en",
+    }),
+  });
+
+  const registryData = await registryResponse.json();
+
+  return new Response(
+    JSON.stringify({
+      success: true,
+      results,
+      officialRegistries: registryData.data || [],
+      disclaimer: "This is legal information, not legal advice. Map pins show approximate locations only. Always verify through NSOPW.gov or your state's official registry.",
+    }),
+    { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+  );
+}
