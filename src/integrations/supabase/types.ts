@@ -416,6 +416,137 @@ export type Database = {
         }
         Relationships: []
       }
+      form_sources: {
+        Row: {
+          category: string | null
+          country: string
+          created_at: string
+          id: string
+          is_active: boolean
+          jurisdiction_code: string
+          last_synced_at: string | null
+          source_name: string
+          source_type: string
+          source_url: string
+          sync_error: string | null
+          sync_status: string | null
+          updated_at: string
+        }
+        Insert: {
+          category?: string | null
+          country?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          jurisdiction_code: string
+          last_synced_at?: string | null
+          source_name: string
+          source_type?: string
+          source_url: string
+          sync_error?: string | null
+          sync_status?: string | null
+          updated_at?: string
+        }
+        Update: {
+          category?: string | null
+          country?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          jurisdiction_code?: string
+          last_synced_at?: string | null
+          source_name?: string
+          source_type?: string
+          source_url?: string
+          sync_error?: string | null
+          sync_status?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "form_sources_jurisdiction_code_fkey"
+            columns: ["jurisdiction_code"]
+            isOneToOne: false
+            referencedRelation: "jurisdictions"
+            referencedColumns: ["code"]
+          },
+        ]
+      }
+      forms: {
+        Row: {
+          category: string | null
+          country: string
+          created_at: string
+          description: string | null
+          fee_amount: string | null
+          fee_waiver_available: boolean | null
+          file_type: string | null
+          form_number: string | null
+          id: string
+          is_active: boolean
+          jurisdiction_code: string
+          last_verified_at: string | null
+          source_id: string | null
+          subcategory: string | null
+          title: string
+          updated_at: string
+          url: string | null
+        }
+        Insert: {
+          category?: string | null
+          country?: string
+          created_at?: string
+          description?: string | null
+          fee_amount?: string | null
+          fee_waiver_available?: boolean | null
+          file_type?: string | null
+          form_number?: string | null
+          id?: string
+          is_active?: boolean
+          jurisdiction_code: string
+          last_verified_at?: string | null
+          source_id?: string | null
+          subcategory?: string | null
+          title: string
+          updated_at?: string
+          url?: string | null
+        }
+        Update: {
+          category?: string | null
+          country?: string
+          created_at?: string
+          description?: string | null
+          fee_amount?: string | null
+          fee_waiver_available?: boolean | null
+          file_type?: string | null
+          form_number?: string | null
+          id?: string
+          is_active?: boolean
+          jurisdiction_code?: string
+          last_verified_at?: string | null
+          source_id?: string | null
+          subcategory?: string | null
+          title?: string
+          updated_at?: string
+          url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "forms_jurisdiction_code_fkey"
+            columns: ["jurisdiction_code"]
+            isOneToOne: false
+            referencedRelation: "jurisdictions"
+            referencedColumns: ["code"]
+          },
+          {
+            foreignKeyName: "forms_source_id_fkey"
+            columns: ["source_id"]
+            isOneToOne: false
+            referencedRelation: "form_sources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       funnel_analytics: {
         Row: {
           action: string
@@ -587,6 +718,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      jurisdictions: {
+        Row: {
+          code: string
+          country: string
+          created_at: string
+          id: string
+          is_active: boolean
+          name: string
+          short_code: string | null
+          updated_at: string
+        }
+        Insert: {
+          code: string
+          country?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name: string
+          short_code?: string | null
+          updated_at?: string
+        }
+        Update: {
+          code?: string
+          country?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name?: string
+          short_code?: string | null
+          updated_at?: string
+        }
+        Relationships: []
       }
       legal_journeys: {
         Row: {
