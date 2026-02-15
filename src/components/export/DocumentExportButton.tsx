@@ -24,7 +24,7 @@ import {
   downloadPDF 
 } from '@/lib/pdfGenerator';
 import { DocumentConsentModal } from '@/components/DocumentConsentModal';
-import { analytics } from '@/hooks/useAnalytics';
+import { analytics, trackUSExportCompleted } from '@/hooks/useAnalytics';
 import type { Case } from '@/hooks/useCases';
 
 interface DocumentExportButtonProps {
@@ -99,12 +99,14 @@ export function DocumentExportButton({
         }
       }
 
-      // 🔥 Track generate_document event ONLY after successful generation
+      // Track generate_document event ONLY after successful generation
       analytics.generateDocument(
         documentTypeLabel,
         caseData.legal_area || 'unknown',
         caseData.state || 'unknown'
       );
+      // Track US export completed for conversion funnel
+      trackUSExportCompleted('pdf', 1);
 
     } catch (error) {
       console.error('Export error:', error);
