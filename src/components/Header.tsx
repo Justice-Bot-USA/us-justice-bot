@@ -47,7 +47,7 @@ const Header = ({ language, onLanguageChange }: HeaderProps) => {
         <div className="flex items-center justify-between gap-4">
           <div className="flex min-w-0 items-center gap-3">
             <div className="shrink-0">
-              <img src={logoImage} alt="JusticeBot.com logo" className="w-14 h-14 object-contain" />
+              <img src={logoImage} alt="Veritas Path logo" className="w-14 h-14 object-contain rounded-full bg-white p-1" />
             </div>
             <div className="min-w-0">
               <h1 className="text-2xl font-bold truncate">{text[language].title}</h1>
