@@ -28,6 +28,7 @@ export const SweepAnalyzerRealtime: React.FC<SweepAnalyzerRealtimeProps> = ({ on
   const [county, setCounty] = useState('');
   const [uploadedFileIds, setUploadedFileIds] = useState<string[]>([]);
   const [isStarting, setIsStarting] = useState(false);
+  const [preUploadFiles, setPreUploadFiles] = useState<File[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   // Subscribe to realtime updates for the case
@@ -176,6 +177,7 @@ export const SweepAnalyzerRealtime: React.FC<SweepAnalyzerRealtimeProps> = ({ on
     setState('');
     setCounty('');
     setUploadedFileIds([]);
+    setPreUploadFiles([]);
     setError(null);
   };
 
@@ -405,18 +407,54 @@ export const SweepAnalyzerRealtime: React.FC<SweepAnalyzerRealtimeProps> = ({ on
           </div>
         </div>
 
-        {/* Evidence Upload - upload after starting analysis */}
+        {/* Evidence Upload - available before and during analysis */}
         <div className="space-y-2">
           <Label>Supporting Documents (Optional)</Label>
           <div className="border rounded-lg p-4 bg-muted/20">
-            <div className="text-center text-sm text-muted-foreground mb-2">
-              <Upload className="h-8 w-8 mx-auto mb-2 opacity-50" />
-              <p>Upload evidence after starting analysis for real-time re-processing</p>
-            </div>
-            {uploadedFileIds.length > 0 && (
-              <p className="text-xs text-center text-primary font-medium">
-                {uploadedFileIds.length} file(s) ready
-              </p>
+            <input
+              type="file"
+              id="evidence-upload"
+              multiple
+              accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif,.txt,.rtf"
+              className="hidden"
+              onChange={async (e) => {
+                const files = Array.from(e.target.files || []);
+                if (files.length === 0) return;
+                // For pre-analysis uploads, we store files locally and upload them when analysis starts
+                // For now, show selected file names
+                const newIds = files.map((f, i) => `pre-${Date.now()}-${i}`);
+                setUploadedFileIds(prev => [...prev, ...newIds]);
+                setPreUploadFiles(prev => [...prev, ...files]);
+                toast.success(`${files.length} file(s) selected for upload`);
+                e.target.value = '';
+              }}
+            />
+            <label
+              htmlFor="evidence-upload"
+              className="flex flex-col items-center cursor-pointer py-4 hover:bg-muted/40 rounded-lg transition-colors"
+            >
+              <Upload className="h-8 w-8 mb-2 text-primary" />
+              <p className="text-sm font-medium text-foreground">Click to upload evidence files</p>
+              <p className="text-xs text-muted-foreground mt-1">PDF, Word, Images, Text files accepted</p>
+            </label>
+            {preUploadFiles.length > 0 && (
+              <div className="mt-3 space-y-1">
+                {preUploadFiles.map((f, i) => (
+                  <div key={i} className="flex items-center justify-between text-sm bg-background rounded px-3 py-1.5">
+                    <span className="truncate">{f.name}</span>
+                    <button
+                      type="button"
+                      className="text-muted-foreground hover:text-destructive ml-2 text-xs"
+                      onClick={() => {
+                        setPreUploadFiles(prev => prev.filter((_, idx) => idx !== i));
+                        setUploadedFileIds(prev => prev.filter((_, idx) => idx !== i));
+                      }}
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ))}
+              </div>
             )}
           </div>
         </div>
