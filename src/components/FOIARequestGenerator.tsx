@@ -20,13 +20,16 @@ import {
 import {
   FileText,
   Loader2,
-  Unlock,
   Shield,
   Clock,
   Download,
   CheckCircle2,
   AlertTriangle,
   Copy,
+  Info,
+  MapPin,
+  Mail,
+  Phone,
 } from 'lucide-react';
 import { US_STATES } from '@/lib/states';
 import { useAuth } from '@/hooks/useAuth';
@@ -43,6 +46,13 @@ const RECORD_TYPES = [
   { value: 'booking_record', label: 'Booking / Jail Intake Record' },
   { value: 'court_admin_record', label: 'Court Administrative Record' },
 ];
+
+interface AgencyDetail {
+  title: string;
+  address: string;
+  email: string;
+  phone: string;
+}
 
 interface FOIARequestGeneratorProps {
   open: boolean;
@@ -72,16 +82,20 @@ const FOIARequestGenerator: React.FC<FOIARequestGeneratorProps> = ({
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedLetter, setGeneratedLetter] = useState('');
   const [agencySuggestions, setAgencySuggestions] = useState<string[]>([]);
-  const [agencyDetails, setAgencyDetails] = useState<Array<{ title: string; address: string; email: string; phone: string }>>([]);
+  const [agencyDetails, setAgencyDetails] = useState<AgencyDetail[]>([]);
   const [isLoadingAgencies, setIsLoadingAgencies] = useState(false);
   const [apiSource, setApiSource] = useState('');
 
   // Step: 'form' | 'preview'
   const [step, setStep] = useState<'form' | 'preview'>('form');
 
+  // Selected agency detail for display
+  const selectedAgencyDetail = agencyDetails.find((a) => a.title === agencyName);
+
   // Fetch agency suggestions when state changes
   const handleStateChange = async (stateValue: string) => {
     setSelectedState(stateValue);
+    setAgencyName('');
     if (!stateValue) return;
 
     setIsLoadingAgencies(true);
@@ -169,7 +183,6 @@ const FOIARequestGenerator: React.FC<FOIARequestGeneratorProps> = ({
       return;
     }
 
-    // Trigger Stripe checkout for PDF export
     try {
       const { data, error } = await invokeAuthed('stripe-checkout', {
         body: {
@@ -179,12 +192,36 @@ const FOIARequestGenerator: React.FC<FOIARequestGeneratorProps> = ({
       });
       if (error) throw error;
       if (data?.url) {
-        // Store letter for post-payment retrieval
         sessionStorage.setItem('pending_foia_letter', generatedLetter);
         window.location.href = data.url;
       }
     } catch (err) {
       console.error('Checkout error:', err);
+      toast.error('Failed to start checkout.');
+    }
+  };
+
+  const handleBundleCheckout = async () => {
+    if (!user) {
+      toast.error('Please sign in to purchase the bundle.');
+      navigate('/auth');
+      return;
+    }
+
+    try {
+      const { data, error } = await invokeAuthed('stripe-checkout', {
+        body: {
+          action: 'create_one_time_payment',
+          formType: 'foia_bundle',
+        },
+      });
+      if (error) throw error;
+      if (data?.url) {
+        sessionStorage.setItem('pending_foia_letter', generatedLetter);
+        window.location.href = data.url;
+      }
+    } catch (err) {
+      console.error('Bundle checkout error:', err);
       toast.error('Failed to start checkout.');
     }
   };
@@ -203,8 +240,7 @@ const FOIARequestGenerator: React.FC<FOIARequestGeneratorProps> = ({
           </DialogTitle>
           <DialogDescription>
             Generate a properly worded FOIA / public records request letter with
-            correct statutory citations. This is legal information, not legal
-            advice.
+            correct statutory citations and agency submission instructions.
           </DialogDescription>
         </DialogHeader>
 
@@ -229,15 +265,24 @@ const FOIARequestGenerator: React.FC<FOIARequestGeneratorProps> = ({
               </Select>
             </div>
 
-            {/* Agency */}
+            {/* Agency (populated via FOIA USA API) */}
             <div>
               <label className="text-sm font-medium mb-1.5 block">
-                Agency Name
+                Agency {apiSource === 'foia.gov' && (
+                  <Badge variant="outline" className="text-[9px] ml-1 align-middle">
+                    via FOIA.gov
+                  </Badge>
+                )}
               </label>
-              {agencySuggestions.length > 0 ? (
+              {isLoadingAgencies ? (
+                <div className="flex items-center gap-2 text-sm text-muted-foreground py-2">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Loading agencies from FOIA.gov...
+                </div>
+              ) : agencySuggestions.length > 0 ? (
                 <Select value={agencyName} onValueChange={setAgencyName}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select or type an agency" />
+                    <SelectValue placeholder="Select an agency" />
                   </SelectTrigger>
                   <SelectContent className="max-h-[200px]">
                     {agencySuggestions.map((a) => (
@@ -252,11 +297,7 @@ const FOIARequestGenerator: React.FC<FOIARequestGeneratorProps> = ({
                 </Select>
               ) : (
                 <Input
-                  placeholder={
-                    isLoadingAgencies
-                      ? 'Loading agencies...'
-                      : 'e.g. Franklin County Sheriff'
-                  }
+                  placeholder="e.g. Franklin County Sheriff"
                   value={agencyName}
                   onChange={(e) => setAgencyName(e.target.value)}
                 />
@@ -268,9 +309,34 @@ const FOIARequestGenerator: React.FC<FOIARequestGeneratorProps> = ({
                   onChange={(e) => setAgencyName(e.target.value)}
                 />
               )}
+
+              {/* Show agency contact details when selected */}
+              {selectedAgencyDetail && (
+                <div className="mt-2 p-3 rounded-md bg-muted/50 border text-xs space-y-1">
+                  <p className="font-medium text-sm">{selectedAgencyDetail.title}</p>
+                  {selectedAgencyDetail.address && (
+                    <p className="flex items-start gap-1.5 text-muted-foreground">
+                      <MapPin className="h-3 w-3 mt-0.5 shrink-0" />
+                      {selectedAgencyDetail.address}
+                    </p>
+                  )}
+                  {selectedAgencyDetail.email && (
+                    <p className="flex items-center gap-1.5 text-muted-foreground">
+                      <Mail className="h-3 w-3 shrink-0" />
+                      {selectedAgencyDetail.email}
+                    </p>
+                  )}
+                  {selectedAgencyDetail.phone && (
+                    <p className="flex items-center gap-1.5 text-muted-foreground">
+                      <Phone className="h-3 w-3 shrink-0" />
+                      {selectedAgencyDetail.phone}
+                    </p>
+                  )}
+                </div>
+              )}
             </div>
 
-            {/* Record type */}
+            {/* Record type (dropdown) */}
             <div>
               <label className="text-sm font-medium mb-1.5 block">
                 Record Type *
@@ -301,7 +367,7 @@ const FOIARequestGenerator: React.FC<FOIARequestGeneratorProps> = ({
               />
             </div>
 
-            {/* Case number / date row */}
+            {/* Approximate date and/or case number (optional) */}
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="text-sm font-medium mb-1.5 block">
@@ -358,10 +424,10 @@ const FOIARequestGenerator: React.FC<FOIARequestGeneratorProps> = ({
               )}
             </Button>
 
-            {/* Disclaimers */}
+            {/* Required Disclaimers — must be visible */}
             <div className="space-y-1 pt-2 border-t">
-              <p className="text-[11px] text-muted-foreground flex items-start gap-1">
-                <AlertTriangle className="h-3 w-3 mt-0.5 shrink-0" />
+              <p className="text-[11px] text-muted-foreground flex items-start gap-1 font-medium">
+                <AlertTriangle className="h-3 w-3 mt-0.5 shrink-0 text-destructive" />
                 This does not check for active warrants. It helps you request
                 public records.
               </p>
@@ -372,12 +438,15 @@ const FOIARequestGenerator: React.FC<FOIARequestGeneratorProps> = ({
                 • We do not access law enforcement databases.
               </p>
               <p className="text-[11px] text-muted-foreground">
+                • We do not determine whether an active warrant exists.
+              </p>
+              <p className="text-[11px] text-muted-foreground">
                 • Users submit requests themselves.
               </p>
             </div>
           </div>
         ) : (
-          /* Preview step */
+          /* Preview step — outputs: letter, citations, instructions, paid PDF */
           <div className="space-y-4 py-2">
             <div className="flex items-center gap-2">
               <Badge variant="outline" className="text-primary border-primary/30">
@@ -385,24 +454,63 @@ const FOIARequestGenerator: React.FC<FOIARequestGeneratorProps> = ({
                 Generated
               </Badge>
               <span className="text-sm text-muted-foreground">
-                Review your public records request letter below.
+                Your public records request letter is ready.
               </span>
             </div>
 
+            {/* Agency submission instructions */}
+            {selectedAgencyDetail && (
+              <div className="p-3 rounded-md bg-primary/5 border border-primary/20 text-xs space-y-1">
+                <p className="font-medium text-sm flex items-center gap-1.5">
+                  <Info className="h-3.5 w-3.5 text-primary" />
+                  Agency Submission Instructions
+                </p>
+                <p className="text-muted-foreground">
+                  Send your request to <strong>{selectedAgencyDetail.title}</strong>:
+                </p>
+                {selectedAgencyDetail.address && (
+                  <p className="flex items-start gap-1.5 text-muted-foreground">
+                    <MapPin className="h-3 w-3 mt-0.5 shrink-0" />
+                    Mail: {selectedAgencyDetail.address}
+                  </p>
+                )}
+                {selectedAgencyDetail.email && (
+                  <p className="flex items-center gap-1.5 text-muted-foreground">
+                    <Mail className="h-3 w-3 shrink-0" />
+                    Email: {selectedAgencyDetail.email}
+                  </p>
+                )}
+                {selectedAgencyDetail.phone && (
+                  <p className="flex items-center gap-1.5 text-muted-foreground">
+                    <Phone className="h-3 w-3 shrink-0" />
+                    Phone: {selectedAgencyDetail.phone}
+                  </p>
+                )}
+              </div>
+            )}
+
             {/* Letter preview */}
-            <div className="bg-muted/50 rounded-lg p-4 text-sm whitespace-pre-wrap max-h-[50vh] overflow-y-auto font-mono leading-relaxed border">
+            <div className="bg-muted/50 rounded-lg p-4 text-sm whitespace-pre-wrap max-h-[40vh] overflow-y-auto font-mono leading-relaxed border">
               {generatedLetter}
             </div>
 
-            {/* Actions */}
-            <div className="flex flex-col sm:flex-row gap-3">
-              <Button variant="outline" onClick={handleCopy} className="gap-2">
+            {/* Actions: Copy (free) + PDF export (paid) */}
+            <div className="flex flex-col gap-3">
+              <Button variant="outline" onClick={handleCopy} className="gap-2 w-full">
                 <Copy className="h-4 w-4" />
-                Copy to Clipboard
+                Copy to Clipboard (Free)
               </Button>
-              <Button onClick={handleExportPDF} className="gap-2">
+              <Button onClick={handleExportPDF} className="gap-2 w-full" size="lg">
                 <Download className="h-4 w-4" />
                 Export as PDF — $9.99
+              </Button>
+              <Button
+                variant="secondary"
+                onClick={handleBundleCheckout}
+                className="gap-2 w-full"
+              >
+                <Download className="h-4 w-4" />
+                Bundle: Request + Follow-Up + Appeal — $29.99
               </Button>
             </div>
 
@@ -427,10 +535,16 @@ const FOIARequestGenerator: React.FC<FOIARequestGeneratorProps> = ({
               </span>
             </div>
 
-            <p className="text-[11px] text-muted-foreground text-center">
-              This is legal information, not legal advice. You submit the
-              request yourself.
-            </p>
+            {/* Required disclaimers */}
+            <div className="border-t pt-2 space-y-1">
+              <p className="text-[11px] text-muted-foreground text-center font-medium">
+                This is legal information, not legal advice. You submit the
+                request yourself.
+              </p>
+              <p className="text-[11px] text-muted-foreground text-center">
+                We do not access law enforcement databases.
+              </p>
+            </div>
           </div>
         )}
       </DialogContent>
