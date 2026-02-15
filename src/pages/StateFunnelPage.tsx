@@ -8,20 +8,29 @@ import Footer from '@/components/Footer';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { AlertTriangle, ArrowLeft, Home } from 'lucide-react';
+import { parseStateToolSlug } from '@/lib/stateToolSeo';
+import StateToolLandingPage from '@/pages/StateToolLandingPage';
 
 const StateFunnelPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const [language, setLanguage] = React.useState<'en' | 'es'>('en');
   
+  // Check for state-tool landing pages (e.g. ohio-warrant-lookup, california-court-forms)
+  const stateToolMatch = slug ? parseStateToolSlug(slug) : null;
+
   // Get funnel config from route
   const route = `/${slug}`;
   const funnelConfig = getFunnelByRoute(route);
 
   useEffect(() => {
-    // Scroll to top on load
     window.scrollTo(0, 0);
   }, [slug]);
+
+  // Render state-tool landing page if matched
+  if (stateToolMatch) {
+    return <StateToolLandingPage />;
+  }
 
   // Handle funnel completion
   const handleComplete = (data: any) => {
