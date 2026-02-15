@@ -2,6 +2,7 @@ import { Check, X } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { trackUSPrepareClicked } from "@/hooks/useAnalytics";
 
 const plans = [
   {
@@ -121,7 +122,10 @@ export const PricingComparison = () => {
                 <Button
                   className="w-full"
                   variant={plan.popular ? "default" : "outline"}
-                  onClick={() => navigate("/pricing")}
+                  onClick={() => {
+                    trackUSPrepareClicked('pricing_comparison', '', plan.name);
+                    navigate("/pricing");
+                  }}
                 >
                   {plan.buttonText}
                 </Button>
