@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Info } from "lucide-react";
 import usFlagHero from "@/assets/us-flag-hero.png";
@@ -10,13 +11,10 @@ interface StartHeroProps {
 }
 
 const StartHero = ({ language, onPrepareForm }: StartHeroProps) => {
+  const navigate = useNavigate();
+
   const handleGetStarted = () => {
-    const pathways = document.getElementById('guidance-pathways');
-    if (pathways) {
-      pathways.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      window.scrollBy({ top: window.innerHeight * 0.8, behavior: 'smooth' });
-    }
+    navigate('/start');
   };
 
   const handleBoundaries = () => {
