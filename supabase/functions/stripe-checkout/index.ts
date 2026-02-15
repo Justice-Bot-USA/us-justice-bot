@@ -84,25 +84,29 @@ async function handleCreateOneTimePayment(
   data: { userId: string; email: string; formType?: string; caseId?: string },
   origin: string
 ) {
+  // Route FOIA requests to dedicated FOIA price
+  const isFoia = data.formType === "foia_records_request";
+  const priceId = isFoia ? PRICE_IDS.foia_single : PRICE_IDS.per_form;
+
   const session = await createCheckoutSession(stripe, {
-    priceId: PRICE_IDS.per_form,
+    priceId,
     mode: "payment",
     userId: data.userId,
     email: data.email,
     successUrl: `${origin}/payment-success?payment=success&session_id={CHECKOUT_SESSION_ID}`,
     cancelUrl: `${origin}/pricing?payment=cancelled`,
     metadata: {
-      access_type: "single_form",
-      product_type: "single_form",
+      access_type: isFoia ? "foia_single" : "single_form",
+      product_type: isFoia ? "foia_single" : "single_form",
       country: "US",
       form_type: data.formType || "general",
       case_id: data.caseId || "",
-      source: "pricing_page",
+      source: isFoia ? "foia_generator" : "pricing_page",
       app: "veritas_path",
     },
   });
 
-  console.log("One-time payment checkout session created:", session.id);
+  console.log("One-time payment checkout session created:", session.id, "foia:", isFoia);
   return successResponse({ url: session.url, sessionId: session.id });
 }
 
@@ -111,25 +115,29 @@ async function handleCreateBundlePayment(
   data: { userId: string; email: string; caseId?: string; bundleType?: string },
   origin: string
 ) {
+  // Route FOIA bundle to dedicated price
+  const isFoiaBundle = data.bundleType === "foia_bundle";
+  const priceId = isFoiaBundle ? PRICE_IDS.foia_bundle : PRICE_IDS.bundle;
+
   const session = await createCheckoutSession(stripe, {
-    priceId: PRICE_IDS.bundle,
+    priceId,
     mode: "payment",
     userId: data.userId,
     email: data.email,
     successUrl: `${origin}/payment-success?payment=success&session_id={CHECKOUT_SESSION_ID}`,
     cancelUrl: `${origin}/pricing?payment=cancelled`,
     metadata: {
-      access_type: "bundle",
-      product_type: "bundle",
+      access_type: isFoiaBundle ? "foia_bundle" : "bundle",
+      product_type: isFoiaBundle ? "foia_bundle" : "bundle",
       country: "US",
       case_id: data.caseId || "",
       bundle_type: data.bundleType || "case_prep",
-      source: "pricing_page",
+      source: isFoiaBundle ? "foia_generator" : "pricing_page",
       app: "veritas_path",
     },
   });
 
-  console.log("Bundle payment checkout session created:", session.id);
+  console.log("Bundle payment checkout session created:", session.id, "foia:", isFoiaBundle);
   return successResponse({ url: session.url, sessionId: session.id });
 }
 
@@ -171,14 +179,14 @@ async function handleVerifySession(
     // Handle one-time payment (single_form or bundle)
     const formType = session.metadata?.form_type || "general";
     const caseId = session.metadata?.case_id;
-    const amount = accessType === "bundle" ? 49.99 : 9.99;
+    const amount = accessType === "bundle" ? 49.99 : accessType === "foia_bundle" ? 29.99 : 9.99;
     
     const { error } = await supabase.from("form_payments").insert({
       user_id: data.userId,
       paypal_payment_id: session.payment_intent as string,
       amount,
       status: "completed",
-      form_type: accessType === "bundle" ? "bundle" : formType,
+      form_type: (accessType === "bundle" || accessType === "foia_bundle") ? accessType : formType,
     });
 
     if (error) {
