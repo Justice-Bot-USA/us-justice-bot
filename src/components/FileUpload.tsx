@@ -244,7 +244,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
           Drag and drop files here, or click to select
         </p>
         <p className="text-sm text-muted-foreground mb-4">
-          Supports: Images, PDFs, Documents, Audio, Video (Max 20MB per file)
+          Supports all file types: Photos, PDFs, Docs, Scans, Screenshots, Audio, Video — up to 50MB per file
         </p>
         <Button
           onClick={() => fileInputRef.current?.click()}
@@ -257,7 +257,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
           ref={fileInputRef}
           type="file"
           multiple
-          accept="*/*"
+          accept="image/*,application/pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.rtf,audio/*,video/*,application/zip,.heic,.heif,.webp,.tiff,.bmp"
           onChange={handleFileInput}
           className="hidden"
         />
