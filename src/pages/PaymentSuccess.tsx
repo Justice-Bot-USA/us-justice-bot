@@ -18,7 +18,7 @@ import {
   ExternalLink
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
-import { trackPurchase, getDetectedCountry } from '@/hooks/useAnalytics';
+import { trackPurchase, trackUSPurchaseSuccess, trackUSExportCompleted, getDetectedCountry } from '@/hooks/useAnalytics';
 import { toast } from 'sonner';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -105,7 +105,8 @@ const PaymentSuccess: React.FC = () => {
               amount
             );
           } else {
-            trackPurchase('Case Assessment', funnelConfig?.jurisdiction || '', country, 4.99);
+            trackPurchase('Case Assessment', funnelConfig?.jurisdiction || '', country, 9.99);
+            trackUSPurchaseSuccess('filing_pack', 9.99);
           }
 
           setVerificationResult({
@@ -171,6 +172,7 @@ const PaymentSuccess: React.FC = () => {
   const handleDownloadSingleForm = (form: GeneratedForm) => {
     const filename = `${form.formNumber.replace(/[^a-zA-Z0-9]/g, '-')}-${form.name.substring(0, 30).replace(/[^a-zA-Z0-9]/g, '-')}.pdf`;
     downloadPdf(form.blob, filename);
+    trackUSExportCompleted('pdf', 1);
     toast.success(`Downloaded ${form.formNumber}`);
   };
 
@@ -185,6 +187,7 @@ const PaymentSuccess: React.FC = () => {
 
     const filename = `Court-Forms-Package-${funnelConfig.jurisdiction}-${funnelConfig.legalArea}.pdf`;
     downloadPdf(blob, filename);
+    trackUSExportCompleted('pdf', generatedForms.length);
     toast.success('Downloaded complete forms package');
   };
 
