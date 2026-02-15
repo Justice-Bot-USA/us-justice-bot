@@ -34,6 +34,8 @@ import DemoJourney from "./pages/DemoJourney";
 import CaseJourney from "./pages/CaseJourney";
 import ResetPassword from "./pages/ResetPassword";
 import PaymentSuccess from "./pages/PaymentSuccess";
+import WarrantLookup from "./pages/WarrantLookup";
+import SexOffenderRegistry from "./pages/SexOffenderRegistry";
 
 const queryClient = new QueryClient();
 
@@ -73,6 +75,8 @@ export default function App() {
             <Route path="/disclaimer" element={<LegalDisclaimer />} />
             <Route path="/faq" element={<FAQ />} />
             <Route path="/demo-journey" element={<DemoJourney />} />
+            <Route path="/warrant-lookup" element={<WarrantLookup />} />
+            <Route path="/sex-offender-registry" element={<SexOffenderRegistry />} />
             
             {/* State landing pages */}
             <Route path="/states/:stateCode" element={<StateLandingPage />} />
