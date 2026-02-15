@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Scale, FileText, Users } from "lucide-react";
 import UnifiedEntryFlow from "./UnifiedEntryFlow";
 import usFlagHero from "@/assets/us-flag-hero.png";
+import veritasLogo from "@/assets/veritas-path-logo.png";
 
 interface StartHeroProps {
   language: 'en' | 'es';
@@ -59,8 +60,8 @@ const StartHero = ({ language }: StartHeroProps) => {
       <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
         {/* Background Image */}
         <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url(${usFlagHero})` }}
+          className="absolute inset-0 bg-cover bg-bottom bg-no-repeat"
+          style={{ backgroundImage: `url(${usFlagHero})`, backgroundPositionY: '60%' }}
         />
         
         {/* Dark Blue/Black Overlay */}
@@ -69,6 +70,11 @@ const StartHero = ({ language }: StartHeroProps) => {
         {/* Content */}
         <div className="relative z-10 container mx-auto px-4 py-20 text-center">
           <div className="max-w-4xl mx-auto">
+            {/* Veritas Path Logo */}
+            <div className="mb-6">
+              <img src={veritasLogo} alt="Veritas Path" className="w-24 h-24 md:w-32 md:h-32 mx-auto rounded-full bg-white p-2 shadow-2xl" />
+            </div>
+
             {/* Slogan Badge */}
             <div className="inline-block mb-6">
               <span className="bg-primary/90 text-primary-foreground px-6 py-2 rounded-full text-sm md:text-base font-bold tracking-wider uppercase">
