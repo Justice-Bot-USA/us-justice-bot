@@ -206,6 +206,125 @@ export const trackPurchase = (
 };
 
 // ===============================
+// USA-SPECIFIC CONVERSION EVENTS
+// ===============================
+
+// us_lookup_started — user begins a free lookup (warrant, sex offender, court form)
+export const trackUSLookupStarted = (lookupType: string, state: string = '') => {
+  if (typeof window !== 'undefined' && window.gtag) {
+    window.gtag('event', 'us_lookup_started', {
+      lookup_type: lookupType,
+      state,
+      country: 'US',
+    });
+    console.log('[GA4] us_lookup_started:', { lookupType, state });
+  }
+};
+
+// us_lookup_completed — free lookup returns results
+export const trackUSLookupCompleted = (lookupType: string, state: string = '', resultCount: number = 0) => {
+  if (typeof window !== 'undefined' && window.gtag) {
+    window.gtag('event', 'us_lookup_completed', {
+      lookup_type: lookupType,
+      state,
+      result_count: resultCount,
+      country: 'US',
+    });
+    console.log('[GA4] us_lookup_completed:', { lookupType, state, resultCount });
+  }
+};
+
+// us_prepare_clicked — user clicks "Prepare a Filing Packet" CTA
+export const trackUSPrepareClicked = (source: string = '', state: string = '', legalArea: string = '') => {
+  if (typeof window !== 'undefined' && window.gtag) {
+    window.gtag('event', 'us_prepare_clicked', {
+      source,
+      state,
+      legal_area: legalArea,
+      country: 'US',
+    });
+    console.log('[GA4] us_prepare_clicked:', { source, state, legalArea });
+  }
+};
+
+// us_checkout_started — user hits checkout / paywall
+export const trackUSCheckoutStarted = (product: string = 'filing_pack', value: number = 9.99) => {
+  if (typeof window !== 'undefined' && window.gtag) {
+    window.gtag('event', 'us_checkout_started', {
+      product,
+      value,
+      currency: 'USD',
+      country: 'US',
+    });
+    console.log('[GA4] us_checkout_started:', { product, value });
+  }
+};
+
+// us_purchase_success — payment confirmed
+export const trackUSPurchaseSuccess = (product: string = 'filing_pack', value: number = 9.99) => {
+  if (typeof window !== 'undefined' && window.gtag) {
+    const transactionId = crypto.randomUUID();
+    window.gtag('event', 'us_purchase_success', {
+      transaction_id: transactionId,
+      product,
+      value,
+      currency: 'USD',
+      country: 'US',
+    });
+    console.log('[GA4] us_purchase_success:', { transactionId, product, value });
+  }
+};
+
+// us_prep_started — user begins form preparation wizard
+export const trackUSPrepStarted = (legalArea: string = '', state: string = '') => {
+  if (typeof window !== 'undefined' && window.gtag) {
+    window.gtag('event', 'us_prep_started', {
+      legal_area: legalArea,
+      state,
+      country: 'US',
+    });
+    console.log('[GA4] us_prep_started:', { legalArea, state });
+  }
+};
+
+// us_export_completed — user downloads/exports filing packet PDF
+export const trackUSExportCompleted = (exportType: string = 'pdf', formCount: number = 1) => {
+  if (typeof window !== 'undefined' && window.gtag) {
+    window.gtag('event', 'us_export_completed', {
+      export_type: exportType,
+      form_count: formCount,
+      country: 'US',
+    });
+    console.log('[GA4] us_export_completed:', { exportType, formCount });
+  }
+};
+
+// us_subscribe_clicked — user clicks subscription CTA
+export const trackUSSubscribeClicked = (plan: string = 'monthly', source: string = '') => {
+  if (typeof window !== 'undefined' && window.gtag) {
+    window.gtag('event', 'us_subscribe_clicked', {
+      plan,
+      source,
+      country: 'US',
+    });
+    console.log('[GA4] us_subscribe_clicked:', { plan, source });
+  }
+};
+
+// us_subscribe_success — subscription confirmed
+export const trackUSSubscribeSuccess = (plan: string = 'monthly', value: number = 19.99) => {
+  if (typeof window !== 'undefined' && window.gtag) {
+    window.gtag('event', 'us_subscribe_success', {
+      plan,
+      value,
+      currency: 'USD',
+      country: 'US',
+    });
+    console.log('[GA4] us_subscribe_success:', { plan, value });
+  }
+};
+
+// ===============================
 // FUNNEL STAGES (for reporting)
 // first_visit → triage_started → triage_completed → signup_completed → generate_document
 // ===============================
@@ -398,6 +517,17 @@ export const analytics = {
       label: area,
     });
   },
+
+  // USA conversion funnel
+  usLookupStarted: (lookupType: string, state?: string) => trackUSLookupStarted(lookupType, state),
+  usLookupCompleted: (lookupType: string, state?: string, resultCount?: number) => trackUSLookupCompleted(lookupType, state, resultCount),
+  usPrepareClicked: (source?: string, state?: string, legalArea?: string) => trackUSPrepareClicked(source, state, legalArea),
+  usCheckoutStarted: (product?: string, value?: number) => trackUSCheckoutStarted(product, value),
+  usPurchaseSuccess: (product?: string, value?: number) => trackUSPurchaseSuccess(product, value),
+  usPrepStarted: (legalArea?: string, state?: string) => trackUSPrepStarted(legalArea, state),
+  usExportCompleted: (exportType?: string, formCount?: number) => trackUSExportCompleted(exportType, formCount),
+  usSubscribeClicked: (plan?: string, source?: string) => trackUSSubscribeClicked(plan, source),
+  usSubscribeSuccess: (plan?: string, value?: number) => trackUSSubscribeSuccess(plan, value),
 };
 
 export const useAnalytics = () => {
