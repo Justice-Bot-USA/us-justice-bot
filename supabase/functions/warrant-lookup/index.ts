@@ -32,6 +32,9 @@ Deno.serve(async (req) => {
 
     console.log("Warrant search query:", query);
 
+    const controller1 = new AbortController();
+    const timeout1 = setTimeout(() => controller1.abort(), 15000);
+
     const response = await fetch("https://api.firecrawl.dev/v1/search", {
       method: "POST",
       headers: {
@@ -45,7 +48,10 @@ Deno.serve(async (req) => {
         lang: "en",
         scrapeOptions: { formats: ["markdown"] },
       }),
+      signal: controller1.signal,
     });
+
+    clearTimeout(timeout1);
 
     const data = await response.json();
 
@@ -57,22 +63,31 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Also search for official warrant lookup portals for the state
-    const portalResponse = await fetch("https://api.firecrawl.dev/v1/search", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        query: `${state} outstanding warrant search official court portal site:gov`,
-        limit: 5,
-        country: "us",
-        lang: "en",
-      }),
-    });
+    let portalData: any = { data: [] };
+    try {
+      const controller2 = new AbortController();
+      const timeout2 = setTimeout(() => controller2.abort(), 10000);
 
-    const portalData = await portalResponse.json();
+      const portalResponse = await fetch("https://api.firecrawl.dev/v1/search", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          query: `${state} outstanding warrant search official court portal site:gov`,
+          limit: 5,
+          country: "us",
+          lang: "en",
+        }),
+        signal: controller2.signal,
+      });
+
+      clearTimeout(timeout2);
+      portalData = await portalResponse.json();
+    } catch (portalErr) {
+      console.warn("Portal search timed out or failed, continuing without portals:", portalErr);
+    }
 
     return new Response(
       JSON.stringify({
@@ -85,9 +100,15 @@ Deno.serve(async (req) => {
     );
   } catch (error) {
     console.error("Warrant lookup error:", error);
+    const isTimeout = error instanceof DOMException && error.name === "AbortError";
     return new Response(
-      JSON.stringify({ success: false, error: error instanceof Error ? error.message : "Unknown error" }),
-      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      JSON.stringify({
+        success: false,
+        error: isTimeout
+          ? "Search timed out. The public records service is slow right now — please try again or check your state's official court portal directly."
+          : error instanceof Error ? error.message : "Unknown error",
+      }),
+      { status: isTimeout ? 504 : 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }
 });
