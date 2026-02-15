@@ -189,12 +189,12 @@ const Header = ({ language, onLanguageChange }: HeaderProps) => {
                   <Menu className="h-5 w-5" aria-hidden="true" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-[320px]">
-                <SheetHeader>
+              <SheetContent side="right" className="w-[320px] flex flex-col h-full">
+                <SheetHeader className="shrink-0">
                   <SheetTitle>Menu</SheetTitle>
                 </SheetHeader>
 
-                <div className="mt-6 space-y-6">
+                <div className="mt-4 flex-1 overflow-y-auto space-y-6 pb-8">
                   <div className="space-y-2">
                     <div className="flex items-center gap-2">
                       <Globe className="w-4 h-4" aria-hidden="true" />
