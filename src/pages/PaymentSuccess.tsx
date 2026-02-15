@@ -15,10 +15,13 @@ import {
   Clock,
   AlertTriangle,
   Package,
-  ExternalLink
+  ExternalLink,
+  Zap,
+  Infinity,
+  Save
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
-import { trackPurchase, trackUSPurchaseSuccess, trackUSExportCompleted, getDetectedCountry } from '@/hooks/useAnalytics';
+import { trackPurchase, trackUSPurchaseSuccess, trackUSExportCompleted, trackUSSubscribeClicked, getDetectedCountry } from '@/hooks/useAnalytics';
 import { toast } from 'sonner';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -448,6 +451,57 @@ const PaymentSuccess: React.FC = () => {
               </ol>
             </CardContent>
           </Card>
+
+          {/* Subscription Upsell — shown after export */}
+          {hasGenerated && verificationResult?.type === 'payment' && (
+            <Card className="max-w-2xl mx-auto mb-8 border-primary/30 bg-gradient-to-r from-primary/5 to-primary/10">
+              <CardContent className="p-6">
+                <div className="flex items-start gap-4">
+                  <div className="p-3 bg-primary/10 rounded-full shrink-0">
+                    <Zap className="h-6 w-6 text-primary" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-bold mb-1">Save time next time</h3>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      Unlimited exports, saved cases, and priority form updates — all for one monthly price.
+                    </p>
+                    <div className="flex flex-wrap gap-3 mb-5">
+                      <span className="inline-flex items-center gap-1.5 text-sm">
+                        <Infinity className="h-4 w-4 text-primary" /> Unlimited exports
+                      </span>
+                      <span className="inline-flex items-center gap-1.5 text-sm">
+                        <Save className="h-4 w-4 text-primary" /> Saved cases
+                      </span>
+                      <span className="inline-flex items-center gap-1.5 text-sm">
+                        <Sparkles className="h-4 w-4 text-primary" /> Priority updates
+                      </span>
+                    </div>
+                    <Button
+                      size="lg"
+                      className="w-full sm:w-auto"
+                      onClick={async () => {
+                        trackUSSubscribeClicked('monthly', 'post_export_upsell');
+                        try {
+                          const { data, error } = await invokeAuthed('stripe-checkout', {
+                            body: { action: 'create_subscription' },
+                          });
+                          if (error) throw error;
+                          if (data?.url) window.location.href = data.url;
+                        } catch (err) {
+                          console.error('Subscription checkout error:', err);
+                          toast.error('Failed to start checkout. Please try again.');
+                        }
+                      }}
+                    >
+                      Upgrade to Monthly — $19.99/mo
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                    <p className="text-xs text-muted-foreground mt-2">Cancel anytime. No commitment.</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
           {/* Trust Badge */}
           <div className="text-center">
