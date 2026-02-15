@@ -211,8 +211,8 @@ const FOIARequestGenerator: React.FC<FOIARequestGeneratorProps> = ({
     try {
       const { data, error } = await invokeAuthed('stripe-checkout', {
         body: {
-          action: 'create_one_time_payment',
-          formType: 'foia_bundle',
+          action: 'create_bundle_payment',
+          bundleType: 'foia_bundle',
         },
       });
       if (error) throw error;
