@@ -386,6 +386,221 @@ export type Database = {
         }
         Relationships: []
       }
+      course_certificates: {
+        Row: {
+          audit_timestamp: string
+          certificate_file_path: string | null
+          certificate_hash: string
+          certificate_url: string | null
+          completion_date: string
+          course_title: string
+          created_at: string
+          enrollment_id: string
+          hours_completed: number
+          id: string
+          metadata: Json | null
+          provider_name: string
+          user_id: string
+          verification_link: string | null
+        }
+        Insert: {
+          audit_timestamp?: string
+          certificate_file_path?: string | null
+          certificate_hash: string
+          certificate_url?: string | null
+          completion_date: string
+          course_title: string
+          created_at?: string
+          enrollment_id: string
+          hours_completed: number
+          id?: string
+          metadata?: Json | null
+          provider_name: string
+          user_id: string
+          verification_link?: string | null
+        }
+        Update: {
+          audit_timestamp?: string
+          certificate_file_path?: string | null
+          certificate_hash?: string
+          certificate_url?: string | null
+          completion_date?: string
+          course_title?: string
+          created_at?: string
+          enrollment_id?: string
+          hours_completed?: number
+          id?: string
+          metadata?: Json | null
+          provider_name?: string
+          user_id?: string
+          verification_link?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "course_certificates_enrollment_id_fkey"
+            columns: ["enrollment_id"]
+            isOneToOne: false
+            referencedRelation: "course_enrollments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      course_enrollments: {
+        Row: {
+          case_id: string | null
+          completed_at: string | null
+          course_id: string
+          created_at: string
+          enrolled_at: string
+          hours_completed: number | null
+          id: string
+          metadata: Json | null
+          provider_enrollment_id: string | null
+          started_at: string | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          case_id?: string | null
+          completed_at?: string | null
+          course_id: string
+          created_at?: string
+          enrolled_at?: string
+          hours_completed?: number | null
+          id?: string
+          metadata?: Json | null
+          provider_enrollment_id?: string | null
+          started_at?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          case_id?: string | null
+          completed_at?: string | null
+          course_id?: string
+          created_at?: string
+          enrolled_at?: string
+          hours_completed?: number | null
+          id?: string
+          metadata?: Json | null
+          provider_enrollment_id?: string | null
+          started_at?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "course_enrollments_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "case_merit_scores"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "course_enrollments_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      courses: {
+        Row: {
+          acceptance_label: string
+          course_type: string
+          created_at: string
+          description: string | null
+          hours_required: number | null
+          id: string
+          is_active: boolean
+          jurisdictions: string[]
+          lms_launch_url: string | null
+          lms_type: string | null
+          provider_metadata: Json | null
+          provider_name: string
+          provider_url: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          acceptance_label: string
+          course_type: string
+          created_at?: string
+          description?: string | null
+          hours_required?: number | null
+          id?: string
+          is_active?: boolean
+          jurisdictions?: string[]
+          lms_launch_url?: string | null
+          lms_type?: string | null
+          provider_metadata?: Json | null
+          provider_name: string
+          provider_url?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          acceptance_label?: string
+          course_type?: string
+          created_at?: string
+          description?: string | null
+          hours_required?: number | null
+          id?: string
+          is_active?: boolean
+          jurisdictions?: string[]
+          lms_launch_url?: string | null
+          lms_type?: string | null
+          provider_metadata?: Json | null
+          provider_name?: string
+          provider_url?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      court_export_logs: {
+        Row: {
+          case_id: string | null
+          contents_summary: Json | null
+          created_at: string
+          document_hash: string
+          export_type: string
+          file_path: string | null
+          generation_timestamp_local: string | null
+          generation_timestamp_utc: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          case_id?: string | null
+          contents_summary?: Json | null
+          created_at?: string
+          document_hash: string
+          export_type?: string
+          file_path?: string | null
+          generation_timestamp_local?: string | null
+          generation_timestamp_utc?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          case_id?: string | null
+          contents_summary?: Json | null
+          created_at?: string
+          document_hash?: string
+          export_type?: string
+          file_path?: string | null
+          generation_timestamp_local?: string | null
+          generation_timestamp_utc?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       form_payments: {
         Row: {
           amount: number

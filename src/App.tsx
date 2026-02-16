@@ -39,6 +39,7 @@ import SexOffenderRegistry from "./pages/SexOffenderRegistry";
 import CourtRecordsLookup from "./pages/CourtRecordsLookup";
 import StartPage from "./pages/StartPage";
 import JusticeBotPage from "./pages/JusticeBotPage";
+import CourseHub from "./pages/CourseHub";
 
 const queryClient = new QueryClient();
 
@@ -83,6 +84,7 @@ export default function App() {
             <Route path="/court-records" element={<CourtRecordsLookup />} />
             <Route path="/start" element={<StartPage />} />
             <Route path="/justice-bot" element={<JusticeBotPage />} />
+            <Route path="/courses" element={<CourseHub />} />
             
             {/* State landing pages */}
             <Route path="/states/:stateCode" element={<StateLandingPage />} />
