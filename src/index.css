@@ -137,9 +137,15 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
-    /* Prevent iOS overscroll bounce */
-    overscroll-behavior: none;
+    overflow-x: hidden;
+    width: 100%;
+    min-height: 100vh;
     -webkit-overflow-scrolling: touch;
+  }
+
+  html {
+    overflow-x: hidden;
+    scroll-behavior: smooth;
   }
 
   /* Safe area support for iOS devices */
