@@ -85,3 +85,6 @@ verify_jwt = false
 
 [functions.foia-request-generator]
 verify_jwt = false
+
+[functions.court-export-pdf]
+verify_jwt = false
