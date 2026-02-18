@@ -44,19 +44,19 @@ const Pricing = () => {
         if (data.success) {
           const country = getDetectedCountry();
           if (data.type === 'subscription') {
-            trackPurchase('Justice Tools Access', '', country, 19.99);
+            trackPurchase('Justice Tools Access', '', country, 19.99, 'justice_tools_19.99');
             toast({
               title: 'Subscription Activated!',
               description: 'Thank you for subscribing. You now have full access.',
             });
           } else if (data.type === 'bundle') {
-            trackPurchase('Case Preparation Bundle', '', country, 49.99);
+            trackPurchase('Case Preparation Bundle', '', country, 49.99, 'case_bundle_49.99');
             toast({
               title: 'Bundle Unlocked!',
               description: 'Your Case Preparation Bundle is ready.',
             });
           } else {
-            trackPurchase('Prepared Legal Form', '', country, 9.99);
+            trackPurchase('Prepared Legal Form', '', country, 9.99, 'filing_pack_9.99');
             toast({
               title: 'Payment Successful!',
               description: 'Your form pack is ready to download.',
