@@ -40,6 +40,7 @@ import CourtRecordsLookup from "./pages/CourtRecordsLookup";
 import StartPage from "./pages/StartPage";
 import JusticeBotPage from "./pages/JusticeBotPage";
 import CourseHub from "./pages/CourseHub";
+import PublicRecordsRequest from "./pages/PublicRecordsRequest";
 
 const queryClient = new QueryClient();
 
@@ -83,6 +84,8 @@ export default function App() {
             <Route path="/sex-offender-registry" element={<SexOffenderRegistry />} />
             <Route path="/court-records" element={<CourtRecordsLookup />} />
             <Route path="/start" element={<StartPage />} />
+            <Route path="/foia-request-generator" element={<PublicRecordsRequest />} />
+            <Route path="/public-records-request" element={<PublicRecordsRequest />} />
             <Route path="/justice-bot" element={<JusticeBotPage />} />
             <Route path="/courses" element={<CourseHub />} />
             

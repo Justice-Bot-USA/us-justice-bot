@@ -186,7 +186,8 @@ export const trackPurchase = (
   itemName: string = 'Case Assessment',
   state: string = '',
   country: 'US' | 'CA' = 'US',
-  value: number = 7.99
+  value: number = 7.99,
+  itemId: string = ''
 ) => {
   if (typeof window !== 'undefined' && window.gtag) {
     const currency = country === 'US' ? 'USD' : 'CAD';
@@ -196,12 +197,13 @@ export const trackPurchase = (
       currency,
       value,
       items: [{
+        item_id: itemId || itemName.toLowerCase().replace(/\s+/g, '_'),
         item_name: itemName,
         country,
         state,
       }],
     });
-    console.log('[GA4] purchase event fired:', { transactionId, itemName, state, country, value, currency });
+    console.log('[GA4] purchase event fired:', { transactionId, itemId, itemName, state, country, value, currency });
   }
 };
 

@@ -18,6 +18,7 @@ import AudienceSection from "@/components/homepage/AudienceSection";
 const PricingComparison = lazy(() => import("@/components/PricingComparison"));
 const ClosingCTA = lazy(() => import("@/components/ClosingCTA"));
 const StatsBar = lazy(() => import("@/components/StatsBar"));
+const SuccessStories = lazy(() => import("@/components/SuccessStories"));
 
 const LoadingSection = () => (
   <div className="py-8 flex items-center justify-center min-h-[100px]">
@@ -135,7 +136,12 @@ const Index = () => {
           </div>
         </Suspense>
         
-        {/* 9. Closing CTA */}
+        {/* 9. Success Stories */}
+        <Suspense fallback={null}>
+          <SuccessStories language={language} />
+        </Suspense>
+        
+        {/* 10. Closing CTA */}
         <Suspense fallback={null}>
           <ClosingCTA />
         </Suspense>

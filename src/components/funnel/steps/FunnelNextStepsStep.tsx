@@ -3,14 +3,8 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { 
-  CheckCircle2, 
-  ArrowRight, 
-  Calendar, 
-  Building2, 
-  FileText, 
-  Phone,
-  ExternalLink,
-  BookOpen
+  CheckCircle2, ArrowRight, Calendar, Building2, FileText, Phone,
+  ExternalLink, BookOpen, Scale, AlertCircle,
 } from 'lucide-react';
 import { FunnelConfig, FunnelState, US_STATE_NAMES, LEGAL_AREA_NAMES } from '@/lib/funnels';
 import { trackConversion } from '@/lib/funnels/analytics';
@@ -154,17 +148,17 @@ export const FunnelNextStepsStep: React.FC<FunnelNextStepsStepProps> = ({
   const nextSteps = getNextSteps(config, state);
   const stateName = US_STATE_NAMES[config.jurisdiction];
   const legalAreaName = LEGAL_AREA_NAMES[config.legalArea];
+  const complexityScore = (state.data as any)?.complexityScore ?? 0;
 
-  // Track conversion on mount
   React.useEffect(() => {
     trackConversion(config.id);
   }, [config.id]);
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'high': return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200';
-      case 'medium': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200';
-      default: return 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200';
+      case 'high': return 'bg-destructive/10 text-destructive dark:bg-destructive/20';
+      case 'medium': return 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200';
+      default: return 'bg-muted text-muted-foreground';
     }
   };
 
@@ -172,8 +166,8 @@ export const FunnelNextStepsStep: React.FC<FunnelNextStepsStepProps> = ({
     <div className="space-y-6">
       {/* Success Header */}
       <div className="text-center mb-8">
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 dark:bg-green-900 mb-4">
-          <CheckCircle2 className="h-8 w-8 text-green-600" />
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
+          <CheckCircle2 className="h-8 w-8 text-primary" />
         </div>
         <h3 className="text-2xl font-semibold mb-2">Your Case is Ready!</h3>
         <p className="text-muted-foreground">
@@ -213,6 +207,38 @@ export const FunnelNextStepsStep: React.FC<FunnelNextStepsStepProps> = ({
           </Card>
         ))}
       </div>
+
+      {/* Attorney Referral CTA — shown for high-complexity cases */}
+      {complexityScore > 7 && (
+        <Card className="border-destructive/20 bg-destructive/5">
+          <CardContent className="p-5">
+            <div className="flex items-start gap-3">
+              <AlertCircle className="h-5 w-5 text-destructive mt-0.5 shrink-0" />
+              <div className="flex-1">
+                <h4 className="font-semibold mb-1">This Case May Benefit from Legal Counsel</h4>
+                <p className="text-sm text-muted-foreground mb-3">
+                  Based on the complexity of your situation, speaking with a licensed attorney is strongly recommended. 
+                  Free and low-cost options are available.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <Button size="sm" variant="outline" asChild>
+                    <a href="https://www.lawhelp.org" target="_blank" rel="noopener noreferrer">
+                      <Scale className="h-3.5 w-3.5 mr-1" /> Legal Aid Finder
+                      <ExternalLink className="h-3 w-3 ml-1 opacity-60" />
+                    </a>
+                  </Button>
+                  <Button size="sm" variant="outline" asChild>
+                    <a href="https://www.avvo.com" target="_blank" rel="noopener noreferrer">
+                      <Phone className="h-3.5 w-3.5 mr-1" /> Find an Attorney
+                      <ExternalLink className="h-3 w-3 ml-1 opacity-60" />
+                    </a>
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Case Dashboard CTA */}
       <Card className="bg-primary/5 border-primary/20">

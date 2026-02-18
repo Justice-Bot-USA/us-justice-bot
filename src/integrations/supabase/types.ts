@@ -520,9 +520,11 @@ export type Database = {
           jurisdictions: string[]
           lms_launch_url: string | null
           lms_type: string | null
+          official_registry_url: string | null
           provider_metadata: Json | null
           provider_name: string
           provider_url: string | null
+          recognition_source: string | null
           title: string
           updated_at: string
         }
@@ -537,9 +539,11 @@ export type Database = {
           jurisdictions?: string[]
           lms_launch_url?: string | null
           lms_type?: string | null
+          official_registry_url?: string | null
           provider_metadata?: Json | null
           provider_name: string
           provider_url?: string | null
+          recognition_source?: string | null
           title: string
           updated_at?: string
         }
@@ -554,9 +558,11 @@ export type Database = {
           jurisdictions?: string[]
           lms_launch_url?: string | null
           lms_type?: string | null
+          official_registry_url?: string | null
           provider_metadata?: Json | null
           provider_name?: string
           provider_url?: string | null
+          recognition_source?: string | null
           title?: string
           updated_at?: string
         }
