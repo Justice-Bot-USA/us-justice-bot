@@ -25,6 +25,11 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
       {keywords && <meta name="keywords" content={keywords} />}
       <link rel="canonical" href={url} />
 
+      {/* hreflang: EN + ES are served at the same URLs via language toggle */}
+      <link rel="alternate" hrefLang="en" href={url} />
+      <link rel="alternate" hrefLang="es" href={url} />
+      <link rel="alternate" hrefLang="x-default" href={url} />
+
       {/* Open Graph */}
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
@@ -32,6 +37,8 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
       <meta property="og:url" content={url} />
       <meta property="og:image" content={image} />
       <meta property="og:site_name" content="Veritas Path" />
+      <meta property="og:locale" content="en_US" />
+      <meta property="og:locale:alternate" content="es_US" />
 
       {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />
