@@ -83,7 +83,7 @@
     }
     </script>
 
-    <!-- Structured Data - WebSite with SearchAction -->
+    <!-- Structured Data - WebSite with SearchAction (fixed URL to /forms-library) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -95,7 +95,7 @@
         "@type": "SearchAction",
         "target": {
           "@type": "EntryPoint",
-          "urlTemplate": "https://justicebot-usa.com/usa-forms?search={search_term_string}"
+          "urlTemplate": "https://justicebot-usa.com/forms-library?search={search_term_string}"
         },
         "query-input": "required name=search_term_string"
       }
@@ -173,20 +173,26 @@
         {
           "@type": "ListItem",
           "position": 3,
-          "name": "US Court Forms",
-          "item": "https://justicebot-usa.com/usa-forms"
+          "name": "Forms Library",
+          "item": "https://justicebot-usa.com/forms-library"
         },
         {
           "@type": "ListItem",
           "position": 4,
           "name": "AI Tools",
           "item": "https://justicebot-usa.com/ai-tools"
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "name": "Courses",
+          "item": "https://justicebot-usa.com/courses"
         }
       ]
     }
     </script>
 
-    <!-- Structured Data - SoftwareApplication -->
+    <!-- Structured Data - SoftwareApplication (aggregate rating removed — no verified reviews yet) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -199,11 +205,6 @@
         "price": "9.99",
         "priceCurrency": "USD",
         "priceValidUntil": "2026-12-31"
-      },
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4.8",
-        "ratingCount": "1250"
       }
     }
     </script>
