@@ -41,6 +41,7 @@ import StartPage from "./pages/StartPage";
 import JusticeBotPage from "./pages/JusticeBotPage";
 import CourseHub from "./pages/CourseHub";
 import PublicRecordsRequest from "./pages/PublicRecordsRequest";
+import CertificateVerify from "./pages/CertificateVerify";
 
 const queryClient = new QueryClient();
 
@@ -88,6 +89,7 @@ export default function App() {
             <Route path="/public-records-request" element={<PublicRecordsRequest />} />
             <Route path="/justice-bot" element={<JusticeBotPage />} />
             <Route path="/courses" element={<CourseHub />} />
+            <Route path="/verify/:id" element={<CertificateVerify />} />
             
             {/* State landing pages */}
             <Route path="/states/:stateCode" element={<StateLandingPage />} />

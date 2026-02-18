@@ -395,7 +395,7 @@ export type Database = {
           completion_date: string
           course_title: string
           created_at: string
-          enrollment_id: string
+          enrollment_id: string | null
           hours_completed: number
           id: string
           metadata: Json | null
@@ -411,7 +411,7 @@ export type Database = {
           completion_date: string
           course_title: string
           created_at?: string
-          enrollment_id: string
+          enrollment_id?: string | null
           hours_completed: number
           id?: string
           metadata?: Json | null
@@ -427,7 +427,7 @@ export type Database = {
           completion_date?: string
           course_title?: string
           created_at?: string
-          enrollment_id?: string
+          enrollment_id?: string | null
           hours_completed?: number
           id?: string
           metadata?: Json | null
