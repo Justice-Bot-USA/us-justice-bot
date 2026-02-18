@@ -63,18 +63,25 @@ const EnhancedSEO = ({
       <meta name="description" content={description} />
       {keywords && <meta name="keywords" content={keywords} />}
       {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
-      
+
+      {/* hreflang: EN + ES served at same URLs via language toggle */}
+      {canonicalUrl && <link rel="alternate" hrefLang="en" href={canonicalUrl} />}
+      {canonicalUrl && <link rel="alternate" hrefLang="es" href={canonicalUrl} />}
+      {canonicalUrl && <link rel="alternate" hrefLang="x-default" href={canonicalUrl} />}
+
       {/* Open Graph */}
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       <meta property="og:type" content="website" />
       {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
-      
+      <meta property="og:locale" content="en_US" />
+      <meta property="og:locale:alternate" content="es_US" />
+
       {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
-      
+
       {/* Structured Data */}
       {structuredData && (
         <script type="application/ld+json">
