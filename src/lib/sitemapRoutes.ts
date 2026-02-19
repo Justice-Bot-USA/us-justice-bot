@@ -64,8 +64,8 @@ export const legalAreaRoutes: SitemapRoute[] = [
   { path: "/legal-areas/civil-rights",      priority: 0.8, changefreq: "weekly" },
   { path: "/legal-areas/criminal-defense",  priority: 0.8, changefreq: "weekly" },
   { path: "/legal-areas/small-claims",      priority: 0.8, changefreq: "weekly" },
-  { path: "/legal-areas/workers-comp",      priority: 0.7, changefreq: "monthly" },
-  { path: "/legal-areas/consumer-rights",   priority: 0.7, changefreq: "monthly" },
+  { path: "/legal-areas/workers-comp",      priority: 0.8, changefreq: "weekly" },
+  { path: "/legal-areas/consumer-rights",   priority: 0.8, changefreq: "weekly" },
   { path: "/legal-areas/human-rights",      priority: 0.7, changefreq: "monthly" },
 ];
 

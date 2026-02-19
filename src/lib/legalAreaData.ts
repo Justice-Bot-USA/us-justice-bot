@@ -922,4 +922,289 @@ export const legalAreaData: Record<string, LegalAreaData> = {
       ["CA", "TX", "NY", "FL", "IL", ...remainingStates].map(s => [s, createDefaultGuidance("federal")])
     ),
   },
+
+  // ==================== WORKERS' COMPENSATION ====================
+  "workers-comp": {
+    title: "Workers' Compensation",
+    description: "On-the-job injury claims, occupational diseases, employer disputes, and disability benefit appeals across all 50 states.",
+    icon: Briefcase,
+    keywords: ["Work Injury", "Workers Comp Claim", "Occupational Disease", "Employer Dispute", "Disability Benefits", "Medical Coverage"],
+    badge: { text: "Important", variant: "secondary" },
+    commonTopics: [
+      "Report a Work Injury", "File a Workers Comp Claim", "Occupational Disease Claims",
+      "Denied Claim Appeals", "Permanent Disability Rating", "Temporary Disability Benefits",
+      "Medical Treatment Disputes", "Return-to-Work Rights", "Independent Medical Exam",
+      "Third-Party Liability Suits", "Death Benefits", "Retaliation for Filing",
+    ],
+    stateGuidance: {
+      "CA": {
+        forms: [
+          { name: "DWC 1 (Claim Form)", description: "Primary workers' comp claim form — employer must provide within 1 day of injury report", url: "https://www.dir.ca.gov/dwc/forms.html" },
+          { name: "PR-2 (Medical Report)", description: "Primary treating physician's progress report", url: "https://www.dir.ca.gov/dwc/forms.html" },
+          { name: "DEU Form 100 (Disability Evaluation)", description: "Request for permanent disability evaluation", url: "https://www.dir.ca.gov/dwc/forms.html" },
+          { name: "WCAB Application (WCAB-1)", description: "File a case with the Workers' Comp Appeals Board", url: "https://www.dir.ca.gov/wcab/wcab.html" },
+        ],
+        deadlines: [
+          { name: "Report Injury to Employer", timeframe: "30 days from injury (or discovery of occupational disease)" },
+          { name: "File Claim Form (DWC 1)", timeframe: "1 year from injury — employer must provide form within 1 working day" },
+          { name: "Petition for Reconsideration", timeframe: "20 days from WCAB order" },
+          { name: "Application After Denial", timeframe: "5 years from date of injury to file WCAB Application" },
+        ],
+        fees: [
+          { name: "Filing a Claim", amount: "Free (employer-funded insurance)" },
+          { name: "WCAB Filing", amount: "Free" },
+          { name: "Attorney Fees (if hired)", amount: "Contingency — typically 9–12% of settlement, court-approved" },
+        ],
+        laws: [
+          { name: "Labor Code § 3600", summary: "Establishes employer liability for work injuries without fault" },
+          { name: "Labor Code § 132a", summary: "Prohibits employer retaliation for filing a workers' comp claim" },
+          { name: "Labor Code § 4600", summary: "Employer must pay for all reasonable and necessary medical care" },
+          { name: "Labor Code § 4660", summary: "Permanent disability rating schedule" },
+        ],
+      },
+      "TX": {
+        forms: [
+          { name: "DWC Form-041 (Employer First Report)", description: "Employer's first report of injury or illness", url: "https://www.tdi.texas.gov/wc/forms/dwcforms.html" },
+          { name: "DWC Form-045 (Employee Claim)", description: "Employee's claim for compensation", url: "https://www.tdi.texas.gov/wc/forms/dwcforms.html" },
+          { name: "DWC Form-052 (Dispute)", description: "Request for benefit review conference", url: "https://www.tdi.texas.gov/wc/forms/dwcforms.html" },
+          { name: "DWC Form-069 (Medical Dispute)", description: "Dispute about medical necessity", url: "https://www.tdi.texas.gov/wc/forms/dwcforms.html" },
+        ],
+        deadlines: [
+          { name: "Report Injury to Employer", timeframe: "30 days from injury date" },
+          { name: "File DWC-045 Claim", timeframe: "1 year from injury or last benefit payment" },
+          { name: "Request Benefit Review Conference", timeframe: "Within 90 days of dispute" },
+          { name: "NOTE: Texas opt-out", timeframe: "TX allows employers to opt out — check if your employer subscribes" },
+        ],
+        fees: [
+          { name: "Filing a Claim (TDI-covered employer)", amount: "Free" },
+          { name: "Attorney Fees", amount: "Capped at 25% of disputed amount — court must approve" },
+          { name: "Non-subscriber employer claim", amount: "Civil suit — standard court filing fees apply" },
+        ],
+        laws: [
+          { name: "Texas Labor Code Chapter 406", summary: "Workers' compensation system structure" },
+          { name: "Labor Code § 451.001", summary: "Retaliation prohibition — cannot fire for filing a claim" },
+          { name: "Labor Code § 408.001", summary: "Exclusive remedy — if employer subscribes, no civil suit" },
+          { name: "Non-subscriber Liability", summary: "Non-subscribing employers lose common law defenses" },
+        ],
+      },
+      "NY": {
+        forms: [
+          { name: "C-3 (Employee Claim)", description: "Employee's claim for compensation benefits", url: "https://www.wcb.ny.gov/content/main/forms/AllForms.jsp" },
+          { name: "C-3.3 (Occupational Disease)", description: "Claim for occupational disease", url: "https://www.wcb.ny.gov/content/main/forms/AllForms.jsp" },
+          { name: "MG-1 (Medical Report)", description: "Initial medical report by treating physician", url: "https://www.wcb.ny.gov/content/main/forms/AllForms.jsp" },
+          { name: "RFA-1 (Request for Action)", description: "Request a hearing or board action", url: "https://www.wcb.ny.gov/content/main/forms/AllForms.jsp" },
+        ],
+        deadlines: [
+          { name: "Report Injury to Employer", timeframe: "30 days from accident or knowledge of occupational disease" },
+          { name: "File C-3 Claim", timeframe: "2 years from accident or last benefit payment" },
+          { name: "File C-3.3 (Occupational Disease)", timeframe: "2 years from disablement or knowledge of disease" },
+        ],
+        fees: [
+          { name: "Filing Claim with WCB", amount: "Free" },
+          { name: "Attorney Fees", amount: "Maximum 15% of disputed amounts — WCB must approve" },
+        ],
+        laws: [
+          { name: "NY Workers' Compensation Law § 21", summary: "Presumption that accident arose out of employment" },
+          { name: "WCL § 120", summary: "Anti-retaliation protections" },
+          { name: "WCL § 15(8)", summary: "Special fund for re-opened cases and second injuries" },
+          { name: "WCL § 39", summary: "Employer must post notice of workers' comp coverage" },
+        ],
+      },
+      "FL": {
+        forms: [
+          { name: "DWC-1 (First Report of Injury)", description: "Employer or carrier files within 7 days of knowledge of injury", url: "https://www.myfloridacfo.com/division/wc/employee/forms.htm" },
+          { name: "DWC-25 (Request for Assistance)", description: "Request help from Division of Workers' Comp", url: "https://www.myfloridacfo.com/division/wc/employee/forms.htm" },
+          { name: "DWC-19 (Employee Earnings)", description: "Employee earnings statement", url: "https://www.myfloridacfo.com/division/wc/employee/forms.htm" },
+          { name: "Petition for Benefits", description: "Filed through JCC system to claim denied benefits", url: "https://www.fljcc.org" },
+        ],
+        deadlines: [
+          { name: "Report Injury to Employer", timeframe: "30 days from injury date" },
+          { name: "File Petition for Benefits", timeframe: "2 years from injury OR 1 year from last benefit payment" },
+          { name: "Employer/Carrier Must Accept or Deny", timeframe: "Within 120 days of accident report" },
+        ],
+        fees: [
+          { name: "Filing a Claim / Petition", amount: "Free" },
+          { name: "Attorney Fees", amount: "Set by statute — typically 20% of benefits recovered" },
+          { name: "Mediation", amount: "Carrier-paid in most cases" },
+        ],
+        laws: [
+          { name: "F.S. Chapter 440", summary: "Florida Workers' Compensation Law — comprehensive framework" },
+          { name: "F.S. § 440.105", summary: "Fraud prevention — misrepresentation is a felony" },
+          { name: "F.S. § 440.205", summary: "Anti-retaliation — cannot be fired for filing a legitimate claim" },
+          { name: "F.S. § 440.13", summary: "Medical benefits — authorized treating physician system" },
+        ],
+      },
+      "IL": {
+        forms: [
+          { name: "Application for Adjustment of Claim", description: "Primary filing with the Illinois WCC", url: "https://www2.illinois.gov/sites/iwcc/Pages/forms.aspx" },
+          { name: "Employer's Report (Form 45)", description: "Employer's first accident report", url: "https://www2.illinois.gov/sites/iwcc/Pages/forms.aspx" },
+          { name: "Petition for Review", description: "Appeal arbitrator's decision to full Commission", url: "https://www2.illinois.gov/sites/iwcc/Pages/forms.aspx" },
+        ],
+        deadlines: [
+          { name: "File Application with IWCC", timeframe: "3 years from accident or 2 years from last benefit payment, whichever is later" },
+          { name: "Petition for Review (Arbitrator Decision)", timeframe: "30 days from arbitrator's decision" },
+          { name: "Report Injury to Employer", timeframe: "45 days (notice required)" },
+        ],
+        fees: [
+          { name: "Filing with IWCC", amount: "Free" },
+          { name: "Attorney Fees", amount: "Maximum 20% of settlement, plus costs — IWCC approved" },
+        ],
+        laws: [
+          { name: "820 ILCS 305 (Workers' Comp Act)", summary: "Illinois Workers' Compensation Act" },
+          { name: "820 ILCS 310 (Occupational Diseases Act)", summary: "Coverage for work-related diseases" },
+          { name: "Section 4(h)", summary: "Anti-retaliation — protects workers who file claims" },
+          { name: "Section 8.1a", summary: "Fee schedule for medical services" },
+        ],
+      },
+      ...Object.fromEntries(remainingStates.filter(s => !["CA","TX","NY","FL","IL"].includes(s)).map(s => [s, createDefaultGuidance("workers-comp")])),
+    },
+  },
+
+  // ==================== CONSUMER RIGHTS ====================
+  "consumer-rights": {
+    title: "Consumer Protection & Rights",
+    description: "Fight fraud, debt collection harassment, predatory lending, warranty violations, and FCRA errors with state and federal consumer protections.",
+    icon: Scale,
+    keywords: ["Consumer Fraud", "Debt Collection", "FDCPA", "FCRA Credit Report", "Lemon Law", "Predatory Lending", "FTC Complaint"],
+    badge: { text: "Popular", variant: "default" },
+    commonTopics: [
+      "Debt Collection Harassment (FDCPA)", "Credit Report Errors (FCRA)", "Identity Theft",
+      "Lemon Law / Defective Vehicle", "Warranty Disputes", "Predatory Lending",
+      "Fraudulent Charges / Scams", "Deceptive Advertising", "Data Breach Claims",
+      "CFPB Complaints", "FTC Complaints", "Class Action Eligibility",
+    ],
+    stateGuidance: {
+      "CA": {
+        forms: [
+          { name: "DFPI Complaint Form", description: "File complaint against financial institutions with CA Dept of Financial Protection & Innovation", url: "https://dfpi.ca.gov/file-a-complaint/" },
+          { name: "CA AG Consumer Complaint", description: "File complaint with California Attorney General's office", url: "https://oag.ca.gov/contact/consumer-complaint-against-business-or-company" },
+          { name: "CFPB Complaint Form", description: "Federal complaint for debt collection, credit reports, or loan issues", url: "https://www.consumerfinance.gov/complaint/" },
+          { name: "Small Claims SC-100", description: "Sue for consumer fraud damages up to $10,000", url: "https://www.courts.ca.gov/documents/sc100.pdf" },
+        ],
+        deadlines: [
+          { name: "FCRA Dispute (Credit Bureaus)", timeframe: "30 days for bureau to investigate; no SOL on disputes" },
+          { name: "FDCPA Lawsuit", timeframe: "1 year from violation date" },
+          { name: "Lemon Law Claim (Song-Beverly)", timeframe: "4 years from purchase or last repair attempt" },
+          { name: "Consumer Fraud (UCL)", timeframe: "4 years under Business & Professions Code § 17200" },
+          { name: "Deceptive Advertising", timeframe: "3 years for private suits under CLRA" },
+        ],
+        fees: [
+          { name: "AG Complaint", amount: "Free" },
+          { name: "CFPB / FTC Complaint", amount: "Free" },
+          { name: "Small Claims Filing", amount: "$30–$75" },
+          { name: "CLRA Lawsuit", amount: "Attorneys' fees recoverable if you win" },
+        ],
+        laws: [
+          { name: "Rosenthal Fair Debt Collection Act", summary: "CA version of FDCPA — covers original creditors too" },
+          { name: "Song-Beverly Consumer Warranty Act", summary: "CA Lemon Law — broader protections than federal" },
+          { name: "CLRA (Civil Code § 1770)", summary: "Consumers Legal Remedies Act — prohibits 27 deceptive practices" },
+          { name: "UCL (Bus. & Prof. Code § 17200)", summary: "Unfair Competition Law — private right of action for unfair practices" },
+          { name: "FCRA (federal)", summary: "Fair Credit Reporting Act — credit report accuracy and dispute rights" },
+        ],
+      },
+      "TX": {
+        forms: [
+          { name: "TX AG Consumer Complaint Form", description: "File complaint with Texas Attorney General Consumer Protection Division", url: "https://www.texasattorneygeneral.gov/consumer-protection/file-consumer-complaint" },
+          { name: "OCCC Complaint Form", description: "Complaint against lenders/creditors with Office of Consumer Credit Commissioner", url: "https://occc.texas.gov/consumers/consumer-complaints" },
+          { name: "CFPB Online Complaint", description: "Federal complaint portal for financial products", url: "https://www.consumerfinance.gov/complaint/" },
+          { name: "Small Claims Petition", description: "Sue for consumer damages up to $20,000 in Justice Court", url: "https://guides.sll.texas.gov/small-claims-court" },
+        ],
+        deadlines: [
+          { name: "DTPA Lawsuit", timeframe: "2 years from discovery of deceptive act" },
+          { name: "FDCPA Lawsuit", timeframe: "1 year from violation" },
+          { name: "Lemon Law (TX)", timeframe: "Must exhaust manufacturer's BBB/arbitration program first; file within reasonable time" },
+          { name: "Fraud Claim", timeframe: "4 years from discovery" },
+        ],
+        fees: [
+          { name: "AG / OCCC Complaint", amount: "Free" },
+          { name: "Justice Court (Small Claims)", amount: "$46–$100 depending on county" },
+          { name: "DTPA Lawsuit", amount: "Attorney fees recoverable if you prevail" },
+        ],
+        laws: [
+          { name: "DTPA (Bus. & Commerce Code Ch. 17)", summary: "Texas Deceptive Trade Practices Act — 3× damages available" },
+          { name: "Finance Code § 392", summary: "Texas version of FDCPA — debt collection regulations" },
+          { name: "TX Lemon Law (Transportation Code Ch. 2301)", summary: "Defective vehicle repurchase or replacement" },
+          { name: "FCRA (federal)", summary: "Fair Credit Reporting Act — dispute rights for credit errors" },
+        ],
+      },
+      "NY": {
+        forms: [
+          { name: "NY AG Consumer Complaint Form", description: "File complaint with New York Attorney General", url: "https://ag.ny.gov/complaint-forms" },
+          { name: "DFS Consumer Complaint Form", description: "Complaints against banks, lenders, or insurance companies", url: "https://www.dfs.ny.gov/consumers/file_a_complaint" },
+          { name: "NYC DCA Complaint", description: "NYC residents — complaint against licensed businesses", url: "https://www.nyc.gov/site/dca/consumers/file-complaint.page" },
+          { name: "CFPB Complaint", description: "Federal portal for financial product issues", url: "https://www.consumerfinance.gov/complaint/" },
+        ],
+        deadlines: [
+          { name: "GBL § 349 Lawsuit", timeframe: "3 years from deceptive act" },
+          { name: "FDCPA Lawsuit", timeframe: "1 year from violation" },
+          { name: "Identity Theft Claim", timeframe: "Dispute credit bureau errors within reasonable time; 2-year SOL for lawsuit" },
+          { name: "Lemon Law (NY)", timeframe: "Within 4 years of purchase; must first attempt resolution through manufacturer" },
+        ],
+        fees: [
+          { name: "AG / DFS Complaint", amount: "Free" },
+          { name: "Small Claims Filing", amount: "$15–$25 depending on amount" },
+          { name: "GBL § 349 Lawsuit", amount: "Attorney fees recoverable; minimum $50 statutory damages" },
+        ],
+        laws: [
+          { name: "GBL § 349", summary: "Deceptive acts and practices — private right of action + $50 minimum damages" },
+          { name: "GBL § 350", summary: "False advertising — private right of action" },
+          { name: "NY Lemon Law (GBL § 198-a)", summary: "Refund or replacement for defective vehicles within first 18k miles / 2 years" },
+          { name: "NY FDCPA (GBL § 601)", summary: "NY Debt Collection Practices — additional protections on top of federal FDCPA" },
+          { name: "FCRA (federal)", summary: "Fair Credit Reporting Act — dispute rights, free annual credit reports" },
+        ],
+      },
+      "FL": {
+        forms: [
+          { name: "FL AG Consumer Complaint", description: "Complaint with Florida AG Consumer Protection Division", url: "https://myfloridalegal.com/contact#Consumer-Protection" },
+          { name: "FDACS Consumer Complaint", description: "Complaint against businesses via Dept of Agriculture & Consumer Services", url: "https://www.fdacs.gov/Consumer-Resources/File-a-Complaint" },
+          { name: "CFPB Complaint Form", description: "Federal portal for financial product complaints", url: "https://www.consumerfinance.gov/complaint/" },
+          { name: "Small Claims Statement of Claim", description: "Sue for consumer damages up to $8,000 in County Court", url: "https://www.flcourts.gov/Resources-Services/Court-Improvement/Self-Help-Information" },
+        ],
+        deadlines: [
+          { name: "FDUTPA Lawsuit", timeframe: "4 years from violation" },
+          { name: "FDCPA Lawsuit", timeframe: "1 year from violation" },
+          { name: "Florida Lemon Law Claim", timeframe: "24 months from original delivery of vehicle to buyer" },
+          { name: "Fraud Claim", timeframe: "4 years from discovery" },
+        ],
+        fees: [
+          { name: "AG / FDACS Complaint", amount: "Free" },
+          { name: "County Court Small Claims Filing", amount: "$55–$175" },
+          { name: "FDUTPA Lawsuit", amount: "Prevailing party may recover attorney fees" },
+        ],
+        laws: [
+          { name: "FDUTPA (F.S. § 501.201)", summary: "Florida Deceptive and Unfair Trade Practices Act — private right of action" },
+          { name: "Florida Lemon Law (F.S. § 681)", summary: "3 repair attempts or 30 cumulative days out-of-service triggers buyback" },
+          { name: "Florida Consumer Collection Practices Act", summary: "F.S. § 559.72 — stricter than federal FDCPA" },
+          { name: "FCRA (federal)", summary: "Fair Credit Reporting Act — free disputes, 7-year negative reporting limit" },
+        ],
+      },
+      "IL": {
+        forms: [
+          { name: "IL AG Consumer Complaint Form", description: "File complaint with Illinois Attorney General Consumer Protection Bureau", url: "https://illinoisattorneygeneral.gov/consumers/filecomplaint.html" },
+          { name: "IDFPR Complaint", description: "Complaints against licensed businesses (lenders, brokers)", url: "https://idfpr.illinois.gov/about/fileacomplaint.asp" },
+          { name: "CFPB Complaint Form", description: "Federal financial product complaint portal", url: "https://www.consumerfinance.gov/complaint/" },
+          { name: "Small Claims Complaint", description: "Sue for consumer damages up to $10,000 in Circuit Court", url: "https://www.illinoislegalaid.org/legal-information/small-claims-court" },
+        ],
+        deadlines: [
+          { name: "ICFA Lawsuit", timeframe: "3 years from discovery of deceptive practice" },
+          { name: "FDCPA Lawsuit", timeframe: "1 year from violation" },
+          { name: "Lemon Law Claim (IL)", timeframe: "Within 1 year from expiration of the express warranty" },
+          { name: "Fraud Claim", timeframe: "5 years from discovery" },
+        ],
+        fees: [
+          { name: "AG / IDFPR Complaint", amount: "Free" },
+          { name: "Small Claims Filing", amount: "$50–$200 depending on county and amount" },
+          { name: "ICFA Lawsuit", amount: "Attorney fees and costs recoverable if you prevail" },
+        ],
+        laws: [
+          { name: "ICFA (815 ILCS 505)", summary: "Illinois Consumer Fraud Act — broad protections; $50,000 per violation penalty" },
+          { name: "Consumer Installment Loan Act", summary: "815 ILCS 205 — regulates interest rates on loans" },
+          { name: "IL Lemon Law (815 ILCS 380)", summary: "4 repair attempts or 30 days out of service triggers repurchase" },
+          { name: "IL Collection Agency Act (225 ILCS 425)", summary: "Licensing and conduct requirements for debt collectors" },
+          { name: "FCRA (federal)", summary: "Fair Credit Reporting Act — governs credit bureau accuracy" },
+        ],
+      },
+      ...Object.fromEntries(remainingStates.filter(s => !["CA","TX","NY","FL","IL"].includes(s)).map(s => [s, createDefaultGuidance("consumer-rights")])),
+    },
+  },
 };
