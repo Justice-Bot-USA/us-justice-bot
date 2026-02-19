@@ -88,3 +88,12 @@ verify_jwt = false
 
 [functions.court-export-pdf]
 verify_jwt = false
+
+[functions.stripe-checkout]
+verify_jwt = false
+
+[functions.stripe-webhook]
+verify_jwt = false
+
+[functions.check-subscription]
+verify_jwt = false

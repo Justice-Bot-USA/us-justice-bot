@@ -9,7 +9,7 @@ import { createClient, SupabaseClient } from "https://esm.sh/@supabase/supabase-
  */
 export const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
 /**
@@ -70,23 +70,27 @@ export function createUserClient(token: string): SupabaseClient {
 export async function requireUser(req: Request): Promise<AuthResult> {
   const authHeader = req.headers.get("authorization");
   
-  if (!authHeader) {
+  if (!authHeader?.startsWith("Bearer ")) {
     throw new Error("Missing authorization header");
   }
 
   const token = authHeader.replace("Bearer ", "");
   const userClient = createUserClient(token);
   
-  const { data: { user }, error } = await userClient.auth.getUser(token);
+  // Use getClaims (signing-keys compatible) — no network round-trip, verifies JWT locally
+  const { data, error } = await userClient.auth.getClaims(token);
 
-  if (error || !user) {
+  if (error || !data?.claims) {
     console.error("Auth error:", error?.message);
     throw new Error("Invalid or expired token");
   }
 
+  const userId = data.claims.sub as string;
+  const email = data.claims.email as string | undefined;
+
   return {
-    userId: user.id,
-    email: user.email,
+    userId,
+    email,
     userClient,
   };
 }
