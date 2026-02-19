@@ -43,10 +43,15 @@ const Footer = () => {
           <div>
             <h4 className="font-semibold mb-4">Legal Areas</h4>
             <ul className="space-y-2 text-sm opacity-80">
-              <li><Link to="/legal-areas/family" className="hover:opacity-100 transition-opacity">Family Law</Link></li>
-              <li><Link to="/legal-areas/small-claims" className="hover:opacity-100 transition-opacity">Small Claims</Link></li>
-              <li><Link to="/legal-areas/housing" className="hover:opacity-100 transition-opacity">Housing & Tenant Rights</Link></li>
+              <li><Link to="/legal-areas" className="hover:opacity-100 transition-opacity font-medium">All Legal Areas →</Link></li>
+              <li><Link to="/legal-areas/family-law" className="hover:opacity-100 transition-opacity">Family Law</Link></li>
               <li><Link to="/legal-areas/employment" className="hover:opacity-100 transition-opacity">Employment</Link></li>
+              <li><Link to="/legal-areas/housing" className="hover:opacity-100 transition-opacity">Housing & Tenant Rights</Link></li>
+              <li><Link to="/legal-areas/small-claims" className="hover:opacity-100 transition-opacity">Small Claims</Link></li>
+              <li><Link to="/legal-areas/workers-comp" className="hover:opacity-100 transition-opacity">Workers' Compensation</Link></li>
+              <li><Link to="/legal-areas/consumer-rights" className="hover:opacity-100 transition-opacity">Consumer Protection</Link></li>
+              <li><Link to="/legal-areas/civil-rights" className="hover:opacity-100 transition-opacity">Civil Rights</Link></li>
+              <li><Link to="/legal-areas/immigration" className="hover:opacity-100 transition-opacity">Immigration</Link></li>
               <li><Link to="/legal-areas/human-rights" className="hover:opacity-100 transition-opacity">Human Rights</Link></li>
             </ul>
           </div>
