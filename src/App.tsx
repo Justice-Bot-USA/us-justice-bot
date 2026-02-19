@@ -42,6 +42,7 @@ import JusticeBotPage from "./pages/JusticeBotPage";
 import CourseHub from "./pages/CourseHub";
 import PublicRecordsRequest from "./pages/PublicRecordsRequest";
 import CertificateVerify from "./pages/CertificateVerify";
+import LegalAreasHub from "./pages/LegalAreasHub";
 
 const queryClient = new QueryClient();
 
@@ -68,6 +69,7 @@ export default function App() {
             <Route path="/ai-tools/use" element={<AIToolsInteractive />} />
             <Route path="/injury-settlement-calculator" element={<PersonalInjuryCalculator />} />
             <Route path="/personal-injury-calculator" element={<PersonalInjuryCalculator />} />
+            <Route path="/legal-areas" element={<LegalAreasHub />} />
             <Route path="/legal-areas/:areaId" element={<LegalAreaPage />} />
             <Route path="/forms-library" element={<FormsLibrary />} />
             <Route path="/usa-forms" element={<UsaForms />} />
