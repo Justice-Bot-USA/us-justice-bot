@@ -1,10 +1,10 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowLeft, FileText, Scale, Clock, DollarSign, MapPin, ExternalLink } from "lucide-react";
+import { ArrowLeft, FileText, Scale, Clock, DollarSign, MapPin, ExternalLink, ChevronRight } from "lucide-react";
 import Header from "@/components/Header";
 import { SEOHead } from "@/components/SEOHead";
 import { US_STATES } from "@/lib/states";
@@ -33,25 +33,31 @@ const LegalAreaPage = () => {
   const Icon = areaData.icon;
   const stateGuidance = selectedState ? areaData.stateGuidance[selectedState] : null;
 
+  // Related areas for cross-linking (exclude current)
+  const relatedAreaIds = Object.keys(legalAreaData)
+    .filter(id => id !== areaId && !["federal"].includes(id))
+    .slice(0, 5);
+
+  const selectedStateLabel = US_STATES.find(s => s.value === selectedState)?.label ?? "";
+
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
-        title={`${areaData.title} - US Justice Bot`}
-        description={areaData.description}
-        keywords={`${areaData.title.toLowerCase()}, legal help, ${areaData.keywords.join(", ")}`}
+        title={`${areaData.title} Help by State — Veritas Path`}
+        description={`Free state-specific guidance for ${areaData.title.toLowerCase()} cases: forms, deadlines, fees, and key laws for all 50 states. Powered by Justice-Bot.`}
+        keywords={`${areaData.title.toLowerCase()}, ${areaData.keywords.join(", ")}, legal help by state, self-help legal`}
       />
       <Header language={language} onLanguageChange={setLanguage} />
       
       <main className="container mx-auto px-4 py-8">
-        {/* Back Button */}
-        <Button 
-          variant="ghost" 
-          onClick={() => navigate("/")}
-          className="mb-6"
-        >
-          <ArrowLeft className="w-4 h-4 mr-2" />
-          Back to Home
-        </Button>
+        {/* Breadcrumb */}
+        <nav aria-label="Breadcrumb" className="flex items-center gap-1 text-sm text-muted-foreground mb-6">
+          <Link to="/" className="hover:text-foreground transition-colors">Home</Link>
+          <ChevronRight className="w-3 h-3" />
+          <Link to="/legal-areas" className="hover:text-foreground transition-colors">Legal Areas</Link>
+          <ChevronRight className="w-3 h-3" />
+          <span className="text-foreground font-medium">{areaData.title}</span>
+        </nav>
 
         {/* Hero Section */}
         <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-2xl p-8 mb-8">
@@ -171,7 +177,7 @@ const LegalAreaPage = () => {
                 <ul className="space-y-3">
                   {stateGuidance.fees.map((fee, index) => (
                     <li key={index} className="flex items-start gap-3 p-3 bg-muted/50 rounded-lg">
-                      <DollarSign className="w-4 h-4 text-green-600 mt-1" />
+                      <DollarSign className="w-4 h-4 text-primary mt-1" />
                       <div>
                         <p className="font-medium">{fee.name}</p>
                         <p className="text-sm text-muted-foreground">{fee.amount}</p>
@@ -229,7 +235,7 @@ const LegalAreaPage = () => {
         </Card>
 
         {/* CTA Section */}
-        <Card className="bg-primary text-primary-foreground">
+        <Card className="bg-primary text-primary-foreground mb-8">
           <CardContent className="py-8 text-center">
             <h2 className="text-2xl font-bold mb-4">Ready to Analyze Your {areaData.title} Case?</h2>
             <p className="mb-6 opacity-90">
@@ -254,9 +260,39 @@ const LegalAreaPage = () => {
             </div>
           </CardContent>
         </Card>
+
+        {/* Related Legal Areas — boosts internal linking & crawlability */}
+        <section aria-labelledby="related-areas-heading" className="mb-8">
+          <h2 id="related-areas-heading" className="text-xl font-semibold mb-4">Explore Related Legal Areas</h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+            {relatedAreaIds.map((id) => {
+              const area = legalAreaData[id];
+              if (!area) return null;
+              const AreaIcon = area.icon;
+              return (
+                <Link
+                  key={id}
+                  to={`/legal-areas/${id}`}
+                  className="flex flex-col items-center gap-2 p-4 rounded-xl border bg-card hover:bg-accent transition-colors text-center"
+                >
+                  <AreaIcon className="w-6 h-6 text-primary" />
+                  <span className="text-sm font-medium leading-tight">{area.title}</span>
+                </Link>
+              );
+            })}
+            <Link
+              to="/legal-areas"
+              className="flex flex-col items-center gap-2 p-4 rounded-xl border bg-card hover:bg-accent transition-colors text-center"
+            >
+              <ChevronRight className="w-6 h-6 text-primary" />
+              <span className="text-sm font-medium leading-tight">All Legal Areas</span>
+            </Link>
+          </div>
+        </section>
       </main>
     </div>
   );
 };
 
 export default LegalAreaPage;
+
