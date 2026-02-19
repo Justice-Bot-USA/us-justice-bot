@@ -23,7 +23,6 @@ export interface SitemapRoute {
   path: string;
   priority: number;
   changefreq: "always" | "hourly" | "daily" | "weekly" | "monthly" | "yearly" | "never";
-  /** Override lastmod; defaults to today's date at build time */
   lastmod?: string;
 }
 
@@ -96,6 +95,53 @@ export const funnelRoutes: SitemapRoute[] = [
   { path: "/pennsylvania-legal-help",        priority: 0.6, changefreq: "monthly" },
 ];
 
+// ─── State tool landing pages ─────────────────────────────────────────────────
+// Tier 1 (highest ROI): FL, TX, CA, NY, AZ → priority 0.9
+// Tier 2: GA, OH, PA, IL, NC              → priority 0.8
+// Tier 3: NJ, WA, CO, MI, VA             → priority 0.7
+// All others                              → priority 0.6
+
+const TIER1_SLUGS = ["florida", "texas", "california", "new-york", "arizona"];
+const TIER2_SLUGS = ["georgia", "ohio", "pennsylvania", "illinois", "north-carolina"];
+const TIER3_SLUGS = ["new-jersey", "washington", "colorado", "michigan", "virginia"];
+
+const ALL_STATE_SLUGS = [
+  "alabama", "alaska", "arizona", "arkansas", "california", "colorado",
+  "connecticut", "delaware", "florida", "georgia", "hawaii", "idaho",
+  "illinois", "indiana", "iowa", "kansas", "kentucky", "louisiana",
+  "maine", "maryland", "massachusetts", "michigan", "minnesota", "mississippi",
+  "missouri", "montana", "nebraska", "nevada", "new-hampshire", "new-jersey",
+  "new-mexico", "new-york", "north-carolina", "north-dakota", "ohio",
+  "oklahoma", "oregon", "pennsylvania", "rhode-island", "south-carolina",
+  "south-dakota", "tennessee", "texas", "utah", "vermont", "virginia",
+  "washington", "west-virginia", "wisconsin", "wyoming",
+];
+
+function stateToolPriority(stateSlug: string): number {
+  if (TIER1_SLUGS.includes(stateSlug)) return 0.9;
+  if (TIER2_SLUGS.includes(stateSlug)) return 0.8;
+  if (TIER3_SLUGS.includes(stateSlug)) return 0.7;
+  return 0.6;
+}
+
+export const stateToolRoutes: SitemapRoute[] = ALL_STATE_SLUGS.flatMap((slug) => [
+  {
+    path: `/${slug}-warrant-lookup`,
+    priority: stateToolPriority(slug),
+    changefreq: "weekly" as const,
+  },
+  {
+    path: `/${slug}-court-forms`,
+    priority: stateToolPriority(slug),
+    changefreq: "weekly" as const,
+  },
+  {
+    path: `/${slug}-arrest-records`,
+    priority: stateToolPriority(slug),
+    changefreq: "monthly" as const,
+  },
+]);
+
 // ─── Info / legal pages ────────────────────────────────────────────────────────
 export const infoRoutes: SitemapRoute[] = [
   { path: "/support",                        priority: 0.6, changefreq: "monthly" },
@@ -112,5 +158,6 @@ export const allSitemapRoutes: SitemapRoute[] = [
   ...legalAreaRoutes,
   ...stateRoutes,
   ...funnelRoutes,
+  ...stateToolRoutes,
   ...infoRoutes,
 ];
