@@ -1,5 +1,5 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
-import { corsHeaders, handleCors } from "../_shared/auth.ts";
+import { corsHeaders, handleCors, requireUser } from "../_shared/auth.ts";
 import { successResponse, errorResponse, handleError } from "../_shared/errors.ts";
 import { SWEEP_SYSTEM_PROMPT, getVenuePrompt } from "../_shared/sweepPrompts.ts";
 import { startSweep, completeSweep, failSweep, updateSweepProgress } from "../_shared/sweepDb.ts";
@@ -12,6 +12,8 @@ Deno.serve(async (req: Request) => {
   if (corsResponse) return corsResponse;
 
   try {
+    await requireUser(req);
+
     const { intake, classification, state, county, caseId, userId } = await req.json();
     
     console.log("Running Sweep 3: Venue Resolution", { state, county });

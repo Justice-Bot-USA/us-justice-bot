@@ -1,17 +1,16 @@
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
-};
+import { corsHeaders, handleCors, requireUser } from "../_shared/auth.ts";
 
 Deno.serve(async (req) => {
-  if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
-  }
+  const corsResponse = handleCors(req);
+  if (corsResponse) return corsResponse;
 
   try {
+    // Require authentication to prevent scraping abuse
+    await requireUser(req);
+
     const body = await req.json();
     const { action } = body;
+
 
     // Return the Mapbox token for client-side use (publishable key)
     // Restricted to trusted origins to prevent quota abuse
@@ -130,9 +129,10 @@ Deno.serve(async (req) => {
     );
   } catch (error) {
     console.error("Sex offender search error:", error);
+    const isAuth = error instanceof Error && error.message.includes("authorization");
     return new Response(
-      JSON.stringify({ success: false, error: error instanceof Error ? error.message : "Unknown error" }),
-      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      JSON.stringify({ success: false, error: isAuth ? "Unauthorized" : (error instanceof Error ? error.message : "Unknown error") }),
+      { status: isAuth ? 401 : 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }
 });

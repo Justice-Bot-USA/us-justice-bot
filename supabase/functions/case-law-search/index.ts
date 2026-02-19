@@ -1,5 +1,5 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
-import { corsHeaders, handleCors } from "../_shared/auth.ts";
+import { corsHeaders, handleCors, requireUser } from "../_shared/auth.ts";
 import { successResponse, errorResponse } from "../_shared/errors.ts";
 import { callAI, parseAIJson, RateLimitError, PaymentRequiredError } from "../_shared/ai.ts";
 
@@ -9,6 +9,9 @@ Deno.serve(async (req: Request) => {
   if (corsResponse) return corsResponse;
 
   try {
+    // Require authentication to prevent AI quota abuse
+    await requireUser(req);
+
     const { state, legalArea, legalCategory, caseDescription } = await req.json();
 
     // Input validation

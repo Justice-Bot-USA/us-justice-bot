@@ -1,6 +1,6 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { createClient, SupabaseClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { corsHeaders, handleCors } from "../_shared/auth.ts";
+import { corsHeaders, handleCors, requireUser } from "../_shared/auth.ts";
 import { successResponse, errorResponse } from "../_shared/errors.ts";
 import { getServiceClient, startSweep, completeSweep, failSweep, updateSweepProgress } from "../_shared/sweepDb.ts";
 import { 
@@ -396,6 +396,9 @@ Deno.serve(async (req: Request) => {
   if (corsResponse) return corsResponse;
 
   try {
+    // Require authentication - sweep worker is triggered by authenticated users
+    await requireUser(req);
+
     const client = getServiceClient();
     
     // Claim a job
