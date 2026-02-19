@@ -56,6 +56,7 @@ export const toolRoutes: SitemapRoute[] = [
 
 // ─── Legal area pages ──────────────────────────────────────────────────────────
 export const legalAreaRoutes: SitemapRoute[] = [
+  { path: "/legal-areas",                   priority: 0.9, changefreq: "weekly" },
   { path: "/legal-areas/immigration",       priority: 0.8, changefreq: "weekly" },
   { path: "/legal-areas/family-law",        priority: 0.8, changefreq: "weekly" },
   { path: "/legal-areas/employment",        priority: 0.8, changefreq: "weekly" },
