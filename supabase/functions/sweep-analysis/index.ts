@@ -13,6 +13,8 @@ Deno.serve(async (req: Request) => {
   if (corsResponse) return corsResponse;
 
   try {
+    await requireUser(req);
+
     const { caseProfile, saveToDb, caseId, userId } = await req.json();
     
     console.log("Running Sweep 6: Final Analysis Report");

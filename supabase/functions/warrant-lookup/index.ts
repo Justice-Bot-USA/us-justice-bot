@@ -1,15 +1,13 @@
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
-};
+import { corsHeaders, handleCors, requireUser } from "../_shared/auth.ts";
 
 Deno.serve(async (req) => {
-  if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
-  }
+  const corsResponse = handleCors(req);
+  if (corsResponse) return corsResponse;
 
   try {
+    // Require authentication to prevent scraping abuse
+    await requireUser(req);
+
     const { name, state, county } = await req.json();
 
     if (!name || !state) {
@@ -100,15 +98,18 @@ Deno.serve(async (req) => {
     );
   } catch (error) {
     console.error("Warrant lookup error:", error);
+    const isAuth = error instanceof Error && error.message.includes("authorization");
     const isTimeout = error instanceof DOMException && error.name === "AbortError";
     return new Response(
       JSON.stringify({
         success: false,
-        error: isTimeout
+        error: isAuth
+          ? "Unauthorized"
+          : isTimeout
           ? "Search timed out. The public records service is slow right now — please try again or check your state's official court portal directly."
           : error instanceof Error ? error.message : "Unknown error",
       }),
-      { status: isTimeout ? 504 : 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      { status: isAuth ? 401 : isTimeout ? 504 : 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }
 });
