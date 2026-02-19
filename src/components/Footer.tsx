@@ -52,6 +52,7 @@ const Footer = () => {
               <li><Link to="/legal-areas/consumer-rights" className="hover:opacity-100 transition-opacity">Consumer Protection</Link></li>
               <li><Link to="/legal-areas/civil-rights" className="hover:opacity-100 transition-opacity">Civil Rights</Link></li>
               <li><Link to="/legal-areas/immigration" className="hover:opacity-100 transition-opacity">Immigration</Link></li>
+              <li><Link to="/legal-areas/criminal-defense" className="hover:opacity-100 transition-opacity">Criminal Defense</Link></li>
               <li><Link to="/legal-areas/human-rights" className="hover:opacity-100 transition-opacity">Human Rights</Link></li>
             </ul>
           </div>
