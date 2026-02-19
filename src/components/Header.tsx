@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Globe, User, LogOut, Settings, Briefcase, Sparkles, FileText, TrendingUp, Menu, Gavel, BookOpen, FolderOpen, Scale, Shield, ShieldAlert, ScrollText, GraduationCap } from "lucide-react";
+import { Globe, User, LogOut, Settings, Briefcase, Sparkles, FileText, TrendingUp, Menu, Gavel, BookOpen, FolderOpen, Scale, Shield, ShieldAlert, ScrollText, GraduationCap, LayoutGrid } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useAdminAccess } from "@/hooks/useAdminAccess";
 import logoImage from "@/assets/veritas-path-logo.png";
@@ -73,6 +73,13 @@ const Header = ({ language, onLanguageChange }: HeaderProps) => {
                 </SelectContent>
               </Select>
             </div>
+
+            <Button asChild variant="ghost" size="sm" className="text-primary-foreground hover:bg-white/10">
+              <Link to="/legal-areas">
+                <LayoutGrid className="w-4 h-4 mr-1" aria-hidden="true" />
+                Legal Areas
+              </Link>
+            </Button>
 
             <Button asChild variant="ghost" size="sm" className="text-primary-foreground hover:bg-white/10">
               <Link to="/usa-forms">
@@ -219,6 +226,12 @@ const Header = ({ language, onLanguageChange }: HeaderProps) => {
                   </div>
 
                   <nav className="space-y-2" aria-label="Primary">
+                    <Button asChild variant="secondary" className="w-full justify-start">
+                      <Link to="/legal-areas">
+                        <LayoutGrid className="w-4 h-4 mr-2" aria-hidden="true" />
+                        Legal Areas Hub
+                      </Link>
+                    </Button>
                     <Button asChild variant="secondary" className="w-full justify-start">
                       <Link to="/usa-forms">
                         <Scale className="w-4 h-4 mr-2" aria-hidden="true" />
