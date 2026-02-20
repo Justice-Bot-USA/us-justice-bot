@@ -1,4 +1,4 @@
-import { createClient, SupabaseClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { createClient, SupabaseClient } from "npm:@supabase/supabase-js@2.49.4";
 
 // ============================================================
 // CORS Utilities
@@ -77,20 +77,16 @@ export async function requireUser(req: Request): Promise<AuthResult> {
   const token = authHeader.replace("Bearer ", "");
   const userClient = createUserClient(token);
   
-  // Use getClaims (signing-keys compatible) — no network round-trip, verifies JWT locally
-  const { data, error } = await userClient.auth.getClaims(token);
+  const { data: { user }, error } = await userClient.auth.getUser(token);
 
-  if (error || !data?.claims) {
+  if (error || !user) {
     console.error("Auth error:", error?.message);
     throw new Error("Invalid or expired token");
   }
 
-  const userId = data.claims.sub as string;
-  const email = data.claims.email as string | undefined;
-
   return {
-    userId,
-    email,
+    userId: user.id,
+    email: user.email,
     userClient,
   };
 }
