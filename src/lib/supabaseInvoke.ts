@@ -18,9 +18,11 @@ export async function invokeAuthed<T = any>(
     data: { session },
   } = await supabase.auth.getSession();
 
-  const authHeader = session?.access_token
-    ? { Authorization: `Bearer ${session.access_token}` }
-    : {};
+  if (!session?.access_token) {
+    throw new Error("Not authenticated. Please sign in and try again.");
+  }
+
+  const authHeader = { Authorization: `Bearer ${session.access_token}` };
 
   return supabase.functions.invoke<T>(functionName, {
     ...options,
