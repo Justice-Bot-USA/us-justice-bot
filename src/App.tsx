@@ -44,6 +44,9 @@ import PublicRecordsRequest from "./pages/PublicRecordsRequest";
 import CertificateVerify from "./pages/CertificateVerify";
 import LegalAreasHub from "./pages/LegalAreasHub";
 import CourtListenerSearch from "./pages/CourtListenerSearch";
+import SelfHelpHub from "./pages/SelfHelpHub";
+import LegalGlossary from "./pages/LegalGlossary";
+import CourtroomPrep from "./pages/CourtroomPrep";
 const queryClient = new QueryClient();
 
 export default function App() {
@@ -87,6 +90,9 @@ export default function App() {
             <Route path="/sex-offender-registry" element={<SexOffenderRegistry />} />
             <Route path="/court-records" element={<CourtRecordsLookup />} />
             <Route path="/courtlistener" element={<CourtListenerSearch />} />
+            <Route path="/self-help" element={<SelfHelpHub />} />
+            <Route path="/legal-glossary" element={<LegalGlossary />} />
+            <Route path="/courtroom-prep" element={<CourtroomPrep />} />
             <Route path="/start" element={<StartPage />} />
             <Route path="/foia-request-generator" element={<PublicRecordsRequest />} />
             <Route path="/public-records-request" element={<PublicRecordsRequest />} />
