@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   ArrowLeft, Search, ExternalLink, MapPin, FileText, Loader2,
-  Scale, AlertTriangle, Building2, Globe, Gavel
+  Scale, AlertTriangle, Building2, Globe, Gavel, BookOpen, Mic, FolderOpen
 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { US_STATES } from "@/lib/states";
@@ -88,13 +88,22 @@ interface SearchResult {
   markdown?: string;
 }
 
-interface FederalResult {
+interface CLResult {
+  type: string;
   title: string;
   url: string;
   docketNumber: string;
   court: string;
-  dateFiled: string;
-  description: string;
+  dateFiled?: string;
+  dateArgued?: string;
+  citation?: string;
+  status?: string;
+  author?: string;
+  snippet?: string;
+  downloadUrl?: string;
+  suitNature?: string;
+  assignedTo?: string;
+  duration?: number;
 }
 
 export default function CourtRecordsLookup() {
@@ -104,7 +113,9 @@ export default function CourtRecordsLookup() {
   const [caseType, setCaseType] = useState("");
   const [isSearching, setIsSearching] = useState(false);
   const [results, setResults] = useState<SearchResult[]>([]);
-  const [federalResults, setFederalResults] = useState<FederalResult[]>([]);
+  const [opinions, setOpinions] = useState<CLResult[]>([]);
+  const [dockets, setDockets] = useState<CLResult[]>([]);
+  const [oralArguments, setOralArguments] = useState<CLResult[]>([]);
   const [disclaimer, setDisclaimer] = useState("");
   const [hasSearched, setHasSearched] = useState(false);
   const [portalFilter, setPortalFilter] = useState("");
@@ -134,9 +145,12 @@ export default function CourtRecordsLookup() {
 
       if (data?.success) {
         setResults(data.results || []);
-        setFederalResults(data.federalResults || []);
+        setOpinions(data.opinions || []);
+        setDockets(data.dockets || []);
+        setOralArguments(data.oralArguments || []);
         setDisclaimer(data.disclaimer || "");
-        trackUSLookupCompleted('court_records', searchState, (data.results || []).length + (data.federalResults || []).length);
+        const totalCount = (data.results || []).length + (data.opinions || []).length + (data.dockets || []).length + (data.oralArguments || []).length;
+        trackUSLookupCompleted('court_records', searchState, totalCount);
       } else {
         toast({ title: "Search failed", description: data?.error || "Unknown error", variant: "destructive" });
       }
@@ -299,32 +313,118 @@ export default function CourtRecordsLookup() {
               </CardContent>
             </Card>
 
-            {/* Federal Results from CourtListener */}
-            {federalResults.length > 0 && (
+            {/* Court Opinions from CourtListener */}
+            {opinions.length > 0 && (
               <Card>
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center gap-2">
-                    <Building2 className="h-5 w-5 text-primary" />
-                    Federal Court Results (CourtListener)
+                    <BookOpen className="h-5 w-5 text-primary" />
+                    Court Opinions
+                    <Badge variant="secondary">{opinions.length}</Badge>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
-                    {federalResults.map((r, i) => (
+                    {opinions.map((r, i) => (
                       <div key={i} className="p-4 rounded-lg border hover:border-primary/50 transition-colors">
                         <div className="flex items-start justify-between gap-2">
                           <div className="flex-1 min-w-0">
-                            <h4 className="font-semibold">{r.title}</h4>
+                            <a href={r.url} target="_blank" rel="noopener noreferrer" className="font-semibold text-primary hover:underline">
+                              {r.title}
+                            </a>
                             <div className="flex flex-wrap gap-2 mt-1">
-                              <Badge variant="outline" className="text-xs">{r.docketNumber}</Badge>
+                              {r.docketNumber && <Badge variant="outline" className="text-xs">#{r.docketNumber}</Badge>}
                               {r.court && <Badge variant="secondary" className="text-xs">{r.court}</Badge>}
+                              {r.status && <Badge variant="outline" className="text-xs">{r.status}</Badge>}
                               {r.dateFiled && <span className="text-xs text-muted-foreground">Filed: {r.dateFiled}</span>}
                             </div>
-                            {r.description && <p className="text-sm text-muted-foreground mt-2">{r.description}</p>}
+                            {r.citation && <p className="text-xs text-muted-foreground mt-1">{r.citation}</p>}
+                            {r.snippet && <p className="text-sm text-muted-foreground mt-2 line-clamp-2" dangerouslySetInnerHTML={{ __html: r.snippet }} />}
+                            {r.author && <p className="text-xs text-muted-foreground mt-1">Author: {r.author}</p>}
                           </div>
                           <Button variant="outline" size="sm" asChild>
                             <a href={r.url} target="_blank" rel="noopener noreferrer">
-                              View <ExternalLink className="h-3 w-3 ml-1" />
+                              <ExternalLink className="h-3 w-3" />
+                            </a>
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Dockets from CourtListener */}
+            {dockets.length > 0 && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <FolderOpen className="h-5 w-5 text-primary" />
+                    Dockets & Filings
+                    <Badge variant="secondary">{dockets.length}</Badge>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    {dockets.map((r, i) => (
+                      <div key={i} className="p-4 rounded-lg border hover:border-primary/50 transition-colors">
+                        <div className="flex items-start justify-between gap-2">
+                          <div className="flex-1 min-w-0">
+                            <a href={r.url} target="_blank" rel="noopener noreferrer" className="font-semibold text-primary hover:underline">
+                              {r.title}
+                            </a>
+                            <div className="flex flex-wrap gap-2 mt-1">
+                              {r.docketNumber && <Badge variant="outline" className="text-xs">#{r.docketNumber}</Badge>}
+                              {r.court && <Badge variant="secondary" className="text-xs">{r.court}</Badge>}
+                              {r.suitNature && <Badge variant="outline" className="text-xs">{r.suitNature}</Badge>}
+                              {r.dateFiled && <span className="text-xs text-muted-foreground">Filed: {r.dateFiled}</span>}
+                            </div>
+                            {r.assignedTo && <p className="text-xs text-muted-foreground mt-1">Assigned to: {r.assignedTo}</p>}
+                            {r.snippet && <p className="text-sm text-muted-foreground mt-2 line-clamp-2" dangerouslySetInnerHTML={{ __html: r.snippet }} />}
+                          </div>
+                          <Button variant="outline" size="sm" asChild>
+                            <a href={r.url} target="_blank" rel="noopener noreferrer">
+                              <ExternalLink className="h-3 w-3" />
+                            </a>
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Oral Arguments from CourtListener */}
+            {oralArguments.length > 0 && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <Mic className="h-5 w-5 text-primary" />
+                    Oral Arguments
+                    <Badge variant="secondary">{oralArguments.length}</Badge>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    {oralArguments.map((r, i) => (
+                      <div key={i} className="p-4 rounded-lg border hover:border-primary/50 transition-colors">
+                        <div className="flex items-start justify-between gap-2">
+                          <div className="flex-1 min-w-0">
+                            <a href={r.url} target="_blank" rel="noopener noreferrer" className="font-semibold text-primary hover:underline">
+                              {r.title}
+                            </a>
+                            <div className="flex flex-wrap gap-2 mt-1">
+                              {r.docketNumber && <Badge variant="outline" className="text-xs">#{r.docketNumber}</Badge>}
+                              {r.court && <Badge variant="secondary" className="text-xs">{r.court}</Badge>}
+                              {r.dateArgued && <span className="text-xs text-muted-foreground">Argued: {r.dateArgued}</span>}
+                            </div>
+                            {r.snippet && <p className="text-sm text-muted-foreground mt-2 line-clamp-2" dangerouslySetInnerHTML={{ __html: r.snippet }} />}
+                          </div>
+                          <Button variant="outline" size="sm" asChild>
+                            <a href={r.url} target="_blank" rel="noopener noreferrer">
+                              <ExternalLink className="h-3 w-3" />
                             </a>
                           </Button>
                         </div>
@@ -341,7 +441,7 @@ export default function CourtRecordsLookup() {
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center gap-2">
                     <Globe className="h-5 w-5 text-primary" />
-                    Public Records Search Results
+                    State Portal Search Results
                     {results.length > 0 && <Badge variant="secondary">{results.length} found</Badge>}
                   </CardTitle>
                 </CardHeader>
@@ -367,7 +467,7 @@ export default function CourtRecordsLookup() {
                         </div>
                       ))}
                     </div>
-                  ) : !isSearching ? (
+                  ) : !isSearching && opinions.length === 0 && dockets.length === 0 && oralArguments.length === 0 ? (
                     <p className="text-center text-muted-foreground py-6">
                       No public records found. Try searching directly on your state's court portal below, or contact the court clerk.
                     </p>
