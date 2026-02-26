@@ -1354,6 +1354,83 @@ export type Database = {
           },
         ]
       }
+      saved_court_results: {
+        Row: {
+          absolute_url: string | null
+          author: string | null
+          case_id: string | null
+          case_name: string
+          citation: string | null
+          court: string | null
+          court_id: string | null
+          created_at: string
+          date_argued: string | null
+          date_filed: string | null
+          docket_number: string | null
+          download_url: string | null
+          id: string
+          notes: string | null
+          search_type: string
+          snippet: string | null
+          source_id: string | null
+          status: string | null
+          suit_nature: string | null
+          user_id: string
+        }
+        Insert: {
+          absolute_url?: string | null
+          author?: string | null
+          case_id?: string | null
+          case_name: string
+          citation?: string | null
+          court?: string | null
+          court_id?: string | null
+          created_at?: string
+          date_argued?: string | null
+          date_filed?: string | null
+          docket_number?: string | null
+          download_url?: string | null
+          id?: string
+          notes?: string | null
+          search_type?: string
+          snippet?: string | null
+          source_id?: string | null
+          status?: string | null
+          suit_nature?: string | null
+          user_id: string
+        }
+        Update: {
+          absolute_url?: string | null
+          author?: string | null
+          case_id?: string | null
+          case_name?: string
+          citation?: string | null
+          court?: string | null
+          court_id?: string | null
+          created_at?: string
+          date_argued?: string | null
+          date_filed?: string | null
+          docket_number?: string | null
+          download_url?: string | null
+          id?: string
+          notes?: string | null
+          search_type?: string
+          snippet?: string | null
+          source_id?: string | null
+          status?: string | null
+          suit_nature?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "saved_court_results_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "case_merit_scores"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       subscriptions: {
         Row: {
           amount: number

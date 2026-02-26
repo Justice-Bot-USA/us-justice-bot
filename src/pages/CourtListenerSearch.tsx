@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -11,10 +11,12 @@ import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Search, CalendarIcon, ExternalLink, Scale, Loader2, ChevronLeft, ChevronRight, AlertTriangle } from "lucide-react";
+import { Search, CalendarIcon, ExternalLink, Scale, Loader2, ChevronLeft, ChevronRight, AlertTriangle, Bookmark, BookmarkCheck, FolderOpen } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { useState as useLanguageState } from "react";
+import { useAuth } from "@/hooks/useAuth";
+import { useSavedCourtResults } from "@/hooks/useSavedCourtResults";
+import { useCases } from "@/hooks/useCases";
 
 interface CourtResult {
   id: number;
@@ -70,7 +72,13 @@ export default function CourtListenerSearch() {
   const [page, setPage] = useState(1);
   const [hasSearched, setHasSearched] = useState(false);
   const [disclaimer, setDisclaimer] = useState("");
-  const [language, setLanguage] = useLanguageState<'en' | 'es'>('en');
+  const [language, setLanguage] = useState<'en' | 'es'>('en');
+  const [linkedCaseId, setLinkedCaseId] = useState<string>("");
+  const [savingId, setSavingId] = useState<number | null>(null);
+
+  const { user } = useAuth();
+  const { cases } = useCases();
+  const { saveResult, isResultSaved, refreshSaved } = useSavedCourtResults();
 
   const handleSearch = useCallback(async (pageNum = 1) => {
     if (!query.trim()) {
@@ -110,6 +118,12 @@ export default function CourtListenerSearch() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     handleSearch(1);
+  };
+
+  const handleSave = async (result: CourtResult) => {
+    setSavingId(result.id);
+    await saveResult(result, searchType, linkedCaseId || undefined);
+    setSavingId(null);
   };
 
   return (
@@ -158,7 +172,6 @@ export default function CourtListenerSearch() {
 
                 {/* Filters Row */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  {/* Court Filter */}
                   <Select value={court || "__all__"} onValueChange={(v) => setCourt(v === "__all__" ? "" : v)}>
                     <SelectTrigger>
                       <SelectValue placeholder="All Courts" />
@@ -170,7 +183,6 @@ export default function CourtListenerSearch() {
                     </SelectContent>
                   </Select>
 
-                  {/* Date After */}
                   <Popover>
                     <PopoverTrigger asChild>
                       <Button variant="outline" className={cn("justify-start text-left font-normal", !dateAfter && "text-muted-foreground")}>
@@ -183,7 +195,6 @@ export default function CourtListenerSearch() {
                     </PopoverContent>
                   </Popover>
 
-                  {/* Date Before */}
                   <Popover>
                     <PopoverTrigger asChild>
                       <Button variant="outline" className={cn("justify-start text-left font-normal", !dateBefore && "text-muted-foreground")}>
@@ -197,12 +208,30 @@ export default function CourtListenerSearch() {
                   </Popover>
                 </div>
 
-                {/* Actions */}
-                <div className="flex gap-3">
-                  <Button type="submit" disabled={loading} className="flex-1 sm:flex-none">
+                {/* Link to case + Actions */}
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Button type="submit" disabled={loading} className="sm:flex-none">
                     {loading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Search className="h-4 w-4 mr-2" />}
                     Search
                   </Button>
+
+                  {user && cases.length > 0 && (
+                    <Select value={linkedCaseId || "__none__"} onValueChange={(v) => setLinkedCaseId(v === "__none__" ? "" : v)}>
+                      <SelectTrigger className="w-full sm:w-[260px]">
+                        <FolderOpen className="h-4 w-4 mr-2 shrink-0" />
+                        <SelectValue placeholder="Link saves to a case..." />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="__none__">No case linked</SelectItem>
+                        {cases.map((c) => (
+                          <SelectItem key={c.id} value={c.id}>
+                            {c.case_title.length > 35 ? c.case_title.slice(0, 35) + "…" : c.case_title}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  )}
+
                   {(dateAfter || dateBefore || court) && (
                     <Button type="button" variant="ghost" onClick={() => { setDateAfter(undefined); setDateBefore(undefined); setCourt(""); }}>
                       Clear Filters
@@ -243,57 +272,78 @@ export default function CourtListenerSearch() {
                 </Card>
               )}
 
-              {results.map((r) => (
-                <Card key={r.id} className="hover:border-primary/30 transition-colors">
-                  <CardContent className="p-5">
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="flex-1 min-w-0">
-                        <a
-                          href={r.absoluteUrl ? `https://www.courtlistener.com${r.absoluteUrl}` : "#"}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-primary hover:underline font-semibold text-lg leading-tight"
-                        >
-                          {r.caseName || "Untitled Case"}
-                        </a>
+              {results.map((r) => {
+                const saved = isResultSaved(r.id);
+                return (
+                  <Card key={r.id} className="hover:border-primary/30 transition-colors">
+                    <CardContent className="p-5">
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="flex-1 min-w-0">
+                          <a
+                            href={r.absoluteUrl ? `https://www.courtlistener.com${r.absoluteUrl}` : "#"}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-primary hover:underline font-semibold text-lg leading-tight"
+                          >
+                            {r.caseName || "Untitled Case"}
+                          </a>
 
-                        <div className="flex flex-wrap gap-2 mt-2">
-                          {r.court && <Badge variant="secondary">{r.court}</Badge>}
-                          {r.dateFiled && <Badge variant="outline">{r.dateFiled}</Badge>}
-                          {r.status && <Badge variant="outline">{r.status}</Badge>}
-                          {r.docketNumber && <Badge variant="outline">#{r.docketNumber}</Badge>}
+                          <div className="flex flex-wrap gap-2 mt-2">
+                            {r.court && <Badge variant="secondary">{r.court}</Badge>}
+                            {r.dateFiled && <Badge variant="outline">{r.dateFiled}</Badge>}
+                            {r.status && <Badge variant="outline">{r.status}</Badge>}
+                            {r.docketNumber && <Badge variant="outline">#{r.docketNumber}</Badge>}
+                          </div>
+
+                          {r.citation && (
+                            <p className="text-sm text-muted-foreground mt-2">{r.citation}</p>
+                          )}
+
+                          {r.snippet && (
+                            <p
+                              className="text-sm text-muted-foreground mt-2 line-clamp-3"
+                              dangerouslySetInnerHTML={{ __html: r.snippet }}
+                            />
+                          )}
+
+                          {r.author && (
+                            <p className="text-xs text-muted-foreground mt-2">Author: {r.author}</p>
+                          )}
                         </div>
 
-                        {r.citation && (
-                          <p className="text-sm text-muted-foreground mt-2">{r.citation}</p>
-                        )}
-
-                        {r.snippet && (
-                          <p
-                            className="text-sm text-muted-foreground mt-2 line-clamp-3"
-                            dangerouslySetInnerHTML={{ __html: r.snippet }}
-                          />
-                        )}
-
-                        {r.author && (
-                          <p className="text-xs text-muted-foreground mt-2">Author: {r.author}</p>
-                        )}
+                        <div className="flex flex-col gap-2 shrink-0">
+                          {user && (
+                            <Button
+                              size="sm"
+                              variant={saved ? "default" : "outline"}
+                              onClick={() => handleSave(r)}
+                              disabled={saved || savingId === r.id}
+                              title={saved ? "Already saved" : "Save to your cases"}
+                            >
+                              {savingId === r.id ? (
+                                <Loader2 className="h-4 w-4 animate-spin" />
+                              ) : saved ? (
+                                <BookmarkCheck className="h-4 w-4" />
+                              ) : (
+                                <Bookmark className="h-4 w-4" />
+                              )}
+                            </Button>
+                          )}
+                          <a
+                            href={r.absoluteUrl ? `https://www.courtlistener.com${r.absoluteUrl}` : "#"}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <Button size="sm" variant="outline">
+                              <ExternalLink className="h-4 w-4" />
+                            </Button>
+                          </a>
+                        </div>
                       </div>
-
-                      <a
-                        href={r.absoluteUrl ? `https://www.courtlistener.com${r.absoluteUrl}` : "#"}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="shrink-0"
-                      >
-                        <Button size="sm" variant="outline">
-                          <ExternalLink className="h-4 w-4" />
-                        </Button>
-                      </a>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+                    </CardContent>
+                  </Card>
+                );
+              })}
             </div>
           )}
 
