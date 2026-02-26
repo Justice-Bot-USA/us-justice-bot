@@ -100,3 +100,6 @@ verify_jwt = false
 
 [functions.courtlistener-search]
 verify_jwt = false
+
+[functions.juriscraper-ingest]
+verify_jwt = false

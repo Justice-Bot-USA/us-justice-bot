@@ -940,6 +940,129 @@ export type Database = {
           },
         ]
       }
+      juriscraper_ingest_logs: {
+        Row: {
+          completed_at: string | null
+          court_id: string
+          errors: Json | null
+          id: string
+          metadata: Json | null
+          opinions_inserted: number | null
+          opinions_received: number | null
+          opinions_updated: number | null
+          session_id: string
+          started_at: string
+          status: string | null
+        }
+        Insert: {
+          completed_at?: string | null
+          court_id: string
+          errors?: Json | null
+          id?: string
+          metadata?: Json | null
+          opinions_inserted?: number | null
+          opinions_received?: number | null
+          opinions_updated?: number | null
+          session_id: string
+          started_at?: string
+          status?: string | null
+        }
+        Update: {
+          completed_at?: string | null
+          court_id?: string
+          errors?: Json | null
+          id?: string
+          metadata?: Json | null
+          opinions_inserted?: number | null
+          opinions_received?: number | null
+          opinions_updated?: number | null
+          session_id?: string
+          started_at?: string
+          status?: string | null
+        }
+        Relationships: []
+      }
+      juriscraper_opinions: {
+        Row: {
+          author_judge: string | null
+          case_name: string
+          citation: string | null
+          court_id: string
+          court_name: string | null
+          date_argued: string | null
+          date_filed: string | null
+          docket_number: string | null
+          download_url: string | null
+          id: string
+          ingested_at: string
+          jurisdiction: string | null
+          nature_of_suit: string | null
+          opinion_text: string | null
+          opinion_type: string | null
+          opinion_url: string | null
+          per_curiam: boolean | null
+          precedential_status: string | null
+          raw_metadata: Json | null
+          scrape_session_id: string | null
+          source_url: string | null
+          state: string | null
+          status: string | null
+          updated_at: string
+        }
+        Insert: {
+          author_judge?: string | null
+          case_name: string
+          citation?: string | null
+          court_id: string
+          court_name?: string | null
+          date_argued?: string | null
+          date_filed?: string | null
+          docket_number?: string | null
+          download_url?: string | null
+          id?: string
+          ingested_at?: string
+          jurisdiction?: string | null
+          nature_of_suit?: string | null
+          opinion_text?: string | null
+          opinion_type?: string | null
+          opinion_url?: string | null
+          per_curiam?: boolean | null
+          precedential_status?: string | null
+          raw_metadata?: Json | null
+          scrape_session_id?: string | null
+          source_url?: string | null
+          state?: string | null
+          status?: string | null
+          updated_at?: string
+        }
+        Update: {
+          author_judge?: string | null
+          case_name?: string
+          citation?: string | null
+          court_id?: string
+          court_name?: string | null
+          date_argued?: string | null
+          date_filed?: string | null
+          docket_number?: string | null
+          download_url?: string | null
+          id?: string
+          ingested_at?: string
+          jurisdiction?: string | null
+          nature_of_suit?: string | null
+          opinion_text?: string | null
+          opinion_type?: string | null
+          opinion_url?: string | null
+          per_curiam?: boolean | null
+          precedential_status?: string | null
+          raw_metadata?: Json | null
+          scrape_session_id?: string | null
+          source_url?: string | null
+          state?: string | null
+          status?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       jurisdictions: {
         Row: {
           code: string
