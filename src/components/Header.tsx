@@ -4,7 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Globe, User, LogOut, Settings, Briefcase, Sparkles, FileText, TrendingUp, Menu, Gavel, BookOpen, FolderOpen, Scale, Shield, ShieldAlert, ScrollText, GraduationCap, LayoutGrid } from "lucide-react";
+import { Globe, User, LogOut, Settings, Briefcase, Sparkles, FileText, TrendingUp, Menu, Gavel, BookOpen, FolderOpen, Scale, Shield, ShieldAlert, ScrollText, GraduationCap, LayoutGrid, ChevronDown, Search, Database } from "lucide-react";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useAuth } from "@/hooks/useAuth";
 import { useAdminAccess } from "@/hooks/useAdminAccess";
 import logoImage from "@/assets/veritas-path-logo.png";
@@ -102,40 +104,37 @@ const Header = ({ language, onLanguageChange }: HeaderProps) => {
               </Link>
             </Button>
 
-            <Button asChild variant="ghost" size="sm" className="text-primary-foreground hover:bg-white/10">
-              <Link to="/case-law-search">
-                <BookOpen className="w-4 h-4 mr-1" aria-hidden="true" />
-                Case Law
-              </Link>
-            </Button>
-
-            <Button asChild variant="ghost" size="sm" className="text-primary-foreground hover:bg-white/10">
-              <Link to="/case-analysis">
-                <TrendingUp className="w-4 h-4 mr-1" aria-hidden="true" />
-                Merit Score
-              </Link>
-            </Button>
-
-            <Button asChild variant="ghost" size="sm" className="text-primary-foreground hover:bg-white/10">
-              <Link to="/warrant-lookup">
-                <Shield className="w-4 h-4 mr-1" aria-hidden="true" />
-                Warrants
-              </Link>
-            </Button>
-
-            <Button asChild variant="ghost" size="sm" className="text-primary-foreground hover:bg-white/10">
-              <Link to="/sex-offender-registry">
-                <ShieldAlert className="w-4 h-4 mr-1" aria-hidden="true" />
-                Registry
-              </Link>
-            </Button>
-
-            <Button asChild variant="ghost" size="sm" className="text-primary-foreground hover:bg-white/10">
-              <Link to="/court-records">
-                <ScrollText className="w-4 h-4 mr-1" aria-hidden="true" />
-                Court Records
-              </Link>
-            </Button>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="ghost" size="sm" className="text-primary-foreground hover:bg-white/10">
+                  <Database className="w-4 h-4 mr-1" aria-hidden="true" />
+                  Court Data
+                  <ChevronDown className="w-3 h-3 ml-1" aria-hidden="true" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-56 p-2" align="start">
+                <div className="flex flex-col gap-1">
+                  <Button asChild variant="ghost" size="sm" className="justify-start">
+                    <Link to="/courtlistener">
+                      <Search className="w-4 h-4 mr-2" aria-hidden="true" />
+                      CourtListener Search
+                    </Link>
+                  </Button>
+                  <Button asChild variant="ghost" size="sm" className="justify-start">
+                    <Link to="/court-records">
+                      <ScrollText className="w-4 h-4 mr-2" aria-hidden="true" />
+                      Court Records
+                    </Link>
+                  </Button>
+                  <Button asChild variant="ghost" size="sm" className="justify-start">
+                    <Link to="/case-law-search">
+                      <BookOpen className="w-4 h-4 mr-2" aria-hidden="true" />
+                      Case Law Search
+                    </Link>
+                  </Button>
+                </div>
+              </PopoverContent>
+            </Popover>
 
             <Button asChild variant="ghost" size="sm" className="text-primary-foreground hover:bg-white/10">
               <Link to="/courses">
@@ -250,36 +249,37 @@ const Header = ({ language, onLanguageChange }: HeaderProps) => {
                         Criminal Defense Guide
                       </Link>
                     </Button>
-                    <Button asChild variant="secondary" className="w-full justify-start">
-                      <Link to="/case-law-search">
-                        <BookOpen className="w-4 h-4 mr-2" aria-hidden="true" />
-                        Case Law Search
-                      </Link>
-                    </Button>
-                    <Button asChild variant="secondary" className="w-full justify-start">
-                      <Link to="/case-analysis">
-                        <TrendingUp className="w-4 h-4 mr-2" aria-hidden="true" />
-                        Merit Score
-                      </Link>
-                    </Button>
-                    <Button asChild variant="secondary" className="w-full justify-start">
-                      <Link to="/warrant-lookup">
-                        <Shield className="w-4 h-4 mr-2" aria-hidden="true" />
-                        Warrant Lookup
-                      </Link>
-                    </Button>
-                    <Button asChild variant="secondary" className="w-full justify-start">
-                      <Link to="/sex-offender-registry">
-                        <ShieldAlert className="w-4 h-4 mr-2" aria-hidden="true" />
-                        Sex Offender Registry
-                      </Link>
-                    </Button>
-                    <Button asChild variant="secondary" className="w-full justify-start">
-                      <Link to="/court-records">
-                        <ScrollText className="w-4 h-4 mr-2" aria-hidden="true" />
-                        Court Records Lookup
-                      </Link>
-                    </Button>
+                    <Collapsible>
+                      <CollapsibleTrigger asChild>
+                        <Button variant="secondary" className="w-full justify-between">
+                          <span className="flex items-center">
+                            <Database className="w-4 h-4 mr-2" aria-hidden="true" />
+                            Court Data
+                          </span>
+                          <ChevronDown className="w-4 h-4" aria-hidden="true" />
+                        </Button>
+                      </CollapsibleTrigger>
+                      <CollapsibleContent className="pl-6 space-y-1 mt-1">
+                        <Button asChild variant="ghost" className="w-full justify-start" size="sm">
+                          <Link to="/courtlistener">
+                            <Search className="w-4 h-4 mr-2" aria-hidden="true" />
+                            CourtListener Search
+                          </Link>
+                        </Button>
+                        <Button asChild variant="ghost" className="w-full justify-start" size="sm">
+                          <Link to="/court-records">
+                            <ScrollText className="w-4 h-4 mr-2" aria-hidden="true" />
+                            Court Records
+                          </Link>
+                        </Button>
+                        <Button asChild variant="ghost" className="w-full justify-start" size="sm">
+                          <Link to="/case-law-search">
+                            <BookOpen className="w-4 h-4 mr-2" aria-hidden="true" />
+                            Case Law Search
+                          </Link>
+                        </Button>
+                      </CollapsibleContent>
+                    </Collapsible>
                     <Button asChild variant="secondary" className="w-full justify-start">
                       <Link to="/ai-tools">
                         <Sparkles className="w-4 h-4 mr-2" aria-hidden="true" />
