@@ -217,13 +217,13 @@ const CaseLawSearch = () => {
                       <SelectValue placeholder="Select legal area..." />
                     </SelectTrigger>
                     <SelectContent className="max-h-60">
-                      <SelectItem value="" disabled>-- Criminal --</SelectItem>
+                      <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">Criminal</div>
                       {LEGAL_AREAS.filter(a => a.category === "criminal").map(area => (
                         <SelectItem key={area.value} value={area.value}>
                           {area.label}
                         </SelectItem>
                       ))}
-                      <SelectItem value="" disabled>-- Civil --</SelectItem>
+                      <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">Civil</div>
                       {LEGAL_AREAS.filter(a => a.category === "civil").map(area => (
                         <SelectItem key={area.value} value={area.value}>
                           {area.label}
