@@ -27,14 +27,14 @@ const Footer = () => {
             <h4 className="font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2 text-sm opacity-80">
               <li><Link to="/" className="hover:opacity-100 transition-opacity">Home</Link></li>
+              <li><Link to="/self-help" className="hover:opacity-100 transition-opacity">Self-Help Guide</Link></li>
+              <li><Link to="/legal-glossary" className="hover:opacity-100 transition-opacity">Legal Glossary</Link></li>
+              <li><Link to="/courtroom-prep" className="hover:opacity-100 transition-opacity">Courtroom Prep</Link></li>
               <li><Link to="/usa-forms" className="hover:opacity-100 transition-opacity">US Court Forms Catalog</Link></li>
               <li><Link to="/forms-library" className="hover:opacity-100 transition-opacity">Forms Library</Link></li>
               <li><Link to="/ai-tools" className="hover:opacity-100 transition-opacity">AI Tools</Link></li>
               <li><Link to="/pricing" className="hover:opacity-100 transition-opacity">Pricing</Link></li>
               <li><Link to="/faq" className="hover:opacity-100 transition-opacity">FAQ</Link></li>
-              <li><Link to="/warrant-lookup" className="hover:opacity-100 transition-opacity">Warrant Lookup</Link></li>
-              <li><Link to="/sex-offender-registry" className="hover:opacity-100 transition-opacity">Sex Offender Registry</Link></li>
-              <li><Link to="/court-records" className="hover:opacity-100 transition-opacity">Court Records Lookup</Link></li>
               <li><Link to="/support" className="hover:opacity-100 transition-opacity">Support</Link></li>
             </ul>
           </div>
