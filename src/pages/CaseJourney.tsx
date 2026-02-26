@@ -19,7 +19,9 @@ import {
   Building2,
   ClipboardCheck,
   Sparkles,
-  AlertCircle
+  AlertCircle,
+  Gavel,
+  BookOpen
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { usePaywallAccess } from '@/hooks/usePaywallAccess';
@@ -28,6 +30,7 @@ import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
 import { EvidenceUploader } from '@/components/EvidenceUploader';
 import { RelatedCasesDisplay } from '@/components/dashboard/RelatedCasesDisplay';
+import { ProceduralGuidancePanel } from '@/components/ProceduralGuidancePanel';
 import { trackAddToCart, trackBeginCheckout, getDetectedCountry } from '@/hooks/useAnalytics';
 import { isValidUUID } from '@/lib/validation';
 
@@ -354,6 +357,13 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
                     </CardContent>
                   </Card>
 
+                  {/* Procedural Guidance — contextual to case type */}
+                  <ProceduralGuidancePanel
+                    legalArea={caseData.legal_area}
+                    currentJourneyStep={1}
+                    compact
+                  />
+
                   {/* Single Primary CTA */}
                   <Button 
                     className="w-full h-14 text-lg"
@@ -665,6 +675,13 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
                     </p>
                   </div>
 
+                  {/* Procedural Guidance — filing step */}
+                  <ProceduralGuidancePanel
+                    legalArea={caseData.legal_area}
+                    currentJourneyStep={4}
+                    compact
+                  />
+
                   {/* Continue CTA */}
                   <Button 
                     className="w-full h-14 text-lg"
@@ -733,30 +750,38 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
                   </div>
 
                   {/* Action Buttons */}
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                     <Button 
                       variant="outline" 
                       className="h-12"
                       onClick={() => navigate('/book-of-documents')}
                     >
-                      <FileText className="mr-2 h-5 w-5" />
-                      Book of Documents
+                      <FileText className="mr-2 h-4 w-4" />
+                      Documents
                     </Button>
                     <Button 
                       variant="outline" 
                       className="h-12"
-                      onClick={() => setCurrentStep(2)}
+                      onClick={() => navigate('/courtroom-prep')}
                     >
-                      <Upload className="mr-2 h-5 w-5" />
-                      Add More Evidence
+                      <Gavel className="mr-2 h-4 w-4" />
+                      Court Prep
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      className="h-12"
+                      onClick={() => navigate('/legal-glossary')}
+                    >
+                      <BookOpen className="mr-2 h-4 w-4" />
+                      Glossary
                     </Button>
                     <Button 
                       variant="outline" 
                       className="h-12"
                       onClick={() => window.print()}
                     >
-                      <Printer className="mr-2 h-5 w-5" />
-                      Print Instructions
+                      <Printer className="mr-2 h-4 w-4" />
+                      Print
                     </Button>
                   </div>
 
