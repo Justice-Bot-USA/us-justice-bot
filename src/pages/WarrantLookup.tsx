@@ -1,13 +1,13 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { SEOHead } from '@/components/SEOHead';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Shield, AlertTriangle, Search, ArrowRight, Building2 } from 'lucide-react';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Shield, AlertTriangle, Search, ArrowRight, Building2, CheckCircle2, XCircle } from 'lucide-react';
 import { US_STATES } from '@/lib/states';
 import { stateToSlug } from '@/lib/warrantLookupConfig';
 
@@ -27,59 +27,30 @@ export default function WarrantLookup() {
   return (
     <div className="flex flex-col min-h-screen bg-background overflow-x-hidden">
       <SEOHead
-        title="Warrant Lookup Navigator — All 50 States | Veritas Path"
-        description="Find official sheriff and court resources to check for warrants in your state. No database — real guidance to official sources."
-        keywords="warrant lookup, active warrants, warrant search, outstanding warrants, public records search"
+        title="Warrant Lookup (State & County Guide) | Veritas Path"
+        description="There is no free national warrant search. This tool helps you find the official places to check by state and county, and explains safer next steps."
+        keywords="warrant lookup, active warrants, warrant search, outstanding warrants, county sheriff warrant list"
         url="https://justicebot-usa.com/warrant-lookup"
       />
 
-      <Header language={language} onLanguageChange={(l) => setLanguage(l)} />
+      <Header language={language} onLanguageChange={setLanguage} />
 
       {/* Hero */}
       <div className="bg-primary text-primary-foreground py-8 sm:py-12">
         <div className="container mx-auto px-4 max-w-3xl text-center">
           <Shield className="h-12 w-12 mx-auto mb-4" />
-          <h1 className="text-2xl sm:text-4xl font-bold mb-2">Warrant Lookup Navigator</h1>
-          <p className="text-primary-foreground/80 text-sm sm:text-lg max-w-xl mx-auto">
-            Find official resources to check for warrants in your state
+          <h1 className="text-2xl sm:text-4xl font-bold mb-3">Warrant Lookup (State &amp; County Guide)</h1>
+          <p className="text-primary-foreground/80 text-sm sm:text-lg max-w-2xl mx-auto">
+            There is no free national warrant search in the U.S. Most warrants are handled at the county level,
+            and many are not published online. This tool helps you find the official places to check by state
+            and county, and explains safer next steps.
           </p>
         </div>
       </div>
 
       <main className="flex-1 container mx-auto px-4 py-6 sm:py-8 max-w-3xl space-y-6">
-        {/* Section 1 — Reality Check */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <AlertTriangle className="h-5 w-5 text-destructive" />
-              What You Should Know First
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <div className="space-y-2 text-sm">
-              <div className="flex items-start gap-3 p-3 bg-muted rounded-lg">
-                <span className="font-bold text-destructive shrink-0">✕</span>
-                <p><strong>There is no national public warrant database.</strong> No website can search all warrants across all jurisdictions.</p>
-              </div>
-              <div className="flex items-start gap-3 p-3 bg-muted rounded-lg">
-                <span className="font-bold text-destructive shrink-0">✕</span>
-                <p><strong>Most warrants are handled at the county level.</strong> Sheriff offices and local courts manage warrant records individually.</p>
-              </div>
-              <div className="flex items-start gap-3 p-3 bg-muted rounded-lg">
-                <span className="font-bold text-destructive shrink-0">✕</span>
-                <p><strong>Federal warrants are sealed.</strong> They are not publicly searchable through any online system.</p>
-              </div>
-            </div>
-            <Alert className="border-primary/30 bg-primary/5">
-              <Shield className="h-4 w-4" />
-              <AlertDescription className="text-sm">
-                <strong>What this tool does:</strong> We connect you to the correct official sheriff directory and court case search for your state. No scraping, no fake databases.
-              </AlertDescription>
-            </Alert>
-          </CardContent>
-        </Card>
 
-        {/* Section 2 — State Selector */}
+        {/* State Selector — primary CTA */}
         <Card className="border-primary/30">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -87,7 +58,7 @@ export default function WarrantLookup() {
               Select Your State
             </CardTitle>
             <CardDescription>
-              We'll show you official sheriff directories, court case search portals, and know-your-rights resources for your state.
+              We'll show you official sheriff directories, court case search portals, clerk contact options, and a "what to do next" plan.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -104,15 +75,74 @@ export default function WarrantLookup() {
               </Select>
               <Button onClick={handleGo} disabled={!selectedState} className="sm:w-auto w-full">
                 <Search className="h-4 w-4 mr-2" />
-                Find Resources
+                See Official Options
                 <ArrowRight className="h-4 w-4 ml-2" />
               </Button>
             </div>
           </CardContent>
         </Card>
 
-        {/* Bottom note */}
-        <div className="text-center space-y-2">
+        {/* What this tool does / does not do */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-destructive" />
+              What This Tool Does &amp; Does Not Do
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2 text-sm">
+            <div className="flex items-start gap-2 p-2.5 bg-primary/5 rounded-lg">
+              <CheckCircle2 className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+              <p>Routes you to official county sheriff / court lookup pages (when available)</p>
+            </div>
+            <div className="flex items-start gap-2 p-2.5 bg-primary/5 rounded-lg">
+              <CheckCircle2 className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+              <p>Shows court case search portals (bench warrants may appear in case dockets)</p>
+            </div>
+            <div className="flex items-start gap-2 p-2.5 bg-primary/5 rounded-lg">
+              <CheckCircle2 className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+              <p>Gives phone/contact options for clerks or sheriff offices</p>
+            </div>
+            <div className="flex items-start gap-2 p-2.5 bg-primary/5 rounded-lg">
+              <CheckCircle2 className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+              <p>Provides a "what to do next" plan if you think a warrant exists</p>
+            </div>
+
+            <div className="border-t border-border my-3" />
+
+            <div className="flex items-start gap-2 p-2.5 bg-destructive/5 rounded-lg">
+              <XCircle className="h-4 w-4 text-destructive shrink-0 mt-0.5" />
+              <p>Does <strong>not</strong> run a nationwide warrant search</p>
+            </div>
+            <div className="flex items-start gap-2 p-2.5 bg-destructive/5 rounded-lg">
+              <XCircle className="h-4 w-4 text-destructive shrink-0 mt-0.5" />
+              <p>Does <strong>not</strong> access private or law-enforcement-only systems</p>
+            </div>
+            <div className="flex items-start gap-2 p-2.5 bg-destructive/5 rounded-lg">
+              <XCircle className="h-4 w-4 text-destructive shrink-0 mt-0.5" />
+              <p>Does <strong>not</strong> guarantee results — many warrants aren't listed online</p>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Safety note */}
+        <Alert className="border-primary/30 bg-primary/5">
+          <Shield className="h-4 w-4" />
+          <AlertDescription className="text-sm">
+            <strong>Safety note:</strong> If you think a warrant might exist, be careful about walking
+            into a police station without legal advice. Consider speaking with a criminal defense lawyer
+            or legal aid first.
+          </AlertDescription>
+        </Alert>
+
+        {/* Cross-link */}
+        <div className="text-center space-y-2 pt-2">
+          <p className="text-sm text-muted-foreground">
+            Need help with another legal topic?{' '}
+            <Link to="/legal-areas" className="text-primary hover:underline font-medium">
+              Browse Legal Areas
+            </Link>
+          </p>
           <p className="text-xs text-muted-foreground italic">
             This is a state-based navigation tool — not a warrant database. We do not access law enforcement records.
           </p>
