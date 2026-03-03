@@ -18,8 +18,8 @@ export default function TrackPage() {
     trackKey: string;
   }>();
 
-  const slug = issue || '';
-  const { hub } = useIssueHub(slug);
+  const hubKey = `${jurisdiction || 'ca'}/${category || 'family-law'}/${issue || ''}`;
+  const { hub } = useIssueHub(hubKey);
   const { track, trackForms, isLoading, error } = useTrackByKey(hub?.id, trackKey || '');
 
   if (isLoading || !hub) {

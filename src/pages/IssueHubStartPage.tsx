@@ -11,9 +11,9 @@ import { useIssueHub } from '@/hooks/useIssueHub';
 
 export default function IssueHubStartPage() {
   const { jurisdiction, category, issue } = useParams<{ jurisdiction: string; category: string; issue: string }>();
-  const slug = issue || '';
-  const { hub, triageFlow, isLoading } = useIssueHub(slug);
-  const basePath = `/${jurisdiction}/${category}/${issue}`;
+  const hubKey = `${jurisdiction || 'ca'}/${category || 'family-law'}/${issue || ''}`;
+  const { hub, triageFlow, isLoading } = useIssueHub(hubKey);
+  const basePath = `/${jurisdiction || 'ca'}/${category || 'family-law'}/${issue || ''}`;
   const triageSchema = triageFlow?.flow_schema as any;
 
   if (isLoading) {

@@ -18,11 +18,13 @@ import { US_STATES } from '@/lib/states';
 
 export default function IssueHubPage() {
   const { jurisdiction, category, issue } = useParams<{ jurisdiction: string; category: string; issue: string }>();
-  const slug = issue || '';
-  const { hub, sections, resources, triageFlow, formPackages, tracks, isLoading, error } = useIssueHub(slug);
+  const hubKey = `${jurisdiction || 'ca'}/${category || 'family-law'}/${issue || ''}`;
+  const { hub, sections, resources, triageFlow, formPackages, tracks, isLoading, error } = useIssueHub(hubKey);
 
   const [activeSection, setActiveSection] = useState('learn');
-  const [selectedState, setSelectedState] = useState(jurisdiction?.toUpperCase() || 'CA');
+  const upperJur = (jurisdiction || '').toUpperCase();
+  const isStateCode = US_STATES.some(s => s.value === upperJur);
+  const [selectedState, setSelectedState] = useState(isStateCode ? upperJur : 'CA');
 
   const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
@@ -41,7 +43,7 @@ export default function IssueHubPage() {
   const filteredResources = resources.filter(r => !r.jurisdiction_code || r.jurisdiction_code === selectedState);
 
   const triageSchema = triageFlow?.flow_schema as any;
-  const basePath = `/${jurisdiction || 'ca'}/${category || 'family'}/${issue}`;
+  const basePath = `/${jurisdiction || 'ca'}/${category || 'family-law'}/${issue || ''}`;
 
   if (isLoading) {
     return (
@@ -219,8 +221,19 @@ export default function IssueHubPage() {
                 <h2 className="text-xl font-bold text-foreground">Forms & Documents</h2>
                 <Badge variant="outline" className="ml-auto">{selectedState}</Badge>
               </div>
+              {/* Always-visible directory fallback */}
+              <SourceCard
+                formNumber="Directory"
+                title="California Courts – Court Forms Directory"
+                description="Search official Judicial Council forms by number, topic, or category."
+                officialFormPageUrl={null}
+                officialPdfUrl={null}
+                officialDirectoryUrl="https://courts.ca.gov/rules-forms/court-forms"
+                category="general"
+                isRequired={false}
+              />
               {filteredForms.length === 0 ? (
-                <Card><CardContent className="pt-6 text-center text-muted-foreground">No forms loaded for {selectedState} yet.</CardContent></Card>
+                <Card><CardContent className="pt-6 text-center text-muted-foreground">No specific forms loaded for {selectedState} yet.</CardContent></Card>
               ) : (
                 <div className="grid gap-3 sm:grid-cols-2">
                   {filteredForms.map(f => (
