@@ -14,12 +14,14 @@ import { US_STATES } from '@/lib/states';
 
 export default function IssueHubFormsPage() {
   const { jurisdiction, category, issue } = useParams<{ jurisdiction: string; category: string; issue: string }>();
-  const slug = issue || '';
-  const { hub, formPackages, isLoading } = useIssueHub(slug);
-  const [selectedState, setSelectedState] = useState(jurisdiction?.toUpperCase() || 'CA');
+  const hubKey = `${jurisdiction || 'ca'}/${category || 'family-law'}/${issue || ''}`;
+  const { hub, formPackages, isLoading } = useIssueHub(hubKey);
+  const upperJur = (jurisdiction || '').toUpperCase();
+  const isStateCode = US_STATES.some(s => s.value === upperJur);
+  const [selectedState, setSelectedState] = useState(isStateCode ? upperJur : 'CA');
 
   const filteredForms = formPackages.filter(f => f.jurisdiction_code === selectedState);
-  const basePath = `/${jurisdiction}/${category}/${issue}`;
+  const basePath = `/${jurisdiction || 'ca'}/${category || 'family-law'}/${issue || ''}`;
 
   if (isLoading) {
     return (
@@ -70,8 +72,20 @@ export default function IssueHubFormsPage() {
           </Button>
         </div>
 
+        {/* Always show Official Directory card */}
+        <SourceCard
+          formNumber="Directory"
+          title="California Courts – Court Forms Directory"
+          description="Search official Judicial Council forms by number, topic, or category. This is the canonical fallback for all CA court forms."
+          officialFormPageUrl={null}
+          officialPdfUrl={null}
+          officialDirectoryUrl="https://courts.ca.gov/rules-forms/court-forms"
+          category="general"
+          isRequired={false}
+        />
+
         {filteredForms.length === 0 ? (
-          <p className="text-center text-muted-foreground py-12">No forms loaded for {selectedState} yet.</p>
+          <p className="text-center text-muted-foreground py-8">No specific forms loaded for {selectedState} yet. Use the directory above to search.</p>
         ) : (
           <div className="grid gap-3 sm:grid-cols-2">
             {filteredForms.map(f => (

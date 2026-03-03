@@ -1,10 +1,22 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 
-export function useIssueHub(slug: string) {
+export function useIssueHub(hubKey: string) {
   const hubQuery = useQuery({
-    queryKey: ['issue-hub', slug],
+    queryKey: ['issue-hub', hubKey],
     queryFn: async () => {
+      // Try hub_key first, fall back to slug for backwards compatibility
+      const { data: byKey, error: keyErr } = await supabase
+        .from('issue_hubs')
+        .select('*')
+        .eq('hub_key', hubKey)
+        .eq('is_active', true)
+        .maybeSingle();
+
+      if (byKey) return byKey;
+
+      // Fallback: treat hubKey as slug (legacy routes like /issues/:category/:issue)
+      const slug = hubKey.split('/').pop() || hubKey;
       const { data, error } = await supabase
         .from('issue_hubs')
         .select('*')
@@ -14,7 +26,7 @@ export function useIssueHub(slug: string) {
       if (error) throw error;
       return data;
     },
-    enabled: !!slug,
+    enabled: !!hubKey,
   });
 
   const sectionsQuery = useQuery({

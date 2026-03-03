@@ -12,12 +12,13 @@ import { useIssueHub } from '@/hooks/useIssueHub';
 
 export default function IssueHubTimelinePage() {
   const { jurisdiction, category, issue } = useParams<{ jurisdiction: string; category: string; issue: string }>();
-  const slug = issue || '';
-  const { hub, sections, isLoading } = useIssueHub(slug);
-  const [selectedState] = useState(jurisdiction?.toUpperCase() || 'CA');
+  const hubKey = `${jurisdiction || 'ca'}/${category || 'family-law'}/${issue || ''}`;
+  const { hub, sections, isLoading } = useIssueHub(hubKey);
+  const upperJur = (jurisdiction || '').toUpperCase();
+  const [selectedState] = useState(upperJur.length === 2 ? upperJur : 'CA');
 
   const timelineSections = sections.filter(s => s.section_type === 'timeline' && (!s.jurisdiction_code || s.jurisdiction_code === selectedState));
-  const basePath = `/${jurisdiction}/${category}/${issue}`;
+  const basePath = `/${jurisdiction || 'ca'}/${category || 'family-law'}/${issue || ''}`;
 
   if (isLoading) {
     return (
