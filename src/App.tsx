@@ -47,6 +47,8 @@ import CourtListenerSearch from "./pages/CourtListenerSearch";
 import SelfHelpHub from "./pages/SelfHelpHub";
 import LegalGlossary from "./pages/LegalGlossary";
 import CourtroomPrep from "./pages/CourtroomPrep";
+import IssueHubPage from "./pages/IssueHubPage";
+import IssuesIndex from "./pages/IssuesIndex";
 const queryClient = new QueryClient();
 
 export default function App() {
@@ -100,6 +102,10 @@ export default function App() {
             <Route path="/courses" element={<CourseHub />} />
             <Route path="/verify/:id" element={<CertificateVerify />} />
             
+            {/* Issue Hubs */}
+            <Route path="/issues" element={<IssuesIndex />} />
+            <Route path="/issues/:category/:issue" element={<IssueHubPage />} />
+
             {/* State landing pages */}
             <Route path="/states/:stateCode" element={<StateLandingPage />} />
             

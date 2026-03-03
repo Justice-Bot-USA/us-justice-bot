@@ -1,0 +1,298 @@
+import { useState, useRef, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { MapPin, BookOpen, Zap, FileText, Clock, HelpCircle, ChevronRight } from 'lucide-react';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import { IssueHubSideRail } from '@/components/issues/IssueHubSideRail';
+import { SourceCard } from '@/components/issues/SourceCard';
+import { ResourceCard } from '@/components/issues/ResourceCard';
+import { TriageWizard } from '@/components/issues/TriageWizard';
+import { useIssueHub } from '@/hooks/useIssueHub';
+import { US_STATES } from '@/lib/states';
+
+export default function IssueHubPage() {
+  const { category, issue } = useParams<{ category: string; issue: string }>();
+  const slug = issue || '';
+  const { hub, sections, resources, triageFlow, formPackages, isLoading, error } = useIssueHub(slug);
+
+  const [activeSection, setActiveSection] = useState('learn');
+  const [selectedState, setSelectedState] = useState('CA');
+
+  const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({});
+
+  const scrollToSection = (sectionId: string) => {
+    setActiveSection(sectionId);
+    if (sectionId === 'wizard') {
+      sectionRefs.current['do']?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
+    sectionRefs.current[sectionId]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const learnSections = sections.filter(s => s.section_type === 'learn' && (!s.jurisdiction_code || s.jurisdiction_code === selectedState));
+  const doSections = sections.filter(s => s.section_type === 'do' && (!s.jurisdiction_code || s.jurisdiction_code === selectedState));
+  const timelineSections = sections.filter(s => s.section_type === 'timeline' && (!s.jurisdiction_code || s.jurisdiction_code === selectedState));
+  const helpSections = sections.filter(s => s.section_type === 'help' && (!s.jurisdiction_code || s.jurisdiction_code === selectedState));
+
+  const filteredForms = formPackages.filter(f => f.jurisdiction_code === selectedState);
+  const filteredResources = resources.filter(r => !r.jurisdiction_code || r.jurisdiction_code === selectedState);
+
+  const triageSchema = triageFlow?.flow_schema as any;
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background">
+      <Header language="en" onLanguageChange={() => {}} />
+        <div className="container mx-auto px-4 py-8 space-y-4">
+          <Skeleton className="h-12 w-2/3" />
+          <Skeleton className="h-6 w-1/2" />
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-8">
+            <Skeleton className="h-64" />
+            <div className="md:col-span-3 space-y-4">
+              <Skeleton className="h-48" />
+              <Skeleton className="h-48" />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !hub) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header language="en" onLanguageChange={() => {}} />
+        <div className="container mx-auto px-4 py-16 text-center">
+          <h1 className="text-2xl font-bold text-foreground mb-2">Issue Hub Not Found</h1>
+          <p className="text-muted-foreground">This topic hasn't been set up yet.</p>
+          <Button className="mt-4" onClick={() => window.history.back()}>Go Back</Button>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>{hub.title} | Veritas Path – Justice-Bot™</title>
+        <meta name="description" content={hub.summary || `Learn about ${hub.title}, find forms, get help.`} />
+      </Helmet>
+      <Header language="en" onLanguageChange={() => {}} />
+
+      {/* Top bar */}
+      <div className="border-b bg-card/50">
+        <div className="container mx-auto px-4 py-3 flex flex-col sm:flex-row sm:items-center gap-3 justify-between">
+          <div className="flex items-center gap-3">
+            <Badge variant="outline" className="capitalize">{hub.category}</Badge>
+            <h1 className="text-lg font-bold text-foreground">{hub.title}</h1>
+          </div>
+          <div className="flex items-center gap-2">
+            <MapPin className="h-4 w-4 text-muted-foreground" />
+            <Select value={selectedState} onValueChange={setSelectedState}>
+              <SelectTrigger className="w-[180px] h-8 text-sm">
+                <SelectValue placeholder="Select state" />
+              </SelectTrigger>
+              <SelectContent>
+                {US_STATES.map(s => (
+                  <SelectItem key={s.value} value={s.value}>{s.label}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {triageSchema && (
+              <Button size="sm" onClick={() => scrollToSection('wizard')} className="gap-1">
+                Start Wizard <ChevronRight className="h-3 w-3" />
+              </Button>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <div className="container mx-auto px-4 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-[200px_1fr] gap-8">
+          {/* Side rail */}
+          <div className="hidden lg:block">
+            <IssueHubSideRail
+              activeSection={activeSection}
+              onSectionChange={scrollToSection}
+              hasWizard={!!triageSchema}
+            />
+          </div>
+
+          {/* Main content */}
+          <div className="space-y-10">
+            {/* Summary */}
+            {hub.summary && (
+              <p className="text-muted-foreground text-base leading-relaxed max-w-2xl">{hub.summary}</p>
+            )}
+
+            {/* LEARN */}
+            <section ref={(el: HTMLDivElement | null) => { sectionRefs.current['learn'] = el; }}>
+              <div className="flex items-center gap-2 mb-4">
+                <BookOpen className="h-5 w-5 text-primary" />
+                <h2 className="text-xl font-bold text-foreground">Learn</h2>
+              </div>
+              {learnSections.length === 0 ? (
+                <Card><CardContent className="pt-6 text-center text-muted-foreground">No content yet for this state.</CardContent></Card>
+              ) : (
+                <div className="space-y-4">
+                  {learnSections.map(s => (
+                    <Card key={s.id}>
+                      <CardHeader className="pb-2">
+                        <CardTitle className="text-base">{s.title}</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="text-sm text-muted-foreground whitespace-pre-wrap">{s.content_md}</div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              )}
+            </section>
+
+            {/* DO + Wizard */}
+            <section ref={(el: HTMLDivElement | null) => { sectionRefs.current['do'] = el; }}>
+              <div className="flex items-center gap-2 mb-4">
+                <Zap className="h-5 w-5 text-primary" />
+                <h2 className="text-xl font-bold text-foreground">Do</h2>
+              </div>
+
+              {triageSchema && (
+                <div className="mb-6">
+                  <TriageWizard flowSchema={triageSchema} />
+                </div>
+              )}
+
+              {doSections.length > 0 && (
+                <div className="space-y-4">
+                  {doSections.map(s => (
+                    <Card key={s.id}>
+                      <CardHeader className="pb-2">
+                        <CardTitle className="text-base">{s.title}</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="text-sm text-muted-foreground whitespace-pre-wrap">{s.content_md}</div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              )}
+            </section>
+
+            {/* FORMS */}
+            <section ref={(el: HTMLDivElement | null) => { sectionRefs.current['forms'] = el; }}>
+              <div className="flex items-center gap-2 mb-4">
+                <FileText className="h-5 w-5 text-primary" />
+                <h2 className="text-xl font-bold text-foreground">Forms & Documents</h2>
+                <Badge variant="outline" className="ml-auto">{selectedState}</Badge>
+              </div>
+              {filteredForms.length === 0 ? (
+                <Card><CardContent className="pt-6 text-center text-muted-foreground">No forms loaded for {selectedState} yet.</CardContent></Card>
+              ) : (
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {filteredForms.map(f => (
+                    <SourceCard
+                      key={f.id}
+                      formNumber={f.form_number}
+                      title={f.form_name}
+                      description={f.description || undefined}
+                      url={f.url || undefined}
+                      category={f.category || 'general'}
+                      isRequired={f.is_required}
+                    />
+                  ))}
+                </div>
+              )}
+            </section>
+
+            {/* TIMELINE */}
+            <section ref={(el: HTMLDivElement | null) => { sectionRefs.current['timeline'] = el; }}>
+              <div className="flex items-center gap-2 mb-4">
+                <Clock className="h-5 w-5 text-primary" />
+                <h2 className="text-xl font-bold text-foreground">Timeline & Steps</h2>
+              </div>
+              {timelineSections.length === 0 ? (
+                <Card><CardContent className="pt-6 text-center text-muted-foreground">Timeline coming soon.</CardContent></Card>
+              ) : (
+                <div className="space-y-4">
+                  {timelineSections.map((s, i) => (
+                    <div key={s.id} className="flex gap-4">
+                      <div className="flex flex-col items-center">
+                        <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-sm font-bold text-primary">
+                          {i + 1}
+                        </div>
+                        {i < timelineSections.length - 1 && <div className="w-px flex-1 bg-border mt-1" />}
+                      </div>
+                      <Card className="flex-1 mb-2">
+                        <CardHeader className="pb-2">
+                          <CardTitle className="text-base">{s.title}</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="text-sm text-muted-foreground whitespace-pre-wrap">{s.content_md}</div>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </section>
+
+            {/* GET HELP */}
+            <section ref={(el: HTMLDivElement | null) => { sectionRefs.current['help'] = el; }}>
+              <div className="flex items-center gap-2 mb-4">
+                <HelpCircle className="h-5 w-5 text-primary" />
+                <h2 className="text-xl font-bold text-foreground">Get Help</h2>
+              </div>
+              {filteredResources.length === 0 && helpSections.length === 0 ? (
+                <Card><CardContent className="pt-6 text-center text-muted-foreground">No help resources loaded yet.</CardContent></Card>
+              ) : (
+                <div className="space-y-4">
+                  {helpSections.map(s => (
+                    <Card key={s.id}>
+                      <CardHeader className="pb-2">
+                        <CardTitle className="text-base">{s.title}</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="text-sm text-muted-foreground whitespace-pre-wrap">{s.content_md}</div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    {filteredResources.map(r => (
+                      <ResourceCard
+                        key={r.id}
+                        label={r.label}
+                        url={r.url}
+                        description={r.description || undefined}
+                        category={r.category}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+            </section>
+
+            {/* Bottom CTA */}
+            {triageSchema && (
+              <div className="bg-primary/5 border border-primary/20 rounded-lg p-6 text-center">
+                <h3 className="text-lg font-bold text-foreground mb-2">Ready to take the next step?</h3>
+                <p className="text-sm text-muted-foreground mb-4">Use our guided wizard to find the right path for your situation.</p>
+                <Button onClick={() => scrollToSection('wizard')}>
+                  Start Your Plan
+                </Button>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <Footer />
+    </div>
+  );
+}
