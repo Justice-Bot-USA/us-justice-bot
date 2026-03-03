@@ -47,9 +47,9 @@ export default function IssueHubPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="flex flex-col min-h-screen bg-background">
         <Header language="en" onLanguageChange={() => {}} />
-        <div className="container mx-auto px-4 py-8 space-y-4">
+        <div className="flex-1 container mx-auto px-4 py-8 space-y-4">
           <Skeleton className="h-12 w-2/3" />
           <Skeleton className="h-6 w-1/2" />
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-8">
@@ -66,9 +66,9 @@ export default function IssueHubPage() {
 
   if (error || !hub) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="flex flex-col min-h-screen bg-background">
         <Header language="en" onLanguageChange={() => {}} />
-        <div className="container mx-auto px-4 py-16 text-center">
+        <div className="flex-1 container mx-auto px-4 py-16 text-center">
           <h1 className="text-2xl font-bold text-foreground mb-2">Issue Hub Not Found</h1>
           <p className="text-muted-foreground">This topic hasn't been set up yet.</p>
           <Button className="mt-4" onClick={() => window.history.back()}>Go Back</Button>
@@ -79,7 +79,7 @@ export default function IssueHubPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="flex flex-col min-h-screen bg-background overflow-x-hidden">
       <Helmet>
         <title>{hub.title} | Veritas Path – Justice-Bot™</title>
         <meta name="description" content={hub.summary || `Learn about ${hub.title}, find forms, get help.`} />
@@ -87,17 +87,17 @@ export default function IssueHubPage() {
       <Header language="en" onLanguageChange={() => {}} />
 
       {/* Header block */}
-      <div className="border-b bg-card/50">
-        <div className="container mx-auto px-4 py-5">
-          <div className="flex flex-col sm:flex-row sm:items-center gap-3 justify-between mb-3">
-            <div className="flex items-center gap-3">
-              <Badge variant="outline" className="capitalize">{hub.category}</Badge>
-              <h1 className="text-xl font-bold text-foreground">{hub.title}</h1>
+      <div className="border-b bg-card/50 shrink-0">
+        <div className="container mx-auto px-4 py-4 sm:py-5">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 justify-between mb-2 sm:mb-3">
+            <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+              <Badge variant="outline" className="capitalize shrink-0">{hub.category}</Badge>
+              <h1 className="text-lg sm:text-xl font-bold text-foreground truncate">{hub.title}</h1>
             </div>
-            <div className="flex items-center gap-2">
-              <MapPin className="h-4 w-4 text-muted-foreground" />
+            <div className="flex items-center gap-2 shrink-0">
+              <MapPin className="h-4 w-4 text-muted-foreground hidden sm:block" />
               <Select value={selectedState} onValueChange={setSelectedState}>
-                <SelectTrigger className="w-[180px] h-8 text-sm">
+                <SelectTrigger className="w-[140px] sm:w-[180px] h-8 text-sm">
                   <SelectValue placeholder="Select state" />
                 </SelectTrigger>
                 <SelectContent>
@@ -109,7 +109,7 @@ export default function IssueHubPage() {
             </div>
           </div>
           {hub.summary && (
-            <p className="text-muted-foreground text-sm max-w-2xl mb-3">{hub.summary}</p>
+            <p className="text-muted-foreground text-sm max-w-2xl mb-2 sm:mb-3">{hub.summary}</p>
           )}
           {triageSchema && (
             <Button size="sm" onClick={() => scrollToSection('wizard')} className="gap-1">
@@ -119,8 +119,9 @@ export default function IssueHubPage() {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-[200px_1fr] gap-8">
+      {/* Main content */}
+      <div className="flex-1 container mx-auto px-4 py-6 sm:py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-[200px_1fr] gap-6 lg:gap-8">
           {/* Side rail */}
           <div className="hidden lg:block">
             <IssueHubSideRail
@@ -131,12 +132,12 @@ export default function IssueHubPage() {
           </div>
 
           {/* Main content — 3 lanes */}
-          <div className="space-y-10">
+          <div className="space-y-8 sm:space-y-10 min-w-0">
             {/* ═══ LEARN ═══ */}
             <section ref={(el: HTMLDivElement | null) => { sectionRefs.current['learn'] = el; }}>
               <div className="flex items-center gap-2 mb-4">
                 <BookOpen className="h-5 w-5 text-primary" />
-                <h2 className="text-xl font-bold text-foreground">Learn</h2>
+                <h2 className="text-lg sm:text-xl font-bold text-foreground">Learn</h2>
               </div>
               {learnSections.length === 0 ? (
                 <Card><CardContent className="pt-6 text-center text-muted-foreground">No content yet for this state.</CardContent></Card>
@@ -160,18 +161,18 @@ export default function IssueHubPage() {
             <section ref={(el: HTMLDivElement | null) => { sectionRefs.current['do'] = el; }}>
               <div className="flex items-center gap-2 mb-4">
                 <Zap className="h-5 w-5 text-primary" />
-                <h2 className="text-xl font-bold text-foreground">Do</h2>
+                <h2 className="text-lg sm:text-xl font-bold text-foreground">Do</h2>
               </div>
 
               {/* Track action buttons */}
               {tracks.length > 0 && (
-                <div className="grid gap-3 sm:grid-cols-2 mb-6">
+                <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 mb-6">
                   {tracks.map(t => (
                     <Link key={t.id} to={`${basePath}/track/${t.track_key}`}>
                       <Card className={`border hover:shadow-md transition-all cursor-pointer ${
                         t.track_key === 'emergency' ? 'border-destructive/30 hover:border-destructive/60' : 'hover:border-primary/40'
                       }`}>
-                        <CardContent className="p-4 flex items-start gap-3">
+                        <CardContent className="p-3 sm:p-4 flex items-start gap-3">
                           {t.track_key === 'emergency' ? (
                             <AlertTriangle className="h-5 w-5 text-destructive shrink-0 mt-0.5" />
                           ) : (
@@ -218,11 +219,11 @@ export default function IssueHubPage() {
             <section ref={(el: HTMLDivElement | null) => { sectionRefs.current['forms'] = el; }}>
               <div className="flex items-center gap-2 mb-4">
                 <FileText className="h-5 w-5 text-primary" />
-                <h2 className="text-xl font-bold text-foreground">Forms & Documents</h2>
+                <h2 className="text-lg sm:text-xl font-bold text-foreground">Forms & Documents</h2>
                 <Badge variant="outline" className="ml-auto">{selectedState}</Badge>
               </div>
               {/* Always-visible official directory + latest changes */}
-              <div className="grid gap-3 sm:grid-cols-2 mb-3">
+              <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 mb-3">
                 <SourceCard
                   formNumber="CA FORMS"
                   title="California Courts — Court Forms Directory (Official)"
@@ -245,7 +246,7 @@ export default function IssueHubPage() {
               {filteredForms.length === 0 ? (
                 <Card><CardContent className="pt-6 text-center text-muted-foreground">No specific forms loaded for {selectedState} yet.</CardContent></Card>
               ) : (
-                <div className="grid gap-3 sm:grid-cols-2">
+                <div className="grid gap-3 grid-cols-1 sm:grid-cols-2">
                   {filteredForms.map(f => (
                     <SourceCard
                       key={f.id}
@@ -268,21 +269,21 @@ export default function IssueHubPage() {
             <section ref={(el: HTMLDivElement | null) => { sectionRefs.current['timeline'] = el; }}>
               <div className="flex items-center gap-2 mb-4">
                 <Clock className="h-5 w-5 text-primary" />
-                <h2 className="text-xl font-bold text-foreground">Timeline & Steps</h2>
+                <h2 className="text-lg sm:text-xl font-bold text-foreground">Timeline & Steps</h2>
               </div>
               {timelineSections.length === 0 ? (
                 <Card><CardContent className="pt-6 text-center text-muted-foreground">Timeline coming soon.</CardContent></Card>
               ) : (
                 <div className="space-y-4">
                   {timelineSections.map((s, i) => (
-                    <div key={s.id} className="flex gap-4">
+                    <div key={s.id} className="flex gap-3 sm:gap-4">
                       <div className="flex flex-col items-center">
                         <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-sm font-bold text-primary">
                           {i + 1}
                         </div>
                         {i < timelineSections.length - 1 && <div className="w-px flex-1 bg-border mt-1" />}
                       </div>
-                      <Card className="flex-1 mb-2">
+                      <Card className="flex-1 mb-2 min-w-0">
                         <CardHeader className="pb-2">
                           <CardTitle className="text-base">{s.title}</CardTitle>
                         </CardHeader>
@@ -300,7 +301,7 @@ export default function IssueHubPage() {
             <section ref={(el: HTMLDivElement | null) => { sectionRefs.current['help'] = el; }}>
               <div className="flex items-center gap-2 mb-4">
                 <HelpCircle className="h-5 w-5 text-primary" />
-                <h2 className="text-xl font-bold text-foreground">Get Help</h2>
+                <h2 className="text-lg sm:text-xl font-bold text-foreground">Get Help</h2>
               </div>
               {filteredResources.length === 0 && helpSections.length === 0 ? (
                 <Card><CardContent className="pt-6 text-center text-muted-foreground">No help resources loaded yet.</CardContent></Card>
@@ -316,7 +317,7 @@ export default function IssueHubPage() {
                       </CardContent>
                     </Card>
                   ))}
-                  <div className="grid gap-3 sm:grid-cols-2">
+                  <div className="grid gap-3 grid-cols-1 sm:grid-cols-2">
                     {filteredResources.map(r => (
                       <ResourceCard
                         key={r.id}
@@ -333,7 +334,7 @@ export default function IssueHubPage() {
 
             {/* Bottom CTA */}
             {triageSchema && (
-              <div className="bg-primary/5 border border-primary/20 rounded-lg p-6 text-center">
+              <div className="bg-primary/5 border border-primary/20 rounded-lg p-4 sm:p-6 text-center">
                 <h3 className="text-lg font-bold text-foreground mb-2">Ready to take the next step?</h3>
                 <p className="text-sm text-muted-foreground mb-4">Use our guided wizard to find the right path for your situation.</p>
                 <Button onClick={() => scrollToSection('wizard')}>

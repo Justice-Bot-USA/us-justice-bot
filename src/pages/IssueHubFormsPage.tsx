@@ -25,9 +25,9 @@ export default function IssueHubFormsPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="flex flex-col min-h-screen bg-background">
         <Header language="en" onLanguageChange={() => {}} />
-        <div className="container mx-auto px-4 py-8 space-y-4">
+        <div className="flex-1 container mx-auto px-4 py-8 space-y-4">
           <Skeleton className="h-10 w-1/3" />
           <div className="grid gap-3 sm:grid-cols-2"><Skeleton className="h-24" /><Skeleton className="h-24" /></div>
         </div>
@@ -36,14 +36,14 @@ export default function IssueHubFormsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="flex flex-col min-h-screen bg-background overflow-x-hidden">
       <Helmet>
         <title>Forms — {hub?.title || 'Issue Hub'} | Justice-Bot™</title>
       </Helmet>
       <Header language="en" onLanguageChange={() => {}} />
 
-      <div className="border-b bg-card/50 sticky top-0 z-10">
-        <div className="container mx-auto px-4 py-3 flex items-center gap-3 flex-wrap">
+      <div className="border-b bg-card/50 shrink-0">
+        <div className="container mx-auto px-4 py-3 flex items-center gap-2 sm:gap-3 flex-wrap">
           <Button variant="ghost" size="sm" asChild className="gap-1">
             <Link to={basePath}><ArrowLeft className="h-4 w-4" /> Hub</Link>
           </Button>
@@ -51,9 +51,9 @@ export default function IssueHubFormsPage() {
           <FileText className="h-4 w-4 text-muted-foreground" />
           <h1 className="text-sm font-bold text-foreground">Forms & Documents</h1>
           <div className="ml-auto flex items-center gap-2">
-            <MapPin className="h-4 w-4 text-muted-foreground" />
+            <MapPin className="h-4 w-4 text-muted-foreground hidden sm:block" />
             <Select value={selectedState} onValueChange={setSelectedState}>
-              <SelectTrigger className="w-[160px] h-8 text-sm"><SelectValue /></SelectTrigger>
+              <SelectTrigger className="w-[140px] sm:w-[160px] h-8 text-sm"><SelectValue /></SelectTrigger>
               <SelectContent>
                 {US_STATES.map(s => <SelectItem key={s.value} value={s.value}>{s.label}</SelectItem>)}
               </SelectContent>
@@ -62,10 +62,10 @@ export default function IssueHubFormsPage() {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8 max-w-3xl">
-        <div className="flex items-center justify-between mb-6">
+      <div className="flex-1 container mx-auto px-4 py-6 sm:py-8 max-w-3xl">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-6">
           <h2 className="text-lg font-bold text-foreground">{hub?.title} — Forms</h2>
-          <Button variant="outline" size="sm" asChild className="gap-1">
+          <Button variant="outline" size="sm" asChild className="gap-1 shrink-0">
             <a href="https://www.courts.ca.gov/rules-forms/court-forms" target="_blank" rel="noopener noreferrer">
               <FolderOpen className="h-3 w-3" /> Official Directory
             </a>
@@ -73,7 +73,7 @@ export default function IssueHubFormsPage() {
         </div>
 
         {/* Always-visible official directory + latest changes */}
-        <div className="grid gap-3 sm:grid-cols-2 mb-4">
+        <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 mb-4">
           <SourceCard
             formNumber="CA FORMS"
             title="California Courts — Court Forms Directory (Official)"
@@ -97,7 +97,7 @@ export default function IssueHubFormsPage() {
         {filteredForms.length === 0 ? (
           <p className="text-center text-muted-foreground py-8">No specific forms loaded for {selectedState} yet. Use the directory above to search.</p>
         ) : (
-          <div className="grid gap-3 sm:grid-cols-2">
+          <div className="grid gap-3 grid-cols-1 sm:grid-cols-2">
             {filteredForms.map(f => (
               <SourceCard
                 key={f.id}
