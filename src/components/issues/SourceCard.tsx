@@ -1,4 +1,4 @@
-import { ExternalLink, FileText, Info } from 'lucide-react';
+import { ExternalLink, FileText, Info, FolderOpen } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -8,6 +8,9 @@ interface SourceCardProps {
   title: string;
   description?: string;
   url?: string;
+  officialFormPageUrl?: string | null;
+  officialPdfUrl?: string | null;
+  officialDirectoryUrl?: string | null;
   category?: string;
   isRequired?: boolean;
 }
@@ -21,7 +24,20 @@ const categoryColors: Record<string, string> = {
   general: 'bg-muted text-muted-foreground border-border',
 };
 
-export function SourceCard({ formNumber, title, description, url, category = 'general', isRequired }: SourceCardProps) {
+export function SourceCard({
+  formNumber,
+  title,
+  description,
+  url,
+  officialFormPageUrl,
+  officialPdfUrl,
+  officialDirectoryUrl,
+  category = 'general',
+  isRequired,
+}: SourceCardProps) {
+  const pdfUrl = officialPdfUrl || url;
+  const directoryUrl = officialDirectoryUrl || 'https://www.courts.ca.gov/rules-forms/court-forms';
+
   return (
     <Card className="border hover:shadow-md transition-shadow">
       <CardContent className="p-4">
@@ -44,14 +60,28 @@ export function SourceCard({ formNumber, title, description, url, category = 'ge
             )}
           </div>
           <div className="flex flex-col gap-1.5 shrink-0">
-            {url && (
+            {officialFormPageUrl && (
               <Button size="sm" variant="outline" className="h-7 text-xs gap-1" asChild>
-                <a href={url} target="_blank" rel="noopener noreferrer">
-                  <FileText className="h-3 w-3" />
-                  Form
+                <a href={officialFormPageUrl} target="_blank" rel="noopener noreferrer">
+                  <Info className="h-3 w-3" />
+                  Info
                 </a>
               </Button>
             )}
+            {pdfUrl && (
+              <Button size="sm" variant="outline" className="h-7 text-xs gap-1" asChild>
+                <a href={pdfUrl} target="_blank" rel="noopener noreferrer">
+                  <FileText className="h-3 w-3" />
+                  PDF
+                </a>
+              </Button>
+            )}
+            <Button size="sm" variant="ghost" className="h-7 text-xs gap-1 text-muted-foreground" asChild>
+              <a href={directoryUrl} target="_blank" rel="noopener noreferrer">
+                <FolderOpen className="h-3 w-3" />
+                Directory
+              </a>
+            </Button>
           </div>
         </div>
       </CardContent>

@@ -48,6 +48,11 @@ import SelfHelpHub from "./pages/SelfHelpHub";
 import LegalGlossary from "./pages/LegalGlossary";
 import CourtroomPrep from "./pages/CourtroomPrep";
 import IssueHubPage from "./pages/IssueHubPage";
+import IssueHubFormsPage from "./pages/IssueHubFormsPage";
+import IssueHubTimelinePage from "./pages/IssueHubTimelinePage";
+import IssueHubHelpPage from "./pages/IssueHubHelpPage";
+import IssueHubStartPage from "./pages/IssueHubStartPage";
+import TrackPage from "./pages/TrackPage";
 import IssuesIndex from "./pages/IssuesIndex";
 const queryClient = new QueryClient();
 
@@ -102,9 +107,17 @@ export default function App() {
             <Route path="/courses" element={<CourseHub />} />
             <Route path="/verify/:id" element={<CertificateVerify />} />
             
-            {/* Issue Hubs */}
+            {/* Issue Hubs — legacy route */}
             <Route path="/issues" element={<IssuesIndex />} />
             <Route path="/issues/:category/:issue" element={<IssueHubPage />} />
+
+            {/* Issue Hubs — jurisdiction-aware routes */}
+            <Route path="/:jurisdiction/:category/:issue" element={<IssueHubPage />} />
+            <Route path="/:jurisdiction/:category/:issue/start" element={<IssueHubStartPage />} />
+            <Route path="/:jurisdiction/:category/:issue/forms" element={<IssueHubFormsPage />} />
+            <Route path="/:jurisdiction/:category/:issue/timeline" element={<IssueHubTimelinePage />} />
+            <Route path="/:jurisdiction/:category/:issue/help" element={<IssueHubHelpPage />} />
+            <Route path="/:jurisdiction/:category/:issue/track/:trackKey" element={<TrackPage />} />
 
             {/* State landing pages */}
             <Route path="/states/:stateCode" element={<StateLandingPage />} />
