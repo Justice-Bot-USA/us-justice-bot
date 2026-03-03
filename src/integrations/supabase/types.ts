@@ -620,6 +620,9 @@ export type Database = {
           is_active: boolean
           is_required: boolean
           jurisdiction_code: string
+          official_directory_url: string | null
+          official_form_page_url: string | null
+          official_pdf_url: string | null
           sort_order: number
           updated_at: string
           url: string | null
@@ -636,6 +639,9 @@ export type Database = {
           is_active?: boolean
           is_required?: boolean
           jurisdiction_code: string
+          official_directory_url?: string | null
+          official_form_page_url?: string | null
+          official_pdf_url?: string | null
           sort_order?: number
           updated_at?: string
           url?: string | null
@@ -652,6 +658,9 @@ export type Database = {
           is_active?: boolean
           is_required?: boolean
           jurisdiction_code?: string
+          official_directory_url?: string | null
+          official_form_page_url?: string | null
+          official_pdf_url?: string | null
           sort_order?: number
           updated_at?: string
           url?: string | null
@@ -1750,6 +1759,98 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      track_forms: {
+        Row: {
+          created_at: string
+          form_id: string
+          id: string
+          is_required: boolean
+          order_index: number
+          track_id: string
+        }
+        Insert: {
+          created_at?: string
+          form_id: string
+          id?: string
+          is_required?: boolean
+          order_index?: number
+          track_id: string
+        }
+        Update: {
+          created_at?: string
+          form_id?: string
+          id?: string
+          is_required?: boolean
+          order_index?: number
+          track_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "track_forms_form_id_fkey"
+            columns: ["form_id"]
+            isOneToOne: false
+            referencedRelation: "form_packages"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "track_forms_track_id_fkey"
+            columns: ["track_id"]
+            isOneToOne: false
+            referencedRelation: "tracks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tracks: {
+        Row: {
+          created_at: string
+          description: string | null
+          hub_id: string
+          id: string
+          is_active: boolean
+          sort_order: number
+          timeline_md: string | null
+          title: string
+          track_key: string
+          updated_at: string
+          when_to_use: string | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          hub_id: string
+          id?: string
+          is_active?: boolean
+          sort_order?: number
+          timeline_md?: string | null
+          title: string
+          track_key: string
+          updated_at?: string
+          when_to_use?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          hub_id?: string
+          id?: string
+          is_active?: boolean
+          sort_order?: number
+          timeline_md?: string | null
+          title?: string
+          track_key?: string
+          updated_at?: string
+          when_to_use?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tracks_hub_id_fkey"
+            columns: ["hub_id"]
+            isOneToOne: false
+            referencedRelation: "issue_hubs"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       triage_flows: {
         Row: {

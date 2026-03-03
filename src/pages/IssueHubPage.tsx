@@ -1,12 +1,12 @@
-import { useState, useRef, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useState, useRef } from 'react';
+import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { MapPin, BookOpen, Zap, FileText, Clock, HelpCircle, ChevronRight } from 'lucide-react';
+import { MapPin, BookOpen, Zap, FileText, Clock, HelpCircle, ChevronRight, AlertTriangle, ArrowRight } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { IssueHubSideRail } from '@/components/issues/IssueHubSideRail';
@@ -17,22 +17,19 @@ import { useIssueHub } from '@/hooks/useIssueHub';
 import { US_STATES } from '@/lib/states';
 
 export default function IssueHubPage() {
-  const { category, issue } = useParams<{ category: string; issue: string }>();
+  const { jurisdiction, category, issue } = useParams<{ jurisdiction: string; category: string; issue: string }>();
   const slug = issue || '';
-  const { hub, sections, resources, triageFlow, formPackages, isLoading, error } = useIssueHub(slug);
+  const { hub, sections, resources, triageFlow, formPackages, tracks, isLoading, error } = useIssueHub(slug);
 
   const [activeSection, setActiveSection] = useState('learn');
-  const [selectedState, setSelectedState] = useState('CA');
+  const [selectedState, setSelectedState] = useState(jurisdiction?.toUpperCase() || 'CA');
 
   const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   const scrollToSection = (sectionId: string) => {
     setActiveSection(sectionId);
-    if (sectionId === 'wizard') {
-      sectionRefs.current['do']?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      return;
-    }
-    sectionRefs.current[sectionId]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const target = sectionId === 'wizard' ? 'do' : sectionId;
+    sectionRefs.current[target]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   const learnSections = sections.filter(s => s.section_type === 'learn' && (!s.jurisdiction_code || s.jurisdiction_code === selectedState));
@@ -44,11 +41,12 @@ export default function IssueHubPage() {
   const filteredResources = resources.filter(r => !r.jurisdiction_code || r.jurisdiction_code === selectedState);
 
   const triageSchema = triageFlow?.flow_schema as any;
+  const basePath = `/${jurisdiction || 'ca'}/${category || 'family'}/${issue}`;
 
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background">
-      <Header language="en" onLanguageChange={() => {}} />
+        <Header language="en" onLanguageChange={() => {}} />
         <div className="container mx-auto px-4 py-8 space-y-4">
           <Skeleton className="h-12 w-2/3" />
           <Skeleton className="h-6 w-1/2" />
@@ -86,31 +84,36 @@ export default function IssueHubPage() {
       </Helmet>
       <Header language="en" onLanguageChange={() => {}} />
 
-      {/* Top bar */}
+      {/* Header block */}
       <div className="border-b bg-card/50">
-        <div className="container mx-auto px-4 py-3 flex flex-col sm:flex-row sm:items-center gap-3 justify-between">
-          <div className="flex items-center gap-3">
-            <Badge variant="outline" className="capitalize">{hub.category}</Badge>
-            <h1 className="text-lg font-bold text-foreground">{hub.title}</h1>
+        <div className="container mx-auto px-4 py-5">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 justify-between mb-3">
+            <div className="flex items-center gap-3">
+              <Badge variant="outline" className="capitalize">{hub.category}</Badge>
+              <h1 className="text-xl font-bold text-foreground">{hub.title}</h1>
+            </div>
+            <div className="flex items-center gap-2">
+              <MapPin className="h-4 w-4 text-muted-foreground" />
+              <Select value={selectedState} onValueChange={setSelectedState}>
+                <SelectTrigger className="w-[180px] h-8 text-sm">
+                  <SelectValue placeholder="Select state" />
+                </SelectTrigger>
+                <SelectContent>
+                  {US_STATES.map(s => (
+                    <SelectItem key={s.value} value={s.value}>{s.label}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <MapPin className="h-4 w-4 text-muted-foreground" />
-            <Select value={selectedState} onValueChange={setSelectedState}>
-              <SelectTrigger className="w-[180px] h-8 text-sm">
-                <SelectValue placeholder="Select state" />
-              </SelectTrigger>
-              <SelectContent>
-                {US_STATES.map(s => (
-                  <SelectItem key={s.value} value={s.value}>{s.label}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            {triageSchema && (
-              <Button size="sm" onClick={() => scrollToSection('wizard')} className="gap-1">
-                Start Wizard <ChevronRight className="h-3 w-3" />
-              </Button>
-            )}
-          </div>
+          {hub.summary && (
+            <p className="text-muted-foreground text-sm max-w-2xl mb-3">{hub.summary}</p>
+          )}
+          {triageSchema && (
+            <Button size="sm" onClick={() => scrollToSection('wizard')} className="gap-1">
+              Start Now <ChevronRight className="h-3 w-3" />
+            </Button>
+          )}
         </div>
       </div>
 
@@ -125,14 +128,9 @@ export default function IssueHubPage() {
             />
           </div>
 
-          {/* Main content */}
+          {/* Main content — 3 lanes */}
           <div className="space-y-10">
-            {/* Summary */}
-            {hub.summary && (
-              <p className="text-muted-foreground text-base leading-relaxed max-w-2xl">{hub.summary}</p>
-            )}
-
-            {/* LEARN */}
+            {/* ═══ LEARN ═══ */}
             <section ref={(el: HTMLDivElement | null) => { sectionRefs.current['learn'] = el; }}>
               <div className="flex items-center gap-2 mb-4">
                 <BookOpen className="h-5 w-5 text-primary" />
@@ -156,13 +154,42 @@ export default function IssueHubPage() {
               )}
             </section>
 
-            {/* DO + Wizard */}
+            {/* ═══ DO (Tracks + Wizard) ═══ */}
             <section ref={(el: HTMLDivElement | null) => { sectionRefs.current['do'] = el; }}>
               <div className="flex items-center gap-2 mb-4">
                 <Zap className="h-5 w-5 text-primary" />
                 <h2 className="text-xl font-bold text-foreground">Do</h2>
               </div>
 
+              {/* Track action buttons */}
+              {tracks.length > 0 && (
+                <div className="grid gap-3 sm:grid-cols-2 mb-6">
+                  {tracks.map(t => (
+                    <Link key={t.id} to={`${basePath}/track/${t.track_key}`}>
+                      <Card className={`border hover:shadow-md transition-all cursor-pointer ${
+                        t.track_key === 'emergency' ? 'border-destructive/30 hover:border-destructive/60' : 'hover:border-primary/40'
+                      }`}>
+                        <CardContent className="p-4 flex items-start gap-3">
+                          {t.track_key === 'emergency' ? (
+                            <AlertTriangle className="h-5 w-5 text-destructive shrink-0 mt-0.5" />
+                          ) : (
+                            <ArrowRight className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                          )}
+                          <div className="flex-1 min-w-0">
+                            <h3 className="font-medium text-sm text-foreground">{t.title}</h3>
+                            {t.description && (
+                              <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{t.description}</p>
+                            )}
+                          </div>
+                          <ChevronRight className="h-4 w-4 text-muted-foreground shrink-0 mt-0.5" />
+                        </CardContent>
+                      </Card>
+                    </Link>
+                  ))}
+                </div>
+              )}
+
+              {/* Wizard */}
               {triageSchema && (
                 <div className="mb-6">
                   <TriageWizard flowSchema={triageSchema} />
@@ -185,7 +212,7 @@ export default function IssueHubPage() {
               )}
             </section>
 
-            {/* FORMS */}
+            {/* ═══ FORMS ═══ */}
             <section ref={(el: HTMLDivElement | null) => { sectionRefs.current['forms'] = el; }}>
               <div className="flex items-center gap-2 mb-4">
                 <FileText className="h-5 w-5 text-primary" />
@@ -203,6 +230,9 @@ export default function IssueHubPage() {
                       title={f.form_name}
                       description={f.description || undefined}
                       url={f.url || undefined}
+                      officialFormPageUrl={f.official_form_page_url}
+                      officialPdfUrl={f.official_pdf_url}
+                      officialDirectoryUrl={f.official_directory_url}
                       category={f.category || 'general'}
                       isRequired={f.is_required}
                     />
@@ -211,7 +241,7 @@ export default function IssueHubPage() {
               )}
             </section>
 
-            {/* TIMELINE */}
+            {/* ═══ TIMELINE ═══ */}
             <section ref={(el: HTMLDivElement | null) => { sectionRefs.current['timeline'] = el; }}>
               <div className="flex items-center gap-2 mb-4">
                 <Clock className="h-5 w-5 text-primary" />
@@ -243,7 +273,7 @@ export default function IssueHubPage() {
               )}
             </section>
 
-            {/* GET HELP */}
+            {/* ═══ GET HELP ═══ */}
             <section ref={(el: HTMLDivElement | null) => { sectionRefs.current['help'] = el; }}>
               <div className="flex items-center gap-2 mb-4">
                 <HelpCircle className="h-5 w-5 text-primary" />
