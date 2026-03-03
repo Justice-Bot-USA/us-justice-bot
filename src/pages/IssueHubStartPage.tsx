@@ -18,9 +18,9 @@ export default function IssueHubStartPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="flex flex-col min-h-screen bg-background">
         <Header language="en" onLanguageChange={() => {}} />
-        <div className="container mx-auto px-4 py-8 space-y-4">
+        <div className="flex-1 container mx-auto px-4 py-8 space-y-4">
           <Skeleton className="h-10 w-1/3" /><Skeleton className="h-64" />
         </div>
       </div>
@@ -28,14 +28,14 @@ export default function IssueHubStartPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="flex flex-col min-h-screen bg-background overflow-x-hidden">
       <Helmet>
         <title>Start Wizard — {hub?.title || 'Issue Hub'} | Justice-Bot™</title>
       </Helmet>
       <Header language="en" onLanguageChange={() => {}} />
 
-      <div className="border-b bg-card/50 sticky top-0 z-10">
-        <div className="container mx-auto px-4 py-3 flex items-center gap-3">
+      <div className="border-b bg-card/50 shrink-0">
+        <div className="container mx-auto px-4 py-3 flex items-center gap-2 sm:gap-3 flex-wrap">
           <Button variant="ghost" size="sm" asChild className="gap-1">
             <Link to={basePath}><ArrowLeft className="h-4 w-4" /> Hub</Link>
           </Button>
@@ -45,7 +45,7 @@ export default function IssueHubStartPage() {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8 max-w-2xl">
+      <div className="flex-1 container mx-auto px-4 py-6 sm:py-8 max-w-2xl">
         {triageSchema ? (
           <TriageWizard flowSchema={triageSchema} />
         ) : (

@@ -24,9 +24,9 @@ export default function IssueHubHelpPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="flex flex-col min-h-screen bg-background">
         <Header language="en" onLanguageChange={() => {}} />
-        <div className="container mx-auto px-4 py-8 space-y-4">
+        <div className="flex-1 container mx-auto px-4 py-8 space-y-4">
           <Skeleton className="h-10 w-1/3" /><Skeleton className="h-48" />
         </div>
       </div>
@@ -34,14 +34,14 @@ export default function IssueHubHelpPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="flex flex-col min-h-screen bg-background overflow-x-hidden">
       <Helmet>
         <title>Get Help — {hub?.title || 'Issue Hub'} | Justice-Bot™</title>
       </Helmet>
       <Header language="en" onLanguageChange={() => {}} />
 
-      <div className="border-b bg-card/50 sticky top-0 z-10">
-        <div className="container mx-auto px-4 py-3 flex items-center gap-3">
+      <div className="border-b bg-card/50 shrink-0">
+        <div className="container mx-auto px-4 py-3 flex items-center gap-2 sm:gap-3 flex-wrap">
           <Button variant="ghost" size="sm" asChild className="gap-1">
             <Link to={basePath}><ArrowLeft className="h-4 w-4" /> Hub</Link>
           </Button>
@@ -51,7 +51,7 @@ export default function IssueHubHelpPage() {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8 max-w-3xl space-y-6">
+      <div className="flex-1 container mx-auto px-4 py-6 sm:py-8 max-w-3xl space-y-6">
         {helpSections.map(s => (
           <Card key={s.id}>
             <CardHeader className="pb-2"><CardTitle className="text-base">{s.title}</CardTitle></CardHeader>
@@ -59,7 +59,7 @@ export default function IssueHubHelpPage() {
           </Card>
         ))}
         {filteredResources.length > 0 && (
-          <div className="grid gap-3 sm:grid-cols-2">
+          <div className="grid gap-3 grid-cols-1 sm:grid-cols-2">
             {filteredResources.map(r => (
               <ResourceCard key={r.id} label={r.label} url={r.url} description={r.description || undefined} category={r.category} />
             ))}

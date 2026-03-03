@@ -24,9 +24,9 @@ export default function TrackPage() {
 
   if (isLoading || !hub) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="flex flex-col min-h-screen bg-background">
         <Header language="en" onLanguageChange={() => {}} />
-        <div className="container mx-auto px-4 py-8 space-y-4">
+        <div className="flex-1 container mx-auto px-4 py-8 space-y-4">
           <Skeleton className="h-10 w-1/3" />
           <Skeleton className="h-6 w-2/3" />
           <Skeleton className="h-48" />
@@ -37,9 +37,9 @@ export default function TrackPage() {
 
   if (error || !track) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="flex flex-col min-h-screen bg-background">
         <Header language="en" onLanguageChange={() => {}} />
-        <div className="container mx-auto px-4 py-16 text-center">
+        <div className="flex-1 container mx-auto px-4 py-16 text-center">
           <h1 className="text-2xl font-bold text-foreground mb-2">Track Not Found</h1>
           <p className="text-muted-foreground">This track hasn't been set up yet.</p>
           <Button className="mt-4" asChild>
@@ -55,7 +55,7 @@ export default function TrackPage() {
   const timelineSteps = track.timeline_md?.split('\n').filter(Boolean) || [];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="flex flex-col min-h-screen bg-background overflow-x-hidden">
       <Helmet>
         <title>{track.title} | {hub.title} | Veritas Path – Justice-Bot™</title>
         <meta name="description" content={track.description || `${track.title} — step-by-step guide.`} />
@@ -63,21 +63,21 @@ export default function TrackPage() {
       <Header language="en" onLanguageChange={() => {}} />
 
       {/* Sticky top bar */}
-      <div className="border-b bg-card/50 sticky top-0 z-10">
-        <div className="container mx-auto px-4 py-3 flex items-center gap-3">
+      <div className="border-b bg-card/50 shrink-0">
+        <div className="container mx-auto px-4 py-3 flex items-center gap-2 sm:gap-3 flex-wrap">
           <Button variant="ghost" size="sm" asChild className="gap-1">
             <Link to={`/${jurisdiction}/${category}/${issue}`}>
               <ArrowLeft className="h-4 w-4" /> Hub
             </Link>
           </Button>
           <Badge variant="outline" className="uppercase">{jurisdiction}</Badge>
-          <span className="text-sm text-muted-foreground">/</span>
+          <span className="text-sm text-muted-foreground hidden sm:inline">/</span>
           <h1 className="text-sm font-bold text-foreground truncate">{track.title}</h1>
           {isEmergency && <Badge variant="destructive">Urgent</Badge>}
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8 max-w-3xl space-y-8">
+      <div className="flex-1 container mx-auto px-4 py-6 sm:py-8 max-w-3xl space-y-8">
         {/* What this is */}
         <section>
           <div className="flex items-center gap-2 mb-3">
@@ -143,14 +143,14 @@ export default function TrackPage() {
             </div>
             <div className="space-y-3">
               {timelineSteps.map((step, i) => (
-                <div key={i} className="flex gap-4">
+                <div key={i} className="flex gap-3 sm:gap-4">
                   <div className="flex flex-col items-center">
                     <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-sm font-bold text-primary">
                       {i + 1}
                     </div>
                     {i < timelineSteps.length - 1 && <div className="w-px flex-1 bg-border mt-1" />}
                   </div>
-                  <div className="flex-1 pb-4">
+                  <div className="flex-1 pb-4 min-w-0">
                     <p className="text-sm text-foreground">{step.replace(/^\d+\.\s*/, '')}</p>
                   </div>
                 </div>
@@ -160,7 +160,7 @@ export default function TrackPage() {
         )}
 
         {/* Bottom nav */}
-        <div className="flex gap-3 pt-4 border-t">
+        <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t">
           <Button variant="outline" asChild>
             <Link to={`/${jurisdiction}/${category}/${issue}`}>← Back to Hub</Link>
           </Button>
