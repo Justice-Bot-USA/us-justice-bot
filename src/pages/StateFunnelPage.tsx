@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { AlertTriangle, ArrowLeft, Home } from 'lucide-react';
 import { parseStateToolSlug } from '@/lib/stateToolSeo';
 import StateToolLandingPage from '@/pages/StateToolLandingPage';
+import StateWarrantLookup from '@/pages/StateWarrantLookup';
 
 // ---------------------------------------------------------------------------
 // Helpers: generate unique structured data per state × legal-area combination
@@ -201,6 +202,9 @@ const StateFunnelPage: React.FC = () => {
 
   // Render state-tool landing page if matched
   if (stateToolMatch) {
+    if (stateToolMatch.toolType === 'warrant-lookup') {
+      return <StateWarrantLookup />;
+    }
     return <StateToolLandingPage />;
   }
 

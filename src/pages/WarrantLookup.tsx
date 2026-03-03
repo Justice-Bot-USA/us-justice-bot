@@ -1,288 +1,125 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { SEOHead } from '@/components/SEOHead';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { ArrowLeft, Search, ExternalLink, Shield, AlertTriangle, Loader2 } from 'lucide-react';
-import { toast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
+import { Shield, AlertTriangle, Search, ArrowRight, Building2 } from 'lucide-react';
 import { US_STATES } from '@/lib/states';
-import { trackUSLookupStarted, trackUSLookupCompleted } from '@/hooks/useAnalytics';
-import LookupActionCTA from '@/components/LookupActionCTA';
-import PrepareFilingModal from '@/components/PrepareFilingModal';
-import FOIARecordsModule from '@/components/FOIARecordsModule';
-import FOIARequestGenerator from '@/components/FOIARequestGenerator';
-
-interface SearchResult {
-  url?: string;
-  title?: string;
-  description?: string;
-  markdown?: string;
-}
+import { stateToSlug } from '@/lib/warrantLookupConfig';
 
 export default function WarrantLookup() {
-  const [name, setName] = useState('');
-  const [state, setState] = useState('');
-  const [county, setCounty] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [results, setResults] = useState<SearchResult[]>([]);
-  const [portals, setPortals] = useState<SearchResult[]>([]);
-  const [hasSearched, setHasSearched] = useState(false);
-  const [disclaimer, setDisclaimer] = useState('');
-  const [showPaywall, setShowPaywall] = useState(false);
-  const [showFOIA, setShowFOIA] = useState(false);
+  const [selectedState, setSelectedState] = useState('');
+  const [language, setLanguage] = useState<'en' | 'es'>('en');
+  const navigate = useNavigate();
 
-  const handleSearch = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!name.trim() || !state) {
-      toast({ title: 'Missing fields', description: 'Please enter a name and select a state.', variant: 'destructive' });
-      return;
-    }
-
-    setIsLoading(true);
-    setHasSearched(true);
-    trackUSLookupStarted('warrant', state);
-    try {
-      const { data, error } = await supabase.functions.invoke('warrant-lookup', {
-        body: { name: name.trim(), state, county: county.trim() },
-      });
-
-      if (error) throw error;
-      if (!data.success) throw new Error(data.error);
-
-      const resultsList = data.results || [];
-      setResults(resultsList);
-      setPortals(data.officialPortals || []);
-      setDisclaimer(data.disclaimer || '');
-      trackUSLookupCompleted('warrant', state, resultsList.length);
-      toast({ title: 'Search complete', description: `Found ${resultsList.length} results.` });
-    } catch (err) {
-      toast({ title: 'Search failed', description: String(err), variant: 'destructive' });
-    } finally {
-      setIsLoading(false);
+  const handleGo = () => {
+    if (!selectedState) return;
+    const state = US_STATES.find(s => s.value === selectedState);
+    if (state) {
+      navigate(`/${stateToSlug(state.label)}-warrant-lookup`);
     }
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="flex flex-col min-h-screen bg-background overflow-x-hidden">
       <SEOHead
-        title="Free Warrant Lookup - Veritas Path"
-        description="Search for active warrants across all 50 US states. Free public records search powered by Veritas Path — A Justice-Bot Technologies Platform."
+        title="Warrant Lookup Navigator — All 50 States | Veritas Path"
+        description="Find official sheriff and court resources to check for warrants in your state. No database — real guidance to official sources."
         keywords="warrant lookup, active warrants, warrant search, outstanding warrants, public records search"
         url="https://justicebot-usa.com/warrant-lookup"
       />
 
-      <header className="bg-primary text-primary-foreground py-6">
-        <div className="container mx-auto px-4">
-          <Link to="/">
-            <Button variant="ghost" size="sm" className="text-primary-foreground hover:bg-primary-foreground/10 mb-4">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Home
-            </Button>
-          </Link>
-          <div className="flex items-center gap-3">
-            <Shield className="h-10 w-10" />
-            <div>
-              <h1 className="text-3xl font-bold">Warrant Lookup</h1>
-              <p className="text-primary-foreground/80">Free public records search — all 50 states</p>
-            </div>
-          </div>
+      <Header language={language} onLanguageChange={(l) => setLanguage(l)} />
+
+      {/* Hero */}
+      <div className="bg-primary text-primary-foreground py-8 sm:py-12">
+        <div className="container mx-auto px-4 max-w-3xl text-center">
+          <Shield className="h-12 w-12 mx-auto mb-4" />
+          <h1 className="text-2xl sm:text-4xl font-bold mb-2">Warrant Lookup Navigator</h1>
+          <p className="text-primary-foreground/80 text-sm sm:text-lg max-w-xl mx-auto">
+            Find official resources to check for warrants in your state
+          </p>
         </div>
-      </header>
+      </div>
 
-      <main className="container mx-auto px-4 py-8 max-w-4xl">
-        {/* Top-level disclaimers */}
-        <Alert className="mb-6 border-destructive/50 bg-destructive/10">
-          <AlertTriangle className="h-4 w-4" />
-          <AlertTitle>Important Disclaimer</AlertTitle>
-          <AlertDescription className="space-y-1">
-            <p>This is legal information, not legal advice. Results are sourced from public records.</p>
-            <p className="text-xs">• This tool does not provide legal advice.</p>
-            <p className="text-xs">• We do not access law enforcement databases.</p>
-            <p className="text-xs">• We do not determine whether an active warrant exists.</p>
-            <p className="text-xs">• If you have an active warrant, consult an attorney immediately.</p>
-          </AlertDescription>
-        </Alert>
-
-        {/* Search Form */}
-        <Card className="mb-8">
+      <main className="flex-1 container mx-auto px-4 py-6 sm:py-8 max-w-3xl space-y-6">
+        {/* Section 1 — Reality Check */}
+        <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Search className="h-5 w-5" />
-              Search for Warrants
+              <AlertTriangle className="h-5 w-5 text-destructive" />
+              What You Should Know First
             </CardTitle>
-            <CardDescription>
-              Enter a name and state to search public warrant records.
-            </CardDescription>
           </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSearch} className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div>
-                  <label className="text-sm font-medium mb-2 block">Full Name *</label>
-                  <Input
-                    placeholder="e.g. John Smith"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="text-sm font-medium mb-2 block">State *</label>
-                  <Select value={state} onValueChange={setState}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select state" />
-                    </SelectTrigger>
-                    <SelectContent className="max-h-[300px]">
-                      {US_STATES.map((s) => (
-                        <SelectItem key={s.value} value={s.label}>{s.label}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <label className="text-sm font-medium mb-2 block">County (optional)</label>
-                  <Input
-                    placeholder="e.g. Los Angeles"
-                    value={county}
-                    onChange={(e) => setCounty(e.target.value)}
-                  />
-                </div>
+          <CardContent className="space-y-3">
+            <div className="space-y-2 text-sm">
+              <div className="flex items-start gap-3 p-3 bg-muted rounded-lg">
+                <span className="font-bold text-destructive shrink-0">✕</span>
+                <p><strong>There is no national public warrant database.</strong> No website can search all warrants across all jurisdictions.</p>
               </div>
-              <Button type="submit" disabled={isLoading} className="w-full md:w-auto">
-                {isLoading ? (
-                  <>
-                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                    Searching...
-                  </>
-                ) : (
-                  <>
-                    <Search className="h-4 w-4 mr-2" />
-                    Search Warrants
-                  </>
-                )}
-              </Button>
-            </form>
+              <div className="flex items-start gap-3 p-3 bg-muted rounded-lg">
+                <span className="font-bold text-destructive shrink-0">✕</span>
+                <p><strong>Most warrants are handled at the county level.</strong> Sheriff offices and local courts manage warrant records individually.</p>
+              </div>
+              <div className="flex items-start gap-3 p-3 bg-muted rounded-lg">
+                <span className="font-bold text-destructive shrink-0">✕</span>
+                <p><strong>Federal warrants are sealed.</strong> They are not publicly searchable through any online system.</p>
+              </div>
+            </div>
+            <Alert className="border-primary/30 bg-primary/5">
+              <Shield className="h-4 w-4" />
+              <AlertDescription className="text-sm">
+                <strong>What this tool does:</strong> We connect you to the correct official sheriff directory and court case search for your state. No scraping, no fake databases.
+              </AlertDescription>
+            </Alert>
           </CardContent>
         </Card>
 
-        {/* Official Portals */}
-        {portals.length > 0 && (
-          <Card className="mb-6 border-primary/20 bg-primary/5">
-            <CardHeader>
-              <CardTitle className="text-lg">Official Court Portals</CardTitle>
-              <CardDescription>Direct links to official warrant search resources</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {portals.map((p, i) => (
-                  <a
-                    key={i}
-                    href={p.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-start gap-3 p-3 rounded-lg border hover:bg-muted/50 transition-colors"
-                  >
-                    <ExternalLink className="h-4 w-4 mt-1 shrink-0 text-primary" />
-                    <div>
-                      <p className="font-medium text-sm">{p.title || p.url}</p>
-                      {p.description && <p className="text-xs text-muted-foreground mt-1">{p.description}</p>}
-                    </div>
-                  </a>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        )}
+        {/* Section 2 — State Selector */}
+        <Card className="border-primary/30">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Building2 className="h-5 w-5 text-primary" />
+              Select Your State
+            </CardTitle>
+            <CardDescription>
+              We'll show you official sheriff directories, court case search portals, and know-your-rights resources for your state.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Select value={selectedState} onValueChange={setSelectedState}>
+                <SelectTrigger className="flex-1">
+                  <SelectValue placeholder="Choose a state..." />
+                </SelectTrigger>
+                <SelectContent className="max-h-[300px]">
+                  {US_STATES.map((s) => (
+                    <SelectItem key={s.value} value={s.value}>{s.label}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <Button onClick={handleGo} disabled={!selectedState} className="sm:w-auto w-full">
+                <Search className="h-4 w-4 mr-2" />
+                Find Resources
+                <ArrowRight className="h-4 w-4 ml-2" />
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
 
-        {/* Search Results */}
-        {hasSearched && !isLoading && (
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold">Search Results</h2>
-            {results.length > 0 ? (
-              results.map((r, i) => (
-                <Card key={i} className="hover:border-primary/50 transition-colors">
-                  <CardContent className="pt-6">
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="flex-1 min-w-0">
-                        <h3 className="font-medium text-base mb-1">{r.title || 'Untitled'}</h3>
-                        <p className="text-sm text-muted-foreground mb-2">{r.description}</p>
-                        {r.url && (
-                          <Badge variant="outline" className="text-xs">
-                            {new URL(r.url).hostname}
-                          </Badge>
-                        )}
-                      </div>
-                      {r.url && (
-                        <Button variant="outline" size="sm" asChild>
-                          <a href={r.url} target="_blank" rel="noopener noreferrer">
-                            <ExternalLink className="h-4 w-4 mr-1" />
-                            View
-                          </a>
-                        </Button>
-                      )}
-                    </div>
-                    {r.markdown && (
-                      <div className="mt-3 p-3 bg-muted rounded-lg text-xs max-h-40 overflow-y-auto whitespace-pre-wrap">
-                        {r.markdown.substring(0, 500)}
-                        {r.markdown.length > 500 && '...'}
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
-              ))
-            ) : (
-              <Card className="p-8 text-center">
-                <Shield className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-                <h3 className="text-lg font-semibold mb-2">No Results Found</h3>
-                <p className="text-muted-foreground">
-                  No public warrant records were found for this search. This does not guarantee no warrants exist.
-                  Check official court portals above for the most accurate information.
-                </p>
-              </Card>
-            )}
-          </div>
-        )}
-
-        {disclaimer && hasSearched && (
-          <p className="text-xs text-muted-foreground mt-6 text-center italic">{disclaimer}</p>
-        )}
-
-        {/* "Request Official Records" module — appears after results */}
-        {hasSearched && !isLoading && (
-          <FOIARecordsModule
-            onGenerateClick={() => setShowFOIA(true)}
-            state={state}
-          />
-        )}
-
-        {/* Action CTA after results */}
-        {hasSearched && !isLoading && (
-          <LookupActionCTA
-            onPrepareClick={() => setShowPaywall(true)}
-            state={state}
-          />
-        )}
-
-        {/* FOIA Request Generator Dialog */}
-        <FOIARequestGenerator
-          open={showFOIA}
-          onOpenChange={setShowFOIA}
-          defaultState={state ? US_STATES.find(s => s.label === state)?.value || '' : ''}
-          defaultName={name}
-        />
-
-        <PrepareFilingModal
-          open={showPaywall}
-          onOpenChange={setShowPaywall}
-          defaultState={state ? US_STATES.find(s => s.label === state)?.value || '' : ''}
-          source="warrant_lookup"
-        />
+        {/* Bottom note */}
+        <div className="text-center space-y-2">
+          <p className="text-xs text-muted-foreground italic">
+            This is a state-based navigation tool — not a warrant database. We do not access law enforcement records.
+          </p>
+        </div>
       </main>
+
+      <Footer />
     </div>
   );
 }
