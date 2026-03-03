@@ -122,19 +122,19 @@ const Header = ({ language, onLanguageChange }: HeaderProps) => {
               <PopoverContent className="w-64 p-2" align="start">
                 <div className="flex flex-col gap-1">
                   <Button asChild variant="ghost" size="sm" className="justify-start">
-                    <Link to="/ca/family/custody-visitation">
+                    <Link to="/ca/family-law/custody-visitation">
                       <Scale className="w-4 h-4 mr-2" aria-hidden="true" />
                       Custody & Visitation
                     </Link>
                   </Button>
                   <Button asChild variant="ghost" size="sm" className="justify-start">
-                    <Link to="/ca/family/custody-visitation/forms">
+                    <Link to="/ca/family-law/custody-visitation/forms">
                       <FileText className="w-4 h-4 mr-2" aria-hidden="true" />
                       CA Custody Forms
                     </Link>
                   </Button>
                   <Button asChild variant="ghost" size="sm" className="justify-start">
-                    <Link to="/ca/family/custody-visitation/start">
+                    <Link to="/ca/family-law/custody-visitation/start">
                       <Sparkles className="w-4 h-4 mr-2" aria-hidden="true" />
                       Find Your Path
                     </Link>
@@ -313,19 +313,19 @@ const Header = ({ language, onLanguageChange }: HeaderProps) => {
                       </CollapsibleTrigger>
                       <CollapsibleContent className="pl-6 space-y-1 mt-1">
                         <Button asChild variant="ghost" className="w-full justify-start" size="sm">
-                          <Link to="/ca/family/custody-visitation">
+                          <Link to="/ca/family-law/custody-visitation">
                             <Scale className="w-4 h-4 mr-2" aria-hidden="true" />
                             Custody & Visitation
                           </Link>
                         </Button>
                         <Button asChild variant="ghost" className="w-full justify-start" size="sm">
-                          <Link to="/ca/family/custody-visitation/forms">
+                          <Link to="/ca/family-law/custody-visitation/forms">
                             <FileText className="w-4 h-4 mr-2" aria-hidden="true" />
                             CA Custody Forms
                           </Link>
                         </Button>
                         <Button asChild variant="ghost" className="w-full justify-start" size="sm">
-                          <Link to="/ca/family/custody-visitation/start">
+                          <Link to="/ca/family-law/custody-visitation/start">
                             <Sparkles className="w-4 h-4 mr-2" aria-hidden="true" />
                             Find Your Path
                           </Link>

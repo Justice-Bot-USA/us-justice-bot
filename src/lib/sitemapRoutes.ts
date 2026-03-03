@@ -146,16 +146,16 @@ export const stateToolRoutes: SitemapRoute[] = ALL_STATE_SLUGS.flatMap((slug) =>
 // ─── Issue Hub routes ──────────────────────────────────────────────────────────
 export const issueHubRoutes: SitemapRoute[] = [
   { path: "/issues",                                          priority: 0.8, changefreq: "weekly" },
-  { path: "/ca/family/custody-visitation",                    priority: 0.9, changefreq: "weekly" },
-  { path: "/ca/family/custody-visitation/start",              priority: 0.8, changefreq: "weekly" },
-  { path: "/ca/family/custody-visitation/forms",              priority: 0.9, changefreq: "weekly" },
-  { path: "/ca/family/custody-visitation/timeline",           priority: 0.7, changefreq: "monthly" },
-  { path: "/ca/family/custody-visitation/help",               priority: 0.7, changefreq: "monthly" },
-  { path: "/ca/family/custody-visitation/track/rfo",          priority: 0.8, changefreq: "monthly" },
-  { path: "/ca/family/custody-visitation/track/respond",      priority: 0.8, changefreq: "monthly" },
-  { path: "/ca/family/custody-visitation/track/emergency",    priority: 0.8, changefreq: "monthly" },
-  { path: "/ca/family/custody-visitation/track/modify",       priority: 0.7, changefreq: "monthly" },
-  { path: "/ca/family/custody-visitation/track/enforce",      priority: 0.7, changefreq: "monthly" },
+  { path: "/ca/family-law/custody-visitation",                    priority: 0.9, changefreq: "weekly" },
+  { path: "/ca/family-law/custody-visitation/start",              priority: 0.8, changefreq: "weekly" },
+  { path: "/ca/family-law/custody-visitation/forms",              priority: 0.9, changefreq: "weekly" },
+  { path: "/ca/family-law/custody-visitation/timeline",           priority: 0.7, changefreq: "weekly" },
+  { path: "/ca/family-law/custody-visitation/help",               priority: 0.7, changefreq: "monthly" },
+  { path: "/ca/family-law/custody-visitation/track/rfo",          priority: 0.8, changefreq: "monthly" },
+  { path: "/ca/family-law/custody-visitation/track/respond",      priority: 0.8, changefreq: "monthly" },
+  { path: "/ca/family-law/custody-visitation/track/emergency",    priority: 0.8, changefreq: "monthly" },
+  { path: "/ca/family-law/custody-visitation/track/modify",       priority: 0.7, changefreq: "monthly" },
+  { path: "/ca/family-law/custody-visitation/track/enforce",      priority: 0.7, changefreq: "monthly" },
 ];
 
 // ─── Info / legal pages ────────────────────────────────────────────────────────
