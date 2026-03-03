@@ -72,17 +72,27 @@ export default function IssueHubFormsPage() {
           </Button>
         </div>
 
-        {/* Always show Official Directory card */}
-        <SourceCard
-          formNumber="Directory"
-          title="California Courts – Court Forms Directory"
-          description="Search official Judicial Council forms by number, topic, or category. This is the canonical fallback for all CA court forms."
-          officialFormPageUrl={null}
-          officialPdfUrl={null}
-          officialDirectoryUrl="https://courts.ca.gov/rules-forms/court-forms"
-          category="general"
-          isRequired={false}
-        />
+        {/* Always-visible official directory + latest changes */}
+        <div className="grid gap-3 sm:grid-cols-2 mb-4">
+          <SourceCard
+            formNumber="CA FORMS"
+            title="California Courts — Court Forms Directory (Official)"
+            description="Search official Judicial Council forms by form number, title, topic, or browse by category."
+            officialDirectoryUrl="https://courts.ca.gov/rules-forms/court-forms"
+            url="https://courts.ca.gov/rules-forms/court-forms"
+            category="official"
+            isRequired={false}
+          />
+          <SourceCard
+            formNumber="UPDATES"
+            title="Latest Changes to California Court Forms"
+            description="New and revised Judicial Council forms — stay current on changes that affect your case."
+            officialDirectoryUrl="https://courts.ca.gov/forms-rules/court-forms/latest-changes"
+            url="https://courts.ca.gov/forms-rules/court-forms/latest-changes"
+            category="official"
+            isRequired={false}
+          />
+        </div>
 
         {filteredForms.length === 0 ? (
           <p className="text-center text-muted-foreground py-8">No specific forms loaded for {selectedState} yet. Use the directory above to search.</p>

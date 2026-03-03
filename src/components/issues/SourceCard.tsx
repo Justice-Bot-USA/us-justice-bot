@@ -20,6 +20,7 @@ const categoryColors: Record<string, string> = {
   respond: 'bg-amber-500/10 text-amber-700 border-amber-500/20',
   order: 'bg-emerald-500/10 text-emerald-700 border-emerald-500/20',
   emergency: 'bg-destructive/10 text-destructive border-destructive/20',
+  official: 'bg-blue-500/10 text-blue-700 border-blue-500/20',
   attachment: 'bg-muted text-muted-foreground border-border',
   general: 'bg-muted text-muted-foreground border-border',
 };

@@ -221,17 +221,27 @@ export default function IssueHubPage() {
                 <h2 className="text-xl font-bold text-foreground">Forms & Documents</h2>
                 <Badge variant="outline" className="ml-auto">{selectedState}</Badge>
               </div>
-              {/* Always-visible directory fallback */}
-              <SourceCard
-                formNumber="Directory"
-                title="California Courts – Court Forms Directory"
-                description="Search official Judicial Council forms by number, topic, or category."
-                officialFormPageUrl={null}
-                officialPdfUrl={null}
-                officialDirectoryUrl="https://courts.ca.gov/rules-forms/court-forms"
-                category="general"
-                isRequired={false}
-              />
+              {/* Always-visible official directory + latest changes */}
+              <div className="grid gap-3 sm:grid-cols-2 mb-3">
+                <SourceCard
+                  formNumber="CA FORMS"
+                  title="California Courts — Court Forms Directory (Official)"
+                  description="Search official Judicial Council forms by form number, title, topic, or browse by category."
+                  officialDirectoryUrl="https://courts.ca.gov/rules-forms/court-forms"
+                  url="https://courts.ca.gov/rules-forms/court-forms"
+                  category="official"
+                  isRequired={false}
+                />
+                <SourceCard
+                  formNumber="UPDATES"
+                  title="Latest Changes to California Court Forms"
+                  description="New and revised Judicial Council forms — stay current on changes that affect your case."
+                  officialDirectoryUrl="https://courts.ca.gov/forms-rules/court-forms/latest-changes"
+                  url="https://courts.ca.gov/forms-rules/court-forms/latest-changes"
+                  category="official"
+                  isRequired={false}
+                />
+              </div>
               {filteredForms.length === 0 ? (
                 <Card><CardContent className="pt-6 text-center text-muted-foreground">No specific forms loaded for {selectedState} yet.</CardContent></Card>
               ) : (
