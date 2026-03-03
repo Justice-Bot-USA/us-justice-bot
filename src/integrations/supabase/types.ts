@@ -607,6 +607,65 @@ export type Database = {
         }
         Relationships: []
       }
+      form_packages: {
+        Row: {
+          category: string | null
+          created_at: string
+          description: string | null
+          form_name: string
+          form_number: string
+          hub_id: string
+          id: string
+          instructions_md: string | null
+          is_active: boolean
+          is_required: boolean
+          jurisdiction_code: string
+          sort_order: number
+          updated_at: string
+          url: string | null
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          form_name: string
+          form_number: string
+          hub_id: string
+          id?: string
+          instructions_md?: string | null
+          is_active?: boolean
+          is_required?: boolean
+          jurisdiction_code: string
+          sort_order?: number
+          updated_at?: string
+          url?: string | null
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          form_name?: string
+          form_number?: string
+          hub_id?: string
+          id?: string
+          instructions_md?: string | null
+          is_active?: boolean
+          is_required?: boolean
+          jurisdiction_code?: string
+          sort_order?: number
+          updated_at?: string
+          url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "form_packages_hub_id_fkey"
+            columns: ["hub_id"]
+            isOneToOne: false
+            referencedRelation: "issue_hubs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       form_payments: {
         Row: {
           amount: number
@@ -800,6 +859,95 @@ export type Database = {
           user_id?: string | null
         }
         Relationships: []
+      }
+      issue_hubs: {
+        Row: {
+          category: string
+          created_at: string
+          icon: string | null
+          id: string
+          is_active: boolean
+          slug: string
+          sort_order: number
+          summary: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          icon?: string | null
+          id?: string
+          is_active?: boolean
+          slug: string
+          sort_order?: number
+          summary?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          icon?: string | null
+          id?: string
+          is_active?: boolean
+          slug?: string
+          sort_order?: number
+          summary?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      issue_sections: {
+        Row: {
+          content_md: string | null
+          created_at: string
+          hub_id: string
+          id: string
+          is_active: boolean
+          jurisdiction_code: string | null
+          metadata: Json | null
+          section_type: string
+          sort_order: number
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          content_md?: string | null
+          created_at?: string
+          hub_id: string
+          id?: string
+          is_active?: boolean
+          jurisdiction_code?: string | null
+          metadata?: Json | null
+          section_type: string
+          sort_order?: number
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          content_md?: string | null
+          created_at?: string
+          hub_id?: string
+          id?: string
+          is_active?: boolean
+          jurisdiction_code?: string | null
+          metadata?: Json | null
+          section_type?: string
+          sort_order?: number
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "issue_sections_hub_id_fkey"
+            columns: ["hub_id"]
+            isOneToOne: false
+            referencedRelation: "issue_hubs"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       jobs: {
         Row: {
@@ -1354,6 +1502,59 @@ export type Database = {
           },
         ]
       }
+      resource_links: {
+        Row: {
+          category: string
+          created_at: string
+          description: string | null
+          hub_id: string
+          icon: string | null
+          id: string
+          is_active: boolean
+          jurisdiction_code: string | null
+          label: string
+          sort_order: number
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          hub_id: string
+          icon?: string | null
+          id?: string
+          is_active?: boolean
+          jurisdiction_code?: string | null
+          label: string
+          sort_order?: number
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          hub_id?: string
+          icon?: string | null
+          id?: string
+          is_active?: boolean
+          jurisdiction_code?: string | null
+          label?: string
+          sort_order?: number
+          updated_at?: string
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "resource_links_hub_id_fkey"
+            columns: ["hub_id"]
+            isOneToOne: false
+            referencedRelation: "issue_hubs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       saved_court_results: {
         Row: {
           absolute_url: string | null
@@ -1549,6 +1750,53 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      triage_flows: {
+        Row: {
+          created_at: string
+          description: string | null
+          flow_schema: Json
+          hub_id: string
+          id: string
+          is_active: boolean
+          jurisdiction_code: string | null
+          title: string
+          updated_at: string
+          version: number
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          flow_schema?: Json
+          hub_id: string
+          id?: string
+          is_active?: boolean
+          jurisdiction_code?: string | null
+          title: string
+          updated_at?: string
+          version?: number
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          flow_schema?: Json
+          hub_id?: string
+          id?: string
+          is_active?: boolean
+          jurisdiction_code?: string | null
+          title?: string
+          updated_at?: string
+          version?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "triage_flows_hub_id_fkey"
+            columns: ["hub_id"]
+            isOneToOne: false
+            referencedRelation: "issue_hubs"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_activity_archive_deletions: {
         Row: {
