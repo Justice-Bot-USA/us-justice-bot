@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Globe, User, LogOut, Settings, Briefcase, Sparkles, FileText, TrendingUp, Menu, Gavel, BookOpen, FolderOpen, Scale, Shield, ShieldAlert, ScrollText, GraduationCap, LayoutGrid, ChevronDown, Search, Database, Users } from "lucide-react";
+import { Globe, User, LogOut, Settings, Briefcase, Sparkles, FileText, TrendingUp, Menu, Gavel, BookOpen, FolderOpen, Scale, Shield, ShieldAlert, ScrollText, GraduationCap, LayoutGrid, ChevronDown, Search, Database, Users, Heart } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useAuth } from "@/hooks/useAuth";
@@ -110,6 +110,45 @@ const Header = ({ language, onLanguageChange }: HeaderProps) => {
                 Criminal Guide
               </Link>
             </Button>
+
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="ghost" size="sm" className="text-primary-foreground hover:bg-white/10">
+                  <Heart className="w-4 h-4 mr-1" aria-hidden="true" />
+                  Family
+                  <ChevronDown className="w-3 h-3 ml-1" aria-hidden="true" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-64 p-2" align="start">
+                <div className="flex flex-col gap-1">
+                  <Button asChild variant="ghost" size="sm" className="justify-start">
+                    <Link to="/ca/family/custody-visitation">
+                      <Scale className="w-4 h-4 mr-2" aria-hidden="true" />
+                      Custody & Visitation
+                    </Link>
+                  </Button>
+                  <Button asChild variant="ghost" size="sm" className="justify-start">
+                    <Link to="/ca/family/custody-visitation/forms">
+                      <FileText className="w-4 h-4 mr-2" aria-hidden="true" />
+                      CA Custody Forms
+                    </Link>
+                  </Button>
+                  <Button asChild variant="ghost" size="sm" className="justify-start">
+                    <Link to="/ca/family/custody-visitation/start">
+                      <Sparkles className="w-4 h-4 mr-2" aria-hidden="true" />
+                      Find Your Path
+                    </Link>
+                  </Button>
+                  <div className="border-t my-1" />
+                  <Button asChild variant="ghost" size="sm" className="justify-start">
+                    <Link to="/issues">
+                      <LayoutGrid className="w-4 h-4 mr-2" aria-hidden="true" />
+                      All Issue Hubs
+                    </Link>
+                  </Button>
+                </div>
+              </PopoverContent>
+            </Popover>
 
             <Popover>
               <PopoverTrigger asChild>
@@ -262,6 +301,43 @@ const Header = ({ language, onLanguageChange }: HeaderProps) => {
                         Criminal Defense Guide
                       </Link>
                     </Button>
+                    <Collapsible>
+                      <CollapsibleTrigger asChild>
+                        <Button variant="secondary" className="w-full justify-between">
+                          <span className="flex items-center">
+                            <Heart className="w-4 h-4 mr-2" aria-hidden="true" />
+                            Family
+                          </span>
+                          <ChevronDown className="w-4 h-4" aria-hidden="true" />
+                        </Button>
+                      </CollapsibleTrigger>
+                      <CollapsibleContent className="pl-6 space-y-1 mt-1">
+                        <Button asChild variant="ghost" className="w-full justify-start" size="sm">
+                          <Link to="/ca/family/custody-visitation">
+                            <Scale className="w-4 h-4 mr-2" aria-hidden="true" />
+                            Custody & Visitation
+                          </Link>
+                        </Button>
+                        <Button asChild variant="ghost" className="w-full justify-start" size="sm">
+                          <Link to="/ca/family/custody-visitation/forms">
+                            <FileText className="w-4 h-4 mr-2" aria-hidden="true" />
+                            CA Custody Forms
+                          </Link>
+                        </Button>
+                        <Button asChild variant="ghost" className="w-full justify-start" size="sm">
+                          <Link to="/ca/family/custody-visitation/start">
+                            <Sparkles className="w-4 h-4 mr-2" aria-hidden="true" />
+                            Find Your Path
+                          </Link>
+                        </Button>
+                        <Button asChild variant="ghost" className="w-full justify-start" size="sm">
+                          <Link to="/issues">
+                            <LayoutGrid className="w-4 h-4 mr-2" aria-hidden="true" />
+                            All Issue Hubs
+                          </Link>
+                        </Button>
+                      </CollapsibleContent>
+                    </Collapsible>
                     <Collapsible>
                       <CollapsibleTrigger asChild>
                         <Button variant="secondary" className="w-full justify-between">
