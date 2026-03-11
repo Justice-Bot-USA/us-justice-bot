@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import LegalHelpLayout from "@/components/legal-help/LegalHelpLayout";
 
 // State-specific content data
