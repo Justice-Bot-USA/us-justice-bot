@@ -48,6 +48,9 @@ const categories = [
       { label: "Divorce Process", href: "/legal-help/divorce-process" },
       { label: "Child Support", href: "/legal-help/child-support" },
       { label: "Protective Orders", href: "/legal-help/protective-orders" },
+      { label: "🔧 Free Custody Case Organizer", href: "/free-custody-case-organizer" },
+      { label: "California Child Custody", href: "/legal-help/california-child-custody" },
+      { label: "Florida Child Custody", href: "/legal-help/florida-child-custody" },
     ],
   },
   {
