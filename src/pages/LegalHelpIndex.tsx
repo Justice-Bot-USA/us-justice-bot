@@ -16,8 +16,12 @@ const categories = [
       { label: "Eviction Process Explained", href: "/legal-help/eviction-process" },
       { label: "How to Fight an Eviction", href: "/legal-help/how-to-fight-an-eviction" },
       { label: "Tenant Rights", href: "/legal-help/tenant-rights" },
-      { label: "Landlord Refusing Repairs", href: "/legal-help/landlord-refusing-repairs" },
       { label: "Eviction Notice: What to Do", href: "/legal-help/eviction-notice-what-to-do" },
+      { label: "🔧 Free Eviction Defense Tool", href: "/free-eviction-defense-tool" },
+      { label: "California Eviction Process", href: "/legal-help/california-eviction-process" },
+      { label: "Texas Eviction Process", href: "/legal-help/texas-eviction-process" },
+      { label: "Florida Eviction Process", href: "/legal-help/florida-eviction-process" },
+      { label: "New York Eviction Process", href: "/legal-help/new-york-eviction-process" },
     ],
   },
   {
@@ -29,6 +33,9 @@ const categories = [
       { label: "How to File Small Claims", href: "/legal-help/how-to-file-small-claims" },
       { label: "Defending Small Claims", href: "/legal-help/how-to-defend-small-claims" },
       { label: "Small Claims Evidence", href: "/legal-help/small-claims-evidence" },
+      { label: "🔧 Free Small Claims Case Builder", href: "/free-small-claims-case-builder" },
+      { label: "Texas Small Claims Court", href: "/legal-help/texas-small-claims-court" },
+      { label: "New York Small Claims Court", href: "/legal-help/new-york-small-claims-court" },
     ],
   },
   {
@@ -41,6 +48,9 @@ const categories = [
       { label: "Divorce Process", href: "/legal-help/divorce-process" },
       { label: "Child Support", href: "/legal-help/child-support" },
       { label: "Protective Orders", href: "/legal-help/protective-orders" },
+      { label: "🔧 Free Custody Case Organizer", href: "/free-custody-case-organizer" },
+      { label: "California Child Custody", href: "/legal-help/california-child-custody" },
+      { label: "Florida Child Custody", href: "/legal-help/florida-child-custody" },
     ],
   },
   {
@@ -53,6 +63,8 @@ const categories = [
       { label: "Filing a Civil Rights Complaint", href: "/legal-help/how-to-file-civil-rights-complaint" },
       { label: "Workplace Discrimination", href: "/legal-help/workplace-discrimination" },
       { label: "Housing Discrimination", href: "/legal-help/housing-discrimination" },
+      { label: "🔧 Free Discrimination Complaint Helper", href: "/free-discrimination-complaint-helper" },
+      { label: "CA Workplace Discrimination", href: "/legal-help/california-workplace-discrimination" },
     ],
   },
   {
@@ -87,6 +99,7 @@ const categories = [
       { label: "Native American Rights", href: "/legal-help/native-american-rights" },
       { label: "Tribal Court Explained", href: "/legal-help/tribal-court" },
       { label: "Tribal Jurisdiction", href: "/legal-help/tribal-jurisdiction" },
+      { label: "🔧 Tribal Jurisdiction Check Tool", href: "/legal-help/tribal-jurisdiction-check" },
     ],
   },
 ];

@@ -188,6 +188,25 @@ export const legalHelpRoutes: SitemapRoute[] = [
   { path: "/legal-help/native-american-rights",         priority: 0.8, changefreq: "monthly" },
   { path: "/legal-help/tribal-court",                   priority: 0.7, changefreq: "monthly" },
   { path: "/legal-help/tribal-jurisdiction",            priority: 0.7, changefreq: "monthly" },
+  { path: "/legal-help/tribal-jurisdiction-check",      priority: 0.8, changefreq: "monthly" },
+  // State-specific legal help pages
+  { path: "/legal-help/california-eviction-process",    priority: 0.9, changefreq: "monthly" },
+  { path: "/legal-help/texas-eviction-process",         priority: 0.9, changefreq: "monthly" },
+  { path: "/legal-help/florida-eviction-process",       priority: 0.9, changefreq: "monthly" },
+  { path: "/legal-help/new-york-eviction-process",      priority: 0.9, changefreq: "monthly" },
+  { path: "/legal-help/california-child-custody",       priority: 0.9, changefreq: "monthly" },
+  { path: "/legal-help/florida-child-custody",          priority: 0.9, changefreq: "monthly" },
+  { path: "/legal-help/california-workplace-discrimination", priority: 0.8, changefreq: "monthly" },
+  { path: "/legal-help/texas-small-claims-court",       priority: 0.9, changefreq: "monthly" },
+  { path: "/legal-help/new-york-small-claims-court",    priority: 0.9, changefreq: "monthly" },
+];
+
+// ─── Tool-led landing pages (SEO conversion pages) ───────────────────────────
+export const toolLandingRoutes: SitemapRoute[] = [
+  { path: "/free-eviction-defense-tool",                priority: 0.9, changefreq: "monthly" },
+  { path: "/free-small-claims-case-builder",            priority: 0.9, changefreq: "monthly" },
+  { path: "/free-custody-case-organizer",               priority: 0.9, changefreq: "monthly" },
+  { path: "/free-discrimination-complaint-helper",      priority: 0.9, changefreq: "monthly" },
 ];
 
 // ─── Info / legal pages ────────────────────────────────────────────────────────
@@ -205,6 +224,7 @@ export const allSitemapRoutes: SitemapRoute[] = [
   ...toolRoutes,
   ...legalAreaRoutes,
   ...legalHelpRoutes,
+  ...toolLandingRoutes,
   ...issueHubRoutes,
   ...stateRoutes,
   ...funnelRoutes,

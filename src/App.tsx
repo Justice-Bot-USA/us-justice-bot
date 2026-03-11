@@ -66,6 +66,13 @@ import TenantRightsHelp from "./pages/legal-help/TenantRightsHelp";
 import DivorceProcessHelp from "./pages/legal-help/DivorceProcessHelp";
 import TribalCourtHelp from "./pages/legal-help/TribalCourtHelp";
 import TribalJurisdictionHelp from "./pages/legal-help/TribalJurisdictionHelp";
+import StateLegalHelp from "./pages/legal-help/StateLegalHelp";
+import TribalJurisdictionCheck from "./pages/legal-help/TribalJurisdictionCheck";
+import FreeEvictionDefenseTool from "./pages/FreeEvictionDefenseTool";
+import FreeSmallClaimsTool from "./pages/FreeSmallClaimsTool";
+import FreeCustodyTool from "./pages/FreeCustodyTool";
+import FreeDiscriminationTool from "./pages/FreeDiscriminationTool";
+
 const queryClient = new QueryClient();
 
 export default function App() {
@@ -118,6 +125,12 @@ export default function App() {
             <Route path="/justice-bot" element={<JusticeBotPage />} />
             <Route path="/courses" element={<CourseHub />} />
             <Route path="/verify/:id" element={<CertificateVerify />} />
+
+            {/* Tool-led landing pages */}
+            <Route path="/free-eviction-defense-tool" element={<FreeEvictionDefenseTool />} />
+            <Route path="/free-small-claims-case-builder" element={<FreeSmallClaimsTool />} />
+            <Route path="/free-custody-case-organizer" element={<FreeCustodyTool />} />
+            <Route path="/free-discrimination-complaint-helper" element={<FreeDiscriminationTool />} />
             
             {/* Legal Help Library */}
             <Route path="/legal-help" element={<LegalHelpIndex />} />
@@ -148,6 +161,18 @@ export default function App() {
             <Route path="/legal-help/native-american-rights" element={<NativeAmericanRights />} />
             <Route path="/legal-help/tribal-court" element={<TribalCourtHelp />} />
             <Route path="/legal-help/tribal-jurisdiction" element={<TribalJurisdictionHelp />} />
+            <Route path="/legal-help/tribal-jurisdiction-check" element={<TribalJurisdictionCheck />} />
+
+            {/* State-specific legal help pages */}
+            <Route path="/legal-help/california-eviction-process" element={<StateLegalHelp />} />
+            <Route path="/legal-help/texas-eviction-process" element={<StateLegalHelp />} />
+            <Route path="/legal-help/florida-eviction-process" element={<StateLegalHelp />} />
+            <Route path="/legal-help/new-york-eviction-process" element={<StateLegalHelp />} />
+            <Route path="/legal-help/california-child-custody" element={<StateLegalHelp />} />
+            <Route path="/legal-help/florida-child-custody" element={<StateLegalHelp />} />
+            <Route path="/legal-help/california-workplace-discrimination" element={<StateLegalHelp />} />
+            <Route path="/legal-help/texas-small-claims-court" element={<StateLegalHelp />} />
+            <Route path="/legal-help/new-york-small-claims-court" element={<StateLegalHelp />} />
 
             {/* Issue Hubs — legacy route */}
             <Route path="/issues" element={<IssuesIndex />} />
