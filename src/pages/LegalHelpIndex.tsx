@@ -99,6 +99,7 @@ const categories = [
       { label: "Native American Rights", href: "/legal-help/native-american-rights" },
       { label: "Tribal Court Explained", href: "/legal-help/tribal-court" },
       { label: "Tribal Jurisdiction", href: "/legal-help/tribal-jurisdiction" },
+      { label: "🔧 Tribal Jurisdiction Check Tool", href: "/legal-help/tribal-jurisdiction-check" },
     ],
   },
 ];
