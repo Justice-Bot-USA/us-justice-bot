@@ -33,6 +33,9 @@ const categories = [
       { label: "How to File Small Claims", href: "/legal-help/how-to-file-small-claims" },
       { label: "Defending Small Claims", href: "/legal-help/how-to-defend-small-claims" },
       { label: "Small Claims Evidence", href: "/legal-help/small-claims-evidence" },
+      { label: "🔧 Free Small Claims Case Builder", href: "/free-small-claims-case-builder" },
+      { label: "Texas Small Claims Court", href: "/legal-help/texas-small-claims-court" },
+      { label: "New York Small Claims Court", href: "/legal-help/new-york-small-claims-court" },
     ],
   },
   {
