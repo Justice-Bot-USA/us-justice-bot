@@ -172,6 +172,22 @@ const LegalHelpIndex = () => {
           ))}
         </div>
 
+        {/* Cross-linking to glossary and tools */}
+        <div className="grid sm:grid-cols-3 gap-4 mt-8 mb-8">
+          <Link to="/legal-glossary" className="p-4 rounded-lg border hover:bg-accent/50 transition-colors text-center">
+            <h3 className="font-semibold text-foreground mb-1">📖 Legal Glossary</h3>
+            <p className="text-xs text-muted-foreground">40+ legal terms explained in plain language</p>
+          </Link>
+          <Link to="/courtroom-prep" className="p-4 rounded-lg border hover:bg-accent/50 transition-colors text-center">
+            <h3 className="font-semibold text-foreground mb-1">⚖️ Courtroom Prep</h3>
+            <p className="text-xs text-muted-foreground">Get ready for your court appearance</p>
+          </Link>
+          <Link to="/case-analysis" className="p-4 rounded-lg border hover:bg-accent/50 transition-colors text-center">
+            <h3 className="font-semibold text-foreground mb-1">🔍 Case Analysis</h3>
+            <p className="text-xs text-muted-foreground">AI-powered case merit evaluation</p>
+          </Link>
+        </div>
+
         <div className="text-xs text-muted-foreground border-t pt-6 mt-10">
           <p><strong>Disclaimer:</strong> This is legal information, not legal advice. For advice specific to your situation, consult a licensed attorney.</p>
         </div>
