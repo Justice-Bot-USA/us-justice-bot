@@ -248,10 +248,24 @@ const stateData: Record<string, Record<string, {
 };
 
 const StateLegalHelp = () => {
-  const { stateSlug, topicSlug } = useParams<{ stateSlug: string; topicSlug: string }>();
-  
-  const state = stateSlug || "";
-  const topic = topicSlug || "";
+  const location = useLocation();
+  // Parse state and topic from path like /legal-help/california-eviction-process
+  const pathSegment = location.pathname.split("/legal-help/")[1] || "";
+  // Map URL slugs to state/topic keys
+  const slugMap: Record<string, { state: string; topic: string }> = {
+    "california-eviction-process": { state: "california", topic: "eviction" },
+    "texas-eviction-process": { state: "texas", topic: "eviction" },
+    "florida-eviction-process": { state: "florida", topic: "eviction" },
+    "new-york-eviction-process": { state: "new-york", topic: "eviction" },
+    "california-child-custody": { state: "california", topic: "child-custody" },
+    "florida-child-custody": { state: "florida", topic: "child-custody" },
+    "california-workplace-discrimination": { state: "california", topic: "discrimination" },
+    "texas-small-claims-court": { state: "texas", topic: "small-claims" },
+    "new-york-small-claims-court": { state: "new-york", topic: "small-claims" },
+  };
+  const mapped = slugMap[pathSegment];
+  const state = mapped?.state || "";
+  const topic = mapped?.topic || "";
   
   const stateContent = stateData[state];
   const pageContent = stateContent?.[topic];
