@@ -54,6 +54,18 @@ import IssueHubHelpPage from "./pages/IssueHubHelpPage";
 import IssueHubStartPage from "./pages/IssueHubStartPage";
 import TrackPage from "./pages/TrackPage";
 import IssuesIndex from "./pages/IssuesIndex";
+import LegalHelpIndex from "./pages/LegalHelpIndex";
+import EvictionHelp from "./pages/legal-help/EvictionHelp";
+import SmallClaimsHelp from "./pages/legal-help/SmallClaimsHelp";
+import FamilyCourtHelp from "./pages/legal-help/FamilyCourtHelp";
+import CivilRightsHelp from "./pages/legal-help/CivilRightsHelp";
+import CriminalDefenseHelp from "./pages/legal-help/CriminalDefenseHelp";
+import WorkplaceInjuryHelp from "./pages/legal-help/WorkplaceInjuryHelp";
+import NativeAmericanRights from "./pages/legal-help/NativeAmericanRights";
+import TenantRightsHelp from "./pages/legal-help/TenantRightsHelp";
+import DivorceProcessHelp from "./pages/legal-help/DivorceProcessHelp";
+import TribalCourtHelp from "./pages/legal-help/TribalCourtHelp";
+import TribalJurisdictionHelp from "./pages/legal-help/TribalJurisdictionHelp";
 const queryClient = new QueryClient();
 
 export default function App() {
@@ -107,6 +119,36 @@ export default function App() {
             <Route path="/courses" element={<CourseHub />} />
             <Route path="/verify/:id" element={<CertificateVerify />} />
             
+            {/* Legal Help Library */}
+            <Route path="/legal-help" element={<LegalHelpIndex />} />
+            <Route path="/legal-help/eviction" element={<EvictionHelp />} />
+            <Route path="/legal-help/eviction-process" element={<EvictionHelp />} />
+            <Route path="/legal-help/how-to-fight-an-eviction" element={<EvictionHelp />} />
+            <Route path="/legal-help/tenant-rights" element={<TenantRightsHelp />} />
+            <Route path="/legal-help/eviction-notice-what-to-do" element={<EvictionHelp />} />
+            <Route path="/legal-help/small-claims-court" element={<SmallClaimsHelp />} />
+            <Route path="/legal-help/how-to-file-small-claims" element={<SmallClaimsHelp />} />
+            <Route path="/legal-help/how-to-defend-small-claims" element={<SmallClaimsHelp />} />
+            <Route path="/legal-help/small-claims-evidence" element={<SmallClaimsHelp />} />
+            <Route path="/legal-help/child-custody" element={<FamilyCourtHelp />} />
+            <Route path="/legal-help/divorce-process" element={<DivorceProcessHelp />} />
+            <Route path="/legal-help/child-support" element={<FamilyCourtHelp />} />
+            <Route path="/legal-help/protective-orders" element={<FamilyCourtHelp />} />
+            <Route path="/legal-help/discrimination-law" element={<CivilRightsHelp />} />
+            <Route path="/legal-help/how-to-file-civil-rights-complaint" element={<CivilRightsHelp />} />
+            <Route path="/legal-help/workplace-discrimination" element={<CivilRightsHelp />} />
+            <Route path="/legal-help/housing-discrimination" element={<CivilRightsHelp />} />
+            <Route path="/legal-help/criminal-court-process" element={<CriminalDefenseHelp />} />
+            <Route path="/legal-help/what-to-do-after-arrest" element={<CriminalDefenseHelp />} />
+            <Route path="/legal-help/how-to-prepare-for-court" element={<CriminalDefenseHelp />} />
+            <Route path="/legal-help/defense-evidence" element={<CriminalDefenseHelp />} />
+            <Route path="/legal-help/workers-compensation" element={<WorkplaceInjuryHelp />} />
+            <Route path="/legal-help/workplace-injury-claim" element={<WorkplaceInjuryHelp />} />
+            <Route path="/legal-help/workers-comp-denied" element={<WorkplaceInjuryHelp />} />
+            <Route path="/legal-help/native-american-rights" element={<NativeAmericanRights />} />
+            <Route path="/legal-help/tribal-court" element={<TribalCourtHelp />} />
+            <Route path="/legal-help/tribal-jurisdiction" element={<TribalJurisdictionHelp />} />
+
             {/* Issue Hubs — legacy route */}
             <Route path="/issues" element={<IssuesIndex />} />
             <Route path="/issues/:category/:issue" element={<IssueHubPage />} />
