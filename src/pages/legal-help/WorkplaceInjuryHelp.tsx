@@ -43,13 +43,15 @@ const WorkplaceInjuryHelp = () => (
     relatedPages={[
       { label: "Workplace Injury Claim", href: "/legal-help/workplace-injury-claim" },
       { label: "Workers' Comp Denied", href: "/legal-help/workers-comp-denied" },
-      { label: "Workers' Comp Resources", href: "/legal-areas/workers-comp" },
       { label: "Personal Injury Calculator", href: "/injury-settlement-calculator" },
+      { label: "Legal Glossary: Damages", href: "/legal-glossary#damages" },
+      { label: "Legal Glossary: Statute of Limitations", href: "/legal-glossary#statute-of-limitations" },
     ]}
     faqItems={[
       { question: "Can I be fired for filing a workers' comp claim?", answer: "It is illegal for an employer to retaliate against you for filing a workers' comp claim. If you believe you were terminated in retaliation, you may have grounds for a separate legal claim." },
       { question: "What if my employer doesn't have workers' comp insurance?", answer: "In most states, employers are required to carry workers' comp insurance. If they don't, you may be able to sue them directly or file a claim through your state's uninsured employer fund." },
       { question: "Can I see my own doctor?", answer: "This varies by state. Some states allow you to choose your own doctor from the start, while others require you to see the employer's designated physician initially." },
+      { question: "How long do I have to file a workers' comp claim?", answer: "Deadlines vary by state, typically from 30 days to 2 years from the date of injury. Report the injury to your employer as soon as possible to preserve your rights." },
     ]}
   />
 );

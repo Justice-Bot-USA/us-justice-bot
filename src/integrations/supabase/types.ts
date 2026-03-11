@@ -155,11 +155,16 @@ export type Database = {
           session_id: string | null
           settlement_range_max: number | null
           settlement_range_min: number | null
+          show_tribal_resources: boolean | null
           state: string
           status: string | null
           strength_factors: Json | null
           supporting_evidence: Json | null
           time_to_resolution_months: number | null
+          tribal_identity: boolean | null
+          tribal_land_connection: boolean | null
+          tribal_member: boolean | null
+          tribe_name: string | null
           updated_at: string
           user_id: string
           weakness_factors: Json | null
@@ -187,11 +192,16 @@ export type Database = {
           session_id?: string | null
           settlement_range_max?: number | null
           settlement_range_min?: number | null
+          show_tribal_resources?: boolean | null
           state: string
           status?: string | null
           strength_factors?: Json | null
           supporting_evidence?: Json | null
           time_to_resolution_months?: number | null
+          tribal_identity?: boolean | null
+          tribal_land_connection?: boolean | null
+          tribal_member?: boolean | null
+          tribe_name?: string | null
           updated_at?: string
           user_id: string
           weakness_factors?: Json | null
@@ -219,11 +229,16 @@ export type Database = {
           session_id?: string | null
           settlement_range_max?: number | null
           settlement_range_min?: number | null
+          show_tribal_resources?: boolean | null
           state?: string
           status?: string | null
           strength_factors?: Json | null
           supporting_evidence?: Json | null
           time_to_resolution_months?: number | null
+          tribal_identity?: boolean | null
+          tribal_land_connection?: boolean | null
+          tribal_member?: boolean | null
+          tribe_name?: string | null
           updated_at?: string
           user_id?: string
           weakness_factors?: Json | null

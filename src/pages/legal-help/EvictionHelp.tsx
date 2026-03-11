@@ -43,13 +43,21 @@ const EvictionHelp = () => (
     relatedPages={[
       { label: "Tenant Rights Guide", href: "/legal-help/tenant-rights" },
       { label: "Eviction Notice: What to Do", href: "/legal-help/eviction-notice-what-to-do" },
-      { label: "Landlord Refusing Repairs", href: "/legal-help/landlord-refusing-repairs" },
+      { label: "Free Eviction Defense Tool", href: "/free-eviction-defense-tool" },
       { label: "Housing Discrimination", href: "/legal-help/housing-discrimination" },
+      { label: "California Eviction Process", href: "/legal-help/california-eviction-process" },
+      { label: "Texas Eviction Process", href: "/legal-help/texas-eviction-process" },
+      { label: "Legal Glossary: Eviction Notice", href: "/legal-glossary#eviction-notice" },
+      { label: "Legal Glossary: Default Judgment", href: "/legal-glossary#default-judgment" },
     ]}
     faqItems={[
       { question: "Can I be evicted without a court order?", answer: "In most states, no. Landlords must go through the court process. 'Self-help' evictions (changing locks, removing belongings, shutting off utilities) are illegal in nearly every state." },
       { question: "How long does an eviction take?", answer: "Timelines vary by state, but the process typically takes 2-8 weeks from notice to hearing. Some states allow expedited processes for certain situations." },
       { question: "Can I fight an eviction if I owe rent?", answer: "Yes. You may have defenses related to habitability, improper notice, retaliation, or discrimination. Some courts also allow you to pay owed rent to stop the eviction." },
+      { question: "Can I be evicted without notice?", answer: "Generally no. Almost every state requires written notice before a landlord can file for eviction. The notice period varies (3-30+ days) depending on the state and reason." },
+      { question: "What happens at an eviction hearing?", answer: "Both sides present evidence and arguments to a judge. The landlord must prove grounds for eviction. You can present defenses, cross-examine witnesses, and show your evidence. The judge decides whether to grant the eviction." },
+      { question: "What evidence helps in an eviction case?", answer: "Rent receipts, repair request records, photos of property conditions, communication with your landlord, witness statements, and any documentation showing the landlord violated procedures or the law." },
+      { question: "Can a landlord evict me for complaining about repairs?", answer: "No — this is called retaliatory eviction and is illegal in most states. If you can show the eviction was filed after you complained about conditions or exercised a legal right, it can be a strong defense." },
     ]}
   />
 );

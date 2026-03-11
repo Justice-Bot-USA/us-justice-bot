@@ -213,6 +213,9 @@ export const toolLandingRoutes: SitemapRoute[] = [
 export const infoRoutes: SitemapRoute[] = [
   { path: "/support",                        priority: 0.6, changefreq: "monthly" },
   { path: "/faq",                            priority: 0.6, changefreq: "monthly" },
+  { path: "/legal-glossary",                 priority: 0.8, changefreq: "monthly" },
+  { path: "/self-help",                      priority: 0.7, changefreq: "monthly" },
+  { path: "/courtroom-prep",                 priority: 0.7, changefreq: "monthly" },
   { path: "/privacy",                        priority: 0.5, changefreq: "yearly" },
   { path: "/terms",                          priority: 0.5, changefreq: "yearly" },
   { path: "/disclaimer",                     priority: 0.5, changefreq: "yearly" },
