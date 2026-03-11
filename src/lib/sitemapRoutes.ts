@@ -204,6 +204,7 @@ export const allSitemapRoutes: SitemapRoute[] = [
   ...coreRoutes,
   ...toolRoutes,
   ...legalAreaRoutes,
+  ...legalHelpRoutes,
   ...issueHubRoutes,
   ...stateRoutes,
   ...funnelRoutes,
