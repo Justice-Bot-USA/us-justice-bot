@@ -43,12 +43,18 @@ const SmallClaimsHelp = () => (
       { label: "How to File Small Claims", href: "/legal-help/how-to-file-small-claims" },
       { label: "Defending Small Claims", href: "/legal-help/how-to-defend-small-claims" },
       { label: "Small Claims Evidence Guide", href: "/legal-help/small-claims-evidence" },
-      { label: "Personal Injury Calculator", href: "/injury-settlement-calculator" },
+      { label: "Free Small Claims Case Builder", href: "/free-small-claims-case-builder" },
+      { label: "Texas Small Claims Court", href: "/legal-help/texas-small-claims-court" },
+      { label: "New York Small Claims Court", href: "/legal-help/new-york-small-claims-court" },
+      { label: "Legal Glossary: Damages", href: "/legal-glossary#damages" },
+      { label: "Legal Glossary: Summons", href: "/legal-glossary#summons" },
     ]}
     faqItems={[
       { question: "Do I need a lawyer for small claims court?", answer: "In most states, you don't need a lawyer and some states don't even allow them. Small claims is designed for self-represented individuals." },
       { question: "What's the dollar limit for small claims?", answer: "It varies by state. California allows up to $10,000 ($5,000 for businesses). New York allows up to $10,000. Texas allows up to $20,000. Check your state's specific limit." },
       { question: "What happens if I win?", answer: "The judge issues a judgment in your favor. If the other party doesn't pay voluntarily, you may need to take additional steps to collect, such as wage garnishment or bank levies." },
+      { question: "Can I appeal a small claims decision?", answer: "In most states, the losing side can appeal to a higher court within a set timeframe (usually 30 days). Some states only allow the defendant to appeal." },
+      { question: "What if the defendant doesn't show up?", answer: "If the defendant was properly served but doesn't appear, you may receive a default judgment in your favor." },
     ]}
   />
 );

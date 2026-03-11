@@ -43,13 +43,17 @@ const CivilRightsHelp = () => (
     relatedPages={[
       { label: "Workplace Discrimination", href: "/legal-help/workplace-discrimination" },
       { label: "Housing Discrimination", href: "/legal-help/housing-discrimination" },
-      { label: "Civil Rights Resources", href: "/legal-areas/civil-rights" },
+      { label: "Free Discrimination Complaint Helper", href: "/free-discrimination-complaint-helper" },
+      { label: "CA Workplace Discrimination", href: "/legal-help/california-workplace-discrimination" },
       { label: "FOIA Request Generator", href: "/foia-request-generator" },
+      { label: "Legal Glossary: Due Process", href: "/legal-glossary#due-process" },
+      { label: "Legal Glossary: Statute of Limitations", href: "/legal-glossary#statute-of-limitations" },
     ]}
     faqItems={[
       { question: "What is a protected class?", answer: "A protected class is a group of people sharing a common characteristic who are legally protected from discrimination. Federal protected classes include race, color, religion, sex, national origin, age (40+), disability, and genetic information." },
       { question: "Can I sue without filing a complaint first?", answer: "For employment discrimination, you typically must file with the EEOC first and receive a 'Right to Sue' letter. Housing discrimination allows both agency complaints and direct lawsuits." },
       { question: "What if my employer retaliates?", answer: "Retaliation for filing a discrimination complaint is illegal. Document any retaliatory actions and add them to your complaint. Retaliation claims can be filed even if the original discrimination claim is not sustained." },
+      { question: "What counts as evidence of discrimination?", answer: "Direct evidence includes discriminatory statements. Circumstantial evidence includes being treated differently than similar employees of a different race, gender, etc. Statistical patterns and timing of adverse actions are also relevant." },
     ]}
   />
 );

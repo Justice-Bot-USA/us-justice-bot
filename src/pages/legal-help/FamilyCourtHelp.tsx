@@ -44,12 +44,18 @@ const FamilyCourtHelp = () => (
       { label: "Divorce Process", href: "/legal-help/divorce-process" },
       { label: "Child Support Guide", href: "/legal-help/child-support" },
       { label: "Protective Orders", href: "/legal-help/protective-orders" },
-      { label: "Family Law Resources", href: "/legal-areas/family-law" },
+      { label: "Free Custody Case Organizer", href: "/free-custody-case-organizer" },
+      { label: "California Child Custody", href: "/legal-help/california-child-custody" },
+      { label: "Florida Child Custody", href: "/legal-help/florida-child-custody" },
+      { label: "Legal Glossary: Affidavit", href: "/legal-glossary#affidavit" },
+      { label: "Legal Glossary: Restraining Order", href: "/legal-glossary#restraining-order" },
     ]}
     faqItems={[
       { question: "At what age can a child choose which parent to live with?", answer: "This varies by state. Some states consider a child's preference at age 12-14, while others have no set age. The court always makes the final decision based on best interests." },
       { question: "Can a parent move to another state with the child?", answer: "Relocation usually requires court approval or the other parent's consent. Most states require advance notice and may hold a hearing to decide if the move is in the child's best interest." },
       { question: "What if the other parent violates the custody order?", answer: "Document the violation with dates and details, then file a motion for contempt with the court. Repeated violations can lead to modification of the custody arrangement." },
+      { question: "How long does a custody case take?", answer: "Contested custody cases typically take 6-18 months. Uncontested cases with agreements can be resolved in weeks. Emergency orders can be obtained within days." },
+      { question: "What is the difference between legal and physical custody?", answer: "Legal custody is the right to make major decisions about the child (education, health, religion). Physical custody determines where the child lives. Both can be sole or joint." },
     ]}
   />
 );

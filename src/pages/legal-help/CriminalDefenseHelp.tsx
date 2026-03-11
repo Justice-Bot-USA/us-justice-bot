@@ -44,11 +44,16 @@ const CriminalDefenseHelp = () => (
       { label: "Defense Evidence Guide", href: "/legal-help/defense-evidence" },
       { label: "Warrant Lookup", href: "/warrant-lookup" },
       { label: "Court Records Search", href: "/court-records" },
+      { label: "Legal Glossary: Arraignment", href: "/legal-glossary#arraignment" },
+      { label: "Legal Glossary: Bail", href: "/legal-glossary#bail" },
+      { label: "Legal Glossary: Plea Bargain", href: "/legal-glossary#plea-bargain" },
     ]}
     faqItems={[
       { question: "What's the difference between a misdemeanor and a felony?", answer: "Misdemeanors are less serious offenses (punishable by up to 1 year in jail). Felonies are more serious (punishable by more than 1 year in prison). The classification affects the court process and potential penalties." },
       { question: "Can I represent myself in criminal court?", answer: "You have the right to represent yourself, but it's strongly discouraged in criminal cases. If you can't afford an attorney, request a public defender — they are provided free of charge." },
       { question: "What is a plea bargain?", answer: "A plea bargain is an agreement where you plead guilty to a lesser charge in exchange for a reduced sentence. Your attorney negotiates this with the prosecutor. You are not required to accept." },
+      { question: "What happens if I miss a court date?", answer: "The judge will likely issue a bench warrant for your arrest. You could also lose your bail and face additional charges for failure to appear." },
+      { question: "How long can the police hold me without charges?", answer: "Typically 48-72 hours, excluding weekends and holidays. After that, you must be formally charged or released. This varies by state and circumstance." },
     ]}
   />
 );
