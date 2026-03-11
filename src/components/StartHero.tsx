@@ -40,7 +40,7 @@ const StartHero = ({ language, onPrepareForm }: StartHeroProps) => {
         <div className="max-w-4xl mx-auto">
           {/* Logo */}
           <div className="mb-6">
-            <img src={veritasLogo} alt="Veritas Path" className="w-24 h-24 md:w-32 md:h-32 mx-auto rounded-full bg-white p-2 shadow-2xl" />
+            <img src={veritasLogo} alt="Veritas Path" width={128} height={128} fetchPriority="high" className="w-24 h-24 md:w-32 md:h-32 mx-auto rounded-full bg-white p-2 shadow-2xl" />
           </div>
 
           {/* Platform Badge */}
