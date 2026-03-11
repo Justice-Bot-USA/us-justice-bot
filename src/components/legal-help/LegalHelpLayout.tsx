@@ -1,5 +1,5 @@
-import { ReactNode } from "react";
-import { Link } from "react-router-dom";
+import { ReactNode, useCallback } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
