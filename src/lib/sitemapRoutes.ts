@@ -158,6 +158,38 @@ export const issueHubRoutes: SitemapRoute[] = [
   { path: "/ca/family-law/custody-visitation/track/enforce",      priority: 0.7, changefreq: "monthly" },
 ];
 
+// ─── Legal Help Library (SEO content pages) ──────────────────────────────────
+export const legalHelpRoutes: SitemapRoute[] = [
+  { path: "/legal-help",                                priority: 0.9, changefreq: "weekly" },
+  { path: "/legal-help/eviction",                       priority: 0.9, changefreq: "weekly" },
+  { path: "/legal-help/eviction-process",               priority: 0.8, changefreq: "monthly" },
+  { path: "/legal-help/how-to-fight-an-eviction",       priority: 0.9, changefreq: "monthly" },
+  { path: "/legal-help/tenant-rights",                  priority: 0.9, changefreq: "monthly" },
+  { path: "/legal-help/eviction-notice-what-to-do",     priority: 0.8, changefreq: "monthly" },
+  { path: "/legal-help/small-claims-court",             priority: 0.9, changefreq: "weekly" },
+  { path: "/legal-help/how-to-file-small-claims",       priority: 0.8, changefreq: "monthly" },
+  { path: "/legal-help/how-to-defend-small-claims",     priority: 0.8, changefreq: "monthly" },
+  { path: "/legal-help/small-claims-evidence",          priority: 0.7, changefreq: "monthly" },
+  { path: "/legal-help/child-custody",                  priority: 0.9, changefreq: "weekly" },
+  { path: "/legal-help/divorce-process",                priority: 0.9, changefreq: "monthly" },
+  { path: "/legal-help/child-support",                  priority: 0.8, changefreq: "monthly" },
+  { path: "/legal-help/protective-orders",              priority: 0.8, changefreq: "monthly" },
+  { path: "/legal-help/discrimination-law",             priority: 0.8, changefreq: "monthly" },
+  { path: "/legal-help/how-to-file-civil-rights-complaint", priority: 0.8, changefreq: "monthly" },
+  { path: "/legal-help/workplace-discrimination",       priority: 0.8, changefreq: "monthly" },
+  { path: "/legal-help/housing-discrimination",         priority: 0.8, changefreq: "monthly" },
+  { path: "/legal-help/criminal-court-process",         priority: 0.8, changefreq: "monthly" },
+  { path: "/legal-help/what-to-do-after-arrest",        priority: 0.8, changefreq: "monthly" },
+  { path: "/legal-help/how-to-prepare-for-court",       priority: 0.8, changefreq: "monthly" },
+  { path: "/legal-help/defense-evidence",               priority: 0.7, changefreq: "monthly" },
+  { path: "/legal-help/workers-compensation",           priority: 0.8, changefreq: "monthly" },
+  { path: "/legal-help/workplace-injury-claim",         priority: 0.7, changefreq: "monthly" },
+  { path: "/legal-help/workers-comp-denied",            priority: 0.7, changefreq: "monthly" },
+  { path: "/legal-help/native-american-rights",         priority: 0.8, changefreq: "monthly" },
+  { path: "/legal-help/tribal-court",                   priority: 0.7, changefreq: "monthly" },
+  { path: "/legal-help/tribal-jurisdiction",            priority: 0.7, changefreq: "monthly" },
+];
+
 // ─── Info / legal pages ────────────────────────────────────────────────────────
 export const infoRoutes: SitemapRoute[] = [
   { path: "/support",                        priority: 0.6, changefreq: "monthly" },
