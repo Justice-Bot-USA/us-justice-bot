@@ -16,8 +16,12 @@ const categories = [
       { label: "Eviction Process Explained", href: "/legal-help/eviction-process" },
       { label: "How to Fight an Eviction", href: "/legal-help/how-to-fight-an-eviction" },
       { label: "Tenant Rights", href: "/legal-help/tenant-rights" },
-      { label: "Landlord Refusing Repairs", href: "/legal-help/landlord-refusing-repairs" },
       { label: "Eviction Notice: What to Do", href: "/legal-help/eviction-notice-what-to-do" },
+      { label: "🔧 Free Eviction Defense Tool", href: "/free-eviction-defense-tool" },
+      { label: "California Eviction Process", href: "/legal-help/california-eviction-process" },
+      { label: "Texas Eviction Process", href: "/legal-help/texas-eviction-process" },
+      { label: "Florida Eviction Process", href: "/legal-help/florida-eviction-process" },
+      { label: "New York Eviction Process", href: "/legal-help/new-york-eviction-process" },
     ],
   },
   {
