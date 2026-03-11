@@ -247,7 +247,11 @@ const LegalHelpLayout = ({
           </p>
           <div className="flex flex-wrap gap-3 justify-center">
             {ctas.map((cta, i) => (
-              <Button key={i} asChild variant={i === 0 ? "default" : "outline"} size="lg">
+              <Button key={i} asChild variant={i === 0 ? "default" : "outline"} size="lg" onClick={() => {
+                if (typeof window !== "undefined" && (window as any).gtag) {
+                  (window as any).gtag("event", "cta_click", { event_category: "seo_content", cta_label: cta.label, page_path: canonicalPath });
+                }
+              }}>
                 <Link to={cta.href}>
                   {cta.label} <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
