@@ -63,6 +63,8 @@ const categories = [
       { label: "Filing a Civil Rights Complaint", href: "/legal-help/how-to-file-civil-rights-complaint" },
       { label: "Workplace Discrimination", href: "/legal-help/workplace-discrimination" },
       { label: "Housing Discrimination", href: "/legal-help/housing-discrimination" },
+      { label: "🔧 Free Discrimination Complaint Helper", href: "/free-discrimination-complaint-helper" },
+      { label: "CA Workplace Discrimination", href: "/legal-help/california-workplace-discrimination" },
     ],
   },
   {
