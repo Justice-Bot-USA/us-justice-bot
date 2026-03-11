@@ -54,6 +54,18 @@ import IssueHubHelpPage from "./pages/IssueHubHelpPage";
 import IssueHubStartPage from "./pages/IssueHubStartPage";
 import TrackPage from "./pages/TrackPage";
 import IssuesIndex from "./pages/IssuesIndex";
+import LegalHelpIndex from "./pages/LegalHelpIndex";
+import EvictionHelp from "./pages/legal-help/EvictionHelp";
+import SmallClaimsHelp from "./pages/legal-help/SmallClaimsHelp";
+import FamilyCourtHelp from "./pages/legal-help/FamilyCourtHelp";
+import CivilRightsHelp from "./pages/legal-help/CivilRightsHelp";
+import CriminalDefenseHelp from "./pages/legal-help/CriminalDefenseHelp";
+import WorkplaceInjuryHelp from "./pages/legal-help/WorkplaceInjuryHelp";
+import NativeAmericanRights from "./pages/legal-help/NativeAmericanRights";
+import TenantRightsHelp from "./pages/legal-help/TenantRightsHelp";
+import DivorceProcessHelp from "./pages/legal-help/DivorceProcessHelp";
+import TribalCourtHelp from "./pages/legal-help/TribalCourtHelp";
+import TribalJurisdictionHelp from "./pages/legal-help/TribalJurisdictionHelp";
 const queryClient = new QueryClient();
 
 export default function App() {
