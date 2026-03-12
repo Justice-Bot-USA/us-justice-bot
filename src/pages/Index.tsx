@@ -1,20 +1,17 @@
-import { Suspense, lazy } from "react";
-import Header from "@/components/Header";
+import { Suspense, lazy, useState } from "react";
 import StartHero from "@/components/StartHero";
 import { SEOHead } from "@/components/SEOHead";
-import Footer from "@/components/Footer";
 import EnhancedSEO from "@/components/EnhancedSEO";
 import LocalBusinessSchema from "@/components/LocalBusinessSchema";
-import { useState } from "react";
 
-// New homepage sections
-import PlatformExplainer from "@/components/homepage/PlatformExplainer";
-import GuidancePathways from "@/components/homepage/GuidancePathways";
-import JusticeBotExplainer from "@/components/homepage/JusticeBotExplainer";
-import BoundariesSection from "@/components/homepage/BoundariesSection";
-import AudienceSection from "@/components/homepage/AudienceSection";
-
-// Lazy load secondary sections
+// Lazy load everything below the fold
+const Header = lazy(() => import("@/components/Header"));
+const Footer = lazy(() => import("@/components/Footer"));
+const PlatformExplainer = lazy(() => import("@/components/homepage/PlatformExplainer"));
+const GuidancePathways = lazy(() => import("@/components/homepage/GuidancePathways"));
+const JusticeBotExplainer = lazy(() => import("@/components/homepage/JusticeBotExplainer"));
+const BoundariesSection = lazy(() => import("@/components/homepage/BoundariesSection"));
+const AudienceSection = lazy(() => import("@/components/homepage/AudienceSection"));
 const PricingComparison = lazy(() => import("@/components/PricingComparison"));
 const ClosingCTA = lazy(() => import("@/components/ClosingCTA"));
 const StatsBar = lazy(() => import("@/components/StatsBar"));
