@@ -1,20 +1,17 @@
-import { Suspense, lazy } from "react";
-import Header from "@/components/Header";
+import { Suspense, lazy, useState } from "react";
 import StartHero from "@/components/StartHero";
 import { SEOHead } from "@/components/SEOHead";
-import Footer from "@/components/Footer";
 import EnhancedSEO from "@/components/EnhancedSEO";
 import LocalBusinessSchema from "@/components/LocalBusinessSchema";
-import { useState } from "react";
 
-// New homepage sections
-import PlatformExplainer from "@/components/homepage/PlatformExplainer";
-import GuidancePathways from "@/components/homepage/GuidancePathways";
-import JusticeBotExplainer from "@/components/homepage/JusticeBotExplainer";
-import BoundariesSection from "@/components/homepage/BoundariesSection";
-import AudienceSection from "@/components/homepage/AudienceSection";
-
-// Lazy load secondary sections
+// Lazy load everything below the fold
+const Header = lazy(() => import("@/components/Header"));
+const Footer = lazy(() => import("@/components/Footer"));
+const PlatformExplainer = lazy(() => import("@/components/homepage/PlatformExplainer"));
+const GuidancePathways = lazy(() => import("@/components/homepage/GuidancePathways"));
+const JusticeBotExplainer = lazy(() => import("@/components/homepage/JusticeBotExplainer"));
+const BoundariesSection = lazy(() => import("@/components/homepage/BoundariesSection"));
+const AudienceSection = lazy(() => import("@/components/homepage/AudienceSection"));
 const PricingComparison = lazy(() => import("@/components/PricingComparison"));
 const ClosingCTA = lazy(() => import("@/components/ClosingCTA"));
 const StatsBar = lazy(() => import("@/components/StatsBar"));
@@ -99,7 +96,9 @@ const Index = () => {
       />
       <LocalBusinessSchema />
       
-      <Header language={language} onLanguageChange={setLanguage} />
+      <Suspense fallback={null}>
+        <Header language={language} onLanguageChange={setLanguage} />
+      </Suspense>
       
       <main id="main-content" className="space-y-0">
         {/* 1. Hero — Above the fold */}
@@ -111,23 +110,33 @@ const Index = () => {
         </Suspense>
         
         {/* 3. What Veritas Path Helps You Do */}
-        <PlatformExplainer />
+        <Suspense fallback={null}>
+          <PlatformExplainer />
+        </Suspense>
         
         {/* 4. Choose Where You'd Like to Start */}
-        <div id="guidance-pathways">
-          <GuidancePathways />
-        </div>
+        <Suspense fallback={null}>
+          <div id="guidance-pathways">
+            <GuidancePathways />
+          </div>
+        </Suspense>
         
         {/* 5. How Justice-Bot™ Works */}
-        <JusticeBotExplainer />
+        <Suspense fallback={null}>
+          <JusticeBotExplainer />
+        </Suspense>
         
         {/* 6. Clear Boundaries & Expectations */}
-        <div id="boundaries-section">
-          <BoundariesSection />
-        </div>
+        <Suspense fallback={null}>
+          <div id="boundaries-section">
+            <BoundariesSection />
+          </div>
+        </Suspense>
         
         {/* 7. Who This Platform Is For */}
-        <AudienceSection />
+        <Suspense fallback={null}>
+          <AudienceSection />
+        </Suspense>
         
         {/* 8. Pricing */}
         <Suspense fallback={<LoadingSection />}>
@@ -147,7 +156,9 @@ const Index = () => {
         </Suspense>
       </main>
       
-      <Footer />
+      <Suspense fallback={null}>
+        <Footer />
+      </Suspense>
     </div>
   );
 };
