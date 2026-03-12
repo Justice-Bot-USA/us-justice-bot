@@ -96,7 +96,9 @@ const Index = () => {
       />
       <LocalBusinessSchema />
       
-      <Header language={language} onLanguageChange={setLanguage} />
+      <Suspense fallback={null}>
+        <Header language={language} onLanguageChange={setLanguage} />
+      </Suspense>
       
       <main id="main-content" className="space-y-0">
         {/* 1. Hero — Above the fold */}
@@ -108,23 +110,33 @@ const Index = () => {
         </Suspense>
         
         {/* 3. What Veritas Path Helps You Do */}
-        <PlatformExplainer />
+        <Suspense fallback={null}>
+          <PlatformExplainer />
+        </Suspense>
         
         {/* 4. Choose Where You'd Like to Start */}
-        <div id="guidance-pathways">
-          <GuidancePathways />
-        </div>
+        <Suspense fallback={null}>
+          <div id="guidance-pathways">
+            <GuidancePathways />
+          </div>
+        </Suspense>
         
         {/* 5. How Justice-Bot™ Works */}
-        <JusticeBotExplainer />
+        <Suspense fallback={null}>
+          <JusticeBotExplainer />
+        </Suspense>
         
         {/* 6. Clear Boundaries & Expectations */}
-        <div id="boundaries-section">
-          <BoundariesSection />
-        </div>
+        <Suspense fallback={null}>
+          <div id="boundaries-section">
+            <BoundariesSection />
+          </div>
+        </Suspense>
         
         {/* 7. Who This Platform Is For */}
-        <AudienceSection />
+        <Suspense fallback={null}>
+          <AudienceSection />
+        </Suspense>
         
         {/* 8. Pricing */}
         <Suspense fallback={<LoadingSection />}>
@@ -144,7 +156,9 @@ const Index = () => {
         </Suspense>
       </main>
       
-      <Footer />
+      <Suspense fallback={null}>
+        <Footer />
+      </Suspense>
     </div>
   );
 };
