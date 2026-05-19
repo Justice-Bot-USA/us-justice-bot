@@ -14,6 +14,116 @@ export type Database = {
   }
   public: {
     Tables: {
+      attorney_referrals: {
+        Row: {
+          attorney_id: string
+          attorney_response: string | null
+          case_id: string | null
+          complexity_score: number | null
+          created_at: string
+          id: string
+          legal_area: string | null
+          message: string | null
+          state: string | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          attorney_id: string
+          attorney_response?: string | null
+          case_id?: string | null
+          complexity_score?: number | null
+          created_at?: string
+          id?: string
+          legal_area?: string | null
+          message?: string | null
+          state?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          attorney_id?: string
+          attorney_response?: string | null
+          case_id?: string | null
+          complexity_score?: number | null
+          created_at?: string
+          id?: string
+          legal_area?: string | null
+          message?: string | null
+          state?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "attorney_referrals_attorney_id_fkey"
+            columns: ["attorney_id"]
+            isOneToOne: false
+            referencedRelation: "attorneys"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      attorneys: {
+        Row: {
+          accepting_referrals: boolean
+          bar_number: string | null
+          bio: string | null
+          contact_email: string
+          created_at: string
+          firm_name: string | null
+          full_name: string
+          id: string
+          is_active: boolean
+          phone: string | null
+          specialties: string[]
+          states_licensed: string[]
+          updated_at: string
+          user_id: string
+          verified: boolean
+          website: string | null
+        }
+        Insert: {
+          accepting_referrals?: boolean
+          bar_number?: string | null
+          bio?: string | null
+          contact_email: string
+          created_at?: string
+          firm_name?: string | null
+          full_name: string
+          id?: string
+          is_active?: boolean
+          phone?: string | null
+          specialties?: string[]
+          states_licensed?: string[]
+          updated_at?: string
+          user_id: string
+          verified?: boolean
+          website?: string | null
+        }
+        Update: {
+          accepting_referrals?: boolean
+          bar_number?: string | null
+          bio?: string | null
+          contact_email?: string
+          created_at?: string
+          firm_name?: string | null
+          full_name?: string
+          id?: string
+          is_active?: boolean
+          phone?: string | null
+          specialties?: string[]
+          states_licensed?: string[]
+          updated_at?: string
+          user_id?: string
+          verified?: boolean
+          website?: string | null
+        }
+        Relationships: []
+      }
       case_files: {
         Row: {
           bucket_name: string
@@ -2186,7 +2296,7 @@ export type Database = {
       is_verified_admin: { Args: { uid: string }; Returns: boolean }
     }
     Enums: {
-      app_role: "admin" | "moderator" | "user"
+      app_role: "admin" | "moderator" | "user" | "attorney"
       job_status: "queued" | "running" | "done" | "error"
       sweep_status: "queued" | "running" | "done" | "error"
     }
@@ -2316,7 +2426,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "moderator", "user"],
+      app_role: ["admin", "moderator", "user", "attorney"],
       job_status: ["queued", "running", "done", "error"],
       sweep_status: ["queued", "running", "done", "error"],
     },
