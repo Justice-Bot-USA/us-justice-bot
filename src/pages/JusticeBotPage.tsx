@@ -5,7 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { SEOHead } from "@/components/SEOHead";
 import EnhancedSEO from "@/components/EnhancedSEO";
-import veritasLogo from "@/assets/veritas-path-logo.png";
+import veritasLogo from "@/assets/ai-anal-logo.png";
 import { useState } from "react";
 
 const whatItDoes = [

@@ -9,7 +9,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useAuth } from "@/hooks/useAuth";
 import { useAdminAccess } from "@/hooks/useAdminAccess";
-import logoImage from "@/assets/veritas-path-logo.png";
+import logoImage from "@/assets/ai-anal-logo.png";
 import ThemeToggle from "./ThemeToggle";
 
 interface HeaderProps {
