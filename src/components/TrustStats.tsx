@@ -7,7 +7,7 @@ interface TrustStatsProps {
 const TrustStats = ({ language }: TrustStatsProps) => {
   const text = {
     en: {
-      title: "Why Thousands Trust US Justice Bot",
+      title: "Why Thousands Trust A.I. ANAL",
       subtitle: "We're committed to providing secure, reliable, and affordable legal help to all Americans",
       stats: [
         { icon: Shield, label: "Secure & Private", value: "256-bit SSL", description: "Bank-level encryption protects your data" },
@@ -29,7 +29,7 @@ const TrustStats = ({ language }: TrustStatsProps) => {
       }
     },
     es: {
-      title: "Por Qué Miles Confían en US Justice Bot",
+      title: "Por Qué Miles Confían en A.I. ANAL",
       subtitle: "Estamos comprometidos a proporcionar ayuda legal segura, confiable y asequible a todos los estadounidenses",
       stats: [
         { icon: Shield, label: "Seguro y Privado", value: "SSL 256-bit", description: "Encriptación de nivel bancario protege sus datos" },

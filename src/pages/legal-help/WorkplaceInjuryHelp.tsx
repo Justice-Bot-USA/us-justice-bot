@@ -3,7 +3,7 @@ import LegalHelpLayout from "@/components/legal-help/LegalHelpLayout";
 const WorkplaceInjuryHelp = () => (
   <LegalHelpLayout
     title="Workers' Compensation: How to File a Workplace Injury Claim"
-    metaTitle="Workers' Compensation Guide | Workplace Injury Claims | Veritas Path"
+    metaTitle="Workers' Compensation Guide | Workplace Injury Claims | A.I. ANAL"
     metaDescription="Step-by-step guide to filing a workers' compensation claim. Learn the claims process, what to do if denied, and how to document your workplace injury."
     keywords="workers compensation, workplace injury, work injury claim, workers comp denied, workers comp appeal, on the job injury, workers comp process, filing workers comp"
     canonicalPath="/legal-help/workers-compensation"

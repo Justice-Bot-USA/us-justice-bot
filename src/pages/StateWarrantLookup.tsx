@@ -88,7 +88,7 @@ export default function StateWarrantLookup() {
   return (
     <div className="flex flex-col min-h-screen bg-background overflow-x-hidden">
       <SEOHead
-        title={`${config.stateName} Warrant Lookup (Official Options by County) — Veritas Path`}
+        title={`${config.stateName} Warrant Lookup (Official Options by County) — A.I. ANAL`}
         description={`Warrants in ${config.stateName} are usually handled by county agencies. Find official sheriff directories, court case search portals, and know-your-rights resources.`}
         keywords={`${config.stateName} warrant lookup, ${config.stateCode} warrant search, ${config.stateName} active warrants, ${config.stateName} sheriff warrant list, ${config.stateName} court records`}
         url={`https://justicebot-usa.com/${stateName}-warrant-lookup`}
@@ -342,7 +342,7 @@ export default function StateWarrantLookup() {
         {/* Disclaimer */}
         <p className="text-xs text-muted-foreground text-center italic px-4">
           This page provides general information and links to official resources. It is not legal advice.
-          Veritas Path does not access law enforcement databases and cannot confirm or deny the existence of warrants.
+          A.I. ANAL does not access law enforcement databases and cannot confirm or deny the existence of warrants.
         </p>
       </main>
 

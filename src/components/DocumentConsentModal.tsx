@@ -80,7 +80,7 @@ export function DocumentConsentModal({
               <Alert variant="destructive" className="border-destructive/50">
                 <AlertTriangle className="h-4 w-4" />
                 <AlertDescription className="text-sm">
-                  <strong>Important Legal Notice:</strong> US Justice Bot is NOT a law firm 
+                  <strong>Important Legal Notice:</strong> A.I. ANAL is NOT a law firm 
                   and does NOT provide legal advice.
                 </AlertDescription>
               </Alert>

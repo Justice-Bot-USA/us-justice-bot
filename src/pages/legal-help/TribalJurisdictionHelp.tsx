@@ -3,7 +3,7 @@ import LegalHelpLayout from "@/components/legal-help/LegalHelpLayout";
 const TribalJurisdictionHelp = () => (
   <LegalHelpLayout
     title="Tribal Jurisdiction: When Does Tribal, Federal, or State Court Apply?"
-    metaTitle="Tribal Jurisdiction Explained | Federal vs State vs Tribal Court | Veritas Path"
+    metaTitle="Tribal Jurisdiction Explained | Federal vs State vs Tribal Court | A.I. ANAL"
     metaDescription="Understand when tribal, federal, or state jurisdiction applies to your legal matter. Learn about the Major Crimes Act, Public Law 280, and jurisdictional overlaps."
     keywords="tribal jurisdiction, federal vs state jurisdiction, tribal court jurisdiction, major crimes act, public law 280, indian country jurisdiction, tribal sovereignty jurisdiction"
     canonicalPath="/legal-help/tribal-jurisdiction"

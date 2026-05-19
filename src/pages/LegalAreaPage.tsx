@@ -43,8 +43,8 @@ const LegalAreaPage = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
-        title={`${areaData.title} Help by State — Veritas Path`}
-        description={`Free state-specific guidance for ${areaData.title.toLowerCase()} cases: forms, deadlines, fees, and key laws for all 50 states. Powered by Justice-Bot.`}
+        title={`${areaData.title} Help by State — A.I. ANAL`}
+        description={`Free state-specific guidance for ${areaData.title.toLowerCase()} cases: forms, deadlines, fees, and key laws for all 50 states. Powered by A.I. ANAL.`}
         keywords={`${areaData.title.toLowerCase()}, ${areaData.keywords.join(", ")}, legal help by state, self-help legal`}
       />
       <Header language={language} onLanguageChange={setLanguage} />

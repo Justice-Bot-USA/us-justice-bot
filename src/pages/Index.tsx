@@ -110,7 +110,7 @@ const Index = () => {
           <StatsBar />
         </Suspense>
         
-        {/* 3. What Veritas Path Helps You Do */}
+        {/* 3. What A.I. ANAL Helps You Do */}
         <Suspense fallback={null}>
           <PlatformExplainer />
         </Suspense>
@@ -122,7 +122,7 @@ const Index = () => {
           </div>
         </Suspense>
         
-        {/* 5. How Justice-Bot™ Works */}
+        {/* 5. How A.I. ANAL Works */}
         <Suspense fallback={null}>
           <JusticeBotExplainer />
         </Suspense>

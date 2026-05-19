@@ -3,7 +3,7 @@ import LegalHelpLayout from "@/components/legal-help/LegalHelpLayout";
 const CivilRightsHelp = () => (
   <LegalHelpLayout
     title="How to File a Civil Rights or Discrimination Complaint"
-    metaTitle="How to File a Discrimination Complaint | Civil Rights Guide | Veritas Path"
+    metaTitle="How to File a Discrimination Complaint | Civil Rights Guide | A.I. ANAL"
     metaDescription="Learn how to file a discrimination complaint. Understand protected classes, evidence requirements, and the complaint process for workplace, housing, and public accommodation discrimination."
     keywords="discrimination complaint, civil rights, workplace discrimination, housing discrimination, EEOC complaint, protected classes, file discrimination claim, civil rights violation"
     canonicalPath="/legal-help/discrimination-law"

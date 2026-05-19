@@ -3,7 +3,7 @@ import LegalHelpLayout from "@/components/legal-help/LegalHelpLayout";
 const FamilyCourtHelp = () => (
   <LegalHelpLayout
     title="Child Custody: How to Prepare for Family Court"
-    metaTitle="Child Custody Guide | Family Court Preparation | Veritas Path"
+    metaTitle="Child Custody Guide | Family Court Preparation | A.I. ANAL"
     metaDescription="Step-by-step guide to child custody cases. Learn about custody factors, court preparation, required documents, and how to present your case in family court."
     keywords="child custody, family court, custody hearing, custody factors, best interests of child, custody documents, visitation rights, parenting plan"
     canonicalPath="/legal-help/child-custody"

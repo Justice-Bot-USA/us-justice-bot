@@ -66,7 +66,7 @@ const AITools = () => {
           <div className="flex items-center justify-between">
             <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
               <Scale className="w-6 h-6" />
-              <span className="font-bold text-lg">US Justice Bot</span>
+              <span className="font-bold text-lg">A.I. ANAL</span>
             </Link>
             <Button asChild variant="secondary" size="sm">
               <Link to="/">

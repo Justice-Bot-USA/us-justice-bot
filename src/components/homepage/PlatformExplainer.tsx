@@ -14,7 +14,7 @@ const PlatformExplainer = () => {
     <section className="py-20 px-4 bg-muted/30">
       <div className="max-w-4xl mx-auto text-center">
         <h2 className="text-3xl md:text-4xl font-bold mb-4">
-          What Veritas Path Helps You Do
+          What A.I. ANAL Helps You Do
         </h2>
         <p className="text-lg text-muted-foreground mb-12 max-w-2xl mx-auto">
           Clear guidance through complex systems — in plain language, at your own pace.

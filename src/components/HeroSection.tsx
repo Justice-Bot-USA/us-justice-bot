@@ -12,7 +12,7 @@ const HeroSection = ({ language, onGetStarted }: HeroSectionProps) => {
     en: {
       slogan: "IGNORANCE IS NOT AN OPTION",
       title: "Know Your Rights. Protect Yourself and Your Family.",
-      subtitle: "US Justice Bot helps Americans understand their legal rights and navigate the justice system with confidence.",
+      subtitle: "A.I. ANAL helps Americans understand their legal rights and navigate the justice system with confidence.",
       cta: "GET STARTED FREE",
       learnMore: "Learn More",
       features: [
@@ -24,7 +24,7 @@ const HeroSection = ({ language, onGetStarted }: HeroSectionProps) => {
     es: {
       slogan: "LA IGNORANCIA NO ES UNA OPCIÓN",
       title: "Conoce Tus Derechos. Protégete a Ti y a Tu Familia.",
-      subtitle: "US Justice Bot ayuda a los americanos a entender sus derechos legales y navegar el sistema de justicia con confianza.",
+      subtitle: "A.I. ANAL ayuda a los americanos a entender sus derechos legales y navegar el sistema de justicia con confianza.",
       cta: "COMENZAR GRATIS",
       learnMore: "Más Información",
       features: [

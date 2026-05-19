@@ -53,7 +53,7 @@ export default function StateToolLandingPage() {
             "url": seo.canonical,
             "provider": {
               "@type": "Organization",
-              "name": "Veritas Path — Justice-Bot Technologies",
+              "name": "A.I. ANAL — A.I. ANAL",
               "url": "https://justicebot-usa.com"
             },
             "about": {

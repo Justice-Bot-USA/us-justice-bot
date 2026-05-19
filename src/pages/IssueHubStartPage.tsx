@@ -30,7 +30,7 @@ export default function IssueHubStartPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background overflow-x-hidden">
       <Helmet>
-        <title>Start Wizard — {hub?.title || 'Issue Hub'} | Justice-Bot™</title>
+        <title>Start Wizard — {hub?.title || 'Issue Hub'} | A.I. ANAL</title>
       </Helmet>
       <Header language="en" onLanguageChange={() => {}} />
 

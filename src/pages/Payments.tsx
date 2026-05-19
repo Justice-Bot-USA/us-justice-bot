@@ -11,7 +11,7 @@ export const PaymentsPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEOHead 
-        title="Pricing & Payments - US Justice Bot"
+        title="Pricing & Payments - A.I. ANAL"
         description="Choose the perfect legal assistance plan. Monthly ($79.99), Yearly ($499.99), or Pay-per-form ($5.99). Professional legal guidance for all Americans."
         keywords="legal subscription, legal pricing, legal payments, monthly legal plan, yearly legal plan"
         url="https://justicebot-usa.com/payments"

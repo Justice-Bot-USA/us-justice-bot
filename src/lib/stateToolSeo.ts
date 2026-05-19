@@ -44,7 +44,7 @@ export function getStateToolSeo(match: StateToolMatch) {
 
   if (toolType === 'arrest-records') {
     return {
-      title: `How to Request Arrest Records in ${stateName} | Veritas Path`,
+      title: `How to Request Arrest Records in ${stateName} | A.I. ANAL`,
       description: `Request arrest reports, warrant returns, booking records, and court documents in ${stateName} (${stateCode}). Generate a properly worded public records request with correct statutory citations.`,
       h1: `How to Request Arrest Records in ${stateName}`,
       keywords: [
@@ -84,8 +84,8 @@ export function getStateToolSeo(match: StateToolMatch) {
 
   if (toolType === 'warrant-lookup') {
     return {
-      title: `${stateName} Warrant Lookup — Free Search | Veritas Path`,
-      description: `Search for active warrants in ${stateName} (${stateCode}). Free public records lookup with links to official ${stateName} court portals. Powered by Veritas Path.`,
+      title: `${stateName} Warrant Lookup — Free Search | A.I. ANAL`,
+      description: `Search for active warrants in ${stateName} (${stateCode}). Free public records lookup with links to official ${stateName} court portals. Powered by A.I. ANAL.`,
       h1: `${stateName} Warrant Lookup`,
       keywords: [
         `${stateName} warrant lookup`,
@@ -115,8 +115,8 @@ export function getStateToolSeo(match: StateToolMatch) {
 
   // court-forms
   return {
-    title: `${stateName} Court Forms — Free Download | Veritas Path`,
-    description: `Browse and download official ${stateName} court forms for family, small claims, housing, employment, and more. Free access to ${stateCode} legal documents powered by Veritas Path.`,
+    title: `${stateName} Court Forms — Free Download | A.I. ANAL`,
+    description: `Browse and download official ${stateName} court forms for family, small claims, housing, employment, and more. Free access to ${stateCode} legal documents powered by A.I. ANAL.`,
     h1: `${stateName} Court Forms`,
     keywords: [
       `${stateName} court forms`,

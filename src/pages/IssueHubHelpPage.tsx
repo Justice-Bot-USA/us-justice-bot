@@ -36,7 +36,7 @@ export default function IssueHubHelpPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background overflow-x-hidden">
       <Helmet>
-        <title>Get Help — {hub?.title || 'Issue Hub'} | Justice-Bot™</title>
+        <title>Get Help — {hub?.title || 'Issue Hub'} | A.I. ANAL</title>
       </Helmet>
       <Header language="en" onLanguageChange={() => {}} />
 

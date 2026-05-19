@@ -3,7 +3,7 @@ import LegalHelpLayout from "@/components/legal-help/LegalHelpLayout";
 const TribalCourtHelp = () => (
   <LegalHelpLayout
     title="Tribal Courts: How They Work and When They Apply"
-    metaTitle="Tribal Courts Explained | Native American Court System | Veritas Path"
+    metaTitle="Tribal Courts Explained | Native American Court System | A.I. ANAL"
     metaDescription="Understand how tribal courts work, what types of cases they handle, and when tribal jurisdiction applies. Educational guide for Native Americans and legal practitioners."
     keywords="tribal court, tribal jurisdiction, native american court, tribal law, tribal court process, tribal sovereignty, indian country, tribal justice system"
     canonicalPath="/legal-help/tribal-court"

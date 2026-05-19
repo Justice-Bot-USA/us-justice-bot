@@ -169,7 +169,7 @@ export default function CourtRecordsLookup() {
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
-        title="Court Records Lookup - Find Case Filings & Dockets | Veritas Path"
+        title="Court Records Lookup - Find Case Filings & Dockets | A.I. ANAL"
         description="Search court records, dockets, and case filings across all 50 states and federal courts. Free access to public court record portals."
         keywords="court records, docket search, case filings, court hearings, PACER, state court records"
         url="https://us-justice-bot.lovable.app/court-records"

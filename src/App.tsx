@@ -21,6 +21,7 @@ const Pricing = lazy(() => import("./pages/Pricing"));
 const PaymentSuccess = lazy(() => import("./pages/PaymentSuccess"));
 const LegalJourney = lazy(() => import("./pages/LegalJourney"));
 const CaseDashboard = lazy(() => import("./pages/CaseDashboard"));
+const UserAnalytics = lazy(() => import("./pages/UserAnalytics"));
 const AITools = lazy(() => import("./pages/AITools"));
 const AIToolsInteractive = lazy(() => import("./pages/AIToolsInteractive"));
 const PersonalInjuryCalculator = lazy(() => import("./pages/PersonalInjuryCalculator"));
@@ -105,6 +106,7 @@ export default function App() {
               <Route path="/payment-success" element={<PaymentSuccess />} />
               <Route path="/legal-journey" element={<LegalJourney />} />
               <Route path="/my-cases" element={<CaseDashboard />} />
+              <Route path="/dashboard/analytics" element={<UserAnalytics />} />
               <Route path="/ai-tools" element={<AITools />} />
               <Route path="/ai-tools/use" element={<AIToolsInteractive />} />
               <Route path="/injury-settlement-calculator" element={<PersonalInjuryCalculator />} />

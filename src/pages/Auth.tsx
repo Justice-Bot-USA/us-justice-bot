@@ -342,8 +342,8 @@ const Auth = () => {
           </CardTitle>
           <CardDescription>
             {isSignUp 
-              ? 'Sign up for your US Justice Bot account'
-              : 'Sign in to your US Justice Bot account'
+              ? 'Sign up for your A.I. ANAL account'
+              : 'Sign in to your A.I. ANAL account'
             }
           </CardDescription>
         </CardHeader>
