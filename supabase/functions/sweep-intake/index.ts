@@ -12,9 +12,9 @@ Deno.serve(async (req: Request) => {
   if (corsResponse) return corsResponse;
 
   try {
-    await requireUser(req);
+    const { userId } = await requireUser(req);
 
-    const { userStory, documentTexts, caseId, userId } = await req.json();
+    const { userStory, documentTexts, caseId } = await req.json();
     
     console.log("Running Sweep 0: Intake & Normalization");
 

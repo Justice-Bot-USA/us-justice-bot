@@ -151,6 +151,12 @@ async function handleVerifySession(
     return errorResponse("PAYMENT_REQUIRED", "Payment not completed");
   }
 
+  // Prevent session-claim IDOR: ensure the session was created for this user
+  const sessionUserId = session.metadata?.user_id;
+  if (!sessionUserId || sessionUserId !== data.userId) {
+    return errorResponse("FORBIDDEN", "Session does not belong to this user");
+  }
+
   const supabase = createAdminClient();
   const accessType = session.metadata?.access_type || "single_form";
   

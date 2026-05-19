@@ -17,6 +17,7 @@ import { US_STATES } from "@/lib/states";
 import { trackUSLookupStarted, trackUSLookupCompleted } from "@/hooks/useAnalytics";
 import LookupActionCTA from "@/components/LookupActionCTA";
 import PrepareFilingModal from "@/components/PrepareFilingModal";
+import DOMPurify from "dompurify";
 
 // State court portal directory - official public record websites
 const STATE_COURT_PORTALS: Record<string, { name: string; url: string; hasPublicSearch: boolean; notes: string }> = {
@@ -339,7 +340,7 @@ export default function CourtRecordsLookup() {
                               {r.dateFiled && <span className="text-xs text-muted-foreground">Filed: {r.dateFiled}</span>}
                             </div>
                             {r.citation && <p className="text-xs text-muted-foreground mt-1">{r.citation}</p>}
-                            {r.snippet && <p className="text-sm text-muted-foreground mt-2 line-clamp-2" dangerouslySetInnerHTML={{ __html: r.snippet }} />}
+                            {r.snippet && <p className="text-sm text-muted-foreground mt-2 line-clamp-2" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(r.snippet, { ALLOWED_TAGS: ["mark","em","strong","b","i"], ALLOWED_ATTR: [] }) }} />}
                             {r.author && <p className="text-xs text-muted-foreground mt-1">Author: {r.author}</p>}
                           </div>
                           <Button variant="outline" size="sm" asChild>
@@ -381,7 +382,7 @@ export default function CourtRecordsLookup() {
                               {r.dateFiled && <span className="text-xs text-muted-foreground">Filed: {r.dateFiled}</span>}
                             </div>
                             {r.assignedTo && <p className="text-xs text-muted-foreground mt-1">Assigned to: {r.assignedTo}</p>}
-                            {r.snippet && <p className="text-sm text-muted-foreground mt-2 line-clamp-2" dangerouslySetInnerHTML={{ __html: r.snippet }} />}
+                            {r.snippet && <p className="text-sm text-muted-foreground mt-2 line-clamp-2" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(r.snippet, { ALLOWED_TAGS: ["mark","em","strong","b","i"], ALLOWED_ATTR: [] }) }} />}
                           </div>
                           <Button variant="outline" size="sm" asChild>
                             <a href={r.url} target="_blank" rel="noopener noreferrer">
@@ -420,7 +421,7 @@ export default function CourtRecordsLookup() {
                               {r.court && <Badge variant="secondary" className="text-xs">{r.court}</Badge>}
                               {r.dateArgued && <span className="text-xs text-muted-foreground">Argued: {r.dateArgued}</span>}
                             </div>
-                            {r.snippet && <p className="text-sm text-muted-foreground mt-2 line-clamp-2" dangerouslySetInnerHTML={{ __html: r.snippet }} />}
+                            {r.snippet && <p className="text-sm text-muted-foreground mt-2 line-clamp-2" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(r.snippet, { ALLOWED_TAGS: ["mark","em","strong","b","i"], ALLOWED_ATTR: [] }) }} />}
                           </div>
                           <Button variant="outline" size="sm" asChild>
                             <a href={r.url} target="_blank" rel="noopener noreferrer">

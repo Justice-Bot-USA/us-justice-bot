@@ -209,7 +209,7 @@ serve(async (req: Request) => {
     });
   } catch (err) {
     console.error("❌ Webhook error:", err);
-    return new Response(`Webhook Error: ${err instanceof Error ? err.message : "Unknown error"}`, {
+    return new Response("Webhook validation failed", {
       status: 400,
     });
   }

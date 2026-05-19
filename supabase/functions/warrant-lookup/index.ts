@@ -107,7 +107,7 @@ Deno.serve(async (req) => {
           ? "Unauthorized"
           : isTimeout
           ? "Search timed out. The public records service is slow right now — please try again or check your state's official court portal directly."
-          : error instanceof Error ? error.message : "Unknown error",
+          : "An error occurred processing your request",
       }),
       { status: isAuth ? 401 : isTimeout ? 504 : 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );

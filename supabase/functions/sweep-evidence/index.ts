@@ -13,9 +13,9 @@ Deno.serve(async (req: Request) => {
   if (corsResponse) return corsResponse;
 
   try {
-    await requireUser(req);
+    const { userId } = await requireUser(req);
 
-    const { fileIds, caseId, userId } = await req.json();
+    const { fileIds, caseId } = await req.json();
     
     console.log("Running Sweep 1: Evidence Indexing", { fileIds });
 
@@ -50,7 +50,8 @@ Deno.serve(async (req: Request) => {
     const { data: files, error: filesError } = await supabase
       .from('case_files')
       .select('id, file_name, file_type, description')
-      .in('id', fileIds);
+      .in('id', fileIds)
+      .eq('user_id', userId);
 
     if (filesError) {
       console.error('Error fetching files:', filesError);

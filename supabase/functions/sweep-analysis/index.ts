@@ -13,11 +13,25 @@ Deno.serve(async (req: Request) => {
   if (corsResponse) return corsResponse;
 
   try {
-    await requireUser(req);
+    const { userId } = await requireUser(req);
 
-    const { caseProfile, saveToDb, caseId, userId } = await req.json();
+    const { caseProfile, saveToDb, caseId } = await req.json();
     
     console.log("Running Sweep 6: Final Analysis Report");
+
+    // Ownership check: ensure caseId belongs to authenticated user
+    if (caseId) {
+      const supabaseAuth = createAdminClient();
+      const { data: owned } = await supabaseAuth
+        .from('case_merit_scores')
+        .select('id')
+        .eq('id', caseId)
+        .eq('user_id', userId)
+        .maybeSingle();
+      if (!owned) {
+        return errorResponse('FORBIDDEN', 'Access denied to this case');
+      }
+    }
 
     // Mark sweep as running
     if (caseId && userId) {
