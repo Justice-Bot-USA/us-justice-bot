@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Scale, FileText, Users } from "lucide-react";
-import usFlagHero from "@/assets/us-flag-hero.png";
+import veritasLogo from "@/assets/ai-anal-logo.png";
 
 interface HeroSectionProps {
   language: 'en' | 'es';
@@ -38,19 +38,16 @@ const HeroSection = ({ language, onGetStarted }: HeroSectionProps) => {
   const t = text[language];
 
   return (
-    <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
-      {/* Background Image */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${usFlagHero})` }}
-      />
-      
-      {/* Dark Blue/Black Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[hsl(220,30%,8%)]/80 via-[hsl(220,30%,10%)]/70 to-[hsl(220,30%,6%)]/90" />
+    <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-gradient-to-b from-[hsl(220,30%,8%)] via-[hsl(220,30%,10%)] to-[hsl(220,30%,6%)]">
       
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4 py-20 text-center">
         <div className="max-w-4xl mx-auto">
+          {/* Logo */}
+          <div className="mb-6">
+            <img src={veritasLogo} alt="A.I. ANAL" width={128} height={128} fetchPriority="high" className="w-24 h-24 md:w-32 md:h-32 mx-auto rounded-full bg-white p-2 shadow-2xl" />
+          </div>
+
           {/* Slogan Badge */}
           <div className="inline-block mb-6">
             <span className="bg-primary/90 text-primary-foreground px-6 py-2 rounded-full text-sm md:text-base font-bold tracking-wider uppercase">
