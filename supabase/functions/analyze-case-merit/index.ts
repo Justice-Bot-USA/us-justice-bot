@@ -424,7 +424,8 @@ For CRIMINAL cases, always include:
         const { error: linkError } = await supabaseClient
           .from('case_files')
           .update({ case_id: caseRecord.id })
-          .in('id', fileIds);
+          .in('id', fileIds)
+          .eq('user_id', userId);
         
         if (linkError) {
           console.error('Error linking files to case:', linkError);
