@@ -4,7 +4,7 @@ const points = [
   {
     icon: Shield,
     title: "No government database access",
-    text: "Justice-Bot™ does not connect to, query, or access any government or law-enforcement databases.",
+    text: "A.I. ANAL does not connect to, query, or access any government or law-enforcement databases.",
   },
   {
     icon: UserCheck,
@@ -14,7 +14,7 @@ const points = [
   {
     icon: HelpCircle,
     title: "Guidance, not determinations",
-    text: "Justice-Bot™ provides informational guidance to help you understand processes — it does not make legal conclusions.",
+    text: "A.I. ANAL provides informational guidance to help you understand processes — it does not make legal conclusions.",
   },
   {
     icon: AlertTriangle,
@@ -28,10 +28,10 @@ const JusticeBotExplainer = () => {
     <section className="py-20 px-4 bg-muted/30">
       <div className="max-w-4xl mx-auto text-center">
         <h2 className="text-3xl md:text-4xl font-bold mb-4">
-          How Justice-Bot™ Works
+          How A.I. ANAL Works
         </h2>
         <p className="text-lg text-muted-foreground mb-12 max-w-2xl mx-auto">
-          Transparent, informational guidance — built with trust and compliance at its core.
+          Am Not A Lawyer. Transparent, informational guidance — built with trust and compliance at its core.
         </p>
         <div className="grid sm:grid-cols-2 gap-6 text-left">
           {points.map((p, i) => (
