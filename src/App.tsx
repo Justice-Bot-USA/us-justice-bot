@@ -15,6 +15,7 @@ const AuthPage = lazy(() => import("./pages/AuthPage"));
 const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 const AdminDashboardSimple = lazy(() => import("./pages/AdminDashboardSimple"));
 const AdminSetup = lazy(() => import("./pages/AdminSetup"));
+const AdminAnalytics = lazy(() => import("./pages/AdminAnalytics"));
 const Support = lazy(() => import("./pages/Support"));
 const CaseAnalysis = lazy(() => import("./pages/CaseAnalysis"));
 const Pricing = lazy(() => import("./pages/Pricing"));
@@ -100,6 +101,7 @@ export default function App() {
               <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/admin" element={<AdminDashboardSimple />} />
               <Route path="/admin-setup" element={<AdminSetup />} />
+              <Route path="/admin/analytics" element={<AdminAnalytics />} />
               <Route path="/support" element={<Support />} />
               <Route path="/case-analysis" element={<CaseAnalysis />} />
               <Route path="/pricing" element={<Pricing />} />
