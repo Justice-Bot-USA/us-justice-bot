@@ -81,7 +81,7 @@ export default function AttorneyDirectory() {
         <title>Find an Attorney | A.N.A.L. Legal Directory</title>
         <meta name="description" content="Browse vetted attorneys by state and specialty. Request a referral for your case. Legal information, not legal advice." />
       </Helmet>
-      <Header />
+      <Header language="en" onLanguageChange={() => {}} />
       <main className="container mx-auto px-4 py-12">
         <h1 className="text-4xl font-bold mb-2">Attorney Directory</h1>
         <p className="text-muted-foreground mb-6">
