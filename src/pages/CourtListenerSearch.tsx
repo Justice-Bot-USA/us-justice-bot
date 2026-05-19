@@ -303,7 +303,7 @@ export default function CourtListenerSearch() {
                           {r.snippet && (
                             <p
                               className="text-sm text-muted-foreground mt-2 line-clamp-3"
-                              dangerouslySetInnerHTML={{ __html: r.snippet }}
+                              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(r.snippet, { ALLOWED_TAGS: ['mark', 'em', 'strong', 'b', 'i'], ALLOWED_ATTR: [] }) }}
                             />
                           )}
 
