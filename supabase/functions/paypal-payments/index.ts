@@ -109,7 +109,7 @@ async function createSubscription(accessToken: string, data: { planType: string;
 }
 
 async function createOneTimePayment(accessToken: string, data: { userId: string; formType?: string }) {
-  const { formType } = data;
+  const { formType, userId } = data;
   
   const paymentResponse = await fetch(`${PAYPAL_BASE_URL}/v2/checkout/orders`, {
     method: "POST",
@@ -120,6 +120,7 @@ async function createOneTimePayment(accessToken: string, data: { userId: string;
     body: JSON.stringify({
       intent: "CAPTURE",
       purchase_units: [{
+        reference_id: userId,
         amount: {
           currency_code: "USD",
           value: "4.99",
@@ -159,6 +160,13 @@ async function verifyPayment(accessToken: string, data: { paymentId: string; use
   console.log("Payment captured:", captureResult);
 
   if (captureResult.status === "COMPLETED") {
+    // Verify the order was created for this user (IDOR protection)
+    const orderUserId = captureResult.purchase_units?.[0]?.reference_id;
+    if (!orderUserId || orderUserId !== userId) {
+      console.error("Payment ownership mismatch", { orderUserId, userId });
+      return errorResponse("FORBIDDEN", "Payment order does not belong to this user");
+    }
+
     // Save payment to database using admin client
     const supabase = createAdminClient();
     
