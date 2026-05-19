@@ -12,9 +12,9 @@ Deno.serve(async (req: Request) => {
   if (corsResponse) return corsResponse;
 
   try {
-    await requireUser(req);
+    const { userId } = await requireUser(req);
 
-    const { intake, classification, state, county, caseId, userId } = await req.json();
+    const { intake, classification, state, county, caseId } = await req.json();
     
     console.log("Running Sweep 3: Venue Resolution", { state, county });
 

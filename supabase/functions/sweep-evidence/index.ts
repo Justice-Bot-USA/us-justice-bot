@@ -13,9 +13,9 @@ Deno.serve(async (req: Request) => {
   if (corsResponse) return corsResponse;
 
   try {
-    await requireUser(req);
+    const { userId } = await requireUser(req);
 
-    const { fileIds, caseId, userId } = await req.json();
+    const { fileIds, caseId } = await req.json();
     
     console.log("Running Sweep 1: Evidence Indexing", { fileIds });
 
