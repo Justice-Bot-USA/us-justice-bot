@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { Scale, Mail, MapPin } from "lucide-react";
+import { Mail, MapPin } from "lucide-react";
+import logoImage from "@/assets/ai-anal-logo.png";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -10,10 +11,10 @@ const Footer = () => {
         <div className="grid md:grid-cols-4 gap-8 mb-12">
           {/* Brand */}
           <div>
-            <div className="flex items-center gap-2 mb-4">
-              <Scale className="h-6 w-6" />
+            <Link to="/" className="flex items-center gap-3 mb-4">
+              <img src={logoImage} alt="A.I. ANAL logo" className="w-10 h-10 object-contain rounded-full bg-white p-1" />
               <span className="text-xl font-bold">A.I. ANAL</span>
-            </div>
+            </Link>
             <p className="text-sm opacity-80 mb-4">
               Am Not A Lawyer. AI-powered legal guidance for all 50 states.
             </p>
