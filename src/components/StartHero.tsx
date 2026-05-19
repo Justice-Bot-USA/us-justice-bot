@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Info } from "lucide-react";
 import usFlagHero from "@/assets/us-flag-hero.png";
-import veritasLogo from "@/assets/veritas-path-logo.png";
+import veritasLogo from "@/assets/ai-anal-logo.png";
 
 interface StartHeroProps {
   language: 'en' | 'es';
