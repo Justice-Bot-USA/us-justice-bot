@@ -12,11 +12,13 @@ Deno.serve(async (req: Request) => {
     // Optional authentication - allow guest analysis but don't save to DB
     let userId: string | null = null;
     let userEmail: string | null = null;
+    let userClient: any = null;
     
     try {
       const authResult = await requireUser(req);
       userId = authResult.userId;
       userEmail = authResult.email || null;
+      userClient = authResult.userClient;
     } catch (authError) {
       console.log('Running as guest (unauthenticated) - results will not be saved');
     }
@@ -30,11 +32,12 @@ Deno.serve(async (req: Request) => {
 
     // Fetch and analyze uploaded documents
     let documentContents = '';
-    if (uploadedFiles && uploadedFiles.length > 0) {
+    if (userId && userClient && uploadedFiles && uploadedFiles.length > 0) {
       console.log('Fetching uploaded documents for analysis...');
       for (const file of uploadedFiles) {
         try {
-          const { data, error } = await supabaseClient
+          // Use the user client so RLS enforces ownership
+          const { data, error } = await userClient
             .from('case_files')
             .select('file_name, file_type, description')
             .eq('id', file.id)
