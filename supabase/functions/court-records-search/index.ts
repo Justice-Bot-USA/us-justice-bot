@@ -164,7 +164,7 @@ Deno.serve(async (req) => {
     return new Response(
       JSON.stringify({
         success: false,
-        error: isAuth ? "Unauthorized" : (error instanceof Error ? error.message : "Unknown error"),
+        error: isAuth ? "Unauthorized" : "An error occurred processing your request",
       }),
       { status: isAuth ? 401 : 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
