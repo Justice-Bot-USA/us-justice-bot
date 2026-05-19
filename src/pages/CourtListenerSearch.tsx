@@ -10,6 +10,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
+import DOMPurify from "dompurify";
 import { toast } from "sonner";
 import { Search, CalendarIcon, ExternalLink, Scale, Loader2, ChevronLeft, ChevronRight, AlertTriangle, Bookmark, BookmarkCheck, FolderOpen } from "lucide-react";
 import Header from "@/components/Header";
