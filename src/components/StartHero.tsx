@@ -40,13 +40,13 @@ const StartHero = ({ language, onPrepareForm }: StartHeroProps) => {
         <div className="max-w-4xl mx-auto">
           {/* Logo */}
           <div className="mb-6">
-            <img src={veritasLogo} alt="Veritas Path" width={128} height={128} fetchPriority="high" className="w-24 h-24 md:w-32 md:h-32 mx-auto rounded-full bg-white p-2 shadow-2xl" />
+            <img src={veritasLogo} alt="A.I. ANAL" width={128} height={128} fetchPriority="high" className="w-24 h-24 md:w-32 md:h-32 mx-auto rounded-full bg-white p-2 shadow-2xl" />
           </div>
 
           {/* Platform Badge */}
           <div className="inline-block mb-6">
             <span className="bg-primary/90 text-primary-foreground px-6 py-2 rounded-full text-sm md:text-base font-bold tracking-wider uppercase">
-              Veritas Path — Powered by Justice-Bot™
+              A.I. ANAL — Am Not A Lawyer
             </span>
           </div>
           
@@ -57,7 +57,7 @@ const StartHero = ({ language, onPrepareForm }: StartHeroProps) => {
           
           {/* Supporting copy */}
           <p className="text-lg md:text-xl text-white/90 mb-10 max-w-2xl mx-auto drop-shadow">
-            Veritas Path is an informational civic-guidance platform. Justice-Bot™ helps you understand legal processes, records, and next steps — supporting self-represented individuals without providing legal advice.
+            A.I. ANAL is an AI-powered civic-guidance platform. We help you understand legal processes, prepare documents, and request public records — supporting self-represented individuals. We are <strong>not</strong> a law firm and do <strong>not</strong> provide legal advice.
           </p>
 
           {/* CTAs */}
@@ -83,7 +83,7 @@ const StartHero = ({ language, onPrepareForm }: StartHeroProps) => {
 
           {/* Micro disclaimer */}
           <p className="text-white/50 text-xs max-w-lg mx-auto">
-            This is legal information, not legal advice. Veritas Path does not access law-enforcement databases, check warrants, or monitor individuals.
+            A.I. ANAL = Am Not A Lawyer. This is legal information, not legal advice. We do not access law-enforcement databases, check warrants, or monitor individuals.
           </p>
         </div>
       </div>

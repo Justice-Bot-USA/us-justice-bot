@@ -29,19 +29,20 @@ const Index = () => {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "Justice-Bot Technologies",
+    name: "A.I. ANAL",
+    alternateName: "Am Not A Lawyer",
     url: "https://justicebot-usa.com",
-    description: "Veritas Path is an informational civic-guidance platform powered by Justice-Bot™, helping self-represented individuals navigate the U.S. legal system.",
+    description: "A.I. ANAL (Am Not A Lawyer) is an AI-powered civic-guidance platform helping self-represented individuals navigate the U.S. legal system.",
     brand: {
       "@type": "Brand",
-      name: "Veritas Path"
+      name: "A.I. ANAL"
     },
     owns: {
       "@type": "SoftwareApplication",
-      name: "Justice-Bot™",
+      name: "A.I. ANAL",
       applicationCategory: "Legal",
       operatingSystem: "Web",
-      description: "AI-powered informational guidance engine for understanding legal processes, records, and next steps.",
+      description: "AI-powered informational guidance engine for understanding legal processes, records, and next steps. Am Not A Lawyer.",
       offers: {
         "@type": "Offer",
         price: "0",
@@ -53,16 +54,16 @@ const Index = () => {
 
   const faqData = [
     {
-      question: "What is Veritas Path?",
-      answer: "Veritas Path is an informational civic-guidance platform that helps self-represented individuals understand U.S. legal and administrative processes. It is not a law firm and does not provide legal advice.",
+      question: "What is A.I. ANAL?",
+      answer: "A.I. ANAL (Am Not A Lawyer) is an AI-powered civic-guidance platform that helps self-represented individuals understand U.S. legal and administrative processes. It is not a law firm and does not provide legal advice.",
     },
     {
-      question: "What is Justice-Bot™?",
-      answer: "Justice-Bot™ is the guidance engine powering Veritas Path. It analyzes user-provided information to offer informational guidance on legal processes, documents, and next steps.",
+      question: "What does A.I. ANAL stand for?",
+      answer: "Am Not A Lawyer. The name makes the disclaimer the brand: we provide legal information, not legal advice or representation.",
     },
     {
       question: "Does this platform access government databases?",
-      answer: "No. Justice-Bot™ does not connect to, query, or access any government or law-enforcement databases. All analysis is based on information you provide.",
+      answer: "No. A.I. ANAL does not connect to, query, or access any government or law-enforcement databases. All analysis is based on information you provide.",
     },
     {
       question: "Is this legal advice?",
@@ -74,22 +75,22 @@ const Index = () => {
     },
     {
       question: "Can I use this for FOIA or public records requests?",
-      answer: "Yes. Veritas Path includes a guided FOIA and public-records request generator to help you prepare lawful, user-initiated requests.",
+      answer: "Yes. A.I. ANAL includes a guided FOIA and public-records request generator to help you prepare lawful, user-initiated requests.",
     },
   ];
 
   return (
     <div className="min-h-screen bg-background">
       <SEOHead 
-        title="Veritas Path — Navigate the U.S. Legal System | Powered by Justice-Bot™"
-        description="Veritas Path is an informational civic-guidance platform powered by Justice-Bot™. Understand legal processes, prepare documents, and request public records. For self-represented individuals. Not legal advice."
-        keywords="legal guidance platform, public records request, FOIA request generator, informational use only, self-represented individuals, legal information, court filing help, civic guidance"
+        title="A.I. ANAL — Am Not A Lawyer | Navigate the U.S. Legal System"
+        description="A.I. ANAL (Am Not A Lawyer) is an AI-powered civic-guidance platform. Understand legal processes, prepare documents, request public records. For self-represented individuals. Not legal advice."
+        keywords="A.I. ANAL, Am Not A Lawyer, legal guidance, public records request, FOIA generator, self-represented individuals, legal information, court filing help, civic guidance"
         url="https://justicebot-usa.com"
       />
       <EnhancedSEO
-        title="Veritas Path — Navigate the U.S. Legal System | Justice-Bot Technologies"
-        description="Informational civic-guidance platform for self-represented individuals. Understand legal processes, prepare documents, request records. Powered by Justice-Bot™. Not legal advice."
-        keywords="legal guidance, FOIA request generator, public records request, self-represented individuals, legal information, court forms, civic guidance, document preparation"
+        title="A.I. ANAL — Am Not A Lawyer | AI legal guidance for all 50 states"
+        description="Am Not A Lawyer. Informational civic-guidance platform for self-represented individuals. Understand legal processes, prepare documents, request records. Not legal advice."
+        keywords="A.I. ANAL, Am Not A Lawyer, legal guidance, FOIA request generator, public records request, legal information, court forms, civic guidance, document preparation"
         canonicalUrl="https://justicebot-usa.com/"
         structuredData={structuredData}
         faqData={faqData}
