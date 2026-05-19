@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Info } from "lucide-react";
-import usFlagHero from "@/assets/us-flag-hero.png";
 import veritasLogo from "@/assets/ai-anal-logo.png";
 
 interface StartHeroProps {
@@ -25,15 +24,7 @@ const StartHero = ({ language, onPrepareForm }: StartHeroProps) => {
   };
 
   return (
-    <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
-      {/* Background Image */}
-      <div 
-        className="absolute inset-0 bg-cover bg-bottom bg-no-repeat"
-        style={{ backgroundImage: `url(${usFlagHero})`, backgroundPositionY: '60%' }}
-      />
-      
-      {/* Dark Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[hsl(220,30%,8%)]/80 via-[hsl(220,30%,10%)]/70 to-[hsl(220,30%,6%)]/90" />
+    <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-gradient-to-b from-[hsl(220,30%,8%)] via-[hsl(220,30%,10%)] to-[hsl(220,30%,6%)]">
       
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4 py-20 text-center">
