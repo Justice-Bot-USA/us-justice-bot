@@ -103,7 +103,7 @@ function analyzeJurisdiction(
   result.nextSteps.push(
     "Gather documentation of tribal membership (if applicable)",
     "Research the specific tribal court rules if tribal jurisdiction applies",
-    "Use Veritas Path to organize your case documents and evidence"
+    "Use A.I. ANAL to organize your case documents and evidence"
   );
 
   return result;
@@ -136,7 +136,7 @@ const TribalJurisdictionCheck = () => {
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>Tribal Jurisdiction Check | Does Tribal Court Apply? | Veritas Path</title>
+        <title>Tribal Jurisdiction Check | Does Tribal Court Apply? | A.I. ANAL</title>
         <meta name="description" content="Free tool to check whether tribal, state, or federal court jurisdiction applies to your legal matter. Understand how tribal membership and location affect your case." />
         <meta name="keywords" content="tribal jurisdiction check, tribal court jurisdiction, federal indian law, tribal membership legal, PL-280 states, ICWA jurisdiction" />
         <link rel="canonical" href="https://justicebot-usa.com/legal-help/tribal-jurisdiction-check" />
@@ -258,7 +258,7 @@ const TribalJurisdictionCheck = () => {
 
             <div className="bg-primary/5 rounded-2xl p-8 text-center">
               <h2 className="text-xl font-bold text-foreground mb-3">Need Help Preparing Your Case?</h2>
-              <p className="text-muted-foreground mb-6 text-sm">Use Veritas Path to organize evidence, generate documents, and prepare your case timeline.</p>
+              <p className="text-muted-foreground mb-6 text-sm">Use A.I. ANAL to organize evidence, generate documents, and prepare your case timeline.</p>
               <div className="flex flex-wrap gap-3 justify-center">
                 <Button asChild><Link to="/case-analysis">Start Case Analysis <ArrowRight className="ml-2 h-4 w-4" /></Link></Button>
                 <Button asChild variant="outline"><Link to="/legal-help/native-american-rights">Tribal Rights Guide <ArrowRight className="ml-2 h-4 w-4" /></Link></Button>

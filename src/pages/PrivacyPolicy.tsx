@@ -94,8 +94,8 @@ const PrivacyPolicy = () => {
   return (
     <>
       <Helmet>
-        <title>Privacy Policy | US Justice Bot - Legal AI Assistant</title>
-        <meta name="description" content="Privacy Policy for US Justice Bot. Learn how we collect, use, and protect your personal information across all 50 US states." />
+        <title>Privacy Policy | A.I. ANAL - Legal AI Assistant</title>
+        <meta name="description" content="Privacy Policy for A.I. ANAL. Learn how we collect, use, and protect your personal information across all 50 US states." />
         <meta name="robots" content="index, follow" />
         <link rel="canonical" href="https://justicebot-usa.com/privacy" />
       </Helmet>
@@ -111,7 +111,7 @@ const PrivacyPolicy = () => {
               <h1 className="text-4xl md:text-5xl font-bold">Privacy Policy</h1>
             </div>
             <p className="text-center text-lg opacity-90 max-w-2xl mx-auto">
-              Your privacy is important to us. This policy explains how US Justice Bot collects, uses, and protects your information.
+              Your privacy is important to us. This policy explains how A.I. ANAL collects, uses, and protects your information.
             </p>
             <p className="text-center text-sm opacity-70 mt-4">
               Last Updated: {lastUpdated}
@@ -283,14 +283,14 @@ const PrivacyPolicy = () => {
             If you have any questions about this Privacy Policy or wish to exercise your privacy rights, please contact us:
           </p>
           <div className="bg-muted/50 rounded-lg p-6">
-            <p className="font-medium">US Justice Bot Privacy Team</p>
+            <p className="font-medium">A.I. ANAL Privacy Team</p>
             <p className="text-muted-foreground">Email: privacy@justicebot-usa.com</p>
             <p className="text-muted-foreground">Response Time: Within 45 days as required by applicable state laws</p>
           </div>
 
           <div className="mt-8 p-4 border border-destructive/30 rounded-lg bg-destructive/5">
             <p className="text-sm text-muted-foreground">
-              <strong>Important:</strong> US Justice Bot provides legal information, not legal advice. We are not a law firm and do not provide attorney-client privilege. All information shared with our service should be considered non-privileged. For sensitive legal matters, consult with a licensed attorney in your jurisdiction.
+              <strong>Important:</strong> A.I. ANAL provides legal information, not legal advice. We are not a law firm and do not provide attorney-client privilege. All information shared with our service should be considered non-privileged. For sensitive legal matters, consult with a licensed attorney in your jurisdiction.
             </p>
           </div>
         </section>

@@ -14,7 +14,7 @@ const FreeEvictionDefenseTool = () => {
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>Free Eviction Defense Tool | Prepare Your Case | Veritas Path</title>
+        <title>Free Eviction Defense Tool | Prepare Your Case | A.I. ANAL</title>
         <meta name="description" content="Free eviction defense tool. Organize evidence, identify defenses, generate court documents, and prepare your timeline. Built for tenants facing eviction." />
         <meta name="keywords" content="free eviction defense tool, eviction help, fight eviction free, tenant defense tool, eviction court preparation" />
         <link rel="canonical" href="https://justicebot-usa.com/free-eviction-defense-tool" />
@@ -70,7 +70,7 @@ const FreeEvictionDefenseTool = () => {
 
         <div className="bg-primary/5 rounded-2xl p-8 text-center mb-12">
           <h2 className="text-2xl font-bold text-foreground mb-3">Ready to Build Your Defense?</h2>
-          <p className="text-muted-foreground mb-6">Join thousands of tenants who have used Veritas Path to prepare their eviction defense.</p>
+          <p className="text-muted-foreground mb-6">Join thousands of tenants who have used A.I. ANAL to prepare their eviction defense.</p>
           <div className="flex flex-wrap gap-3 justify-center">
             <Button asChild size="lg"><Link to="/case-analysis">Start Free Case Analysis <ArrowRight className="ml-2 h-4 w-4" /></Link></Button>
             <Button asChild variant="outline" size="lg"><Link to="/legal-help/eviction">Read Eviction Guide <ArrowRight className="ml-2 h-4 w-4" /></Link></Button>

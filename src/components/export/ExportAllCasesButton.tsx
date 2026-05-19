@@ -124,7 +124,7 @@ export function ExportAllCasesButton({ cases }: ExportAllCasesButtonProps) {
         doc.setFontSize(8);
         doc.setTextColor(150);
         doc.text(
-          `US Justice Bot | justicebot-usa.com | Page ${i} of ${pageCount}`,
+          `A.I. ANAL | justicebot-usa.com | Page ${i} of ${pageCount}`,
           pageWidth / 2,
           doc.internal.pageSize.height - 10,
           { align: 'center' }

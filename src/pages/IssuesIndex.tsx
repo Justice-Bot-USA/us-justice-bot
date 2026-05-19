@@ -22,7 +22,7 @@ export default function IssuesIndex() {
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>Issue Hubs | Veritas Path – Justice-Bot™</title>
+        <title>Issue Hubs | A.I. ANAL – A.I. ANAL</title>
         <meta name="description" content="Browse legal topics by category. Find forms, guided steps, and help resources." />
       </Helmet>
       <Header language="en" onLanguageChange={() => {}} />

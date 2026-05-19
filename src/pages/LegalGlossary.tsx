@@ -117,7 +117,7 @@ const LegalGlossary = () => {
   return (
     <>
       <Helmet>
-        <title>Legal Glossary | Plain Language Legal Terms | Veritas Path</title>
+        <title>Legal Glossary | Plain Language Legal Terms | A.I. ANAL</title>
         <meta name="description" content="Look up legal terms in plain English. Understand arraignment, probate, alimony, subpoena, affidavit, restraining orders, and 30+ more terms. Free legal glossary for self-represented litigants." />
         <meta name="keywords" content="legal glossary, legal terms, what is arraignment, what is probate, what is alimony, legal definitions, court terminology, legal vocabulary" />
         <link rel="canonical" href="https://justicebot-usa.com/legal-glossary" />

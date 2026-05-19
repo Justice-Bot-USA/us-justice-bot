@@ -64,7 +64,7 @@ const LegalHelpLayout = ({
     url: canonicalUrl,
     publisher: {
       "@type": "Organization",
-      name: "Veritas Path",
+      name: "A.I. ANAL",
       url: "https://justicebot-usa.com",
     },
     mainEntityOfPage: canonicalUrl,
@@ -243,7 +243,7 @@ const LegalHelpLayout = ({
         <section className="mb-10 bg-primary/5 rounded-2xl p-8 text-center">
           <h2 className="text-2xl font-bold text-foreground mb-3">Need Help Preparing Your Case?</h2>
           <p className="text-muted-foreground mb-6 max-w-lg mx-auto">
-            Use Justice-Bot to organize evidence, generate documents, and prepare your timeline — all in one place.
+            Use A.I. ANAL to organize evidence, generate documents, and prepare your timeline — all in one place.
           </p>
           <div className="flex flex-wrap gap-3 justify-center">
             {ctas.map((cta, i) => (
@@ -281,7 +281,7 @@ const LegalHelpLayout = ({
 
         {/* Disclaimer */}
         <div className="text-xs text-muted-foreground border-t pt-6 mt-10">
-          <p><strong>Disclaimer:</strong> This is legal information, not legal advice. Justice-Bot provides procedural guidance to help you understand legal processes. For advice specific to your situation, consult a licensed attorney.</p>
+          <p><strong>Disclaimer:</strong> This is legal information, not legal advice. A.I. ANAL provides procedural guidance to help you understand legal processes. For advice specific to your situation, consult a licensed attorney.</p>
         </div>
       </main>
 

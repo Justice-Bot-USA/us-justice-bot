@@ -81,12 +81,12 @@ const StartPage = () => {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    name: "Start Your Legal Journey — Veritas Path",
+    name: "Start Your Legal Journey — A.I. ANAL",
     description: "Choose your path: understand your situation, request records, prepare documents, navigate court processes, or learn your options.",
     url: "https://justicebot-usa.com/start",
     isPartOf: {
       "@type": "WebSite",
-      name: "Veritas Path",
+      name: "A.I. ANAL",
       url: "https://justicebot-usa.com",
     },
   };
@@ -94,13 +94,13 @@ const StartPage = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
-        title="Start Your Legal Journey | Veritas Path — Powered by Justice-Bot™"
+        title="Start Your Legal Journey | A.I. ANAL — Powered by A.I. ANAL"
         description="Choose where to start: understand your legal situation, request official records, prepare documents, navigate court processes, or learn your options. Informational guidance only."
         keywords="legal journey, legal guidance, FOIA request, court process, self-represented, legal information, document preparation"
         url="https://justicebot-usa.com/start"
       />
       <EnhancedSEO
-        title="Start Your Legal Journey | Veritas Path"
+        title="Start Your Legal Journey | A.I. ANAL"
         description="Step-by-step legal guidance for self-represented individuals. Choose your path and get started immediately."
         canonicalUrl="https://justicebot-usa.com/start"
         structuredData={structuredData}
@@ -111,7 +111,7 @@ const StartPage = () => {
       <main className="container mx-auto px-4 py-16 max-w-5xl">
         {/* Logo */}
         <div className="text-center mb-8">
-          <img src={veritasLogo} alt="Veritas Path" className="w-16 h-16 mx-auto rounded-full bg-white p-1.5 shadow-lg mb-6" />
+          <img src={veritasLogo} alt="A.I. ANAL" className="w-16 h-16 mx-auto rounded-full bg-white p-1.5 shadow-lg mb-6" />
         </div>
 
         {/* H1 */}
@@ -121,7 +121,7 @@ const StartPage = () => {
 
         {/* Subtext */}
         <p className="text-lg text-muted-foreground text-center max-w-2xl mx-auto mb-16">
-          You don't need to know the right form or process yet. Justice-Bot™ helps you start in the right place and guides you forward — clearly, lawfully, and at your pace.
+          You don't need to know the right form or process yet. A.I. ANAL helps you start in the right place and guides you forward — clearly, lawfully, and at your pace.
         </p>
 
         {/* Primary Question */}
@@ -164,7 +164,7 @@ const StartPage = () => {
         {/* Footer Note */}
         <div className="text-center border-t pt-8">
           <p className="text-sm text-muted-foreground max-w-xl mx-auto">
-            Justice-Bot™ provides informational guidance only. We do not provide legal advice, legal representation, or access law-enforcement systems.
+            A.I. ANAL provides informational guidance only. We do not provide legal advice, legal representation, or access law-enforcement systems.
           </p>
         </div>
       </main>

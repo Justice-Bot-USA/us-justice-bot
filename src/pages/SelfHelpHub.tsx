@@ -122,7 +122,7 @@ const SelfHelpHub = () => {
   return (
     <>
       <Helmet>
-        <title>Self-Help Legal Guide | Veritas Path — Tools for Self-Represented Litigants</title>
+        <title>Self-Help Legal Guide | A.I. ANAL — Tools for Self-Represented Litigants</title>
         <meta name="description" content="Free self-help legal tools for self-represented litigants. Identify your case type, find court forms, research case law, organize evidence, and prepare for court. Not legal advice." />
         <meta name="robots" content="index, follow" />
         <link rel="canonical" href="https://us-justice-bot.lovable.app/self-help" />
@@ -153,7 +153,7 @@ const SelfHelpHub = () => {
           <Alert variant="destructive" className="border-2">
             <AlertTriangle className="h-5 w-5" />
             <AlertDescription className="text-sm">
-              <strong>Important:</strong> Veritas Path is <strong>not a law firm</strong> and does not provide legal advice.
+              <strong>Important:</strong> A.I. ANAL is <strong>not a law firm</strong> and does not provide legal advice.
               All information on this page is publicly available and provided for educational purposes only.
               No attorney-client relationship is created by using these tools. <strong>Use at your own risk.</strong>{" "}
               For advice specific to your situation, consult a licensed attorney.{" "}
@@ -235,7 +235,7 @@ const SelfHelpHub = () => {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-lg">
                   <CheckCircle className="h-5 w-5 text-primary" />
-                  What Justice-Bot™ Does
+                  What A.I. ANAL Does
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -253,7 +253,7 @@ const SelfHelpHub = () => {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-lg">
                   <AlertTriangle className="h-5 w-5 text-destructive" />
-                  What Justice-Bot™ Does NOT Do
+                  What A.I. ANAL Does NOT Do
                 </CardTitle>
               </CardHeader>
               <CardContent>

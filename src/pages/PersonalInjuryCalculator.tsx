@@ -167,7 +167,7 @@ Prior Injuries to Same Area: ${formData.priorInjuries ? "Yes" : "No"}
     },
     "provider": {
       "@type": "Organization",
-      "name": "US Justice Bot",
+      "name": "A.I. ANAL",
       "url": "https://justicebot-usa.com"
     }
   };

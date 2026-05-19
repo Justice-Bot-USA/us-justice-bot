@@ -3,7 +3,7 @@ import LegalHelpLayout from "@/components/legal-help/LegalHelpLayout";
 const SmallClaimsHelp = () => (
   <LegalHelpLayout
     title="Small Claims Court: How to File or Defend a Case"
-    metaTitle="Small Claims Court Guide | How to File & Win | Veritas Path"
+    metaTitle="Small Claims Court Guide | How to File & Win | A.I. ANAL"
     metaDescription="Complete guide to small claims court. Learn how to file a claim, defend yourself, gather evidence, and prepare for your hearing. Free case preparation tools."
     keywords="small claims court, how to file small claims, small claims process, sue in small claims, small claims evidence, small claims hearing, small claims limit"
     canonicalPath="/legal-help/small-claims-court"

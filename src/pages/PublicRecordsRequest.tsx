@@ -21,8 +21,8 @@ const PublicRecordsRequest = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
-        title="Public Records Request Generator | Veritas Path"
-        description="Generate a properly worded FOIA or state public-records request letter with correct statutory citations. Free preview. All 50 states. Powered by Justice-Bot™."
+        title="Public Records Request Generator | A.I. ANAL"
+        description="Generate a properly worded FOIA or state public-records request letter with correct statutory citations. Free preview. All 50 states. Powered by A.I. ANAL."
         keywords="FOIA request generator, public records request, freedom of information, court records request, arrest records, police records"
         url="https://justicebot-usa.com/foia-request-generator"
       />
@@ -108,7 +108,7 @@ const PublicRecordsRequest = () => {
         <section className="py-8 container mx-auto px-4 max-w-3xl">
           <div className="border rounded-lg p-5 bg-muted/30 text-sm text-muted-foreground space-y-2">
             <p className="font-semibold text-foreground">Important Legal Disclaimer</p>
-            <p>This tool generates informational public records request letters only. Veritas Path does not provide legal advice, 
+            <p>This tool generates informational public records request letters only. A.I. ANAL does not provide legal advice, 
               does not access law enforcement databases, and does not determine whether active warrants exist.</p>
             <p>Users submit all requests themselves, directly to the agency. Statutory citations are provided for informational 
               purposes and may vary by jurisdiction. Consult an attorney for legal advice specific to your situation.</p>

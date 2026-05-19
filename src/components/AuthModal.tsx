@@ -126,7 +126,7 @@ export function AuthModal({ isOpen, onClose, language }: AuthModalProps) {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-center">US Justice Bot</DialogTitle>
+          <DialogTitle className="text-center">A.I. ANAL</DialogTitle>
         </DialogHeader>
         
         <Tabs defaultValue="signin" className="w-full">

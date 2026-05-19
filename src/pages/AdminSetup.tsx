@@ -81,7 +81,7 @@ const AdminSetup = () => {
         <div className="text-center">
           <h1 className="text-3xl font-bold">Admin Setup</h1>
           <p className="text-muted-foreground mt-2">
-            Set up administrator access for your US Justice Bot
+            Set up administrator access for your A.I. ANAL
           </p>
         </div>
 

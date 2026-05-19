@@ -13,7 +13,7 @@ const FreeCustodyTool = () => {
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>Free Custody Case Organizer | Prepare for Family Court | Veritas Path</title>
+        <title>Free Custody Case Organizer | Prepare for Family Court | A.I. ANAL</title>
         <meta name="description" content="Free child custody case organizer. Document parenting involvement, organize evidence, generate affidavits, and prepare for family court hearings." />
         <meta name="keywords" content="free custody tool, child custody organizer, custody case preparation, family court preparation free" />
         <link rel="canonical" href="https://justicebot-usa.com/free-custody-case-organizer" />
