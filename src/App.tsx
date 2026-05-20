@@ -122,6 +122,8 @@ export default function App() {
               <Route path="/legal-areas/:areaId" element={<LegalAreaPage />} />
               <Route path="/forms-library" element={<FormsLibrary />} />
               <Route path="/usa-forms" element={<UsaForms />} />
+              <Route path="/ny/legal-center" element={<NewYorkLegalCenter />} />
+              <Route path="/new-york/legal-center" element={<NewYorkLegalCenter />} />
               <Route path="/criminal-defense-guide" element={<CriminalDefenseGuide />} />
               <Route path="/case-law-search" element={<CaseLawSearch />} />
               <Route path="/book-of-documents" element={<BookOfDocuments />} />
