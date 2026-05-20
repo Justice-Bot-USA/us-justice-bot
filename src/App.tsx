@@ -32,6 +32,7 @@ const LegalAreasHub = lazy(() => import("./pages/LegalAreasHub"));
 const LegalAreaPage = lazy(() => import("./pages/LegalAreaPage"));
 const FormsLibrary = lazy(() => import("./pages/FormsLibrary"));
 const UsaForms = lazy(() => import("./pages/UsaForms"));
+const NewYorkLegalCenter = lazy(() => import("./pages/NewYorkLegalCenter"));
 const CriminalDefenseGuide = lazy(() => import("./pages/CriminalDefenseGuide"));
 const CaseLawSearch = lazy(() => import("./pages/CaseLawSearch"));
 const BookOfDocuments = lazy(() => import("./pages/BookOfDocuments"));
