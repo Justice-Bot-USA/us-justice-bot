@@ -39,6 +39,9 @@ verify_jwt = false
 [functions.legal-sweep]
 verify_jwt = true
 
+[functions.ny-daily-sweep]
+verify_jwt = false
+
 [functions.document-analyzer]
 verify_jwt = false
 
