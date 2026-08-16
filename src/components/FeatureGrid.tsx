@@ -57,7 +57,7 @@ const FeatureGrid = () => {
             Everything You Need to Navigate the Legal System
           </h2>
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-            From initial assessment to final submission, A.I. ANAL guides you through every step with tools designed to simplify complex legal processes.
+            From initial assessment to final submission, Justice Bot USA guides you through every step with tools designed to simplify complex legal processes.
           </p>
           
           <blockquote className="mt-6 border-l-4 border-primary pl-4 italic text-muted-foreground max-w-2xl mx-auto text-left">
@@ -88,7 +88,7 @@ const FeatureGrid = () => {
             <CardContent className="p-6">
               <h3 className="font-semibold mb-2">Built for Self-Represented Litigants</h3>
               <p className="text-sm text-muted-foreground mb-4">
-                A.I. ANAL was designed specifically for people navigating the legal system without a lawyer. We focus on practical tools and clear guidance, not legal jargon.
+                Justice Bot USA was designed specifically for people navigating the legal system without a lawyer. We focus on practical tools and clear guidance, not legal jargon.
               </p>
               <div className="flex flex-wrap justify-center gap-2">
                 <Badge variant="secondary">Mobile-optimized for use anywhere</Badge>

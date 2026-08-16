@@ -42,8 +42,8 @@ export default function SexOffenderRegistry() {
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
-        title="Sex Offender Registry Map Search - A.I. ANAL"
-        description="Free interactive map-based sex offender registry search. Find registered offenders in your community across all 50 US states. Powered by A.I. ANAL."
+        title="Sex Offender Registry Map Search - Justice Bot USA"
+        description="Free interactive map-based sex offender registry search. Find registered offenders in your community across all 50 US states. Powered by Justice Bot USA."
         keywords="sex offender registry, sex offender map, sex offender search, NSOPW, registered sex offenders, community safety, Megan's Law"
         url="https://justicebot-usa.com/sex-offender-registry"
       />

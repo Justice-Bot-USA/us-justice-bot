@@ -5,7 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { SEOHead } from "@/components/SEOHead";
 import EnhancedSEO from "@/components/EnhancedSEO";
-import veritasLogo from "@/assets/ai-anal-logo.png";
+import brandLogo from "@/assets/ai-anal-logo.png";
 import { useState } from "react";
 
 const whatItDoes = [
@@ -27,7 +27,7 @@ const whatItIsNot = [
 
 const howItWorksSteps = [
   { num: "1", text: "You provide information voluntarily" },
-  { num: "2", text: "A.I. ANAL analyzes your input only" },
+  { num: "2", text: "Justice Bot USA analyzes your input only" },
   { num: "3", text: "It matches your situation to known public processes" },
   { num: "4", text: "It explains options and prepares guidance or documents" },
   { num: "5", text: "You decide what to do next" },
@@ -40,28 +40,28 @@ const JusticeBotPage = () => {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    name: "A.I. ANAL",
+    name: "Justice Bot USA",
     applicationCategory: "Legal",
     operatingSystem: "Web",
-    description: "A.I. ANAL is the guidance technology behind A.I. ANAL, helping people navigate complex legal and administrative systems without misinformation or false certainty.",
+    description: "Justice Bot USA is the guidance technology behind Justice Bot USA, helping people navigate complex legal and administrative systems without misinformation or false certainty.",
     url: "https://justicebot-usa.com/justice-bot",
     creator: {
       "@type": "Organization",
-      name: "A.I. ANAL",
+      name: "Justice Bot USA",
     },
   };
 
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
-        title="What Is A.I. ANAL? | A.I. ANAL — Legal Guidance Technology"
-        description="A.I. ANAL is the guidance technology behind A.I. ANAL. It helps people navigate legal and administrative systems with clarity — without legal advice, database access, or surveillance."
-        keywords="A.I. ANAL, legal guidance technology, informational guidance, legal information, civic guidance, self-represented individuals"
+        title="What Is Justice Bot USA? | Justice Bot USA — Legal Guidance Technology"
+        description="Justice Bot USA is the guidance technology behind Justice Bot USA. It helps people navigate legal and administrative systems with clarity — without legal advice, database access, or surveillance."
+        keywords="Justice Bot USA, legal guidance technology, informational guidance, legal information, civic guidance, self-represented individuals"
         url="https://justicebot-usa.com/justice-bot"
       />
       <EnhancedSEO
-        title="What Is A.I. ANAL? | A.I. ANAL"
-        description="A.I. ANAL is the guidance technology behind A.I. ANAL, built by A.I. ANAL to help people navigate complex legal and administrative systems."
+        title="What Is Justice Bot USA? | Justice Bot USA"
+        description="Justice Bot USA is the guidance technology behind Justice Bot USA, built by Justice Bot USA to help people navigate complex legal and administrative systems."
         canonicalUrl="https://justicebot-usa.com/justice-bot"
         structuredData={structuredData}
       />
@@ -71,17 +71,17 @@ const JusticeBotPage = () => {
       <main className="container mx-auto px-4 py-16 max-w-4xl">
         {/* Logo + H1 */}
         <div className="text-center mb-16">
-          <img src={veritasLogo} alt="A.I. ANAL" className="w-16 h-16 mx-auto rounded-full bg-white p-1.5 shadow-lg mb-6" />
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">What Is A.I. ANAL?</h1>
+          <img src={brandLogo} alt="Justice Bot USA" className="w-16 h-16 mx-auto rounded-full bg-white p-1.5 shadow-lg mb-6" />
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">What Is Justice Bot USA?</h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            A.I. ANAL is the guidance technology behind A.I. ANAL, built by A.I. ANAL to help people navigate complex legal and administrative systems without misinformation or false certainty.
+            Justice Bot USA is the guidance technology behind Justice Bot USA, built by Justice Bot USA to help people navigate complex legal and administrative systems without misinformation or false certainty.
           </p>
         </div>
 
         {/* What It Does */}
         <section className="mb-16">
-          <h2 className="text-2xl md:text-3xl font-bold mb-6">What A.I. ANAL Does</h2>
-          <p className="text-muted-foreground mb-6">A.I. ANAL helps users:</p>
+          <h2 className="text-2xl md:text-3xl font-bold mb-6">What Justice Bot USA Does</h2>
+          <p className="text-muted-foreground mb-6">Justice Bot USA helps users:</p>
           <ul className="space-y-3">
             {whatItDoes.map((item, i) => (
               <li key={i} className="flex items-start gap-3">
@@ -91,7 +91,7 @@ const JusticeBotPage = () => {
             ))}
           </ul>
           <p className="text-muted-foreground mt-6 italic">
-            A.I. ANAL is designed to reduce confusion, not replace professionals.
+            Justice Bot USA is designed to reduce confusion, not replace professionals.
           </p>
         </section>
 
@@ -99,9 +99,9 @@ const JusticeBotPage = () => {
         <section className="mb-16 p-8 rounded-xl border-2 border-destructive/30 bg-destructive/5">
           <h2 className="text-2xl md:text-3xl font-bold mb-6 text-destructive flex items-center gap-2">
             <XCircle className="h-7 w-7" />
-            What A.I. ANAL Is Not
+            What Justice Bot USA Is Not
           </h2>
-          <p className="text-muted-foreground mb-6">A.I. ANAL does not:</p>
+          <p className="text-muted-foreground mb-6">Justice Bot USA does not:</p>
           <ul className="space-y-3">
             {whatItIsNot.map((item, i) => (
               <li key={i} className="flex items-start gap-3">
@@ -111,13 +111,13 @@ const JusticeBotPage = () => {
             ))}
           </ul>
           <p className="text-muted-foreground mt-6 italic">
-            If information is not lawfully available to the public, A.I. ANAL does not attempt to access it.
+            If information is not lawfully available to the public, Justice Bot USA does not attempt to access it.
           </p>
         </section>
 
         {/* How It Works */}
         <section className="mb-16">
-          <h2 className="text-2xl md:text-3xl font-bold mb-8">How A.I. ANAL Works</h2>
+          <h2 className="text-2xl md:text-3xl font-bold mb-8">How Justice Bot USA Works</h2>
           <div className="space-y-4">
             {howItWorksSteps.map((step, i) => (
               <div key={i} className="flex items-center gap-4 p-4 rounded-xl bg-muted/30 border">
@@ -135,10 +135,10 @@ const JusticeBotPage = () => {
 
         {/* Why This Exists */}
         <section className="mb-16 text-center p-8 rounded-xl bg-muted/30 border">
-          <h2 className="text-2xl md:text-3xl font-bold mb-6">Why A.I. ANAL Exists</h2>
+          <h2 className="text-2xl md:text-3xl font-bold mb-6">Why Justice Bot USA Exists</h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-4">
             Legal systems are hard to navigate — especially without representation.
-            A.I. ANAL exists to make procedural knowledge accessible, boundaries explicit, and next steps clear.
+            Justice Bot USA exists to make procedural knowledge accessible, boundaries explicit, and next steps clear.
           </p>
           <p className="text-muted-foreground italic">
             Not shortcuts. Not guarantees. Just clarity.

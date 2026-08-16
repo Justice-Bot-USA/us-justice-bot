@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Scale, FileText, Users } from "lucide-react";
-import veritasLogo from "@/assets/ai-anal-logo.png";
+import brandLogo from "@/assets/ai-anal-logo.png";
 
 interface HeroSectionProps {
   language: 'en' | 'es';
@@ -12,7 +12,7 @@ const HeroSection = ({ language, onGetStarted }: HeroSectionProps) => {
     en: {
       slogan: "IGNORANCE IS NOT AN OPTION",
       title: "Know Your Rights. Protect Yourself and Your Family.",
-      subtitle: "A.I. ANAL helps Americans understand their legal rights and navigate the justice system with confidence.",
+      subtitle: "Justice Bot USA helps Americans understand their legal rights and navigate the justice system with confidence.",
       cta: "GET STARTED FREE",
       learnMore: "Learn More",
       features: [
@@ -24,7 +24,7 @@ const HeroSection = ({ language, onGetStarted }: HeroSectionProps) => {
     es: {
       slogan: "LA IGNORANCIA NO ES UNA OPCIÓN",
       title: "Conoce Tus Derechos. Protégete a Ti y a Tu Familia.",
-      subtitle: "A.I. ANAL ayuda a los americanos a entender sus derechos legales y navegar el sistema de justicia con confianza.",
+      subtitle: "Justice Bot USA ayuda a los americanos a entender sus derechos legales y navegar el sistema de justicia con confianza.",
       cta: "COMENZAR GRATIS",
       learnMore: "Más Información",
       features: [
@@ -45,7 +45,7 @@ const HeroSection = ({ language, onGetStarted }: HeroSectionProps) => {
         <div className="max-w-4xl mx-auto">
           {/* Logo */}
           <div className="mb-6">
-            <img src={veritasLogo} alt="A.I. ANAL" width={128} height={128} fetchPriority="high" className="w-24 h-24 md:w-32 md:h-32 mx-auto rounded-full bg-white p-2 shadow-2xl" />
+            <img src={brandLogo} alt="Justice Bot USA" width={128} height={128} fetchPriority="high" className="w-24 h-24 md:w-32 md:h-32 mx-auto rounded-full bg-white p-2 shadow-2xl" />
           </div>
 
           {/* Slogan Badge */}

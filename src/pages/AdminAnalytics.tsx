@@ -149,7 +149,7 @@ const AdminAnalytics = () => {
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>Admin Analytics | A.I. ANAL</title>
+        <title>Admin Analytics | Justice Bot USA</title>
         <meta name="description" content="Platform-wide analytics: users, cases, funnel, revenue." />
         <meta name="robots" content="noindex,nofollow" />
       </Helmet>

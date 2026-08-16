@@ -83,7 +83,7 @@ export default function FormsLibrary() {
   return (
     <div className="min-h-screen bg-background">
       <SEOHead 
-        title={`${stateInfo?.name || 'State'} Court Forms Library - A.I. ANAL`}
+        title={`${stateInfo?.name || 'State'} Court Forms Library - Justice Bot USA`}
         description={`Access official court forms for ${stateInfo?.name || 'your state'}. Family law, small claims, employment, housing, and criminal defense forms with direct links to official court websites.`}
         keywords={`${stateInfo?.name} court forms, legal forms, divorce forms, small claims forms, eviction forms, court documents, fee waiver forms`}
         url={`https://justicebot-usa.com/forms-library`}

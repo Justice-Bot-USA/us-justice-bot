@@ -143,7 +143,7 @@ const buildHowToSchema = (stateName: string, areaName: string, forms: string[]) 
     },
   ],
   totalTime: 'PT30M',
-  tool: [{ '@type': 'HowToTool', name: 'A.I. ANAL AI Legal Platform' }],
+  tool: [{ '@type': 'HowToTool', name: 'Justice Bot USA AI Legal Platform' }],
 });
 
 /** BreadcrumbList for site hierarchy */
@@ -161,7 +161,7 @@ const buildBreadcrumbSchema = (stateName: string, areaName: string, route: strin
 const buildLegalServiceSchema = (stateName: string, areaName: string, description: string, route: string) => ({
   '@context': 'https://schema.org',
   '@type': 'LegalService',
-  name: `A.I. ANAL – ${stateName} ${areaName} Self-Help`,
+  name: `Justice Bot USA – ${stateName} ${areaName} Self-Help`,
   description,
   url: `${BASE_URL}${route}`,
   areaServed: {
@@ -172,7 +172,7 @@ const buildLegalServiceSchema = (stateName: string, areaName: string, descriptio
   serviceType: areaName,
   provider: {
     '@type': 'Organization',
-    name: 'A.I. ANAL | A.I. ANAL',
+    name: 'Justice Bot USA | Justice Bot USA',
     url: BASE_URL,
     logo: `${BASE_URL}/icon-512.png`,
   },
@@ -279,7 +279,7 @@ const StateFunnelPage: React.FC = () => {
         <meta property="og:type" content="website" />
         <meta property="og:url" content={`${BASE_URL}${route}`} />
         <meta property="og:image" content={`${BASE_URL}/icon-512.png`} />
-        <meta property="og:site_name" content="A.I. ANAL | A.I. ANAL" />
+        <meta property="og:site_name" content="Justice Bot USA | Justice Bot USA" />
 
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
@@ -338,7 +338,7 @@ const StateFunnelPage: React.FC = () => {
               </ul>
               <h3>Disclaimer</h3>
               <p>
-                A.I. ANAL provides self-help legal information and tools. 
+                Justice Bot USA provides self-help legal information and tools. 
                 We are not a law firm and do not provide legal advice. 
                 For complex matters, consider consulting with a licensed {stateName} attorney.
               </p>

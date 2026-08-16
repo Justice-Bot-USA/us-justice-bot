@@ -57,7 +57,7 @@ export default function TrackPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background overflow-x-hidden">
       <Helmet>
-        <title>{track.title} | {hub.title} | A.I. ANAL – A.I. ANAL</title>
+        <title>{track.title} | {hub.title} | Justice Bot USA – Justice Bot USA</title>
         <meta name="description" content={track.description || `${track.title} — step-by-step guide.`} />
       </Helmet>
       <Header language="en" onLanguageChange={() => {}} />

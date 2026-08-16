@@ -57,8 +57,8 @@ export function ChatLoadingSkeleton() {
 
 export function TypingIndicator({ language }: { language: 'en' | 'es' }) {
   const text = {
-    en: "A.I. ANAL is thinking",
-    es: "A.I. ANAL está pensando"
+    en: "Justice Bot USA is thinking",
+    es: "Justice Bot USA está pensando"
   };
 
   return (

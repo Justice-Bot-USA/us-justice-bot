@@ -38,7 +38,7 @@ export default function IssueHubFormsPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background overflow-x-hidden">
       <Helmet>
-        <title>Forms — {hub?.title || 'Issue Hub'} | A.I. ANAL</title>
+        <title>Forms — {hub?.title || 'Issue Hub'} | Justice Bot USA</title>
       </Helmet>
       <Header language="en" onLanguageChange={() => {}} />
 

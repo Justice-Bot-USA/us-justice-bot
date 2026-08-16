@@ -81,7 +81,7 @@ export default function IssueHubPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background overflow-x-hidden">
       <Helmet>
-        <title>{hub.title} | A.I. ANAL – A.I. ANAL</title>
+        <title>{hub.title} | Justice Bot USA – Justice Bot USA</title>
         <meta name="description" content={hub.summary || `Learn about ${hub.title}, find forms, get help.`} />
       </Helmet>
       <Header language="en" onLanguageChange={() => {}} />

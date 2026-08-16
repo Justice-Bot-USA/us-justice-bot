@@ -150,8 +150,8 @@ export default function AttorneyPortal() {
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>Attorney Portal | A.N.A.L.</title>
-        <meta name="description" content="Attorney portal for managing your profile and incoming referrals from A.N.A.L. users." />
+        <title>Attorney Portal | Justice Bot USA</title>
+        <meta name="description" content="Attorney portal for managing your profile and incoming referrals from Justice Bot USA users." />
         <meta name="robots" content="noindex" />
       </Helmet>
       <Header language="en" onLanguageChange={() => {}} />
