@@ -118,11 +118,11 @@ const LegalHelpIndex = () => {
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>Free Legal Help Library | Eviction, Small Claims, Family Court | A.I. ANAL</title>
+        <title>Free Legal Help Library | Eviction, Small Claims, Family Court | Justice Bot USA</title>
         <meta name="description" content="Free legal help guides covering eviction defense, small claims court, family law, civil rights, criminal defense, workers' comp, and Native American tribal rights. Step-by-step guidance for all 50 states." />
         <meta name="keywords" content="free legal help, eviction help, small claims court, tenant rights, child custody, discrimination complaint, workers compensation, tribal rights, legal guide" />
         <link rel="canonical" href="https://justicebot-usa.com/legal-help" />
-        <meta property="og:title" content="Free Legal Help Library | A.I. ANAL" />
+        <meta property="og:title" content="Free Legal Help Library | Justice Bot USA" />
         <meta property="og:description" content="Step-by-step legal guides for tenants, parents, workers, and more." />
         <meta property="og:type" content="website" />
         <script type="application/ld+json">{JSON.stringify(structuredData)}</script>

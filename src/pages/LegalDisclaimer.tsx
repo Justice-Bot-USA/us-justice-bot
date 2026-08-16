@@ -64,8 +64,8 @@ const LegalDisclaimer = () => {
   return (
     <>
       <Helmet>
-        <title>Legal Disclaimer | A.I. ANAL - Important Legal Notices</title>
-        <meta name="description" content="Important legal disclaimers for A.I. ANAL. Understand the limitations of AI-powered legal information services." />
+        <title>Legal Disclaimer | Justice Bot USA - Important Legal Notices</title>
+        <meta name="description" content="Important legal disclaimers for Justice Bot USA. Understand the limitations of AI-powered legal information services." />
         <meta name="robots" content="index, follow" />
         <link rel="canonical" href="https://justicebot-usa.com/disclaimer" />
       </Helmet>
@@ -93,7 +93,7 @@ const LegalDisclaimer = () => {
             <AlertTitle className="text-xl font-bold">NOT A LAW FIRM - NO LEGAL ADVICE PROVIDED</AlertTitle>
             <AlertDescription className="mt-4 space-y-4 text-base">
               <p>
-                <strong>A.I. ANAL is NOT a law firm and does NOT provide legal advice.</strong>
+                <strong>Justice Bot USA is NOT a law firm and does NOT provide legal advice.</strong>
               </p>
               <p>
                 Our platform provides general legal information and document preparation assistance only. The information provided is for educational and informational purposes and should not be construed as legal advice.
@@ -264,7 +264,7 @@ const LegalDisclaimer = () => {
           <div className="bg-primary/5 border border-primary/20 rounded-lg p-8">
             <h2 className="text-xl font-bold mb-4 text-center">Acknowledgment</h2>
             <p className="text-muted-foreground text-center">
-              By using A.I. ANAL, you acknowledge that you have read and understood this disclaimer, and you agree that our service provides legal information only and does not constitute legal advice. You understand that you should consult with a licensed attorney for advice specific to your situation.
+              By using Justice Bot USA, you acknowledge that you have read and understood this disclaimer, and you agree that our service provides legal information only and does not constitute legal advice. You understand that you should consult with a licensed attorney for advice specific to your situation.
             </p>
           </div>
         </section>

@@ -41,7 +41,7 @@ const WhatWeDoSection = () => {
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Clear About What We Do</h2>
           <p className="text-xl text-muted-foreground">
-            A.I. ANAL is a legal information tool — not a law firm
+            Justice Bot USA is a legal information tool — not a law firm
           </p>
         </div>
 

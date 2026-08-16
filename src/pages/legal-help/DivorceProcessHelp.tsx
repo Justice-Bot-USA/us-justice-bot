@@ -3,7 +3,7 @@ import LegalHelpLayout from "@/components/legal-help/LegalHelpLayout";
 const DivorceProcessHelp = () => (
   <LegalHelpLayout
     title="Divorce Process in the United States: A Step-by-Step Guide"
-    metaTitle="Divorce Process Guide | How to File for Divorce | A.I. ANAL"
+    metaTitle="Divorce Process Guide | How to File for Divorce | Justice Bot USA"
     metaDescription="Understand the divorce process step by step. Learn about filing requirements, property division, child custody, and how to prepare your case."
     keywords="divorce process, how to file for divorce, divorce papers, divorce requirements, uncontested divorce, contested divorce, property division, divorce filing"
     canonicalPath="/legal-help/divorce-process"

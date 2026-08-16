@@ -3,7 +3,7 @@ import LegalHelpLayout from "@/components/legal-help/LegalHelpLayout";
 const EvictionHelp = () => (
   <LegalHelpLayout
     title="How to Fight an Eviction in the United States"
-    metaTitle="How to Fight an Eviction | Free Eviction Defense Guide | A.I. ANAL"
+    metaTitle="How to Fight an Eviction | Free Eviction Defense Guide | Justice Bot USA"
     metaDescription="Learn how to fight an eviction step by step. Understand your tenant rights, common eviction defenses, and how to prepare for court. Free eviction defense tools."
     keywords="fight eviction, eviction defense, tenant rights, how to stop eviction, eviction process, landlord eviction, eviction notice response, eviction hearing"
     canonicalPath="/legal-help/eviction"

@@ -34,7 +34,7 @@ export default function IssueHubTimelinePage() {
   return (
     <div className="flex flex-col min-h-screen bg-background overflow-x-hidden">
       <Helmet>
-        <title>Timeline — {hub?.title || 'Issue Hub'} | A.I. ANAL</title>
+        <title>Timeline — {hub?.title || 'Issue Hub'} | Justice Bot USA</title>
       </Helmet>
       <Header language="en" onLanguageChange={() => {}} />
 

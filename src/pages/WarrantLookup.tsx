@@ -27,7 +27,7 @@ export default function WarrantLookup() {
   return (
     <div className="flex flex-col min-h-screen bg-background overflow-x-hidden">
       <SEOHead
-        title="Warrant Lookup (State & County Guide) | A.I. ANAL"
+        title="Warrant Lookup (State & County Guide) | Justice Bot USA"
         description="There is no free national warrant search. This tool helps you find the official places to check by state and county, and explains safer next steps."
         keywords="warrant lookup, active warrants, warrant search, outstanding warrants, county sheriff warrant list"
         url="https://justicebot-usa.com/warrant-lookup"

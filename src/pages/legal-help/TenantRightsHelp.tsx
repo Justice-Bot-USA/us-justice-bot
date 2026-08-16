@@ -3,7 +3,7 @@ import LegalHelpLayout from "@/components/legal-help/LegalHelpLayout";
 const TenantRightsHelp = () => (
   <LegalHelpLayout
     title="Tenant Rights in the United States: What Every Renter Should Know"
-    metaTitle="Tenant Rights Guide | Know Your Rights as a Renter | A.I. ANAL"
+    metaTitle="Tenant Rights Guide | Know Your Rights as a Renter | Justice Bot USA"
     metaDescription="Complete guide to tenant rights in the US. Learn about habitability, security deposits, privacy rights, discrimination protections, and what to do when your landlord violates the law."
     keywords="tenant rights, renter rights, landlord tenant law, habitability, security deposit, lease agreement, landlord responsibilities, right to privacy, fair housing"
     canonicalPath="/legal-help/tenant-rights"

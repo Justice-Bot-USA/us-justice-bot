@@ -51,8 +51,8 @@ export default function CertificateVerify() {
   return (
     <>
       <SEOHead
-        title="Certificate Verification | A.I. ANAL"
-        description="Independently verify a A.I. ANAL course completion certificate using its unique VP- verification ID."
+        title="Certificate Verification | Justice Bot USA"
+        description="Independently verify a Justice Bot USA course completion certificate using its unique VP- verification ID."
       />
       <Header language="en" onLanguageChange={() => {}} />
 
@@ -63,7 +63,7 @@ export default function CertificateVerify() {
           <div className="flex items-center gap-3 mb-8">
             <GraduationCap className="w-8 h-8 text-primary" />
             <div>
-              <p className="text-xs text-muted-foreground uppercase tracking-widest font-medium">A.I. ANAL</p>
+              <p className="text-xs text-muted-foreground uppercase tracking-widest font-medium">Justice Bot USA</p>
               <h1 className="text-2xl font-bold">Certificate Verification</h1>
             </div>
           </div>
@@ -84,7 +84,7 @@ export default function CertificateVerify() {
                 <h2 className="text-xl font-semibold">Certificate Not Found</h2>
                 <p className="text-muted-foreground max-w-sm">
                   No certificate matches the ID <strong className="font-mono">VP-{id?.toUpperCase()}</strong>.
-                  It may have been entered incorrectly, or was not issued by A.I. ANAL.
+                  It may have been entered incorrectly, or was not issued by Justice Bot USA.
                 </p>
                 <Button asChild variant="outline">
                   <Link to="/courses">Go to Course Hub</Link>
@@ -101,7 +101,7 @@ export default function CertificateVerify() {
                 <div>
                   <p className="font-semibold text-primary">Certificate Verified</p>
                   <p className="text-sm text-muted-foreground">
-                    This record was created and cryptographically sealed by A.I. ANAL.
+                    This record was created and cryptographically sealed by Justice Bot USA.
                   </p>
                 </div>
                 <Badge className="ml-auto shrink-0" variant="default">Authentic</Badge>
@@ -154,7 +154,7 @@ export default function CertificateVerify() {
 
                   {/* Audit timestamp */}
                   <p className="text-xs text-muted-foreground pt-2">
-                    Sealed by A.I. ANAL on{" "}
+                    Sealed by Justice Bot USA on{" "}
                     <strong>{new Date(cert.audit_timestamp).toUTCString()}</strong>
                   </p>
                 </CardContent>
@@ -164,7 +164,7 @@ export default function CertificateVerify() {
               <Card className="bg-muted/50">
                 <CardContent className="py-4">
                   <p className="text-xs text-muted-foreground leading-relaxed">
-                    <strong>Disclaimer:</strong> A.I. ANAL verifies that this record was created on our platform and has not been modified.
+                    <strong>Disclaimer:</strong> Justice Bot USA verifies that this record was created on our platform and has not been modified.
                     We do not independently verify that the underlying course was completed or meets your jurisdiction's requirements.
                     Always confirm acceptance with your attorney or case worker.
                   </p>

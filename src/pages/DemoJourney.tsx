@@ -274,8 +274,8 @@ const DemoJourney = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
-        title="Demo Journey - See A.I. ANAL in Action | Interactive Walkthrough"
-        description="Experience a complete walkthrough of the A.I. ANAL legal assistance platform. See how our AI helps you from case description to filing-ready forms."
+        title="Demo Journey - See Justice Bot USA in Action | Interactive Walkthrough"
+        description="Experience a complete walkthrough of the Justice Bot USA legal assistance platform. See how our AI helps you from case description to filing-ready forms."
         url="https://justicebot-usa.com/demo-journey"
       />
       
@@ -287,7 +287,7 @@ const DemoJourney = () => {
           <div className="text-center mb-12">
             <Badge variant="outline" className="mb-4">Interactive Demo</Badge>
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              See How A.I. ANAL Works
+              See How Justice Bot USA Works
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
               Walk through a complete user journey — from describing your issue to getting filing-ready legal forms.

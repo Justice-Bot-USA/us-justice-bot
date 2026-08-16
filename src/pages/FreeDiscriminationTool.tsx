@@ -13,7 +13,7 @@ const FreeDiscriminationTool = () => {
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>Free Discrimination Complaint Helper | File Your Complaint | A.I. ANAL</title>
+        <title>Free Discrimination Complaint Helper | File Your Complaint | Justice Bot USA</title>
         <meta name="description" content="Free tool to help you prepare a discrimination complaint. Document incidents, identify protected classes, and generate complaint drafts for EEOC or state agencies." />
         <meta name="keywords" content="free discrimination complaint tool, EEOC complaint help, workplace discrimination tool, housing discrimination complaint" />
         <link rel="canonical" href="https://justicebot-usa.com/free-discrimination-complaint-helper" />

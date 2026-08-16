@@ -14,7 +14,7 @@ const stateData: Record<string, Record<string, {
   california: {
     eviction: {
       title: "California Eviction Process: How to Fight an Eviction in CA",
-      metaTitle: "California Eviction Process | How to Fight Eviction in CA | A.I. ANAL",
+      metaTitle: "California Eviction Process | How to Fight Eviction in CA | Justice Bot USA",
       metaDescription: "Step-by-step guide to the California eviction process. Learn your tenant rights under CA law, how to respond to a 3-day or 30/60-day notice, and prepare your defense.",
       keywords: "california eviction process, CA tenant rights, fight eviction california, 3-day notice california, unlawful detainer CA",
       canonicalPath: "/legal-help/california-eviction-process",
@@ -40,7 +40,7 @@ const stateData: Record<string, Record<string, {
     },
     "child-custody": {
       title: "California Child Custody Guide: How Courts Decide Custody in CA",
-      metaTitle: "California Child Custody | How CA Courts Decide Custody | A.I. ANAL",
+      metaTitle: "California Child Custody | How CA Courts Decide Custody | Justice Bot USA",
       metaDescription: "Understand California child custody laws. Learn about legal vs physical custody, the best interest standard, and how to prepare for family court in CA.",
       keywords: "california child custody, CA custody laws, family court california, best interest of child CA, custody hearing california",
       canonicalPath: "/legal-help/california-child-custody",
@@ -65,7 +65,7 @@ const stateData: Record<string, Record<string, {
     },
     discrimination: {
       title: "California Workplace Discrimination: How to File a Complaint in CA",
-      metaTitle: "California Workplace Discrimination | File a Complaint | A.I. ANAL",
+      metaTitle: "California Workplace Discrimination | File a Complaint | Justice Bot USA",
       metaDescription: "Guide to filing a workplace discrimination complaint in California. Learn about FEHA protections, the CRD complaint process, and your rights as a CA employee.",
       keywords: "california workplace discrimination, FEHA complaint, CRD complaint california, employment discrimination CA",
       canonicalPath: "/legal-help/california-workplace-discrimination",
@@ -92,7 +92,7 @@ const stateData: Record<string, Record<string, {
   texas: {
     eviction: {
       title: "Texas Eviction Process: How to Fight an Eviction in TX",
-      metaTitle: "Texas Eviction Process | How to Fight Eviction in TX | A.I. ANAL",
+      metaTitle: "Texas Eviction Process | How to Fight Eviction in TX | Justice Bot USA",
       metaDescription: "Step-by-step guide to the Texas eviction process. Learn about notice requirements, Justice Court procedures, and tenant rights under Texas Property Code.",
       keywords: "texas eviction process, TX tenant rights, fight eviction texas, eviction notice texas, justice court eviction TX",
       canonicalPath: "/legal-help/texas-eviction-process",
@@ -117,7 +117,7 @@ const stateData: Record<string, Record<string, {
     },
     "small-claims": {
       title: "Texas Small Claims Court: How to File or Defend in Justice Court",
-      metaTitle: "Texas Small Claims Court | Justice Court Guide | A.I. ANAL",
+      metaTitle: "Texas Small Claims Court | Justice Court Guide | Justice Bot USA",
       metaDescription: "Guide to filing or defending a small claims case in Texas Justice Court. Learn filing limits, procedures, and how to prepare for your hearing.",
       keywords: "texas small claims court, justice court texas, small claims limit texas, file small claims TX",
       canonicalPath: "/legal-help/texas-small-claims-court",
@@ -144,7 +144,7 @@ const stateData: Record<string, Record<string, {
   florida: {
     eviction: {
       title: "Florida Eviction Process: How to Fight an Eviction in FL",
-      metaTitle: "Florida Eviction Process | How to Fight Eviction in FL | A.I. ANAL",
+      metaTitle: "Florida Eviction Process | How to Fight Eviction in FL | Justice Bot USA",
       metaDescription: "Step-by-step guide to the Florida eviction process. Learn about 3-day and 15-day notices, filing deadlines, and tenant defenses under Florida Statute 83.",
       keywords: "florida eviction process, FL tenant rights, fight eviction florida, 3-day notice florida, florida statute 83",
       canonicalPath: "/legal-help/florida-eviction-process",
@@ -169,7 +169,7 @@ const stateData: Record<string, Record<string, {
     },
     "child-custody": {
       title: "Florida Child Custody (Time-Sharing): How FL Courts Decide Parenting Plans",
-      metaTitle: "Florida Child Custody | Time-Sharing & Parenting Plans | A.I. ANAL",
+      metaTitle: "Florida Child Custody | Time-Sharing & Parenting Plans | Justice Bot USA",
       metaDescription: "Understand Florida child custody laws. Learn about time-sharing plans, parental responsibility, and how Florida courts determine the best interest of the child.",
       keywords: "florida child custody, FL time-sharing, parenting plan florida, best interest of child FL, custody florida",
       canonicalPath: "/legal-help/florida-child-custody",
@@ -196,7 +196,7 @@ const stateData: Record<string, Record<string, {
   "new-york": {
     eviction: {
       title: "New York Eviction Process: How to Fight an Eviction in NY",
-      metaTitle: "New York Eviction Process | How to Fight Eviction in NY | A.I. ANAL",
+      metaTitle: "New York Eviction Process | How to Fight Eviction in NY | Justice Bot USA",
       metaDescription: "Step-by-step guide to the New York eviction process. Learn about ERAP, good cause eviction, tenant protections, and how to defend an eviction in Housing Court.",
       keywords: "new york eviction process, NY tenant rights, fight eviction new york, housing court NY, good cause eviction NY",
       canonicalPath: "/legal-help/new-york-eviction-process",
@@ -221,7 +221,7 @@ const stateData: Record<string, Record<string, {
     },
     "small-claims": {
       title: "New York Small Claims Court: How to File or Defend in NY",
-      metaTitle: "New York Small Claims Court Guide | File or Defend | A.I. ANAL",
+      metaTitle: "New York Small Claims Court Guide | File or Defend | Justice Bot USA",
       metaDescription: "Guide to New York Small Claims Court. Learn the $10,000 limit, filing process, night court options, and how to prepare for your hearing.",
       keywords: "new york small claims court, NY small claims limit, file small claims new york, NYC small claims",
       canonicalPath: "/legal-help/new-york-small-claims-court",
@@ -274,7 +274,7 @@ const StateLegalHelp = () => {
     return (
       <LegalHelpLayout
         title="Legal Help Page Not Found"
-        metaTitle="Legal Help | A.I. ANAL"
+        metaTitle="Legal Help | Justice Bot USA"
         metaDescription="Find legal help guides for your state."
         keywords="legal help"
         canonicalPath={`/legal-help/${state}-${topic}`}

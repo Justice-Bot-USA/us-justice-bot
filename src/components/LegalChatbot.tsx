@@ -177,7 +177,7 @@ export function LegalChatbot() {
                   <Scale className="w-6 h-6 text-primary" />
                 </div>
                 <div>
-                  <CardTitle className="text-xl">A.I. ANAL</CardTitle>
+                  <CardTitle className="text-xl">Justice Bot USA</CardTitle>
                   <p className="text-sm text-muted-foreground">AI-Powered Legal Guidance</p>
                 </div>
               </div>

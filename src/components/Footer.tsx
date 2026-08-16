@@ -12,8 +12,8 @@ const Footer = () => {
           {/* Brand */}
           <div>
             <Link to="/" className="flex items-center gap-3 mb-4">
-              <img src={logoImage} alt="A.I. ANAL logo" className="w-10 h-10 object-contain rounded-full bg-white p-1" />
-              <span className="text-xl font-bold">A.I. ANAL</span>
+              <img src={logoImage} alt="Justice Bot USA logo" className="w-10 h-10 object-contain rounded-full bg-white p-1" />
+              <span className="text-xl font-bold">Justice Bot USA</span>
             </Link>
             <p className="text-sm opacity-80 mb-4">
               Am Not A Lawyer. AI-powered legal guidance for all 50 states.
@@ -79,7 +79,7 @@ const Footer = () => {
         {/* Bottom */}
         <div className="border-t border-primary-foreground/20 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm opacity-60">
-            © {currentYear} A.I. ANAL — Am Not A Lawyer. All rights reserved.
+            © {currentYear} Justice Bot USA — Am Not A Lawyer. All rights reserved.
           </p>
           <div className="flex gap-6 text-sm opacity-60">
             <Link to="/privacy" className="hover:opacity-100 transition-opacity">Privacy Policy</Link>

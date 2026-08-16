@@ -11,8 +11,8 @@ interface SEOHeadProps {
 }
 
 export const SEOHead: React.FC<SEOHeadProps> = ({
-  title = "A.I. ANAL - Fight ICE | Immigration Defense & Legal Help for All 50 States",
-  description = "Fight ICE. Know your rights. A.I. ANAL provides AI-powered immigration defense, asylum help, deportation defense, and affordable legal guidance for all 50 US states. A A.I. ANAL Platform.",
+  title = "Justice Bot USA - Fight ICE | Immigration Defense & Legal Help for All 50 States",
+  description = "Fight ICE. Know your rights. Justice Bot USA provides AI-powered immigration defense, asylum help, deportation defense, and affordable legal guidance for all 50 US states. A Justice Bot USA Platform.",
   keywords = "fight ICE, ICE defense, immigration lawyer alternative, deportation defense, asylum application, know your rights ICE, DACA renewal, U-visa, VAWA, sanctuary city, affordable legal assistance, human rights, workers compensation, workers rights, family law, small claims court, employment law, housing rights, civil rights, legal AI",
   image = "https://justicebot-usa.com/icon-512.png",
   url = "https://justicebot-usa.com",
@@ -36,7 +36,7 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
       <meta property="og:type" content={type} />
       <meta property="og:url" content={url} />
       <meta property="og:image" content={image} />
-      <meta property="og:site_name" content="A.I. ANAL" />
+      <meta property="og:site_name" content="Justice Bot USA" />
       <meta property="og:locale" content="en_US" />
       <meta property="og:locale:alternate" content="es_US" />
 

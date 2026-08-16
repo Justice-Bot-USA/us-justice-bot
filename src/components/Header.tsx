@@ -25,12 +25,12 @@ const Header = ({ language, onLanguageChange }: HeaderProps) => {
   const showSignedIn = !loading && user;
   const text = {
     en: {
-      title: "A.I. ANAL",
+      title: "Justice Bot USA",
       subtitle: "Am Not A Lawyer — information, not advice",
       languageLabel: "Language"
     },
     es: {
-      title: "A.I. ANAL",
+      title: "Justice Bot USA",
       subtitle: "No Soy Abogado — información, no asesoría",
       languageLabel: "Idioma"
     }
@@ -48,7 +48,7 @@ const Header = ({ language, onLanguageChange }: HeaderProps) => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between gap-4">
           <Link to="/" className="flex items-center gap-3 shrink-0">
-            <img src={logoImage} alt="A.I. ANAL logo" className="w-12 h-12 object-contain rounded-full bg-white p-1" />
+            <img src={logoImage} alt="Justice Bot USA logo" className="w-12 h-12 object-contain rounded-full bg-white p-1" />
             <div className="hidden sm:block">
               <h1 className="text-xl font-bold leading-tight">{text[language].title}</h1>
               <p className="text-xs text-primary-foreground/80">{text[language].subtitle}</p>

@@ -13,7 +13,7 @@ const FreeSmallClaimsTool = () => {
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>Free Small Claims Case Builder | Prepare Your Case | A.I. ANAL</title>
+        <title>Free Small Claims Case Builder | Prepare Your Case | Justice Bot USA</title>
         <meta name="description" content="Free small claims court case builder. Organize evidence, calculate damages, generate demand letters, and prepare for your hearing. Works for all 50 states." />
         <meta name="keywords" content="free small claims tool, small claims case builder, small claims court help, prepare small claims case free" />
         <link rel="canonical" href="https://justicebot-usa.com/free-small-claims-case-builder" />

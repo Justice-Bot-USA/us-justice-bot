@@ -130,7 +130,7 @@ export default function CourtListenerSearch() {
   return (
     <>
       <Helmet>
-        <title>Court Opinion & Docket Search | CourtListener | A.I. ANAL</title>
+        <title>Court Opinion & Docket Search | CourtListener | Justice Bot USA</title>
         <meta name="description" content="Search U.S. federal and state court opinions, dockets, and oral arguments. Filter by court, date range, and case type using CourtListener data." />
       </Helmet>
       <Header language={language} onLanguageChange={setLanguage} />

@@ -18,24 +18,24 @@ const FAQ = () => {
       icon: HelpCircle,
       faqs: [
         {
-          question: "What is A.I. ANAL?",
-          answer: "A.I. ANAL is an AI-powered legal information platform that helps everyday Americans understand their legal rights and navigate the court system. We provide legal information, form preparation assistance, and guidance for all 50 US states. We are NOT a law firm and do not provide legal advice."
+          question: "What is Justice Bot USA?",
+          answer: "Justice Bot USA is an AI-powered legal information platform that helps everyday Americans understand their legal rights and navigate the court system. We provide legal information, form preparation assistance, and guidance for all 50 US states. We are NOT a law firm and do not provide legal advice."
         },
         {
-          question: "Is A.I. ANAL a law firm?",
-          answer: "No, A.I. ANAL is NOT a law firm. We provide legal information and document preparation services, not legal advice. Our AI-powered tools help you understand legal processes and prepare documents, but we cannot represent you in court or give legal opinions specific to your case. For legal advice, you should consult with a licensed attorney."
+          question: "Is Justice Bot USA a law firm?",
+          answer: "No, Justice Bot USA is NOT a law firm. We provide legal information and document preparation services, not legal advice. Our AI-powered tools help you understand legal processes and prepare documents, but we cannot represent you in court or give legal opinions specific to your case. For legal advice, you should consult with a licensed attorney."
         },
         {
           question: "What states do you cover?",
           answer: "We provide information and services for all 50 US states, the District of Columbia, and federal courts. Our database includes state-specific forms, court procedures, and filing requirements for each jurisdiction."
         },
         {
-          question: "Is the information on A.I. ANAL accurate?",
+          question: "Is the information on Justice Bot USA accurate?",
           answer: "We strive to provide accurate and up-to-date information. However, laws change frequently and vary by jurisdiction. We recommend always verifying information with official court websites and consulting with an attorney for complex matters. Our information is for educational purposes only."
         },
         {
-          question: "Who should use A.I. ANAL?",
-          answer: "A.I. ANAL is designed for self-represented litigants (pro se), individuals seeking to understand their legal rights, people who need help preparing legal documents, and anyone looking for general legal information. If your case involves significant assets, criminal charges, or complex legal issues, we recommend consulting with an attorney."
+          question: "Who should use Justice Bot USA?",
+          answer: "Justice Bot USA is designed for self-represented litigants (pro se), individuals seeking to understand their legal rights, people who need help preparing legal documents, and anyone looking for general legal information. If your case involves significant assets, criminal charges, or complex legal issues, we recommend consulting with an attorney."
         }
       ]
     },
@@ -48,7 +48,7 @@ const FAQ = () => {
           answer: "We cover a wide range of legal areas including: Family Law (divorce, custody, child support), Small Claims Court, Landlord-Tenant disputes, Employment Law, Consumer Rights, Personal Injury guidance, Traffic violations, Bankruptcy basics, Immigration resources, and Civil Rights matters."
         },
         {
-          question: "Can A.I. ANAL help me file for divorce?",
+          question: "Can Justice Bot USA help me file for divorce?",
           answer: "Yes, we can help you understand the divorce process in your state, identify the forms you need, and assist with document preparation. However, for contested divorces, cases involving significant assets, or situations with domestic violence, we strongly recommend working with a family law attorney."
         },
         {
@@ -96,7 +96,7 @@ const FAQ = () => {
       icon: CreditCard,
       faqs: [
         {
-          question: "How much does A.I. ANAL cost?",
+          question: "How much does Justice Bot USA cost?",
           answer: "We offer various pricing tiers including free basic access, premium subscriptions, and pay-per-use options for certain features. Visit our Pricing page for current rates. We believe legal information should be accessible, so many basic features are available at no cost."
         },
         {
@@ -139,7 +139,7 @@ const FAQ = () => {
         },
         {
           question: "Is my case information confidential?",
-          answer: "Your case information is stored securely and is not shared with other users or third parties. However, unlike communications with an attorney, information shared with A.I. ANAL is NOT protected by attorney-client privilege."
+          answer: "Your case information is stored securely and is not shared with other users or third parties. However, unlike communications with an attorney, information shared with Justice Bot USA is NOT protected by attorney-client privilege."
         }
       ]
     },
@@ -236,8 +236,8 @@ const FAQ = () => {
   return (
     <>
       <Helmet>
-        <title>FAQ - Frequently Asked Questions | A.I. ANAL</title>
-        <meta name="description" content="Find answers to common questions about A.I. ANAL, our AI legal tools, pricing, privacy, and how to use our services for all 50 US states." />
+        <title>FAQ - Frequently Asked Questions | Justice Bot USA</title>
+        <meta name="description" content="Find answers to common questions about Justice Bot USA, our AI legal tools, pricing, privacy, and how to use our services for all 50 US states." />
         <meta name="robots" content="index, follow" />
         <link rel="canonical" href="https://justicebot-usa.com/faq" />
       </Helmet>
@@ -253,7 +253,7 @@ const FAQ = () => {
               <h1 className="text-4xl md:text-5xl font-bold">Frequently Asked Questions</h1>
             </div>
             <p className="text-lg opacity-90 max-w-2xl mx-auto mb-8">
-              Find answers to common questions about A.I. ANAL and our legal information services.
+              Find answers to common questions about Justice Bot USA and our legal information services.
             </p>
             <Badge variant="secondary" className="text-base px-4 py-2">
               {totalQuestions} Questions Answered

@@ -94,8 +94,8 @@ const UserAnalytics = () => {
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>My Analytics — A.I. ANAL</title>
-        <meta name="description" content="Track your case progress, merit scores, and journey activity on A.I. ANAL." />
+        <title>My Analytics — Justice Bot USA</title>
+        <meta name="description" content="Track your case progress, merit scores, and journey activity on Justice Bot USA." />
       </Helmet>
       <div className="container mx-auto px-4 py-8 max-w-7xl">
         <Button variant="ghost" onClick={() => navigate("/my-cases")} className="mb-4">
@@ -104,7 +104,7 @@ const UserAnalytics = () => {
 
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">My Analytics</h1>
-          <p className="text-muted-foreground">Your case activity, merit trends, and document stats on A.I. ANAL.</p>
+          <p className="text-muted-foreground">Your case activity, merit trends, and document stats on Justice Bot USA.</p>
         </div>
 
         {empty ? (
@@ -208,7 +208,7 @@ const UserAnalytics = () => {
             </div>
 
             <p className="text-xs text-muted-foreground text-center">
-              A.I. ANAL — Am Not A Lawyer. Analytics shown above reflect your own case activity only.
+              Justice Bot USA — Am Not A Lawyer. Analytics shown above reflect your own case activity only.
             </p>
           </>
         )}

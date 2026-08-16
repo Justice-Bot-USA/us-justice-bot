@@ -78,14 +78,14 @@ export default function AttorneyDirectory() {
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>Find an Attorney | A.N.A.L. Legal Directory</title>
+        <title>Find an Attorney | Justice Bot USA Legal Directory</title>
         <meta name="description" content="Browse vetted attorneys by state and specialty. Request a referral for your case. Legal information, not legal advice." />
       </Helmet>
       <Header language="en" onLanguageChange={() => {}} />
       <main className="container mx-auto px-4 py-12">
         <h1 className="text-4xl font-bold mb-2">Attorney Directory</h1>
         <p className="text-muted-foreground mb-6">
-          A.N.A.L. provides legal information, not legal advice. Use this directory to find an attorney who may take your case.
+          Justice Bot USA provides legal information, not legal advice. Use this directory to find an attorney who may take your case.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-3 mb-8">

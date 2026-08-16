@@ -3,7 +3,7 @@ import LegalHelpLayout from "@/components/legal-help/LegalHelpLayout";
 const CriminalDefenseHelp = () => (
   <LegalHelpLayout
     title="Criminal Court Process: How to Prepare for Your Hearing"
-    metaTitle="Criminal Court Process Explained | Court Preparation Guide | A.I. ANAL"
+    metaTitle="Criminal Court Process Explained | Court Preparation Guide | Justice Bot USA"
     metaDescription="Understand the criminal court process step by step. Learn what happens after an arrest, how hearings work, and how to prepare — procedural guidance only."
     keywords="criminal court process, what to do after arrest, criminal hearing, court preparation, criminal defense process, arraignment, plea hearing, criminal procedure"
     canonicalPath="/legal-help/criminal-court-process"

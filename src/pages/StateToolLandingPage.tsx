@@ -53,7 +53,7 @@ export default function StateToolLandingPage() {
             "url": seo.canonical,
             "provider": {
               "@type": "Organization",
-              "name": "A.I. ANAL — A.I. ANAL",
+              "name": "Justice Bot USA — Justice Bot USA",
               "url": "https://justicebot-usa.com"
             },
             "about": {

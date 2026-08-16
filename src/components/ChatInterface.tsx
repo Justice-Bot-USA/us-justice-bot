@@ -54,16 +54,16 @@ export function ChatInterface({
       placeholder: "Ask your legal question...",
       send: "Send",
       disclaimer: "This is AI-generated legal information, not legal advice",
-      thinking: "A.I. ANAL is thinking...",
-      welcome: `Welcome to A.I. ANAL! I'm here to help with ${selectedSection} questions in ${selectedState}. How can I assist you today?`,
+      thinking: "Justice Bot USA is thinking...",
+      welcome: `Welcome to Justice Bot USA! I'm here to help with ${selectedSection} questions in ${selectedState}. How can I assist you today?`,
       error: "Sorry, I encountered an error. Please try again."
     },
     es: {
       placeholder: "Haz tu pregunta legal...",
       send: "Enviar",
       disclaimer: "Esta es información legal generada por IA, no asesoramiento legal",
-      thinking: "A.I. ANAL está pensando...",
-      welcome: `¡Bienvenido a A.I. ANAL! Estoy aquí para ayudar con preguntas de ${selectedSection} en ${selectedState}. ¿Cómo puedo asistirte hoy?`,
+      thinking: "Justice Bot USA está pensando...",
+      welcome: `¡Bienvenido a Justice Bot USA! Estoy aquí para ayudar con preguntas de ${selectedSection} en ${selectedState}. ¿Cómo puedo asistirte hoy?`,
       error: "Lo siento, encontré un error. Por favor intenta de nuevo."
     }
   };
@@ -313,7 +313,7 @@ export function ChatInterface({
             <Scale className="w-5 h-5 text-primary" />
           </div>
           <div className="flex-1">
-            <h3 className="font-semibold text-primary">A.I. ANAL</h3>
+            <h3 className="font-semibold text-primary">Justice Bot USA</h3>
             <p className="text-sm text-muted-foreground">
               {selectedSection} • {selectedState}
               {user && <span className="ml-2">• {user.email}</span>}

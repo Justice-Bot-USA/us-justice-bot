@@ -69,8 +69,8 @@ const TermsOfService = () => {
   return (
     <>
       <Helmet>
-        <title>Terms of Service | A.I. ANAL - Legal AI Assistant</title>
-        <meta name="description" content="Terms of Service for A.I. ANAL. Understand your rights and responsibilities when using our AI-powered legal assistance platform." />
+        <title>Terms of Service | Justice Bot USA - Legal AI Assistant</title>
+        <meta name="description" content="Terms of Service for Justice Bot USA. Understand your rights and responsibilities when using our AI-powered legal assistance platform." />
         <meta name="robots" content="index, follow" />
         <link rel="canonical" href="https://justicebot-usa.com/terms" />
       </Helmet>
@@ -86,7 +86,7 @@ const TermsOfService = () => {
               <h1 className="text-4xl md:text-5xl font-bold">Terms of Service</h1>
             </div>
             <p className="text-center text-lg opacity-90 max-w-2xl mx-auto">
-              Please read these terms carefully before using A.I. ANAL services.
+              Please read these terms carefully before using Justice Bot USA services.
             </p>
             <p className="text-center text-sm opacity-70 mt-4">
               Last Updated: {lastUpdated} | Effective Date: {effectiveDate}
@@ -184,12 +184,12 @@ const TermsOfService = () => {
           <div className="prose prose-lg dark:prose-invert max-w-none">
             <h2 className="text-2xl font-bold mb-4">1. Acceptance of Terms</h2>
             <p className="text-muted-foreground">
-              By accessing or using A.I. ANAL ("Service," "Platform," "we," "us," or "our"), you agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, you may not use our Service. These Terms constitute a legally binding agreement between you and A.I. ANAL.
+              By accessing or using Justice Bot USA ("Service," "Platform," "we," "us," or "our"), you agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, you may not use our Service. These Terms constitute a legally binding agreement between you and Justice Bot USA.
             </p>
 
             <h2 className="text-2xl font-bold mt-10 mb-4">2. Description of Service</h2>
             <p className="text-muted-foreground">
-              A.I. ANAL is an AI-powered legal information platform that provides:
+              Justice Bot USA is an AI-powered legal information platform that provides:
             </p>
             <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
               <li>General legal information and educational resources</li>
@@ -261,7 +261,7 @@ const TermsOfService = () => {
 
             <h2 className="text-2xl font-bold mt-10 mb-4">8. Intellectual Property</h2>
             <p className="text-muted-foreground">
-              All content on our Platform, including text, graphics, logos, software, and AI-generated content, is the property of A.I. ANAL or its licensors. You may not reproduce, distribute, or create derivative works without our express written permission.
+              All content on our Platform, including text, graphics, logos, software, and AI-generated content, is the property of Justice Bot USA or its licensors. You may not reproduce, distribute, or create derivative works without our express written permission.
             </p>
             <p className="text-muted-foreground mt-4">
               Legal forms and documents you create using our Service are yours to use. However, the underlying templates and systems remain our intellectual property.
@@ -284,7 +284,7 @@ const TermsOfService = () => {
 
             <h2 className="text-2xl font-bold mt-10 mb-4">11. Indemnification</h2>
             <p className="text-muted-foreground">
-              You agree to indemnify, defend, and hold harmless A.I. ANAL and its officers, directors, employees, and agents from any claims, damages, losses, or expenses arising from your use of the Service or violation of these Terms.
+              You agree to indemnify, defend, and hold harmless Justice Bot USA and its officers, directors, employees, and agents from any claims, damages, losses, or expenses arising from your use of the Service or violation of these Terms.
             </p>
 
             <h2 className="text-2xl font-bold mt-10 mb-4">12. Modifications to Terms</h2>
@@ -364,7 +364,7 @@ const TermsOfService = () => {
               For questions about these Terms of Service, please contact us:
             </p>
             <div className="bg-background rounded-lg p-6 border">
-              <p className="font-medium">A.I. ANAL Legal Team</p>
+              <p className="font-medium">Justice Bot USA Legal Team</p>
               <p className="text-muted-foreground">Email: legal@justicebot-usa.com</p>
               <p className="text-muted-foreground">Website: justicebot-usa.com</p>
             </div>

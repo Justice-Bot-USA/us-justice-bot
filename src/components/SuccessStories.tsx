@@ -9,14 +9,14 @@ const SuccessStories = ({ language }: SuccessStoriesProps) => {
   const text = {
     en: {
       title: "Real Results from Real Americans",
-      subtitle: "Join hundreds of Americans who've successfully navigated the legal system with A.I. ANAL",
+      subtitle: "Join hundreds of Americans who've successfully navigated the legal system with Justice Bot USA",
       testimonials: [
         {
           initials: "SM",
           name: "Sarah M.",
           location: "Houston, TX",
           category: "Housing Court",
-          quote: "A.I. ANAL helped me prepare my housing court application in under an hour. The AI guidance was clear and the forms were automatically filled. I won my case and got my deposit back!",
+          quote: "Justice Bot USA helped me prepare my housing court application in under an hour. The AI guidance was clear and the forms were automatically filled. I won my case and got my deposit back!",
           result: "✓ Won case, recovered $2,400 deposit",
           rating: 5
         },
@@ -25,7 +25,7 @@ const SuccessStories = ({ language }: SuccessStoriesProps) => {
           name: "James T.",
           location: "Chicago, IL",
           category: "EEOC Complaint",
-          quote: "As someone with no legal background, I was overwhelmed. A.I. ANAL walked me through every step, explained the process clearly, and helped me file a solid complaint.",
+          quote: "As someone with no legal background, I was overwhelmed. Justice Bot USA walked me through every step, explained the process clearly, and helped me file a solid complaint.",
           result: "✓ Case accepted, settlement reached",
           rating: 5
         },
@@ -48,14 +48,14 @@ const SuccessStories = ({ language }: SuccessStoriesProps) => {
     },
     es: {
       title: "Resultados Reales de Estadounidenses Reales",
-      subtitle: "Únase a cientos de estadounidenses que han navegado exitosamente el sistema legal con A.I. ANAL",
+      subtitle: "Únase a cientos de estadounidenses que han navegado exitosamente el sistema legal con Justice Bot USA",
       testimonials: [
         {
           initials: "SM",
           name: "Sarah M.",
           location: "Houston, TX",
           category: "Tribunal de Vivienda",
-          quote: "A.I. ANAL me ayudó a preparar mi solicitud ante el tribunal de vivienda en menos de una hora. La guía de IA fue clara y los formularios se llenaron automáticamente. ¡Gané mi caso y recuperé mi depósito!",
+          quote: "Justice Bot USA me ayudó a preparar mi solicitud ante el tribunal de vivienda en menos de una hora. La guía de IA fue clara y los formularios se llenaron automáticamente. ¡Gané mi caso y recuperé mi depósito!",
           result: "✓ Ganó el caso, recuperó $2,400 de depósito",
           rating: 5
         },
@@ -64,7 +64,7 @@ const SuccessStories = ({ language }: SuccessStoriesProps) => {
           name: "James T.",
           location: "Chicago, IL",
           category: "Queja EEOC",
-          quote: "Como alguien sin conocimientos legales, estaba abrumado. A.I. ANAL me guió en cada paso, explicó el proceso claramente y me ayudó a presentar una queja sólida.",
+          quote: "Como alguien sin conocimientos legales, estaba abrumado. Justice Bot USA me guió en cada paso, explicó el proceso claramente y me ayudó a presentar una queja sólida.",
           result: "✓ Caso aceptado, acuerdo alcanzado",
           rating: 5
         },
