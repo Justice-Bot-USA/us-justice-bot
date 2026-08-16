@@ -31,7 +31,7 @@ const JusticeBotExplainer = () => {
           How Justice Bot USA Works
         </h2>
         <p className="text-lg text-muted-foreground mb-12 max-w-2xl mx-auto">
-          Am Not A Lawyer. Transparent, informational guidance — built with trust and compliance at its core.
+          Legal information, not legal advice. Transparent, informational guidance — built with trust and compliance at its core.
         </p>
         <div className="grid sm:grid-cols-2 gap-6 text-left">
           {points.map((p, i) => (

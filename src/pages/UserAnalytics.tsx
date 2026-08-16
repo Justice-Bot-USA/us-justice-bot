@@ -208,7 +208,7 @@ const UserAnalytics = () => {
             </div>
 
             <p className="text-xs text-muted-foreground text-center">
-              Justice Bot USA — Am Not A Lawyer. Analytics shown above reflect your own case activity only.
+              Justice Bot USA. Analytics shown above reflect your own case activity only.
             </p>
           </>
         )}

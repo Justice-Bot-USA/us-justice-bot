@@ -26,7 +26,7 @@ const Header = ({ language, onLanguageChange }: HeaderProps) => {
   const text = {
     en: {
       title: "Justice Bot USA",
-      subtitle: "Am Not A Lawyer — information, not advice",
+      subtitle: "Legal information, not legal advice",
       languageLabel: "Language"
     },
     es: {

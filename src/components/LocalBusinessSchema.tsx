@@ -4,9 +4,7 @@ const LocalBusinessSchema = () => {
   const schema = {
     "@context": "https://schema.org",
     "@type": "LegalService",
-    name: "Justice Bot USA",
-    alternateName: "Am Not A Lawyer",
-    description: "Justice Bot USA — AI-powered legal form assistance and civic guidance for all 50 US states. Information, not legal advice.",
+    name: "Justice Bot USA",    description: "Justice Bot USA — AI-powered legal form assistance and civic guidance for all 50 US states. Information, not legal advice.",
     url: "https://justicebot-usa.com",
     logo: "https://justicebot-usa.com/icon-512.png",
     priceRange: "$4.99 - $79",

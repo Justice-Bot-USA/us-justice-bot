@@ -113,9 +113,7 @@ const Index = () => {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "Justice Bot USA",
-    alternateName: "Am Not A Lawyer",
-    url: "https://justicebot-usa.com",
+    name: "Justice Bot USA",    url: "https://justicebot-usa.com",
     description: "Justice Bot USA is an AI-powered civic-guidance platform helping self-represented individuals navigate the U.S. legal system.",
     brand: {
       "@type": "Brand",
@@ -126,7 +124,7 @@ const Index = () => {
       name: "Justice Bot USA",
       applicationCategory: "Legal",
       operatingSystem: "Web",
-      description: "AI-powered informational guidance engine for understanding legal processes, records, and next steps. Am Not A Lawyer.",
+      description: "AI-powered informational guidance engine for understanding legal processes, records, and next steps. Legal information, not legal advice. ",
       offers: {
         "@type": "Offer",
         price: "0",
@@ -143,7 +141,7 @@ const Index = () => {
     },
     {
       question: "What does Justice Bot USA stand for?",
-      answer: "Am Not A Lawyer. The name makes the disclaimer the brand: we provide legal information, not legal advice or representation.",
+      answer: "Legal information, not legal advice. The name makes the disclaimer the brand: we provide legal information, not legal advice or representation.",
     },
     {
       question: "Does this platform access government databases?",
@@ -166,15 +164,15 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEOHead 
-        title="Justice Bot USA — Am Not A Lawyer | Navigate the U.S. Legal System"
+        title="Justice Bot USA | Navigate the U.S. Legal System"
         description="Justice Bot USA is an AI-powered civic-guidance platform. Understand legal processes, prepare documents, request public records. For self-represented individuals. Not legal advice."
-        keywords="Justice Bot USA, Am Not A Lawyer, legal guidance, public records request, FOIA generator, self-represented individuals, legal information, court filing help, civic guidance"
+        keywords="Justice Bot USA, legal guidance, public records request, FOIA generator, self-represented individuals, legal information, court filing help, civic guidance"
         url="https://justicebot-usa.com"
       />
       <EnhancedSEO
-        title="Justice Bot USA — Am Not A Lawyer | AI legal guidance for all 50 states"
-        description="Am Not A Lawyer. Informational civic-guidance platform for self-represented individuals. Understand legal processes, prepare documents, request records. Not legal advice."
-        keywords="Justice Bot USA, Am Not A Lawyer, legal guidance, FOIA request generator, public records request, legal information, court forms, civic guidance, document preparation"
+        title="Justice Bot USA | AI legal guidance for all 50 states"
+        description="Legal information, not legal advice. Informational civic-guidance platform for self-represented individuals. Understand legal processes, prepare documents, request records. Not legal advice."
+        keywords="Justice Bot USA, legal guidance, FOIA request generator, public records request, legal information, court forms, civic guidance, document preparation"
         canonicalUrl="https://justicebot-usa.com/"
         structuredData={structuredData}
         faqData={faqData}

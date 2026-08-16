@@ -16,7 +16,7 @@ const Footer = () => {
               <span className="text-xl font-bold">Justice Bot USA</span>
             </Link>
             <p className="text-sm opacity-80 mb-4">
-              Am Not A Lawyer. AI-powered legal guidance for all 50 states.
+              Legal information, not legal advice. AI-powered legal guidance for all 50 states.
             </p>
             <p className="text-xs opacity-60">
               Not a law firm. Information, not legal advice.
@@ -79,7 +79,7 @@ const Footer = () => {
         {/* Bottom */}
         <div className="border-t border-primary-foreground/20 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm opacity-60">
-            © {currentYear} Justice Bot USA — Am Not A Lawyer. All rights reserved.
+            © {currentYear} Justice Bot USA. All rights reserved.
           </p>
           <div className="flex gap-6 text-sm opacity-60">
             <Link to="/privacy" className="hover:opacity-100 transition-opacity">Privacy Policy</Link>

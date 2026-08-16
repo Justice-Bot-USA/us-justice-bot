@@ -1,7 +1,7 @@
 {
-  "name": "Justice Bot USA — Am Not A Lawyer",
+  "name": "Justice Bot USA",
   "short_name": "Justice Bot USA",
-  "description": "Am Not A Lawyer. Free AI-powered legal guidance for all Americans.",
+  "description": "Legal information, not legal advice. Free AI-powered legal guidance for all Americans.",
   "start_url": "/",
   "display": "browser",
   "background_color": "#1e40af",
