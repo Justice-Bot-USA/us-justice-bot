@@ -113,7 +113,8 @@ const Index = () => {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "Justice Bot USA",    url: "https://justicebot-usa.com",
+    name: "Justice Bot USA",
+    url: "https://justicebot-usa.com",
     description: "Justice Bot USA is an AI-powered civic-guidance platform helping self-represented individuals navigate the U.S. legal system.",
     brand: {
       "@type": "Brand",
@@ -124,7 +125,7 @@ const Index = () => {
       name: "Justice Bot USA",
       applicationCategory: "Legal",
       operatingSystem: "Web",
-      description: "AI-powered informational guidance engine for understanding legal processes, records, and next steps. Legal information, not legal advice. ",
+      description: "AI-powered informational guidance engine for understanding legal processes, records, and next steps.",
       offers: {
         "@type": "Offer",
         price: "0",
@@ -138,10 +139,6 @@ const Index = () => {
     {
       question: "What is Justice Bot USA?",
       answer: "Justice Bot USA is an AI-powered civic-guidance platform that helps self-represented individuals understand U.S. legal and administrative processes. It is not a law firm and does not provide legal advice.",
-    },
-    {
-      question: "What does Justice Bot USA stand for?",
-      answer: "Legal information, not legal advice. The name makes the disclaimer the brand: we provide legal information, not legal advice or representation.",
     },
     {
       question: "Does this platform access government databases?",
