@@ -86,7 +86,7 @@ function generateSingleFormPdf(
   
   doc.setFontSize(10);
   doc.setTextColor(100);
-  doc.text('STATE COURT FORM', margin, yPos);
+  doc.text('FORM GUIDE (NOT THE OFFICIAL FORM)', margin, yPos);
   doc.text(format(new Date(), 'MMMM d, yyyy'), pageWidth - margin - 35, yPos);
   
   yPos += 12;
@@ -293,7 +293,7 @@ function generateFormsPackagePdf(
   doc.setFontSize(24);
   doc.setTextColor(255);
   doc.setFont('helvetica', 'bold');
-  doc.text('COURT FORMS PACKAGE', pageWidth / 2, 35, { align: 'center' });
+  doc.text('COURT FORMS GUIDE', pageWidth / 2, 35, { align: 'center' });
   
   doc.setFontSize(14);
   doc.setFont('helvetica', 'normal');
