@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import StateNextSteps from '@/components/StateNextSteps';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -40,9 +41,10 @@ interface AnalysisResult {
   meritScore: number;
   strengths: string[];
   weaknesses: string[];
-  estimatedSuccessRate: number;
-  timeToResolution: string;
-  settlementRange: { min: number; max: number };
+  /** Only what the analysis actually returned; null means it gave no figure. */
+  estimatedSuccessRate: number | null;
+  timeToResolution: string | null;
+  settlementRange: { min: number; max: number } | null;
   legalPathway: Array<{ step?: number; action?: string; timeline?: string }>;
   requiredForms: Array<{ formName?: string; formNumber?: string; purpose?: string }>;
   filingOptions: {
@@ -78,6 +80,7 @@ export const FunnelResultsStep: React.FC<FunnelResultsStepProps> = ({
   const { saveRelatedCases } = useRelatedCases();
   const [analysis, setAnalysis] = useState<AnalysisResult | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(true);
+  const [analysisFailed, setAnalysisFailed] = useState(false);
   const [progressValue, setProgressValue] = useState(0);
   const [progressMessage, setProgressMessage] = useState('Starting analysis...');
 
@@ -90,6 +93,7 @@ export const FunnelResultsStep: React.FC<FunnelResultsStepProps> = ({
   }, []);
 
   const runAnalysis = async () => {
+    setAnalysisFailed(false);
     setIsAnalyzing(true);
     setIsProcessing(true);
 
@@ -149,12 +153,12 @@ export const FunnelResultsStep: React.FC<FunnelResultsStepProps> = ({
         meritScore: parseFloat(data.meritScore) || 65,
         strengths: data.analysis?.strengthFactors?.map((f: any) => f.factor || f) || ['Clear documentation'],
         weaknesses: data.analysis?.weaknessFactors?.map((f: any) => f.factor || f) || ['May need additional evidence'],
-        estimatedSuccessRate: parseFloat(data.analysis?.estimatedSuccessRate) || 70,
-        timeToResolution: data.analysis?.timeToResolutionMonths ? `${data.analysis.timeToResolutionMonths} months` : '3-6 months',
-        settlementRange: {
-          min: parseFloat(data.analysis?.settlementRange?.min) || 5000,
-          max: parseFloat(data.analysis?.settlementRange?.max) || 25000,
-        },
+        estimatedSuccessRate: Number.isFinite(parseFloat(data.analysis?.estimatedSuccessRate)) ? parseFloat(data.analysis.estimatedSuccessRate) : null,
+        timeToResolution: data.analysis?.timeToResolutionMonths ? `${data.analysis.timeToResolutionMonths} months` : null,
+        settlementRange:
+          Number.isFinite(parseFloat(data.analysis?.settlementRange?.min)) && Number.isFinite(parseFloat(data.analysis?.settlementRange?.max))
+            ? { min: parseFloat(data.analysis.settlementRange.min), max: parseFloat(data.analysis.settlementRange.max) }
+            : null,
         legalPathway: data.analysis?.legalPathway || [],
         requiredForms: data.analysis?.requiredForms || [],
         filingOptions: data.analysis?.filingOptions || {},
@@ -183,47 +187,10 @@ export const FunnelResultsStep: React.FC<FunnelResultsStepProps> = ({
 
     } catch (error) {
       console.error('Analysis error:', error);
-      // Use DETAILED fallback result based on the legal area
-      const fallbackForms = config.forms.slice(0, 4).map((f, idx) => ({ 
-        formNumber: f, 
-        formName: f,
-        purpose: `Required for ${legalAreaName.toLowerCase()} filing in ${stateName}`,
-        filingOrder: idx + 1
-      }));
-      
-      const fallbackResult: AnalysisResult = {
-        meritScore: 68,
-        strengths: [
-          'Case details provided for analysis',
-          'Clear legal issue identified',
-          `${stateName} jurisdiction established`
-        ],
-        weaknesses: [
-          'Additional evidence may strengthen case',
-          'Consider consulting with a licensed attorney'
-        ],
-        estimatedSuccessRate: 65,
-        timeToResolution: '4-8 months',
-        settlementRange: { min: 5000, max: 20000 },
-        legalPathway: [
-          { step: 1, action: 'File initial complaint/petition', timeline: 'Week 1-2' },
-          { step: 2, action: 'Serve opposing party', timeline: 'Week 2-4' },
-          { step: 3, action: 'Wait for response period', timeline: 'Week 4-8' },
-          { step: 4, action: 'Discovery and preparation', timeline: 'Months 2-4' },
-          { step: 5, action: 'Settlement negotiations or trial', timeline: 'Months 4-8' },
-        ],
-        requiredForms: fallbackForms,
-        filingOptions: {
-          proSe: `You can represent yourself in ${stateName} ${courtType}`,
-          withAttorney: 'An attorney can help navigate complex procedures',
-          recommendation: 'Consider your case complexity when deciding'
-        },
-        forum: courtType,
-      };
-      setAnalysis(fallbackResult);
-      setProgressValue(100);
-      setProgressMessage('Basic analysis complete');
-      updateData({ meritScore: fallbackResult.meritScore });
+      // Never substitute made-up scores, success rates or settlement figures for a failed
+      // analysis: the user would read them as an assessment of their own case.
+      setAnalysis(null);
+      setAnalysisFailed(true);
     } finally {
       setIsAnalyzing(false);
       setIsProcessing(false);
@@ -268,20 +235,24 @@ export const FunnelResultsStep: React.FC<FunnelResultsStepProps> = ({
     );
   }
 
-  // If analysis failed to load, show fallback content
+  // Analysis failed or returned nothing: say so plainly. No placeholder results.
   if (!analysis) {
     return (
       <div className="space-y-6 py-8">
         <div className="text-center">
           <Scale className="h-12 w-12 mx-auto text-primary mb-4" />
-          <h3 className="text-xl font-semibold mb-2">Analysis in Progress</h3>
-          <p className="text-muted-foreground mb-4">
-            If this is taking too long, please click Continue below to proceed with basic guidance.
+          <h3 className="text-xl font-semibold mb-2">We couldn't analyze your story right now</h3>
+          <p className="text-muted-foreground mb-4 max-w-lg mx-auto">
+            {analysisFailed
+              ? 'Our analysis service did not respond correctly. Nothing was charged. You can try again, or continue to the forms and filing steps for your situation.'
+              : 'The analysis did not return a result.'}
           </p>
-          <Button onClick={onNext} className="mt-4">
-            Continue to Legal Pathway
-          </Button>
+          <div className="flex flex-wrap justify-center gap-2">
+            <Button onClick={runAnalysis}>Try again</Button>
+            <Button variant="outline" onClick={onNext}>Continue to forms and guides</Button>
+          </div>
         </div>
+        <StateNextSteps state={config.jurisdiction} area={config.legalArea} />
       </div>
     );
   }
@@ -432,14 +403,14 @@ export const FunnelResultsStep: React.FC<FunnelResultsStepProps> = ({
         <Card>
           <CardContent className="p-4 text-center">
             <TrendingUp className="h-5 w-5 mx-auto text-green-600 mb-1" />
-            <div className="text-lg font-bold">{analysis.estimatedSuccessRate}%</div>
+            <div className="text-lg font-bold">{analysis.estimatedSuccessRate !== null ? `${analysis.estimatedSuccessRate}%` : '—'}</div>
             <p className="text-xs text-muted-foreground">Est. Success</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4 text-center">
             <Clock className="h-5 w-5 mx-auto text-blue-600 mb-1" />
-            <div className="text-lg font-bold">{analysis.timeToResolution}</div>
+            <div className="text-lg font-bold">{analysis.timeToResolution ?? '—'}</div>
             <p className="text-xs text-muted-foreground">Timeline</p>
           </CardContent>
         </Card>
@@ -501,6 +472,8 @@ export const FunnelResultsStep: React.FC<FunnelResultsStepProps> = ({
           </Button>
         </CardContent>
       </Card>
+
+      <StateNextSteps state={config.jurisdiction} area={config.legalArea} />
     </div>
   );
 };

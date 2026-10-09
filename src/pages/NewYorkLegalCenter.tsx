@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { getFillableByFormNumber } from '@/lib/formfill';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -29,7 +29,12 @@ const CATEGORIES: { key: NyCategoryKey; label: string; icon: React.ReactNode; bl
 ];
 
 export default function NewYorkLegalCenter() {
-  const [active, setActive] = useState<NyCategoryKey>('criminal');
+  // ?area=<tab> opens a specific legal area (links from a user's story results use this).
+  const [params] = useSearchParams();
+  const requested = params.get('area');
+  const [active, setActive] = useState<NyCategoryKey>(() =>
+    CATEGORIES.some((c) => c.key === requested) ? (requested as NyCategoryKey) : 'criminal',
+  );
   const [query, setQuery] = useState('');
 
   const forms = NY_FORMS_BY_CATEGORY[active];

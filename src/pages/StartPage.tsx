@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { SEOHead } from "@/components/SEOHead";
+import StatePicker from "@/components/StatePicker";
 import EnhancedSEO from "@/components/EnhancedSEO";
 import brandLogo from "@/assets/ai-anal-logo.png";
 import { useState } from "react";
@@ -55,7 +56,7 @@ const journeys = [
     title: "Navigate a Court or Agency Process",
     description: "Dealing with courts, hearings, or agencies? Get step-by-step procedural guidance on what happens first, next, and later.",
     cta: "See the process",
-    href: "/case-journey",
+    href: "#choose-state",
     journeyType: "process",
   },
   {
@@ -75,6 +76,10 @@ const StartPage = () => {
 
   const handleCardClick = (journey: typeof journeys[0]) => {
     trackJourneyStart(journey.journeyType);
+    if (journey.href.startsWith('#')) {
+      document.getElementById(journey.href.slice(1))?.scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
     navigate(journey.href);
   };
 
@@ -160,6 +165,8 @@ const StartPage = () => {
             </Card>
           ))}
         </div>
+
+        <StatePicker className="mb-16" />
 
         {/* Footer Note */}
         <div className="text-center border-t pt-8">

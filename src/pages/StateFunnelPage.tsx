@@ -4,6 +4,8 @@ import { Helmet } from 'react-helmet-async';
 import { getFunnelByRoute, US_STATE_NAMES, LEGAL_AREA_NAMES } from '@/lib/funnels';
 import { LegalCategory } from '@/lib/funnels/types';
 import { FunnelEngine } from '@/components/funnel';
+import { stateRouteFor } from '@/lib/stateRouting';
+import { useAuth } from '@/hooks/useAuth';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Card, CardContent } from '@/components/ui/card';
@@ -195,6 +197,7 @@ const StateFunnelPage: React.FC = () => {
   // Get funnel config from route
   const route = `/${slug}`;
   const funnelConfig = getFunnelByRoute(route);
+  const { user } = useAuth();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -209,9 +212,11 @@ const StateFunnelPage: React.FC = () => {
   }
 
   // Handle funnel completion
-  const handleComplete = (data: any) => {
-    console.log('Funnel completed:', data);
-    navigate('/my-cases');
+  // CA/NY users go on to their legal center (filing steps and form filling). Elsewhere, signed-in
+  // users go to their saved cases; signed-out users have nothing saved, so they go home.
+  const handleComplete = () => {
+    const route = funnelConfig ? stateRouteFor(funnelConfig.jurisdiction, funnelConfig.legalArea) : null;
+    navigate(route ? route.centerPath : user ? '/my-cases' : '/');
   };
 
   // Handle funnel exit
