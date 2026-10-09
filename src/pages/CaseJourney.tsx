@@ -27,13 +27,14 @@ import {
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { usePaywallAccess } from '@/hooks/usePaywallAccess';
+import { PLAN, startSubscriptionCheckout } from '@/lib/pricing';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
 import { EvidenceUploader } from '@/components/EvidenceUploader';
 import { RelatedCasesDisplay } from '@/components/dashboard/RelatedCasesDisplay';
 import { ProceduralGuidancePanel } from '@/components/ProceduralGuidancePanel';
-import { trackAddToCart, trackBeginCheckout, getDetectedCountry } from '@/hooks/useAnalytics';
+import { trackAddToCart, getDetectedCountry } from '@/hooks/useAnalytics';
 import { isValidUUID } from '@/lib/validation';
 
 interface CaseData {
@@ -140,39 +141,13 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
 
     setIsUnlocking(true);
     
-    const country = getDetectedCountry();
-    
-    // 🔥 GA4 add_to_cart event
-    trackAddToCart('Case Assessment', caseData?.state || '', country, 7.99);
-    console.log('[GA4 Debug] add_to_cart fired:', { item: 'Case Assessment', state: caseData?.state, country, value: 7.99 });
-    
+    trackAddToCart('Case Assessment', caseData?.state || '', getDetectedCountry(), PLAN.price);
     try {
-      // 🔥 GA4 begin_checkout event
-      trackBeginCheckout(7.99, country);
-      console.log('[GA4 Debug] begin_checkout fired:', { value: 7.99, country });
-      
-      const { data, error } = await supabase.functions.invoke('paypal-payments', {
-        body: {
-          action: 'create_one_time_payment',
-          userId: user.id,
-          formType: 'case_assessment',
-          caseId: caseId,
-        },
-      });
-
-      if (error) throw error;
-
-      if (data.approvalUrl) {
-        // Store case ID for after payment redirect
-        sessionStorage.setItem('pending_case_id', caseId || '');
-        window.location.href = data.approvalUrl;
-      } else {
-        throw new Error('No approval URL received');
-      }
+      sessionStorage.setItem('pending_case_id', caseId || '');
+      await startSubscriptionCheckout();
     } catch (error) {
       console.error('Payment error:', error);
-      toast.error('Failed to initiate payment. Please try again.');
-    } finally {
+      toast.error('Failed to start checkout. Please try again.');
       setIsUnlocking(false);
     }
   };
@@ -561,8 +536,8 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
                           {uploadedFilesCount} document(s) ready to be organized
                         </p>
                         <div className="space-y-2">
-                          <p className="text-2xl font-bold text-primary">$7.99 USD</p>
-                          <p className="text-sm text-muted-foreground">One-time payment</p>
+                          <p className="text-2xl font-bold text-primary">{PLAN.priceLabel}</p>
+                          <p className="text-sm text-muted-foreground">Included in the plan with every form and guide</p>
                         </div>
                       </CardContent>
                     </Card>

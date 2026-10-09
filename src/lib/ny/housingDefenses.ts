@@ -20,7 +20,7 @@ export const NYC_NONPAYMENT_DEFENSES: HousingDefense[] = [
     title: 'Improper service',
     says: 'You never got the Notice of Petition and Petition, or they were not delivered the way the law requires.',
     detail:
-      'The papers must be delivered by personal delivery, by giving them to a suitable person who lives or works in your home, or by posting them on your door after two tries, and the last two methods also require mailing copies to you (RPAPL 735). Raise this the first time you answer; you may lose it if you wait.',
+      'The papers must be delivered by personal delivery, by giving them to a suitable person who lives or works in your home, or by posting them on your door after reasonable effort to deliver them in person, and the last two methods also require mailing copies to you (RPAPL 735). Raise this the first time you answer; you may lose it if you wait.',
   },
   {
     number: '3',

@@ -8,13 +8,13 @@ import type { CourtForm } from '@/lib/formsLibraryData';
 const JCC = (form: string) => `https://selfhelp.courts.ca.gov/jcc-form/${form}`;
 
 export const CA_CRIMINAL_FORMS: CourtForm[] = [
-  { formNumber: 'CR-180', name: 'Petition for Dismissal (PC §1203.4)', description: 'Ask the court to dismiss a conviction after probation is completed.', url: JCC('CR-180'), category: 'Record Clearing', feeAmount: 'Up to $150 (county-set)', feeWaiverAvailable: true },
+  { formNumber: 'CR-180', name: 'Petition for Dismissal (PC §1203.4)', description: 'Ask the court to dismiss a conviction after probation is completed.', url: JCC('CR-180'), category: 'Record Clearing', feeAmount: 'No filing fee', feeWaiverAvailable: true },
   { formNumber: 'CR-181', name: 'Order for Dismissal', description: 'Proposed order filed with CR-180 for the judge to sign.', url: JCC('CR-181'), category: 'Record Clearing', feeAmount: 'Free' },
   { formNumber: 'Clean Your Record', name: 'California Courts — Clean Your Record Guide', description: 'Dismissal, reduction, sealing, and automatic relief options explained by the courts.', url: 'https://selfhelp.courts.ca.gov/clean-your-record', category: 'Guides', feeAmount: 'Free' },
 ];
 
 export const CA_FAMILY_FORMS: CourtForm[] = [
-  { formNumber: 'FL-300', name: 'Request for Order', description: 'Ask the court to make or change custody, visitation, or support orders.', url: JCC('FL-300'), category: 'Custody / Support', feeAmount: '$60 (often free for custody/support-only)', feeWaiverAvailable: true },
+  { formNumber: 'FL-300', name: 'Request for Order', description: 'Ask the court to make or change custody, visitation, or support orders.', url: JCC('FL-300'), category: 'Custody / Support', feeAmount: '$60; $85 to change custody or visitation (free in domestic violence cases)', feeWaiverAvailable: true },
   { formNumber: 'FL-311', name: 'Child Custody and Visitation (Parenting Time) Application Attachment', description: 'Describe the parenting schedule you are asking for.', url: JCC('FL-311'), category: 'Custody', feeAmount: 'Free' },
   { formNumber: 'FL-105', name: 'Declaration Under UCCJEA', description: 'Where the child has lived for the last 5 years — required in custody cases.', url: JCC('FL-105'), category: 'Custody', feeAmount: 'Free' },
   { formNumber: 'FL-150', name: 'Income and Expense Declaration', description: 'Financial disclosure used to calculate child and spousal support.', url: JCC('FL-150'), category: 'Support', feeAmount: 'Free' },

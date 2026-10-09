@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Lock, Shield } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { trackAddToCart, getDetectedCountry } from '@/hooks/useAnalytics';
+import { PLAN } from '@/lib/pricing';
 
 interface PaywallGuardProps {
   children: ReactNode;
@@ -24,7 +25,7 @@ export function PaywallGuard({
   // 🔥 Track add_to_cart when paywall is shown (user hit an "unlock" point)
   useEffect(() => {
     if (!loading && !hasAccess) {
-      trackAddToCart(feature, '', getDetectedCountry(), 7.99);
+      trackAddToCart(feature, '', getDetectedCountry(), PLAN.price);
     }
   }, [loading, hasAccess, feature]);
 
