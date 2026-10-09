@@ -1,57 +1,29 @@
 import { Helmet } from "react-helmet-async";
+import { PLAN } from "@/lib/pricing";
 
+// Structured data for search engines. Keep it to what is true today: legal information and
+// official court forms for California and New York, one plan. We are not a law firm, so this
+// is an Organization, not a LegalService.
 const LocalBusinessSchema = () => {
   const schema = {
     "@context": "https://schema.org",
-    "@type": "LegalService",
-    name: "Justice Bot USA",    description: "Justice Bot USA — AI-powered legal form assistance and civic guidance for all 50 US states. Information, not legal advice.",
+    "@type": "Organization",
+    name: "Justice Bot USA",
+    legalName: "Justice Bot Technologies Inc.",
+    description:
+      "Legal information and official California and New York court forms, filled in from your own answers. Not a law firm and not legal advice.",
     url: "https://justicebot-usa.com",
     logo: "https://justicebot-usa.com/icon-512.png",
-    priceRange: "$4.99 - $79",
-    areaServed: {
-      "@type": "Country",
-      name: "United States",
-    },
-    serviceType: [
-      "Legal Form Assistance",
-      "Court Document Preparation",
-      "Legal Information Services",
+    areaServed: [
+      { "@type": "State", name: "California" },
+      { "@type": "State", name: "New York" },
     ],
-    hasOfferCatalog: {
-      "@type": "OfferCatalog",
-      name: "Legal Services",
-      itemListElement: [
-        {
-          "@type": "Offer",
-          itemOffered: {
-            "@type": "Service",
-            name: "Monthly Subscription",
-            description: "Unlimited access to all forms and AI tools",
-          },
-          price: "9.99",
-          priceCurrency: "USD",
-        },
-        {
-          "@type": "Offer",
-          itemOffered: {
-            "@type": "Service",
-            name: "Annual Subscription",
-            description: "Best value - save over 30%",
-          },
-          price: "79",
-          priceCurrency: "USD",
-        },
-        {
-          "@type": "Offer",
-          itemOffered: {
-            "@type": "Service",
-            name: "Individual Form",
-            description: "Pay per form access",
-          },
-          price: "4.99",
-          priceCurrency: "USD",
-        },
-      ],
+    makesOffer: {
+      "@type": "Offer",
+      name: PLAN.name,
+      description: "Official court forms and filing guides. Court and agency fees are separate.",
+      price: String(PLAN.price),
+      priceCurrency: "USD",
     },
   };
 
