@@ -1,4 +1,6 @@
 import React, { useState, useCallback } from 'react';
+import { Link } from 'react-router-dom';
+import { signInPath } from '@/lib/signIn';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -479,7 +481,7 @@ export const SweepAnalyzerRealtime: React.FC<SweepAnalyzerRealtimeProps> = ({ on
 
         {!user && (
           <p className="text-xs text-center text-amber-600">
-            Please sign in to start analysis
+            <Link to={signInPath()} className="underline font-medium">Sign in</Link> to start analysis
           </p>
         )}
 

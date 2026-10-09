@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { signInPath } from '@/lib/signIn';
 import {
   Dialog,
   DialogContent,
@@ -135,8 +136,7 @@ const FOIARequestGenerator: React.FC<FOIARequestGeneratorProps> = ({
 
     if (!user) {
       toast.error('Please sign in to generate a request.');
-      sessionStorage.setItem('post_auth_redirect', '/warrant-lookup');
-      navigate('/auth');
+      navigate(signInPath());
       return;
     }
 
@@ -183,7 +183,7 @@ const FOIARequestGenerator: React.FC<FOIARequestGeneratorProps> = ({
   const handleExportPDF = async () => {
     if (!user) {
       toast.error('Please sign in to export.');
-      navigate('/auth');
+      navigate(signInPath());
       return;
     }
 

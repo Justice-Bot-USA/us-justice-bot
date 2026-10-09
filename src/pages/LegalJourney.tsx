@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { signInPath } from '@/lib/signIn';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -84,7 +85,7 @@ const LegalJourney = () => {
             <p className="text-muted-foreground mb-4">
               Please sign in to view your legal journeys
             </p>
-            <Button onClick={() => navigate('/auth')} className="w-full">
+            <Button onClick={() => navigate(signInPath())} className="w-full">
               Sign In
             </Button>
           </CardContent>

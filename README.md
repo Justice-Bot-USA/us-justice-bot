@@ -65,4 +65,6 @@ supabase/functions/        Edge functions (Stripe, PayPal, legal sweeps, search,
 
 ## Deployment
 
-The app is connected to Lovable. Changes pushed to the default branch sync to the Lovable project, which publishes the site.
+- **Site:** Cloudflare Pages builds and publishes `main` to justicebot-usa.com (DNS on Cloudflare). Each pull request gets a preview build.
+- **Database and auth:** Supabase project `jhgkshjqgagxfllgvhco` (justicebot-usa), owned by the company's own Supabase organization.
+- **Edge functions:** deployed by hand from `supabase/functions/` (no automatic deploy since leaving Lovable). Redeploy a function after changing it or anything in `_shared/`.

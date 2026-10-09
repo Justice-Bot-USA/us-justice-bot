@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { signInPath } from '@/lib/signIn';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
@@ -376,7 +377,7 @@ const BookOfDocuments = () => {
             </CardHeader>
             <CardContent>
               <Button asChild className="w-full">
-                <Link to="/auth">Sign In</Link>
+                <Link to={signInPath()}>Sign In</Link>
               </Button>
             </CardContent>
           </Card>

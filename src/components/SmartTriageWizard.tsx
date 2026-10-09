@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { SignInPrompt } from '@/components/auth/SignInPrompt';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -683,11 +684,7 @@ export const SmartTriageWizard: React.FC<SmartTriageWizardProps> = ({ onAnalysis
 
   if (!user) {
     return (
-      <Card>
-        <CardContent className="p-6 text-center">
-          <p className="text-muted-foreground">Please sign in to use the Smart Legal Triage</p>
-        </CardContent>
-      </Card>
+      <SignInPrompt message="Sign in to use the Smart Legal Triage. It takes a few short questions." />
     );
   }
 
