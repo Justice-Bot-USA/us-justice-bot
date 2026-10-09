@@ -16,12 +16,21 @@ const Support = () => {
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <Card className="max-w-md w-full">
           <CardHeader>
-            <CardTitle>Sign In Required</CardTitle>
+            <CardTitle>Support Center</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-muted-foreground mb-4">
-              Please sign in to access support tickets
+            <p className="text-muted-foreground mb-2">
+              Email us at{' '}
+              <a href="mailto:support@justicebot-usa.com" className="text-primary underline">
+                support@justicebot-usa.com
+              </a>
+              . For billing, write to{' '}
+              <a href="mailto:billing@justicebot-usa.com" className="text-primary underline">
+                billing@justicebot-usa.com
+              </a>
+              .
             </p>
+            <p className="text-muted-foreground mb-4">Sign in to open a support ticket and track replies.</p>
             <Button onClick={() => navigate(signInPath())} className="w-full">
               Sign In
             </Button>

@@ -31,7 +31,8 @@ const sc100: FillableForm = {
   ],
   stillToDo: [
     'Item 5: check the box for why you are filing at this courthouse.',
-    'Items 7–10: answer the yes/no questions (attorney fee dispute, public entity, number of claims filed).',
+    'Items 7–9: answer the yes/no questions (attorney fee dispute, public entity, more than 12 claims in the last 12 months).',
+    'Item 10 (claim over $2,500) is ticked from your amount; check that it is right.',
     'Sign and date page 4.',
     'File with the small claims clerk and pay the filing fee, or file FW-001 to ask for a fee waiver.',
   ],
@@ -320,7 +321,8 @@ const cr180: FillableForm = {
   ],
   stillToDo: [
     'Item 1: add any other convictions in this case.',
-    'Items 2–7: tick the boxes that describe your situation and the relief you are asking for.',
+    'Items 2–7: tick the box that describes your sentence and situation.',
+    'Item 8: tick it to ask that an eligible felony be reduced to a misdemeanor (Penal Code §17(b)). Item 9: tick it to ask for dismissal.',
     'Sign and date page 3. File it with CR-181 in the court where you were convicted.',
   ],
   fill: (a) => {

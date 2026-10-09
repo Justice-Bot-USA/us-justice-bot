@@ -29,7 +29,7 @@ export const NY_PROCEDURES: Record<NyCategoryKey, FilingProcedure> = {
     category: 'criminal',
     title: 'Criminal — Sealing, Vacatur, and Appeals',
     venue: 'County Court or Supreme Court (Criminal Term) where you were convicted.',
-    fees: 'Most post-conviction motions are free. Notice of Appeal: $65; Poor-Person relief available.',
+    fees: 'Most post-conviction motions are free. No fee to file a criminal Notice of Appeal; you can ask for a free assigned appellate lawyer.',
     deadlines: [
       'Notice of Appeal: 30 days from sentencing (CPL §460.10).',
       'CPL §160.59 sealing: 10 years from sentence/release.',
@@ -53,11 +53,11 @@ export const NY_PROCEDURES: Record<NyCategoryKey, FilingProcedure> = {
     fees: 'Free. Family Court does not charge filing fees.',
     deadlines: [
       'Family Offense (Order of Protection): emergency relief available same-day.',
-      'Support modification: substantial change in circumstances or 3 years since last order.',
+      'Support modification: substantial change in circumstances, 3 years since the last order, or a 15% change in either parent\'s income (FCA §451).',
       'Custody modification: change in circumstances affecting child\'s best interests.',
     ],
     steps: [
-      { title: 'Choose the right petition', detail: 'Custody (GF-5), Visitation (GF-5b), Support (4-2), Family Offense (8-1), or Modification (V-3).' },
+      { title: 'Choose the right petition', detail: 'Custody (GF-17), Visitation (GF-17), Support (4-3), Family Offense (8-2), or Support Modification (4-11).' },
       { title: 'File at the Family Court intake clerk', detail: 'Walk-ins accepted; many counties offer Petition Room help.' },
       { title: 'Service of process', detail: 'Court issues a summons; respondent must be served personally at least 8 days before hearing.' },
       { title: 'Initial appearance', detail: 'Judge may issue temporary orders, refer to mediation, or appoint an Attorney for the Child.' },
@@ -76,7 +76,7 @@ export const NY_PROCEDURES: Record<NyCategoryKey, FilingProcedure> = {
     deadlines: [
       'Residency: 1–2 years (DRL §230).',
       'Defendant has 20 days (personal service) or 30 days (other) to answer.',
-      'Compulsory financial disclosure due within 20 days of preliminary conference.',
+      'Statement of Net Worth and financial disclosure due at least 10 days before the preliminary conference (22 NYCRR 202.16(f)).',
     ],
     steps: [
       { title: 'Buy an Index Number', detail: 'County Clerk issues Index Number ($210); required to file anything.' },
@@ -105,9 +105,9 @@ export const NY_PROCEDURES: Record<NyCategoryKey, FilingProcedure> = {
       { title: 'Demand a §1028 hearing immediately', detail: 'Forces ACS/DSS to prove imminent risk to continue removal.' },
       { title: 'Comply with court-ordered services', detail: 'Random drug screens, parenting classes, mental health eval as ordered.' },
       { title: 'File OCFS appeal in parallel', detail: 'Indicated SCR reports are appealed separately to OCFS — 90-day deadline.' },
-      { title: 'Push for kinship placement', detail: 'Relatives have priority under SSL §378-a if approved.' },
+      { title: 'Push for kinship placement', detail: 'Ask the court to place your child with a relative or family friend (FCA §1017).' },
       { title: 'Attend every permanency hearing', detail: 'Every 6 months. Goal can shift from return-to-parent to TPR.' },
-      { title: 'Trial (Fact-Finding) or consent disposition', detail: 'ACS must prove neglect by preponderance; abuse by clear and convincing evidence.' },
+      { title: 'Trial (Fact-Finding) or consent disposition', detail: 'ACS must prove abuse or neglect by a preponderance of the evidence (FCA §1046). Clear and convincing evidence is required only for severe or repeated abuse findings and termination of parental rights.' },
     ],
     sources: ['https://www.nycourts.gov/new-york-city-family-court/child-protective-proceedings', 'https://ocfs.ny.gov/programs/cps/'],
   },
@@ -159,7 +159,7 @@ export const NY_PROCEDURES: Record<NyCategoryKey, FilingProcedure> = {
     category: 'civil',
     title: 'Civil — Small Claims, Housing, Consumer, Article 78',
     venue: 'Civil Court (NYC), City/Town/Village Court (outside NYC), Housing Court, or Supreme Court.',
-    fees: 'Small claims $15–$20; Housing Court $45; Supreme Court Index Number $210; Article 78 $210.',
+    fees: 'Small claims $15–$20; Housing Court $45; Supreme Court Index Number $210; Article 78 $210 + $95 RJI.',
     eFilingUrl: NYSCEF,
     deadlines: [
       'Small claims default: 30 days to vacate.',
@@ -186,8 +186,8 @@ export const NY_PROCEDURES: Record<NyCategoryKey, FilingProcedure> = {
     venue: 'NYS Division of Human Rights, NYC Commission on Human Rights, or EEOC.',
     fees: 'Free at all three agencies.',
     deadlines: [
-      'NYSDHR complaint: 3 years (1 year for sexual harassment in employment after 8/12/2020 amendment — now also 3 years).',
-      'NYC CHR complaint: 3 years (most categories) / 1 year for non-employment.',
+      'NYSDHR complaint: 3 years for all complaints filed on or after February 15, 2024 (Exec. Law §297(5)).',
+      'NYC CHR complaint: 1 year; 3 years for gender-based harassment.',
       'EEOC charge: 300 days in NY (deferral state).',
       'Election of remedies: filing with NYSDHR generally bars later court suit on same facts.',
     ],
@@ -198,7 +198,7 @@ export const NY_PROCEDURES: Record<NyCategoryKey, FilingProcedure> = {
       { title: 'Investigation', detail: 'Investigator may interview witnesses, request documents, and hold a fact-finding conference.' },
       { title: 'Probable cause determination', detail: 'If found, case proceeds to public hearing before an ALJ.' },
       { title: 'Public hearing and order', detail: 'ALJ issues recommended order; Commissioner adopts/modifies. Remedies include back pay, civil penalties, injunctive relief.' },
-      { title: 'Appeal to Appellate Division', detail: 'Article 78 review of NYSDHR orders to the Appellate Division within 30 days of service.' },
+      { title: 'Court review of the order', detail: 'Petition for review of the NYSDHR order in State Supreme Court within 60 days of service (Exec. Law §298).' },
     ],
     sources: ['https://dhr.ny.gov', 'https://www.nyc.gov/site/cchr/'],
   },

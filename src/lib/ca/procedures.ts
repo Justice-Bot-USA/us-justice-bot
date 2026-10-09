@@ -23,7 +23,7 @@ export const CA_PROCEDURES: Record<CaCategoryKey, CaFilingProcedure> = {
     category: 'criminal',
     title: 'Criminal — Dismissal and Record Clearing',
     venue: 'Superior Court in the county where you were convicted.',
-    fees: 'Counties may charge up to $150 for a PC §1203.4 petition. Fee waiver available (FW-001).',
+    fees: 'No filing fee for a PC §1203.4 petition.',
     deadlines: [
       'PC §1203.4 dismissal: after probation is completed (or terminated early).',
       'Some convictions qualify for automatic relief under PC §1203.425 — check before filing.',
@@ -57,7 +57,7 @@ export const CA_PROCEDURES: Record<CaCategoryKey, CaFilingProcedure> = {
       { title: 'Go to the hearing', detail: 'Bring copies of everything filed. The judge may make temporary or final orders.' },
       { title: 'Prepare the order', detail: 'Use the Findings and Order After Hearing forms; the order is enforceable once signed.' },
     ],
-    sources: [`${SELF_HELP}/child-custody`, `${SELF_HELP}/child-support`, `${SELF_HELP}/domestic-violence-restraining-order`],
+    sources: [`${SELF_HELP}/child-custody`, `${SELF_HELP}/child-support`, `${SELF_HELP}/DV-restraining-order`],
   },
   divorce: {
     category: 'divorce',
@@ -83,7 +83,7 @@ export const CA_PROCEDURES: Record<CaCategoryKey, CaFilingProcedure> = {
     category: 'cps',
     title: 'Juvenile Dependency (CPS) — Parents\' Rights',
     venue: 'Superior Court (Juvenile Division) in the county where the case was filed.',
-    fees: 'Free. Parents have the right to a court-appointed attorney.',
+    fees: 'Free. If you cannot afford a lawyer, the court appoints one for you (WIC §317).',
     deadlines: [
       'Detention hearing: generally within 1 court day after the petition is filed when a child is removed.',
       'JV-820 Notice of Intent to File Writ: very short deadline after a 366.26 hearing is set — ask your attorney immediately.',
@@ -119,7 +119,7 @@ export const CA_PROCEDURES: Record<CaCategoryKey, CaFilingProcedure> = {
     category: 'civil',
     title: 'Civil — Small Claims, Evictions, Harassment Orders',
     venue: 'Superior Court in the county where the defendant lives or the dispute happened.',
-    fees: 'Small claims: $30 (≤$1,500), $50 (≤$5,000), $75 (≤$12,500). Fee waiver available (FW-001).',
+    fees: 'Small claims: $30 (≤$1,500), $50 (≤$5,000), $75 (≤$12,500); $100 if you filed more than 12 small claims in the last 12 months. Fee waiver available (FW-001).',
     deadlines: [
       'Eviction: tenants have 10 court days after service to file an Answer (UD-105) — effective Jan 1, 2025 (AB 2347).',
       'Small claims limit: $12,500 for individuals, $6,250 for businesses.',
@@ -129,11 +129,11 @@ export const CA_PROCEDURES: Record<CaCategoryKey, CaFilingProcedure> = {
       { title: 'Small claims: demand payment first', detail: 'Courts expect you to ask the other side to pay before filing.', ref: `${SELF_HELP}/small-claims-california` },
       { title: 'Small claims: file SC-100', detail: 'File in the right county and pay the fee or request a waiver.', ref: `${SELF_HELP}/small-claims/start-case/file` },
       { title: 'Small claims: serve and file SC-104', detail: 'Service must be completed before the hearing by an adult who is not you.' },
-      { title: 'Eviction: answer on time', detail: 'If served with SUM-130 and UD-100, file UD-105 within 10 court days or you can lose by default.', ref: `${SELF_HELP}/eviction-tenant` },
+      { title: 'Eviction: answer on time', detail: 'If served with SUM-130 and UD-100, file UD-105 within 10 court days or you can lose by default. If the papers were left with someone else or posted and mailed, service finishes later, which moves the deadline; ask the self-help center to count it.', ref: `${SELF_HELP}/eviction-tenant` },
       { title: 'Eviction: find free help', detail: 'Many counties have free tenant legal help — check your court\'s self-help center.' },
       { title: 'Go to court prepared', detail: 'Bring evidence, witnesses, and copies of everything filed.' },
     ],
-    sources: [`${SELF_HELP}/small-claims-california`, `${SELF_HELP}/eviction-tenant`, `${SELF_HELP}/civil-harassment-restraining-order`],
+    sources: [`${SELF_HELP}/small-claims-california`, `${SELF_HELP}/eviction-tenant`, `${SELF_HELP}/CH-restraining-order`],
   },
   'human-rights': {
     category: 'human-rights',

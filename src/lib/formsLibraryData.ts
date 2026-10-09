@@ -64,7 +64,7 @@ export const stateFormsLibrary: Record<string, StateFormsData> = {
         { formNumber: "MC-030", name: "Declaration", description: "Written statement under penalty of perjury", url: "https://www.courts.ca.gov/documents/mc030.pdf", category: "General" },
       ],
       "criminal": [
-        { formNumber: "CR-180", name: "Petition for Dismissal", description: "Request expungement (PC 1203.4)", url: "https://www.courts.ca.gov/documents/cr180.pdf", category: "Expungement", feeAmount: "$120-$150", feeWaiverAvailable: true },
+        { formNumber: "CR-180", name: "Petition for Dismissal", description: "Request expungement (PC 1203.4)", url: "https://www.courts.ca.gov/documents/cr180.pdf", category: "Expungement", feeAmount: "No filing fee", feeWaiverAvailable: true },
         { formNumber: "CR-181", name: "Order for Dismissal", description: "Court order granting expungement", url: "https://www.courts.ca.gov/documents/cr181.pdf", category: "Expungement" },
         { formNumber: "CR-105", name: "Petition for Reduction to Misdemeanor", description: "Reduce felony wobbler to misdemeanor", url: "https://www.courts.ca.gov/documents/cr105.pdf", category: "Record Relief" },
         { formNumber: "GC-310", name: "Petition for Appointment of Guardian", description: "Seek guardianship of minor", url: "https://www.courts.ca.gov/documents/gc310.pdf", category: "Guardianship" },

@@ -151,7 +151,7 @@ export const trackAddToCart = (
   itemName: string = 'Case Assessment',
   state: string = '',
   country: 'US' | 'CA' = 'US',
-  value: number = 7.99
+  value: number = 25
 ) => {
   if (typeof window !== 'undefined' && window.gtag) {
     const currency = country === 'US' ? 'USD' : 'CAD';
@@ -170,7 +170,7 @@ export const trackAddToCart = (
 };
 
 // Checkout Started
-export const trackBeginCheckout = (value: number = 7.99, country: 'US' | 'CA' = 'US') => {
+export const trackBeginCheckout = (value: number = 25, country: 'US' | 'CA' = 'US') => {
   if (typeof window !== 'undefined' && window.gtag) {
     const currency = country === 'US' ? 'USD' : 'CAD';
     window.gtag('event', 'begin_checkout', {
@@ -186,7 +186,7 @@ export const trackPurchase = (
   itemName: string = 'Case Assessment',
   state: string = '',
   country: 'US' | 'CA' = 'US',
-  value: number = 7.99,
+  value: number = 25,
   itemId: string = ''
 ) => {
   if (typeof window !== 'undefined' && window.gtag) {
