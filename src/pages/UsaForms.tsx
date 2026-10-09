@@ -10,10 +10,11 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
-  ArrowLeft, Search, ExternalLink, Download, FileText, Loader2,
+  ArrowLeft, Search, ExternalLink, Download, FileText,
   Scale, Info, Building2, RefreshCw, CheckCircle
 } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
+import { useAdminAccess } from '@/hooks/useAdminAccess';
 
 const CATEGORY_OPTIONS = [
   { value: 'all', label: 'All Categories' },
@@ -27,12 +28,21 @@ const CATEGORY_OPTIONS = [
   { value: 'housing', label: 'Housing' },
 ];
 
+// CA and NY have verified catalogs and form filling in their own legal centers.
+const STATE_CENTERS: Record<string, { name: string; center: string; fill?: string }> = {
+  'US-CA': { name: 'California', center: '/ca/legal-center', fill: '/fill/ca' },
+  // NY form filling isn't built yet (official PDFs still needed), so no fill link.
+  'US-NY': { name: 'New York', center: '/ny/legal-center' },
+};
+
 const LAUNCH_STATES = ['US-FED', 'US-CA', 'US-NY', 'US-TX', 'US-FL', 'US-IL', 'US-WA', 'US-MA', 'US-PA', 'US-GA', 'US-NJ'];
 
 export default function UsaForms() {
   const [selectedJurisdiction, setSelectedJurisdiction] = useState('US-FED');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
+  // Syncing scrapes court sites and writes with the service role; the function only accepts admins.
+  const { isAdmin } = useAdminAccess();
 
   // Fetch jurisdictions
   const { data: jurisdictions, isLoading: loadingJurisdictions } = useQuery({
@@ -105,6 +115,7 @@ export default function UsaForms() {
   const autoSyncDone = useRef<Set<string>>(new Set());
   useEffect(() => {
     if (
+      isAdmin &&
       isLaunchState &&
       forms !== undefined &&
       forms.length === 0 &&
@@ -123,7 +134,9 @@ export default function UsaForms() {
         }
       })();
     }
-  }, [forms, selectedJurisdiction, isLaunchState, refetchForms]);
+  }, [forms, selectedJurisdiction, isLaunchState, isAdmin, refetchForms]);
+
+  const stateCenter = STATE_CENTERS[selectedJurisdiction];
 
   const handleSync = async () => {
     toast({ title: 'Sync started', description: 'Fetching forms from official sources...' });
@@ -247,9 +260,9 @@ export default function UsaForms() {
                     {currentJurisdiction?.name || 'Federal'} Courts
                   </h2>
                   <p className="text-muted-foreground text-sm">
-                    {isLaunchState
-                      ? 'Official forms synced from government court websites'
-                      : 'Coming soon — this jurisdiction will be synced in a future update'}
+                    {forms && forms.length > 0
+                      ? 'Official forms listed from government court websites'
+                      : 'Forms for this jurisdiction are not listed here yet'}
                   </p>
                 </div>
               </div>
@@ -262,10 +275,12 @@ export default function UsaForms() {
                     </a>
                   </Button>
                 ))}
-                <Button variant="outline" size="sm" onClick={handleSync}>
-                  <RefreshCw className="h-4 w-4 mr-2" />
-                  Sync Forms
-                </Button>
+                {isAdmin && (
+                  <Button variant="outline" size="sm" onClick={handleSync}>
+                    <RefreshCw className="h-4 w-4 mr-2" />
+                    Sync Forms
+                  </Button>
+                )}
               </div>
             </div>
 
@@ -356,19 +371,34 @@ export default function UsaForms() {
           </div>
         ) : (
           <Card className="p-8 text-center">
-            <Loader2 className="h-12 w-12 mx-auto text-muted-foreground mb-4 animate-spin" />
-            <h3 className="text-lg font-semibold mb-2">
-              {isLaunchState ? 'No Forms Synced Yet' : 'Coming Soon'}
-            </h3>
-            <p className="text-muted-foreground mb-4">
-              {isLaunchState
-                ? 'Forms haven\'t been synced yet for this jurisdiction. Click "Sync Forms" above to pull from official sources.'
-                : 'This jurisdiction will be available in a future update. Try Federal or one of the 10 launch states.'}
-            </p>
-            {isLaunchState && (
-              <Button onClick={handleSync}>
+            <FileText className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+            {stateCenter ? (
+              <>
+                <h3 className="text-lg font-semibold mb-2">{stateCenter.name} forms are in the {stateCenter.name} Legal Center</h3>
+                <p className="text-muted-foreground mb-4">
+                  The {stateCenter.name} forms list{stateCenter.fill ? ', filing steps, and form filling are' : ' and filing steps are'} on their own page.
+                </p>
+                <div className="flex flex-wrap justify-center gap-2">
+                  <Button asChild><Link to={stateCenter.center}>Open {stateCenter.name} Legal Center</Link></Button>
+                  {stateCenter.fill && (
+                    <Button variant="outline" asChild><Link to={stateCenter.fill}>Fill {stateCenter.name} forms</Link></Button>
+                  )}
+                </div>
+              </>
+            ) : (
+              <>
+                <h3 className="text-lg font-semibold mb-2">No forms listed here yet</h3>
+                <p className="text-muted-foreground mb-4">
+                  {sources && sources.length > 0
+                    ? 'Use the official court links above to find the forms for this jurisdiction.'
+                    : 'Check this jurisdiction\'s official court website for its forms. Federal forms are available now.'}
+                </p>
+              </>
+            )}
+            {isAdmin && isLaunchState && (
+              <Button variant="outline" className="mt-4" onClick={handleSync}>
                 <RefreshCw className="h-4 w-4 mr-2" />
-                Sync Now
+                Sync Now (admin)
               </Button>
             )}
           </Card>
