@@ -29,7 +29,7 @@ const FORM_DETAILS: Record<string, { name: string; description: string; fee: str
   'SAPCR Petition': { name: 'SAPCR Petition', description: 'Child custody case', fee: '$300-$350' },
   'Petition (Small Claims)': { name: 'Small Claims Petition', description: 'Texas small claims', fee: '$54-$95' },
   // New York Forms
-  'UD-2': { name: 'Summons With Notice', description: 'NY divorce summons', fee: '$335', url: 'https://nycourts.gov/divorce/forms.shtml' },
+  'UD-2': { name: 'Summons With Notice', description: 'NY divorce summons', fee: '$335', url: 'https://www.nycourts.gov/divorce-resources/statewide-divorce-forms' },
   'CIV-SC-50': { name: 'Small Claims Complaint', description: 'NYC small claims', fee: '$15-$20' },
   // Florida Forms
   'Form 12.901(a)': { name: 'Petition for Dissolution', description: 'FL divorce (no children)', fee: '$409' },

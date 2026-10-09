@@ -73,5 +73,5 @@ export const NYC_HOUSING_HELP = {
   rightToCounselUrl: 'https://www.nyc.gov/site/hra/help/legal-services-for-tenants.page',
   hotline: 'Housing Court Answers hotline: (212) 962-4795, Monday–Friday 9am–5pm.',
   hotlineUrl: 'https://housingcourtanswers.org/contact-us/',
-  officialUrl: 'https://nycourts.gov/new-york-city-housing-court/answering-case-nyc-housing-court',
+  officialUrl: 'https://www.nycourts.gov/new-york-city-housing-court/answering-case-nyc-housing-court',
 };

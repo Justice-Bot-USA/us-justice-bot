@@ -22,7 +22,7 @@ export interface FilingProcedure {
   sources: string[];
 }
 
-const NYSCEF = 'https://iappscontent.courts.state.ny.us/NYSCEF/live/efile.htm';
+const NYSCEF = 'https://iapps.courts.state.ny.us/nyscef/HomePage';
 
 export const NY_PROCEDURES: Record<NyCategoryKey, FilingProcedure> = {
   criminal: {
@@ -44,7 +44,7 @@ export const NY_PROCEDURES: Record<NyCategoryKey, FilingProcedure> = {
       { title: 'Attend hearing (if any)', detail: 'Court weighs rehabilitation, time elapsed, and victim input.' },
       { title: 'Obtain sealing order', detail: 'Court forwards order to DCJS and arresting agency.' },
     ],
-    sources: ['https://www.nycourts.gov/courthelp/Criminal/sealingRecords.shtml'],
+    sources: ['https://www.nycourts.gov/help/criminal/criminal-records-sealing'],
   },
   family: {
     category: 'family',
@@ -65,7 +65,7 @@ export const NY_PROCEDURES: Record<NyCategoryKey, FilingProcedure> = {
       { title: 'Trial or settlement', detail: 'Many cases settle on consent. Trials are bench trials before the judge.' },
       { title: 'Final order and enforcement', detail: 'Violation petitions enforce; appeals run to the Appellate Division within 30 days.' },
     ],
-    sources: ['https://www.nycourts.gov/courthelp/family/index.shtml'],
+    sources: ['https://www.nycourts.gov/help/family-issues-divorce'],
   },
   divorce: {
     category: 'divorce',
@@ -87,7 +87,7 @@ export const NY_PROCEDURES: Record<NyCategoryKey, FilingProcedure> = {
       { title: 'Submit judgment package', detail: 'Findings of Fact (UD-10) + Judgment of Divorce (UD-11) to the matrimonial clerk.' },
       { title: 'Judgment signed and entered', detail: 'Once signed, serve Notice of Entry on the other party — divorce is final on entry, not service.' },
     ],
-    sources: ['https://ww2.nycourts.gov/divorce/index.shtml'],
+    sources: ['https://www.nycourts.gov/divorce-resources'],
   },
   cps: {
     category: 'cps',
@@ -108,7 +108,7 @@ export const NY_PROCEDURES: Record<NyCategoryKey, FilingProcedure> = {
       { title: 'Attend every permanency hearing', detail: 'Every 6 months. Goal can shift from return-to-parent to TPR.' },
       { title: 'Trial (Fact-Finding) or consent disposition', detail: 'ACS must prove neglect by preponderance; abuse by clear and convincing evidence.' },
     ],
-    sources: ['https://www.nycourts.gov/courthelp/family/cps.shtml', 'https://ocfs.ny.gov/programs/cps/'],
+    sources: ['https://www.nycourts.gov/new-york-city-family-court/child-protective-proceedings', 'https://ocfs.ny.gov/programs/cps/'],
   },
   immigration: {
     category: 'immigration',
@@ -177,7 +177,7 @@ export const NY_PROCEDURES: Record<NyCategoryKey, FilingProcedure> = {
       { title: 'Trial / arbitration', detail: 'Small claims defaults to arbitration if both consent; otherwise bench trial.' },
       { title: 'Judgment + enforcement', detail: 'Use Information Subpoena, Wage Garnishment (CPLR 5231), or Property Execution to collect.' },
     ],
-    sources: ['https://www.nycourts.gov/courthelp/', 'https://nycourts.gov/new-york-city-housing-court/answering-case-nyc-housing-court', 'https://housingcourtanswers.org/'],
+    sources: ['https://www.nycourts.gov/courthelp/', 'https://www.nycourts.gov/new-york-city-housing-court/answering-case-nyc-housing-court', 'https://housingcourtanswers.org/'],
   },
   'human-rights': {
     category: 'human-rights',

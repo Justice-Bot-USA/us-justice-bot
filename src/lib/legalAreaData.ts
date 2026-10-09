@@ -160,11 +160,11 @@ const californiaCriminal: StateGuidance = {
 
 const newYorkFamilyLaw: StateGuidance = {
   forms: [
-    { name: "UD-2 (Summons with Notice)", description: "Initiates matrimonial action", url: "https://nycourts.gov/divorce/forms.shtml" },
-    { name: "UD-3 (Verified Complaint)", description: "Details grounds for divorce", url: "https://nycourts.gov/divorce/forms.shtml" },
-    { name: "Statement of Net Worth", description: "Mandatory financial disclosure", url: "https://nycourts.gov/divorce/forms.shtml" },
-    { name: "UD-8 (Affidavit of Defendant)", description: "Defendant's sworn statement", url: "https://nycourts.gov/divorce/forms.shtml" },
-    { name: "UD-11 (Findings of Fact)", description: "Proposed findings for judge", url: "https://nycourts.gov/divorce/forms.shtml" },
+    { name: "UD-2 (Summons with Notice)", description: "Initiates matrimonial action", url: "https://www.nycourts.gov/divorce-resources/statewide-divorce-forms" },
+    { name: "UD-3 (Verified Complaint)", description: "Details grounds for divorce", url: "https://www.nycourts.gov/divorce-resources/statewide-divorce-forms" },
+    { name: "Statement of Net Worth", description: "Mandatory financial disclosure", url: "https://www.nycourts.gov/divorce-resources/statewide-divorce-forms" },
+    { name: "UD-8 (Affidavit of Defendant)", description: "Defendant's sworn statement", url: "https://www.nycourts.gov/divorce-resources/statewide-divorce-forms" },
+    { name: "UD-11 (Findings of Fact)", description: "Proposed findings for judge", url: "https://www.nycourts.gov/divorce-resources/statewide-divorce-forms" },
   ],
   deadlines: [
     { name: "No Waiting Period", timeframe: "NY has no mandatory waiting period" },
@@ -188,10 +188,10 @@ const newYorkFamilyLaw: StateGuidance = {
 
 const newYorkSmallClaims: StateGuidance = {
   forms: [
-    { name: "Small Claims Summons", description: "Initiates small claims action", url: "https://nycourts.gov/courts/nyc/smallclaims/forms.shtml" },
-    { name: "Commercial Claims Form", description: "For business plaintiffs", url: "https://nycourts.gov/courts/nyc/smallclaims/forms.shtml" },
-    { name: "Subpoena Form", description: "Compel witness attendance", url: "https://nycourts.gov/courts/nyc/smallclaims/forms.shtml" },
-    { name: "Income Execution", description: "Wage garnishment after judgment", url: "https://nycourts.gov/courts/nyc/smallclaims/forms.shtml" },
+    { name: "Small Claims Summons", description: "Initiates small claims action", url: "https://www.nycourts.gov/forms/statement-claim-small-claims" },
+    { name: "Commercial Claims Form", description: "For business plaintiffs", url: "https://www.nycourts.gov/forms/statement-claim-small-claims" },
+    { name: "Subpoena Form", description: "Compel witness attendance", url: "https://www.nycourts.gov/forms/statement-claim-small-claims" },
+    { name: "Income Execution", description: "Wage garnishment after judgment", url: "https://www.nycourts.gov/forms/statement-claim-small-claims" },
   ],
   deadlines: [
     { name: "Contract Claims", timeframe: "6 years" },
@@ -239,10 +239,10 @@ const newYorkEmployment: StateGuidance = {
 
 const newYorkHousing: StateGuidance = {
   forms: [
-    { name: "Notice of Petition & Petition", description: "Landlord's eviction filing", url: "https://nycourts.gov/courts/nyc/housing/forms.shtml" },
-    { name: "Answer in Housing Court", description: "Tenant's response to eviction", url: "https://nycourts.gov/courts/nyc/housing/forms.shtml" },
-    { name: "HP Action Forms", description: "Tenant complaint for repairs", url: "https://nycourts.gov/courts/nyc/housing/forms.shtml" },
-    { name: "Order to Show Cause", description: "Emergency relief request", url: "https://nycourts.gov/courts/nyc/housing/forms.shtml" },
+    { name: "Notice of Petition & Petition", description: "Landlord's eviction filing", url: "https://www.nycourts.gov/new-york-city-housing-court" },
+    { name: "Answer in Housing Court", description: "Tenant's response to eviction", url: "https://www.nycourts.gov/new-york-city-housing-court" },
+    { name: "HP Action Forms", description: "Tenant complaint for repairs", url: "https://www.nycourts.gov/new-york-city-housing-court" },
+    { name: "Order to Show Cause", description: "Emergency relief request", url: "https://www.nycourts.gov/new-york-city-housing-court" },
   ],
   deadlines: [
     { name: "Answer to Eviction", timeframe: "Within 10 days" },
@@ -264,9 +264,9 @@ const newYorkHousing: StateGuidance = {
 
 const newYorkCriminal: StateGuidance = {
   forms: [
-    { name: "CPL 160.59 Motion", description: "Petition for record sealing", url: "https://nycourts.gov/forms/cpl_160_59.shtml" },
+    { name: "CPL 160.59 Motion", description: "Petition for record sealing", url: "https://www.nycourts.gov/help/criminal/criminal-records-sealing" },
     { name: "Certificate of Relief", description: "Removes employment barriers", url: "https://doccs.ny.gov/certificate-relief-disabilities" },
-    { name: "Bail Application", description: "Request for bail modification", url: "https://nycourts.gov/forms/criminal.shtml" },
+    { name: "Bail Application", description: "Request for bail modification", url: "https://www.nycourts.gov/help/criminal/criminal-records-sealing" },
   ],
   deadlines: [
     { name: "Arraignment", timeframe: "24 hours if in custody" },
@@ -701,12 +701,12 @@ const floridaPersonalInjury: StateGuidance = {
 
 const newYorkPersonalInjury: StateGuidance = {
   forms: [
-    { name: "Summons with Notice", description: "Initiates lawsuit without complaint", url: "https://nycourts.gov/courts/nycivil/forms.shtml" },
-    { name: "Verified Complaint", description: "Detailed allegations of negligence", url: "https://nycourts.gov/courts/nycivil/forms.shtml" },
-    { name: "Request for Judicial Intervention (RJI)", description: "Assigns judge to case", url: "https://nycourts.gov/courts/nycivil/forms.shtml" },
-    { name: "Statement of Readiness", description: "Certificate case is ready for trial", url: "https://nycourts.gov/courts/nycivil/forms.shtml" },
-    { name: "Poor Person Application", description: "Fee waiver for indigent litigants", url: "https://nycourts.gov/forms/filingfees.shtml" },
-    { name: "Bill of Particulars", description: "Detailed breakdown of damages claimed", url: "https://nycourts.gov/courts/nycivil/forms.shtml" },
+    { name: "Summons with Notice", description: "Initiates lawsuit without complaint", url: "https://www.nycourts.gov/forms?node_field_court_type%5B171%5D=171" },
+    { name: "Verified Complaint", description: "Detailed allegations of negligence", url: "https://www.nycourts.gov/forms?node_field_court_type%5B171%5D=171" },
+    { name: "Request for Judicial Intervention (RJI)", description: "Assigns judge to case", url: "https://www.nycourts.gov/forms?node_field_court_type%5B171%5D=171" },
+    { name: "Statement of Readiness", description: "Certificate case is ready for trial", url: "https://www.nycourts.gov/forms?node_field_court_type%5B171%5D=171" },
+    { name: "Poor Person Application", description: "Fee waiver for indigent litigants", url: "https://www.nycourts.gov/courts/new-york-state-filing-fees" },
+    { name: "Bill of Particulars", description: "Detailed breakdown of damages claimed", url: "https://www.nycourts.gov/forms?node_field_court_type%5B171%5D=171" },
   ],
   deadlines: [
     { name: "Personal Injury (General)", timeframe: "3 years from date of injury (CPLR § 214)" },
