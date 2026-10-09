@@ -14,9 +14,9 @@ This section is the source of truth for what works today. Keep it accurate; do n
 | **California** | Dedicated hub at `/ca/legal-center`: 7 legal areas, forms catalog (`src/lib/ca/forms.ts`), filing procedures (`src/lib/ca/procedures.ts`). Every Judicial Council form number was checked against selfhelp.courts.ca.gov. |
 | **Other 48 states + DC** | Template pages only (`src/lib/funnels/us-funnels.ts`). Form lists are not individually verified. |
 | **Form filling (CA)** | `/fill/ca`: 8 official Judicial Council forms filled from the user's answers (SC-100, FW-001, FW-003, UD-105, FL-100, FL-110, CR-180, CR-181). The user still makes the legal choices on the form (defenses, grounds, relief) and signs. Included in the subscription; UD-105 is free to everyone (see Known gaps). |
-| **Form filling (NY)** | Not built yet. nycourts.gov blocks automated downloads, so the official PDFs have to be added by hand to `public/forms/ny/`. |
+| **Form filling (NY)** | `/fill/ny`: 2 official forms. CIV-SC-50 (NYC small claims) is **free to everyone** because the form says "No fee may be charged to fill in this form." UCS-FW1 (statewide fee waiver application) is included in the subscription. Other NY forms are not fillable yet: nycourts.gov blocks automated downloads, so official PDFs have to be added by hand to `public/forms/ny/`. NYC Housing Court answers are given in person or on the court's own form; the site refers tenants to Housing Court Answers. |
 | **Funnel** | After subscribing, the funnel delivers PDF **guides** (purpose, fees, deadlines, official link). The funnel's forms step links to the filler where a form is fillable. |
-| **Pricing** | One plan: **$25/month**, unlimited access (`src/lib/pricing.ts`). Stripe price `price_1UOYQSPr9cYwQq3CbOAjTe6i` (live, product "Justice Bot USA Access"), overridable with the `STRIPE_PRICE_MONTHLY` secret. Edge functions are deployed by hand now that Lovable is gone. Legacy one-time prices remain in `supabase/functions/_shared/stripe.ts` for old links only. Subscribers are never sent to checkout again (funnel, filing modal, records letters, form filler). |
+| **Pricing** | One plan: **$25/month**; a subscriber gets every form, guide and tool. Free to everyone: CA UD-105 and NY CIV-SC-50 (see Known gaps and the NY row) (`src/lib/pricing.ts`). Stripe price `price_1UOYQSPr9cYwQq3CbOAjTe6i` (live, product "Justice Bot USA Access"), overridable with the `STRIPE_PRICE_MONTHLY` secret. Edge functions are deployed by hand now that Lovable is gone. Legacy one-time prices remain in `supabase/functions/_shared/stripe.ts` for old links only. Subscribers are never sent to checkout again (funnel, filing modal, records letters, form filler). |
 | **Legal review** | NY and CA procedures have **not** yet been reviewed by a licensed attorney in those states. That review is required before a marketing launch. |
 
 ### Known gaps
@@ -50,8 +50,9 @@ src/lib/ny/, src/lib/ca/   State-specific forms catalogs and filing procedures
 src/lib/forms/             Multi-state forms data; launch states (CA, NY) use their dedicated catalogs
 src/lib/funnels/           50-state funnel templates and analytics
 src/hooks/useFormsPdfGenerator.ts   PDF form guides delivered after the funnel purchase
-src/lib/formfill/          Form filling: field maps per official form (ca.ts) and the pdf-lib filler (fill.ts)
+src/lib/formfill/          Form filling: field maps per official form (ca.ts, ny.ts) and the pdf-lib filler (fill.ts)
 public/forms/ca/           Official Judicial Council PDFs (owner password and XFA layer removed so fields display)
+public/forms/ny/           Official nycourts.gov PDFs (CIV-SC-50 with two bad field entries removed so pdf-lib can read it)
 supabase/functions/        Edge functions (Stripe, PayPal, legal sweeps, search, analysis)
 ```
 

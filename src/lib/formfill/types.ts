@@ -20,6 +20,11 @@ export interface FillPlan {
   text: Record<string, string>;
   /** Full AcroForm field names of checkboxes to tick. */
   check: string[];
+  /** Radio group name → index of the button to select (in widget order). Indexes, not export
+   *  values, because some official PDFs reuse one export value for every button in a group. */
+  radio?: Record<string, number>;
+  /** Dropdown name → option to select. */
+  select?: Record<string, string>;
 }
 
 export interface FillableForm {

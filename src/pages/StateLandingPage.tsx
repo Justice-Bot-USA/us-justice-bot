@@ -166,7 +166,7 @@ const StateLandingPage: React.FC = () => {
           <div className="mt-16 text-center">
             <h3 className="text-xl font-semibold mb-4">Not in {stateName}?</h3>
             <p className="text-muted-foreground mb-6">
-              We currently support California, Texas, New York, and Florida. More states coming soon!
+              California and New York have full legal centers with fillable court forms. Other states have general information pages for now.
             </p>
             <div className="flex flex-wrap gap-3 justify-center">
               {['CA', 'TX', 'NY', 'FL'].filter(s => s !== stateUpper).map((state) => (
