@@ -95,7 +95,7 @@ export default function StateToolLandingPage() {
                 onClick={() => setShowFOIA(true)}
                 className="text-lg px-8"
               >
-                <FileText className="h-5 w-5 mr-2" /> Generate Request — $9.99
+                <FileText className="h-5 w-5 mr-2" /> Generate Request
               </Button>
             ) : (
               <Button
@@ -235,17 +235,12 @@ export default function StateToolLandingPage() {
                   </li>
                 </ul>
                 <Button size="lg" onClick={() => setShowFOIA(true)}>
-                  Generate Request — $9.99 <ArrowRight className="ml-2 h-4 w-4" />
+                  Generate Request <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
                 <div className="flex items-center justify-center gap-4 mt-4 text-xs text-muted-foreground">
                   <span className="flex items-center gap-1">
                     <Lock className="h-3 w-3" />
-                    Single request — $9.99
-                  </span>
-                  <span>|</span>
-                  <span className="flex items-center gap-1">
-                    <Lock className="h-3 w-3" />
-                    Bundle — $29.99
+                    Free to write · PDF export with the $25/month plan
                   </span>
                 </div>
               </Card>

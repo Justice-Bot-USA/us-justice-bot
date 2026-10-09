@@ -54,7 +54,7 @@ const PublicRecordsRequest = () => {
               Generate My Request Letter
             </Button>
             <p className="text-sm text-primary-foreground/60 mt-4">
-              Free to generate · No login required for preview · PDF export $9.99
+              Free to generate · No login required for preview · PDF export included in the $25/month plan
             </p>
           </div>
         </section>

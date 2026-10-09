@@ -1,11 +1,14 @@
 import Stripe from "https://esm.sh/stripe@18.5.0";
 
 // USA Live Price IDs (source of truth for server-side checkout creation)
-// Single Form: $9.99 one-time, Monthly: $19.99/month, Bundle: $49.99 one-time
-// FOIA Single: $9.99 one-time, FOIA Bundle: $29.99 one-time
+// The single public plan is the monthly subscription. Its price comes from the
+// STRIPE_PRICE_MONTHLY secret (the $25/month price) and falls back to the legacy
+// $19.99/month price until that secret is set.
+// Legacy one-time prices (kept so older links and pending checkouts still work):
+// Single Form $9.99, Bundle $49.99, FOIA Single $9.99, FOIA Bundle $29.99.
 export const PRICE_IDS = {
   per_form: "price_1SspQoPr9cYwQq3CUtFuCkxA",
-  monthly: "price_1T10c4Pr9cYwQq3CJqfwzpqo",
+  monthly: Deno.env.get("STRIPE_PRICE_MONTHLY") || "price_1T10c4Pr9cYwQq3CJqfwzpqo",
   bundle: "price_1T10cbPr9cYwQq3CeyUUzrEM",
   foia_single: "price_1T14rWPr9cYwQq3C9Fak2Tbl",
   foia_bundle: "price_1T14rrPr9cYwQq3ChvtEOyuz",

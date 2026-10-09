@@ -29,7 +29,8 @@ import { FunnelConfig, US_STATE_NAMES, LEGAL_AREA_NAMES } from '@/lib/funnels';
 import { useFormsPdfGenerator } from '@/hooks/useFormsPdfGenerator';
 import type { CourtForm } from '@/lib/forms';
 import { invokeAuthed } from '@/lib/supabaseInvoke';
-import jsPDF from 'jspdf';
+import { generateFoiaLetterPdf } from '@/lib/foiaPdf';
+import { PLAN } from '@/lib/pricing';
 import { format } from 'date-fns';
 
 interface VerificationResult {
@@ -50,173 +51,6 @@ interface GeneratedForm {
   category: string;
 }
 
-// --- FOIA PDF Generation ---
-
-function generateFoiaLetterPdf(letterText: string, isBundle: boolean): Blob {
-  const doc = new jsPDF();
-  const pageWidth = doc.internal.pageSize.width;
-  const pageHeight = doc.internal.pageSize.height;
-  const margin = 20;
-  const contentWidth = pageWidth - margin * 2;
-
-  // Header
-  doc.setFillColor(30, 64, 175);
-  doc.rect(0, 0, pageWidth, 45, 'F');
-  doc.setFontSize(18);
-  doc.setTextColor(255);
-  doc.setFont('helvetica', 'bold');
-  doc.text('PUBLIC RECORDS REQUEST', pageWidth / 2, 22, { align: 'center' });
-  doc.setFontSize(10);
-  doc.setFont('helvetica', 'normal');
-  doc.text(
-    isBundle ? 'Request + Follow-Up + Appeal Template' : 'Official Request Letter',
-    pageWidth / 2,
-    34,
-    { align: 'center' }
-  );
-
-  // Date
-  let yPos = 55;
-  doc.setFontSize(9);
-  doc.setTextColor(120);
-  doc.text(`Generated: ${format(new Date(), 'MMMM d, yyyy')}`, pageWidth - margin, yPos, { align: 'right' });
-  yPos += 10;
-
-  // Letter body
-  doc.setFontSize(10);
-  doc.setTextColor(30);
-  doc.setFont('helvetica', 'normal');
-
-  const lines = doc.splitTextToSize(letterText, contentWidth);
-  const lineHeight = 5;
-
-  for (let i = 0; i < lines.length; i++) {
-    if (yPos > pageHeight - 30) {
-      doc.addPage();
-      yPos = 25;
-    }
-    doc.text(lines[i], margin, yPos);
-    yPos += lineHeight;
-  }
-
-  // If bundle, add follow-up and appeal template pages
-  if (isBundle) {
-    // Follow-Up Template
-    doc.addPage();
-    yPos = 25;
-    doc.setFontSize(14);
-    doc.setTextColor(30, 64, 175);
-    doc.setFont('helvetica', 'bold');
-    doc.text('FOLLOW-UP LETTER TEMPLATE', margin, yPos);
-    yPos += 12;
-
-    doc.setFontSize(10);
-    doc.setTextColor(30);
-    doc.setFont('helvetica', 'normal');
-    const followUp = [
-      '[Your Name]',
-      '[Your Address]',
-      '',
-      '[Date]',
-      '',
-      '[Agency Name]',
-      '[Agency Address]',
-      '',
-      'RE: Follow-Up — Public Records Request Submitted [Original Date]',
-      '',
-      'Dear Records Custodian,',
-      '',
-      'I am writing to follow up on my public records request submitted on [original date].',
-      'As of today, I have not received the requested records nor a response indicating',
-      'the status of my request.',
-      '',
-      'Under applicable state law, agencies are required to respond within a reasonable',
-      'time frame. I respectfully request an update on the status of my request and an',
-      'estimated date for the production of the requested records.',
-      '',
-      'If any records are being withheld, please provide a written explanation citing',
-      'the specific statutory exemption(s) relied upon.',
-      '',
-      'Thank you for your prompt attention to this matter.',
-      '',
-      'Sincerely,',
-      '[Your Name]',
-    ];
-    const followUpText = followUp.join('\n');
-    const followUpLines = doc.splitTextToSize(followUpText, contentWidth);
-    for (const line of followUpLines) {
-      if (yPos > pageHeight - 25) { doc.addPage(); yPos = 25; }
-      doc.text(line, margin, yPos);
-      yPos += lineHeight;
-    }
-
-    // Appeal Template
-    doc.addPage();
-    yPos = 25;
-    doc.setFontSize(14);
-    doc.setTextColor(30, 64, 175);
-    doc.setFont('helvetica', 'bold');
-    doc.text('APPEAL LETTER TEMPLATE', margin, yPos);
-    yPos += 12;
-
-    doc.setFontSize(10);
-    doc.setTextColor(30);
-    doc.setFont('helvetica', 'normal');
-    const appeal = [
-      '[Your Name]',
-      '[Your Address]',
-      '',
-      '[Date]',
-      '',
-      '[Supervising Authority / Attorney General\'s Office]',
-      '[Address]',
-      '',
-      'RE: Appeal of Denied Public Records Request',
-      '',
-      'Dear [Authority],',
-      '',
-      'I am appealing the denial of my public records request originally submitted to',
-      '[Agency Name] on [original date]. The request was denied on [denial date] with',
-      'the following justification: [reason given].',
-      '',
-      'I believe this denial is improper for the following reasons:',
-      '',
-      '1. The records requested are public records under [State] law.',
-      '2. The cited exemption does not apply to the records I requested.',
-      '3. [Additional specific arguments based on your situation].',
-      '',
-      'I respectfully request that you review this denial and order the release of',
-      'the requested records. I am prepared to pursue all available legal remedies',
-      'if this appeal is not resolved satisfactorily.',
-      '',
-      'Sincerely,',
-      '[Your Name]',
-    ];
-    const appealText = appeal.join('\n');
-    const appealLines = doc.splitTextToSize(appealText, contentWidth);
-    for (const line of appealLines) {
-      if (yPos > pageHeight - 25) { doc.addPage(); yPos = 25; }
-      doc.text(line, margin, yPos);
-      yPos += lineHeight;
-    }
-  }
-
-  // Footer on all pages
-  const pageCount = doc.getNumberOfPages();
-  for (let i = 1; i <= pageCount; i++) {
-    doc.setPage(i);
-    doc.setFontSize(7);
-    doc.setTextColor(150);
-    doc.text(
-      `Generated by Justice Bot USA | Page ${i} of ${pageCount} | Not legal advice`,
-      pageWidth / 2,
-      pageHeight - 8,
-      { align: 'center' }
-    );
-  }
-
-  return doc.output('blob');
-}
 
 // --- Component ---
 
@@ -243,7 +77,9 @@ const PaymentSuccess: React.FC = () => {
   const sessionId = searchParams.get('session_id');
   const paymentType = searchParams.get('payment') || searchParams.get('subscription');
 
-  const isFoiaPurchase = verificationResult?.accessType === 'foia_single' || verificationResult?.accessType === 'foia_bundle';
+  const isFoiaPurchase = verificationResult?.accessType === 'foia_single' || verificationResult?.accessType === 'foia_bundle'
+    // Subscribed while exporting a records request letter: deliver the letter here too.
+    || (verificationResult?.type === 'subscription' && !!foiaLetter);
   const isFoiaBundle = verificationResult?.accessType === 'foia_bundle';
 
   useEffect(() => {
@@ -286,7 +122,7 @@ const PaymentSuccess: React.FC = () => {
           const accessType = data.accessType || 'single_form';
           
           if (isSubscription) {
-            const amount = data.planType === 'annual' ? 79.99 : 9.99;
+            const amount = PLAN.price;
             trackPurchase(
               data.planType === 'annual' ? 'Annual Subscription' : 'Monthly Subscription',
               funnelConfig?.jurisdiction || '',
@@ -316,6 +152,15 @@ const PaymentSuccess: React.FC = () => {
           // Clear stored session data
           sessionStorage.removeItem('pending_case_id');
           sessionStorage.removeItem('pending_funnel_config');
+
+          // Paid for a filled court form: send the user back to download it.
+          const fillReturn = sessionStorage.getItem('pending_fill_return');
+          if (fillReturn?.startsWith('/fill/')) {
+            sessionStorage.removeItem('pending_fill_return');
+            toast.success('Payment successful. Your form is ready to download.');
+            navigate(fillReturn, { replace: true });
+            return;
+          }
           // Keep pending_foia_letter until download
 
           toast.success(isSubscription ? 'Subscription Activated!' : 'Payment Successful!');
@@ -506,7 +351,7 @@ const PaymentSuccess: React.FC = () => {
                         {isFoiaBundle ? 'Request + Follow-Up + Appeal' : 'Single Request Letter (PDF)'}
                       </p>
                       <p className="text-sm text-muted-foreground">
-                        {isFoiaBundle ? '$29.99 bundle' : '$9.99 single export'}
+                        {verificationResult?.type === 'subscription' ? `Included in ${PLAN.name}` : isFoiaBundle ? 'Bundle' : 'Single export'}
                       </p>
                     </div>
                     <Badge variant="secondary" className="bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300">
@@ -873,7 +718,7 @@ const PaymentSuccess: React.FC = () => {
                         }
                       }}
                     >
-                      Upgrade to Monthly — $19.99/mo
+                      {PLAN.cta}
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                     <p className="text-xs text-muted-foreground mt-2">Cancel anytime. No commitment.</p>

@@ -17,9 +17,10 @@ import {
 import { FunnelConfig, FunnelState, US_STATE_NAMES, LEGAL_AREA_NAMES } from '@/lib/funnels';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
-import { trackAddToCart, trackBeginCheckout, getDetectedCountry } from '@/hooks/useAnalytics';
+import { trackAddToCart, getDetectedCountry } from '@/hooks/useAnalytics';
 import { toast } from 'sonner';
-import { invokeAuthed } from '@/lib/supabaseInvoke';
+import { usePaywallAccess } from '@/hooks/usePaywallAccess';
+import { PLAN, startSubscriptionCheckout } from '@/lib/pricing';
 
 interface FunnelPaywallStepProps {
   config: FunnelConfig;
@@ -32,11 +33,11 @@ interface FunnelPaywallStepProps {
 }
 
 const WHAT_YOU_GET = [
-  { icon: FileText, label: 'Complete legal pathway breakdown', description: 'Every step from filing to resolution' },
-  { icon: Download, label: 'Downloadable court forms', description: 'Pre-filled with your case details' },
-  { icon: Sparkles, label: 'AI-powered form autofill', description: 'Save hours of paperwork' },
-  { icon: Shield, label: 'Step-by-step filing instructions', description: 'Courthouse-specific guidance' },
-  { icon: Clock, label: 'Deadline tracking', description: 'Never miss a filing date' },
+  { icon: FileText, label: 'Your legal pathway, step by step', description: 'From filing to resolution' },
+  { icon: Download, label: 'Form guides for every form on your list', description: 'Purpose, fees, deadlines, and the official form link' },
+  { icon: Sparkles, label: 'Official court forms filled from your answers', description: 'California today; New York coming soon' },
+  { icon: Shield, label: 'Filing checklists', description: 'What to file, where, and how' },
+  { icon: Clock, label: 'Unlimited use', description: 'Every legal area and state, one monthly plan' },
 ];
 
 export const FunnelPaywallStep: React.FC<FunnelPaywallStepProps> = ({
@@ -46,6 +47,7 @@ export const FunnelPaywallStep: React.FC<FunnelPaywallStepProps> = ({
   setIsProcessing,
 }) => {
   const { user } = useAuth();
+  const { hasAccess } = usePaywallAccess();
   const navigate = useNavigate();
   const [isUnlocking, setIsUnlocking] = useState(false);
 
@@ -60,34 +62,21 @@ export const FunnelPaywallStep: React.FC<FunnelPaywallStepProps> = ({
       return;
     }
 
+    // Subscribers (and admins) already have access: no second charge.
+    if (hasAccess) {
+      onNext();
+      return;
+    }
+
     setIsUnlocking(true);
     setIsProcessing(true);
-
-    const country = getDetectedCountry();
-    
-    // Track GA4 events
-    trackAddToCart('Case Assessment', config.jurisdiction, country, 9.99);
-    trackBeginCheckout(4.99, country);
+    trackAddToCart(PLAN.name, config.jurisdiction, getDetectedCountry(), PLAN.price);
 
     try {
-      const { data, error } = await invokeAuthed('stripe-checkout', {
-        body: {
-          action: 'create_one_time_payment',
-          formType: 'case_assessment',
-          caseId: state.data.caseId,
-        },
-      });
-
-      if (error) throw error;
-
-      if (data.url) {
-        // Store context for redirect
-        sessionStorage.setItem('pending_case_id', state.data.caseId || '');
-        sessionStorage.setItem('pending_funnel_config', JSON.stringify(config));
-        window.location.href = data.url;
-      } else {
-        throw new Error('No checkout URL received');
-      }
+      // Store context for the post-payment page
+      sessionStorage.setItem('pending_case_id', state.data.caseId || '');
+      sessionStorage.setItem('pending_funnel_config', JSON.stringify(config));
+      await startSubscriptionCheckout();
     } catch (error) {
       console.error('Payment error:', error);
       toast.error('Failed to initiate payment. Please try again.');
@@ -182,8 +171,8 @@ export const FunnelPaywallStep: React.FC<FunnelPaywallStepProps> = ({
       <Card className="border-primary bg-gradient-to-r from-primary/5 to-primary/10">
         <CardContent className="p-6 text-center">
           <div className="mb-4">
-            <span className="text-4xl font-bold">$9.99</span>
-            <span className="text-muted-foreground ml-2">one-time</span>
+            <span className="text-4xl font-bold">${PLAN.price}</span>
+            <span className="text-muted-foreground ml-2">/month, unlimited</span>
           </div>
           <p className="text-sm text-muted-foreground mb-6">
             We'll help you prepare the correct official form and show you exactly how to file it.
@@ -204,7 +193,7 @@ export const FunnelPaywallStep: React.FC<FunnelPaywallStepProps> = ({
             ) : (
               <>
                 <Unlock className="mr-2 h-4 w-4" />
-                Prepare My Forms — $9.99
+                {hasAccess ? 'Continue — included in your plan' : PLAN.cta}
               </>
             )}
           </Button>
@@ -222,11 +211,7 @@ export const FunnelPaywallStep: React.FC<FunnelPaywallStepProps> = ({
         </CardContent>
       </Card>
 
-      {/* Money Back Guarantee */}
-      <div className="text-center text-sm text-muted-foreground">
-        <Shield className="h-4 w-4 inline mr-1" />
-        30-day money-back guarantee if you're not satisfied
-      </div>
+      <div className="text-center text-sm text-muted-foreground">Cancel anytime.</div>
     </div>
   );
 };

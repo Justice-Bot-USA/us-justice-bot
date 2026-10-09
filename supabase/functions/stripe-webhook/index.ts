@@ -102,7 +102,7 @@ serve(async (req: Request) => {
             
             const subscription = await stripe.subscriptions.retrieve(subscriptionId);
             const endDate = new Date(subscription.current_period_end * 1000);
-            const amount = accessType === "yearly" ? 499.99 : 59.99;
+            const amount = (subscription.items.data[0]?.price.unit_amount ?? 0) / 100;
 
             const { error } = await supabase.from("subscriptions").insert({
               user_id: userId,

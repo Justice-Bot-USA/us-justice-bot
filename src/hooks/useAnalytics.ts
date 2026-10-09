@@ -314,7 +314,7 @@ export const trackUSSubscribeClicked = (plan: string = 'monthly', source: string
 };
 
 // us_subscribe_success — subscription confirmed
-export const trackUSSubscribeSuccess = (plan: string = 'monthly', value: number = 19.99) => {
+export const trackUSSubscribeSuccess = (plan: string = 'monthly', value: number = 25) => {
   if (typeof window !== 'undefined' && window.gtag) {
     window.gtag('event', 'us_subscribe_success', {
       plan,

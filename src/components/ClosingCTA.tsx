@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { PLAN } from "@/lib/pricing";
 
 interface ClosingCTAProps {
   onPrepareForm?: () => void;
@@ -30,11 +31,11 @@ const ClosingCTA = ({ onPrepareForm }: ClosingCTAProps) => {
             onClick={() => onPrepareForm ? onPrepareForm() : navigate("/pricing")}
             className="text-lg px-10 py-6 h-auto font-bold"
           >
-            Prepare a Form — $9.99
+            Prepare a Form — {PLAN.priceLabel}
           </Button>
         </div>
         <p className="text-sm text-muted-foreground mt-4">
-          No subscription required to try. Cancel anytime.
+          Free guidance to start. Cancel anytime.
         </p>
       </div>
     </section>

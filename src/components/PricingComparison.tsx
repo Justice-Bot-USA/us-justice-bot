@@ -3,50 +3,21 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { trackUSPrepareClicked } from "@/hooks/useAnalytics";
+import { PLAN } from "@/lib/pricing";
 
 const plans = [
   {
-    name: "Prepared Filing Pack",
-    price: "$9.99",
-    period: "one-time",
-    description: "Best for first-timers",
-    buttonText: "Prepare a Form — $9.99",
-    features: [
-      { text: "One filing packet export (PDF)", included: true },
-      { text: "Checklist + where to file", included: true },
-      { text: "One re-download window (7 days)", included: true },
-      { text: "Unlimited exports", included: false },
-      { text: "Saved cases & history", included: false },
-    ],
-  },
-  {
-    name: "Justice Tools Access",
-    price: "$19.99",
+    name: PLAN.name,
+    price: `$${PLAN.price}`,
     period: "/month",
-    description: "Best for repeat filers",
+    description: "One plan. Unlimited use. Cancel anytime.",
     popular: true,
-    buttonText: "Start Monthly Access",
+    buttonText: PLAN.cta,
     features: [
-      { text: "Unlimited exports", included: true },
-      { text: "Save cases + history", included: true },
-      { text: "Re-downloads anytime", included: true },
-      { text: "Priority source updates", included: true },
-      { text: "All 50 states", included: true },
-    ],
-  },
-  {
-    name: "Case Preparation Bundle",
-    price: "$49.99",
-    period: "one-time",
-    description: "Best for complex cases",
-    savings: "High intent",
-    buttonText: "Build My Bundle",
-    features: [
-      { text: "Multiple forms + organized packet", included: true },
-      { text: "Evidence checklist", included: true },
-      { text: "Step-by-step timeline", included: true },
-      { text: "Family court & small claims", included: true },
-      { text: "Immigration & employment", included: true },
+      { text: "Official court forms filled from your answers (California now)", included: true },
+      { text: "Unlimited form guides and filing checklists", included: true },
+      { text: "Unlimited public records request letters", included: true },
+      { text: "Saved cases and re-downloads", included: true },
     ],
   },
 ];
@@ -62,17 +33,17 @@ export const PricingComparison = () => {
             Prepare Your Official Filing — No Lawyer Required
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Free tools stay free. You pay only for exports + saved workflows.
+            Free tools stay free. One monthly plan unlocks everything else.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        <div className="grid gap-6 max-w-md mx-auto">
           {plans.map((plan, index) => (
             <Card
               key={index}
               className={`relative ${
                 plan.popular
-                  ? "border-primary shadow-lg scale-105"
+                  ? "border-primary shadow-lg"
                   : "border-border"
               }`}
             >
@@ -80,13 +51,6 @@ export const PricingComparison = () => {
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2">
                   <span className="bg-primary text-primary-foreground text-xs font-semibold px-3 py-1 rounded-full">
                     Most Popular
-                  </span>
-                </div>
-              )}
-              {plan.savings && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <span className="bg-green-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
-                    {plan.savings}
                   </span>
                 </div>
               )}
