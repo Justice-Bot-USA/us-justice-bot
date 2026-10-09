@@ -261,7 +261,10 @@ const TermsOfService = () => {
 
             <h2 className="text-2xl font-bold mt-10 mb-4">8. Intellectual Property</h2>
             <p className="text-muted-foreground">
-              All content on our Platform, including text, graphics, logos, software, and AI-generated content, is the property of Justice Bot USA or its licensors. You may not reproduce, distribute, or create derivative works without our express written permission.
+              All content on our Platform, including text, graphics, logos, software, and AI-generated content, is the property of Justice Bot Technologies Inc. or its licensors. You may not reproduce, distribute, or create derivative works without our express written permission.
+            </p>
+            <p className="text-muted-foreground mt-4">
+              "Justice Bot", "Justice Bot USA", "Quorex", and "Quorex Solutions", and the related names and logos, are trademarks of Justice Bot Technologies Inc. You may not use them without our prior written permission.
             </p>
             <p className="text-muted-foreground mt-4">
               Legal forms and documents you create using our Service are yours to use. However, the underlying templates and systems remain our intellectual property.

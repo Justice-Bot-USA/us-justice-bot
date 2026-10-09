@@ -1,0 +1,41 @@
+Copyright (c) 2025-2026 Justice Bot Technologies Inc. All rights reserved.
+
+PROPRIETARY AND CONFIDENTIAL
+
+This repository and everything in it, including source code, object code,
+designs, text, graphics, data compilations, and documentation (the
+"Software"), is the proprietary property of Justice Bot Technologies Inc.
+(the "Company") and is protected by copyright and other intellectual
+property laws.
+
+No license is granted. Except with the Company's prior written permission,
+you may not copy, modify, merge, publish, distribute, sublicense, sell,
+host, reverse engineer, or create derivative works of the Software, in
+whole or in part. Access to this repository, by itself, grants no rights.
+Employees, directors, and contractors may use the Software only as their
+written agreements with the Company allow.
+
+TRADEMARKS
+
+"Justice Bot", "Justice Bot USA", "Quorex", and "Quorex Solutions", and the
+Justice Bot and Quorex names, logos, and trade dress, are trademarks of
+Justice Bot Technologies Inc. Nothing in this repository grants any right
+to use them. Quorex Solutions is a trade name of Justice Bot Technologies
+Inc.
+
+THIRD-PARTY MATERIAL
+
+Not everything in this repository belongs to the Company, and this notice
+does not claim it:
+
+- Open-source dependencies (see package.json and lock files) remain under
+  their own licenses.
+- Official court forms (for example the California Judicial Council PDFs in
+  public/forms/) are government works, published by the courts that own
+  them, and are included only so users can fill them in.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED. IN NO EVENT SHALL THE COMPANY BE LIABLE FOR ANY CLAIM, DAMAGES, OR
+OTHER LIABILITY ARISING FROM ANY UNAUTHORIZED USE OF THE SOFTWARE.
+
+Permission requests: Justice Bot Technologies Inc.

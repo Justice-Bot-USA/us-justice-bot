@@ -36,7 +36,7 @@ const justiceSystems = [
   { icon: ShieldAlert, title: "Civil Rights & Discrimination", desc: "EEOC complaints, housing discrimination, workplace civil rights filings", href: "/legal-help/discrimination-law" },
   { icon: Scale, title: "Small Claims Court", desc: "File or defend small-dollar claims — state limits, forms, evidence prep", href: "/legal-help/small-claims-court" },
   { icon: Gavel, title: "Criminal Court Process", desc: "Understand arraignment, plea, trial, sentencing — procedural information only", href: "/legal-help/criminal-court-process" },
-  { icon: Globe, title: "Immigration", desc: "DACA, ICE encounters, family safety planning, removal defense information", href: "/legal-help/immigration" },
+  { icon: Globe, title: "Immigration", desc: "DACA, ICE encounters, family safety planning, removal defense information", href: "/legal-areas/immigration" },
   { icon: Briefcase, title: "Workers' Comp & Workplace Injury", desc: "Workers' comp claims, denied benefits, workplace injury procedures", href: "/legal-help/workers-compensation" },
 ];
 
