@@ -316,6 +316,15 @@ const PaymentSuccess: React.FC = () => {
           // Clear stored session data
           sessionStorage.removeItem('pending_case_id');
           sessionStorage.removeItem('pending_funnel_config');
+
+          // Paid for a filled court form: send the user back to download it.
+          const fillReturn = sessionStorage.getItem('pending_fill_return');
+          if (fillReturn?.startsWith('/fill/')) {
+            sessionStorage.removeItem('pending_fill_return');
+            toast.success('Payment successful. Your form is ready to download.');
+            navigate(fillReturn, { replace: true });
+            return;
+          }
           // Keep pending_foia_letter until download
 
           toast.success(isSubscription ? 'Subscription Activated!' : 'Payment Successful!');

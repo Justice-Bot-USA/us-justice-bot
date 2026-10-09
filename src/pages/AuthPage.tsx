@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -11,6 +11,10 @@ import { Eye, EyeOff, Mail, Lock, User, LogIn, UserPlus } from 'lucide-react';
 
 const AuthPage = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  // Only same-site paths, so the redirect can't send users to another domain.
+  const requested = searchParams.get('redirect') ?? '';
+  const redirectTo = requested.startsWith('/') && !requested.startsWith('//') ? requested : '/';
   const { user, signIn, signUp, resetPassword, loading } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -41,9 +45,9 @@ const AuthPage = () => {
 
   useEffect(() => {
     if (user) {
-      navigate('/');
+      navigate(redirectTo);
     }
-  }, [user, navigate]);
+  }, [user, navigate, redirectTo]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -70,7 +74,7 @@ const AuthPage = () => {
         }
       } else {
         toast.success('Successfully signed in!');
-        navigate('/');
+        navigate(redirectTo);
       }
     } catch (error) {
       toast.error('An unexpected error occurred');

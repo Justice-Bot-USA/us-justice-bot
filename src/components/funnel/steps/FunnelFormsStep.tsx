@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { FileText, ExternalLink, Download, CheckCircle2 } from 'lucide-react';
 import { FunnelConfig, FunnelState, US_STATE_NAMES, LEGAL_AREA_NAMES } from '@/lib/funnels';
+import { getFillableByFormNumber } from '@/lib/formfill';
 
 interface FunnelFormsStepProps {
   config: FunnelConfig;
@@ -103,6 +104,18 @@ export const FunnelFormsStep: React.FC<FunnelFormsStepProps> = ({
                   </div>
                   <div className="text-right">
                     <Badge variant="outline">{formInfo.fee}</Badge>
+                    {getFillableByFormNumber(config.jurisdiction, formId) && (
+                      <Button
+                        size="sm"
+                        className="mt-2 ml-2"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          window.open(`/fill/${config.jurisdiction.toLowerCase()}/${getFillableByFormNumber(config.jurisdiction, formId)!.id}`, '_blank');
+                        }}
+                      >
+                        Fill this form
+                      </Button>
+                    )}
                     {formInfo.url && (
                       <Button
                         variant="ghost"

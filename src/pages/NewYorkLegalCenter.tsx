@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
+import { getFillableByFormNumber } from '@/lib/formfill';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -168,13 +169,20 @@ export default function NewYorkLegalCenter() {
                             <p className="text-xs text-muted-foreground">{f.description}</p>
                             <div className="flex items-center justify-between pt-1">
                               <span className="text-xs text-muted-foreground">{f.feeAmount || '—'}{f.feeWaiverAvailable ? ' · Waiver available' : ''}</span>
-                              {f.url && (
-                                <Button variant="ghost" size="sm" asChild>
-                                  <a href={f.url} target="_blank" rel="noopener noreferrer">
-                                    <ExternalLink className="h-3 w-3 mr-1" /> Official
-                                  </a>
-                                </Button>
-                              )}
+                              <div className="flex items-center gap-1">
+                                {getFillableByFormNumber('NY', f.formNumber) && (
+                                  <Button size="sm" asChild>
+                                    <Link to={`/fill/ny/${getFillableByFormNumber('NY', f.formNumber)!.id}`}>Fill this form</Link>
+                                  </Button>
+                                )}
+                                {f.url && (
+                                  <Button variant="ghost" size="sm" asChild>
+                                    <a href={f.url} target="_blank" rel="noopener noreferrer">
+                                      <ExternalLink className="h-3 w-3 mr-1" /> Official
+                                    </a>
+                                  </Button>
+                                )}
+                              </div>
                             </div>
                           </CardContent>
                         </Card>
