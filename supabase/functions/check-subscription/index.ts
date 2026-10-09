@@ -2,10 +2,12 @@ import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import Stripe from "https://esm.sh/stripe@18.5.0";
 import { corsHeaders, handleCors, requireUser } from "../_shared/auth.ts";
 import { successResponse, handleError } from "../_shared/errors.ts";
+import { subscriptionPeriodEnd } from "../_shared/stripe.ts";
 
 // Product IDs for tier identification
 const PRODUCT_TIERS: Record<string, string> = {
   "prod_Tod1LkWiqa7gey": "monthly",
+  "prod_TyyZmnGjOH4QrU": "monthly", // Justice Bot USA Access ($25/month)
   "prod_Tod3SaiL3B4ntU": "annual",
 };
 
@@ -77,7 +79,7 @@ serve(async (req: Request) => {
       const subscription = trialingSubscriptions.data[0];
       const productId = subscription.items.data[0]?.price.product as string;
       const tier = PRODUCT_TIERS[productId] || "unknown";
-      const subscriptionEnd = new Date(subscription.current_period_end * 1000).toISOString();
+      const subscriptionEnd = new Date(subscriptionPeriodEnd(subscription) * 1000).toISOString();
 
       logStep("Found trialing subscription", { 
         subscriptionId: subscription.id, 
@@ -98,7 +100,7 @@ serve(async (req: Request) => {
     const subscription = subscriptions.data[0];
     const productId = subscription.items.data[0]?.price.product as string;
     const tier = PRODUCT_TIERS[productId] || "unknown";
-    const subscriptionEnd = new Date(subscription.current_period_end * 1000).toISOString();
+    const subscriptionEnd = new Date(subscriptionPeriodEnd(subscription) * 1000).toISOString();
 
     logStep("Found active subscription", { 
       subscriptionId: subscription.id, 
