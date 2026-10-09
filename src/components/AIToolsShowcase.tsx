@@ -32,8 +32,8 @@ const tools = [
   },
   {
     icon: RefreshCw,
-    name: "Auto-Updated Daily",
-    description: "Sweeps for new laws and case updates automatically",
+    name: "Official Sources",
+    description: "Forms and steps linked to official court and agency pages",
   },
   {
     icon: ScanLine,

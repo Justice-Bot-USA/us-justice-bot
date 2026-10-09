@@ -58,7 +58,7 @@ export default function NewYorkLegalCenter() {
     <div className="flex flex-col min-h-screen bg-background">
       <Helmet>
         <title>New York Legal Center — Forms, Procedures & Filing | Justice Bot USA</title>
-        <meta name="description" content="Comprehensive New York legal resources across 8 areas: criminal, family, divorce, CPS, immigration, workplace, civil, and human rights — with official forms, filing procedures, and daily-updated court information." />
+        <meta name="description" content="Comprehensive New York legal resources across 8 areas: criminal, family, divorce, CPS, immigration, workplace, civil, and human rights — with official forms and filing procedures sourced from NY Courts and state agencies." />
         <link rel="canonical" href="https://justicebot-usa.com/ny/legal-center" />
       </Helmet>
       <Header language="en" onLanguageChange={() => {}} />
@@ -72,7 +72,7 @@ export default function NewYorkLegalCenter() {
             </div>
             <h1 className="text-3xl md:text-4xl font-bold mb-3">New York Legal Center</h1>
             <p className="text-blue-100/80 max-w-2xl">
-              Eight legal areas, official forms, filing procedures, and venue guidance — built specifically for New York. Updated daily from NY Courts, NYSDOL, NYSDHR, OCFS, and USCIS.
+              Eight legal areas, official forms, filing procedures, and venue guidance — built specifically for New York. Sourced from NY Courts, NYSDOL, NYSDHR, OCFS, and USCIS.
             </p>
             <p className="text-xs text-blue-200/60 mt-4 italic">
               Legal information, not legal advice. We do not predict outcomes or recommend whether to sue.
