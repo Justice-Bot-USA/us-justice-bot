@@ -8,7 +8,7 @@ import type { CourtForm } from '@/lib/formsLibraryData';
 const JCC = (form: string) => `https://selfhelp.courts.ca.gov/jcc-form/${form}`;
 
 export const CA_CRIMINAL_FORMS: CourtForm[] = [
-  { formNumber: 'CR-180', name: 'Petition for Dismissal (PC §1203.4)', description: 'Ask the court to dismiss a conviction after probation is completed.', url: JCC('CR-180'), category: 'Record Clearing', feeAmount: 'Up to $150 (county-set); waiver available', feeWaiverAvailable: true },
+  { formNumber: 'CR-180', name: 'Petition for Dismissal (PC §1203.4)', description: 'Ask the court to dismiss a conviction after probation is completed.', url: JCC('CR-180'), category: 'Record Clearing', feeAmount: 'Up to $150 (county-set)', feeWaiverAvailable: true },
   { formNumber: 'CR-181', name: 'Order for Dismissal', description: 'Proposed order filed with CR-180 for the judge to sign.', url: JCC('CR-181'), category: 'Record Clearing', feeAmount: 'Free' },
   { formNumber: 'Clean Your Record', name: 'California Courts — Clean Your Record Guide', description: 'Dismissal, reduction, sealing, and automatic relief options explained by the courts.', url: 'https://selfhelp.courts.ca.gov/clean-your-record', category: 'Guides', feeAmount: 'Free' },
 ];
@@ -55,7 +55,7 @@ export const CA_CIVIL_FORMS: CourtForm[] = [
   { formNumber: 'SC-120', name: 'Defendant\'s Claim', description: 'Sue the plaintiff back in the same small claims case.', url: JCC('SC-120'), category: 'Small Claims', feeAmount: '$30 / $50 / $75 by amount', feeWaiverAvailable: true },
   { formNumber: 'SC-130', name: 'Notice of Entry of Judgment', description: 'The court\'s decision; starts the appeal clock.', url: JCC('SC-130'), category: 'Small Claims' },
   { formNumber: 'SC-140', name: 'Notice of Appeal (Small Claims)', description: 'Only the defendant (or plaintiff on a defendant\'s claim) may appeal; 30 days.', url: JCC('SC-140'), category: 'Small Claims', feeAmount: '$75' },
-  { formNumber: 'UD-105', name: 'Answer — Unlawful Detainer', description: 'Tenant\'s answer to an eviction lawsuit. Due within 10 court days of service.', url: JCC('UD-105'), category: 'Housing — Tenant', feeAmount: 'First-paper fee; waiver available', feeWaiverAvailable: true },
+  { formNumber: 'UD-105', name: 'Answer — Unlawful Detainer', description: 'Tenant\'s answer to an eviction lawsuit. Due within 10 court days of service.', url: JCC('UD-105'), category: 'Housing — Tenant', feeAmount: 'First-paper fee', feeWaiverAvailable: true },
   { formNumber: 'CP10.5', name: 'Prejudgment Claim of Right to Possession', description: 'For occupants not named in the eviction who want to be heard.', url: JCC('CP10.5'), category: 'Housing — Tenant' },
   { formNumber: 'UD-100', name: 'Complaint — Unlawful Detainer', description: 'Landlord\'s eviction complaint (so tenants can read what they were served).', url: JCC('UD-100'), category: 'Housing — Landlord' },
   { formNumber: 'SUM-130', name: 'Summons — Eviction', description: 'Served with the complaint; states the 10-court-day response deadline.', url: JCC('SUM-130'), category: 'Housing' },
