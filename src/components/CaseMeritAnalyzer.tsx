@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { SignInPrompt } from '@/components/auth/SignInPrompt';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -189,11 +190,7 @@ export const CaseMeritAnalyzer: React.FC = () => {
 
   if (!user) {
     return (
-      <Card>
-        <CardContent className="p-6 text-center">
-          <p className="text-muted-foreground">Please sign in to analyze case merit</p>
-        </CardContent>
-      </Card>
+      <SignInPrompt message="Sign in to analyze case merit." />
     );
   }
 

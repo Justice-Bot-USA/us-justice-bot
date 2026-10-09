@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { signInPath } from '@/lib/signIn';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -98,7 +99,7 @@ const Pricing = () => {
         description: 'Please sign in to continue',
         variant: 'destructive',
       });
-      navigate('/auth');
+      navigate(signInPath());
       return;
     }
 

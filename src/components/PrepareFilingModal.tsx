@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { signInPath } from '@/lib/signIn';
 import {
   Dialog,
   DialogContent,
@@ -90,8 +91,7 @@ const PrepareFilingModal: React.FC<PrepareFilingModalProps> = ({
 
     if (!user) {
       toast.error('Please sign in to continue');
-      sessionStorage.setItem('post_auth_redirect', '/pricing');
-      navigate('/auth');
+      navigate(signInPath());
       return;
     }
 

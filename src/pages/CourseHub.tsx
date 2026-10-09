@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { signInPath } from '@/lib/signIn';
 import { Link } from "react-router-dom";
 import { jsPDF } from "jspdf";
 import { supabase } from "@/integrations/supabase/client";
@@ -580,7 +581,7 @@ export default function CourseHub() {
                 <Card>
                   <CardContent className="py-12 text-center">
                     <p className="text-muted-foreground mb-4">Sign in to view your enrolled courses.</p>
-                    <Button asChild><Link to="/auth">Sign In</Link></Button>
+                    <Button asChild><Link to={signInPath()}>Sign In</Link></Button>
                   </CardContent>
                 </Card>
               ) : myEnrolledCourses.length === 0 ? (
@@ -632,7 +633,7 @@ export default function CourseHub() {
                 <Card>
                   <CardContent className="py-12 text-center">
                     <p className="text-muted-foreground mb-4">Sign in to manage your certificates.</p>
-                    <Button asChild><Link to="/auth">Sign In</Link></Button>
+                    <Button asChild><Link to={signInPath()}>Sign In</Link></Button>
                   </CardContent>
                 </Card>
               ) : (

@@ -28,6 +28,7 @@ import {
   Users
 } from 'lucide-react';
 import { states, stateAbbreviations } from '@/lib/states';
+import { getFillableByFormNumber } from '@/lib/formfill';
 import { getStateFormsData, stateCourtWebsites, legalAreaCategories, CourtForm, federalCourtForms, federalCourtInfo } from '@/lib/formsLibraryData';
 
 const categoryIcons: Record<string, React.ReactNode> = {
@@ -52,30 +53,33 @@ export default function FormsLibrary() {
   const stateData = useMemo(() => getStateFormsData(selectedState), [selectedState]);
   const stateInfo = stateCourtWebsites[selectedState];
 
-  const filteredForms = useMemo(() => {
-    // For federal category, use federal forms instead of state forms
-    if (selectedCategory === 'federal') {
-      if (!searchQuery.trim()) return federalCourtForms;
-      const query = searchQuery.toLowerCase();
-      return federalCourtForms.filter(form => 
-        form.name.toLowerCase().includes(query) ||
-        form.formNumber.toLowerCase().includes(query) ||
-        form.description.toLowerCase().includes(query) ||
-        form.category.toLowerCase().includes(query)
-      );
+  // Forms for the selected tab (no search).
+  const categoryForms = useMemo(
+    () => (selectedCategory === 'federal' ? federalCourtForms : stateData.forms[selectedCategory] || []),
+    [stateData, selectedCategory],
+  );
+
+  // A search looks across every category for the state (plus federal), not just the open tab.
+  const searchResults = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+    if (!query) return null;
+    const areaName = (id: string) => legalAreaCategories.find((c) => c.id === id)?.name ?? id;
+    const sources: [string, CourtForm[]][] = [...Object.entries(stateData.forms), ['federal', federalCourtForms]];
+    const seen = new Set<string>();
+    const results: { form: CourtForm; area: string }[] = [];
+    for (const [id, forms] of sources) {
+      const area = areaName(id);
+      for (const form of forms) {
+        const haystack = [form.name, form.formNumber, form.description, form.category, area].join(' ').toLowerCase();
+        const key = `${form.formNumber}|${form.name}`;
+        if (haystack.includes(query) && !seen.has(key)) {
+          seen.add(key);
+          results.push({ form, area });
+        }
+      }
     }
-    
-    const categoryForms = stateData.forms[selectedCategory] || [];
-    if (!searchQuery.trim()) return categoryForms;
-    
-    const query = searchQuery.toLowerCase();
-    return categoryForms.filter(form => 
-      form.name.toLowerCase().includes(query) ||
-      form.formNumber.toLowerCase().includes(query) ||
-      form.description.toLowerCase().includes(query) ||
-      form.category.toLowerCase().includes(query)
-    );
-  }, [stateData, selectedCategory, searchQuery]);
+    return results;
+  }, [stateData, searchQuery]);
 
   const hasDetailedData = selectedCategory === 'federal' || ['CA', 'TX', 'NY', 'FL', 'IL'].includes(selectedState);
   const isFederalCategory = selectedCategory === 'federal';
@@ -234,6 +238,33 @@ export default function FormsLibrary() {
           </CardContent>
         </Card>
 
+        {searchResults ? (
+          <div className="mb-8">
+            <div className="flex items-center justify-between gap-4 mb-4 flex-wrap">
+              <h2 className="text-lg font-semibold">
+                {searchResults.length} form{searchResults.length !== 1 ? 's' : ''} matching "{searchQuery.trim()}" in {stateInfo?.name || selectedState}
+              </h2>
+              <Button variant="outline" size="sm" onClick={() => setSearchQuery('')}>Clear search</Button>
+            </div>
+            {searchResults.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {searchResults.map(({ form, area }, index) => (
+                  <FormCard key={`${form.formNumber}-${index}`} form={form} area={area} state={selectedState}
+                    hasDetailedData={area === 'Federal Court' || ['CA', 'TX', 'NY', 'FL', 'IL'].includes(selectedState)} />
+                ))}
+              </div>
+            ) : (
+              <Card className="p-8 text-center">
+                <FileText className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+                <h3 className="text-lg font-semibold mb-2">No Forms Found</h3>
+                <p className="text-muted-foreground">
+                  Nothing matches "{searchQuery.trim()}" in {stateInfo?.name || selectedState}. Try a simpler word, like "divorce", "rent", or "fee waiver".
+                </p>
+              </Card>
+            )}
+          </div>
+        ) : (
+        <>
         {/* Category Tabs */}
         <Tabs value={selectedCategory} onValueChange={setSelectedCategory} className="mb-8">
           <TabsList className="flex flex-wrap h-auto gap-2 bg-transparent p-0">
@@ -252,10 +283,10 @@ export default function FormsLibrary() {
           {legalAreaCategories.map((category) => (
             <TabsContent key={category.id} value={category.id} className="mt-6">
               {/* Forms Grid */}
-              {filteredForms.length > 0 ? (
+              {categoryForms.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {filteredForms.map((form, index) => (
-                    <FormCard key={`${form.formNumber}-${index}`} form={form} hasDetailedData={hasDetailedData} />
+                  {categoryForms.map((form, index) => (
+                    <FormCard key={`${form.formNumber}-${index}`} form={form} state={selectedState} hasDetailedData={hasDetailedData} />
                   ))}
                 </div>
               ) : (
@@ -263,16 +294,15 @@ export default function FormsLibrary() {
                   <FileText className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
                   <h3 className="text-lg font-semibold mb-2">No Forms Found</h3>
                   <p className="text-muted-foreground">
-                    {searchQuery 
-                      ? `No forms matching "${searchQuery}" in ${category.name}`
-                      : `No ${category.name} forms available for this state`
-                    }
+                    {`No ${category.name} forms available for this state`}
                   </p>
                 </Card>
               )}
             </TabsContent>
           ))}
         </Tabs>
+        </>
+        )}
 
         {/* Help Section */}
         <Card className="mt-8">
@@ -317,7 +347,8 @@ export default function FormsLibrary() {
 }
 
 // Form Card Component
-function FormCard({ form, hasDetailedData }: { form: CourtForm; hasDetailedData: boolean }) {
+function FormCard({ form, hasDetailedData, state, area }: { form: CourtForm; hasDetailedData: boolean; state: string; area?: string }) {
+  const fillable = getFillableByFormNumber(state, form.formNumber);
   return (
     <Card className="hover:border-primary/50 transition-colors">
       <CardHeader className="pb-3">
@@ -333,6 +364,7 @@ function FormCard({ form, hasDetailedData }: { form: CourtForm; hasDetailedData:
       </CardHeader>
       <CardContent className="pt-0">
         <div className="flex flex-wrap gap-2 mb-4">
+          {area && <Badge className="text-xs">{area}</Badge>}
           <Badge variant="secondary" className="text-xs">
             {form.category}
           </Badge>
@@ -349,6 +381,11 @@ function FormCard({ form, hasDetailedData }: { form: CourtForm; hasDetailedData:
           )}
         </div>
         
+        {fillable && (
+          <Button size="sm" className="w-full mb-2" asChild>
+            <Link to={`/fill/${state.toLowerCase()}/${fillable.id}`}>Fill this form</Link>
+          </Button>
+        )}
         {form.url && hasDetailedData ? (
           <Button variant="default" size="sm" className="w-full" asChild>
             <a href={form.url} target="_blank" rel="noopener noreferrer">

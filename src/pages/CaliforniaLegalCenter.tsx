@@ -33,14 +33,14 @@ export default function CaliforniaLegalCenter() {
   const forms = CA_FORMS_BY_CATEGORY[active];
   const procedure = CA_PROCEDURES[active];
 
+  // With a search term, look in every legal area, not just the open tab.
   const filtered = useMemo(() => {
-    if (!query.trim()) return forms;
-    const q = query.toLowerCase();
-    return forms.filter(f =>
-      f.formNumber.toLowerCase().includes(q) ||
-      f.name.toLowerCase().includes(q) ||
-      f.description.toLowerCase().includes(q) ||
-      f.category.toLowerCase().includes(q),
+    const q = query.trim().toLowerCase();
+    if (!q) return forms.map((f) => ({ f, area: '' }));
+    return CATEGORIES.flatMap((c) =>
+      CA_FORMS_BY_CATEGORY[c.key].map((f) => ({ f, area: c.label })),
+    ).filter(({ f, area }) =>
+      [f.formNumber, f.name, f.description, f.category, area].join(' ').toLowerCase().includes(q),
     );
   }, [forms, query]);
 
@@ -142,7 +142,7 @@ export default function CaliforniaLegalCenter() {
                   <div className="lg:col-span-2 space-y-4">
                     <div className="flex items-start justify-between gap-4 flex-wrap">
                       <div>
-                        <h2 className="text-xl font-bold flex items-center gap-2">{c.icon}{c.label} Forms</h2>
+                        <h2 className="text-xl font-bold flex items-center gap-2">{query.trim() ? <>{filtered.length} result{filtered.length !== 1 ? 's' : ''} in all areas</> : <>{c.icon}{c.label} Forms</>}</h2>
                         <p className="text-sm text-muted-foreground">{c.blurb}</p>
                       </div>
                       <div className="relative w-full sm:w-72">
@@ -152,8 +152,8 @@ export default function CaliforniaLegalCenter() {
                     </div>
 
                     <div className="grid sm:grid-cols-2 gap-3">
-                      {filtered.map((f) => (
-                        <Card key={`${f.formNumber}-${f.name}`} className="hover:border-primary/40 transition-colors">
+                      {filtered.map(({ f, area }) => (
+                        <Card key={`${area}-${f.formNumber}-${f.name}`} className="hover:border-primary/40 transition-colors">
                           <CardContent className="p-4 space-y-2">
                             <div className="flex items-start justify-between gap-2">
                               <div className="min-w-0">
@@ -163,7 +163,7 @@ export default function CaliforniaLegalCenter() {
                                 </div>
                                 <h3 className="font-medium text-sm leading-snug mt-1">{f.name}</h3>
                               </div>
-                              <Badge variant="outline" className="text-[10px] shrink-0">{f.category}</Badge>
+                              <Badge variant="outline" className="text-[10px] shrink-0">{area || f.category}</Badge>
                             </div>
                             <p className="text-xs text-muted-foreground">{f.description}</p>
                             <div className="flex items-center justify-between pt-1">
@@ -189,7 +189,7 @@ export default function CaliforniaLegalCenter() {
                     </div>
 
                     {filtered.length === 0 && (
-                      <p className="text-center text-sm text-muted-foreground py-8">No forms match "{query}".</p>
+                      <p className="text-center text-sm text-muted-foreground py-8">No forms match "{query}" in any area.</p>
                     )}
 
                     <Card className="bg-muted/30">

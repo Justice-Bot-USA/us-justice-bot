@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { signInPath } from '@/lib/signIn';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -132,7 +133,7 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
 
   const handleUnlock = async () => {
     if (!user) {
-      navigate('/auth');
+      navigate(signInPath());
       return;
     }
 
@@ -211,7 +212,7 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground mb-4">Please sign in to continue your case journey.</p>
-            <Button onClick={() => navigate('/auth')} className="w-full">Sign In</Button>
+            <Button onClick={() => navigate(signInPath())} className="w-full">Sign In</Button>
           </CardContent>
         </Card>
       </div>

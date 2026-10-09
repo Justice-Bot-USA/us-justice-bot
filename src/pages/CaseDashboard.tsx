@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { signInPath } from '@/lib/signIn';
 import { useCases, Case, CaseTimelineEvent } from '@/hooks/useCases';
 import { useAuth } from '@/hooks/useAuth';
 import Header from '@/components/Header';
@@ -48,7 +49,7 @@ export default function CaseDashboard() {
   // Redirect if not authenticated
   useEffect(() => {
     if (!authLoading && !user) {
-      navigate('/auth');
+      navigate(signInPath());
     }
   }, [user, authLoading, navigate]);
 

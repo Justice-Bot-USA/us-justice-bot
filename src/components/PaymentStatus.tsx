@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { SignInPrompt } from '@/components/auth/SignInPrompt';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -96,11 +97,7 @@ export const PaymentStatus: React.FC = () => {
 
   if (!user) {
     return (
-      <Card>
-        <CardContent className="text-center py-8">
-          <p>Please sign in to view your payment status.</p>
-        </CardContent>
-      </Card>
+      <SignInPrompt message="Sign in to view your payment status." />
     );
   }
 

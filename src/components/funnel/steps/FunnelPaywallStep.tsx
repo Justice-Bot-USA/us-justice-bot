@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { signInPath } from '@/lib/signIn';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -58,7 +59,7 @@ export const FunnelPaywallStep: React.FC<FunnelPaywallStepProps> = ({
   const handleUnlock = async () => {
     if (!user) {
       toast.error('Please sign in to continue');
-      navigate('/auth');
+      navigate(signInPath());
       return;
     }
 
