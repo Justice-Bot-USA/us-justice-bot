@@ -40,7 +40,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content="https://justicebot-usa.com/" />
     <meta name="twitter:title" content="Justice Bot USA" />
-    <meta name="twitter:description" content="AI-powered civic-guidance for all 50 US states. Information, not legal advice." />
+    <meta name="twitter:description" content="Legal information and official court forms. Live in California and New York; other states coming soon. Information, not legal advice." />
     <meta name="twitter:image" content="https://justicebot-usa.com/icon-512.png" />
 
     <!-- Additional SEO -->
@@ -73,15 +73,14 @@
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "LegalService",
+      "@type": "Organization",
       "name": "Justice Bot USA",
-      "description": "Justice Bot USA is an AI-powered civic-guidance platform that helps self-represented Americans understand legal processes, prepare documents, and request public records. Legal information, not legal advice.",
+      "legalName": "Justice Bot Technologies Inc.",
+      "description": "Legal information and official California and New York court forms, filled in from your own answers. Not a law firm and not legal advice.",
       "url": "https://justicebot-usa.com",
       "logo": "https://justicebot-usa.com/icon-512.png",
       "image": "https://justicebot-usa.com/icon-512.png",
-      "areaServed": { "@type": "Country", "name": "United States" },
-      "serviceType": ["Legal Information", "Legal Document Preparation", "Court Form Assistance", "Public Records Requests", "Case Merit Analysis"],
-      "priceRange": "$",
+      "areaServed": [{ "@type": "State", "name": "California" }, { "@type": "State", "name": "New York" }],
       "slogan": "Legal information, not legal advice."
     }
     </script>
@@ -93,7 +92,7 @@
       "@type": "WebSite",
       "name": "Justice Bot USA",
       "url": "https://justicebot-usa.com",
-      "description": "Justice Bot USA. AI-powered legal guidance for all 50 US states.",
+      "description": "Legal information and official court forms for California and New York. Other states coming soon.",
       "potentialAction": {
         "@type": "SearchAction",
         "target": {
@@ -116,7 +115,7 @@
           "name": "How much does Justice Bot USA cost?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Justice Bot USA offers affordable plans starting at $9.99/month or $79/year for unlimited access, plus $4.99 per individual form. This is a fraction of typical attorney fees which can cost $200-$500 per hour."
+            "text": "One plan: $25 a month, with every form and filling instruction included. Courts and government agencies may charge their own fees, such as filing fees; we tell you about them where we know them. Fee waiver forms are free."
           }
         },
         {
@@ -124,7 +123,7 @@
           "name": "What legal areas does Justice Bot USA cover?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Justice Bot USA covers Immigration, Family Law, Small Claims, Employment, Workers Compensation, Human Rights, Housing & Eviction, Civil Rights, Criminal Defense, and more for all 50 US states."
+            "text": "In California and New York: family, divorce, small claims, housing and eviction, record clearing, child protective cases, workplace, and civil rights, plus immigration resources in New York. Other states are coming soon."
           }
         },
         {
@@ -132,15 +131,7 @@
           "name": "Is Justice Bot USA available in all US states?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes, Justice Bot USA provides state-specific legal guidance, official court forms, and detailed procedures for all 50 US states."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How does the AI Merit Score Analysis work?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Our AI analyzes your case documents and description to provide a merit score (0-100), identifies strengths and weaknesses, suggests evidence to gather, recommends required forms, estimates settlement ranges, and provides a step-by-step legal pathway tailored to your state and county."
+            "text": "Not yet. Justice Bot USA is live in California and New York. The other 48 states are coming soon."
           }
         },
         {
@@ -148,7 +139,7 @@
           "name": "Can Justice Bot USA replace an attorney?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "No. Justice Bot USA provides legal information and document preparation, not legal advice. For complex matters, consult a licensed attorney. For common issues like small claims, simple divorces, and basic contracts, our AI can help you represent yourself effectively."
+            "text": "No. Justice Bot USA gives legal information and fills official court forms with your own answers. It does not give legal advice or choose forms or strategy for you. For legal advice, talk to a licensed attorney or a free legal aid program."
           }
         }
       ]
@@ -205,9 +196,8 @@
       "operatingSystem": "Web Browser",
       "offers": {
         "@type": "Offer",
-        "price": "9.99",
-        "priceCurrency": "USD",
-        "priceValidUntil": "2026-12-31"
+        "price": "25",
+        "priceCurrency": "USD"
       }
     }
     </script>

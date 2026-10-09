@@ -7,15 +7,17 @@ import { stateRouteFor } from '@/lib/stateRouting';
 interface Props {
   /** State code or name, as the page has it ("CA", "California", "NY"…). */
   state?: string | null;
-  /** Legal area or issue, free-form ("housing", "divorce", "eviction"…). */
+  /** Legal area the user picked, or free-form text ("housing", "divorce", "eviction"…). */
   area?: string | null;
+  /** Free text that can refine the area, such as a case title. It never overrides a picked area. */
+  detail?: string | null;
   className?: string;
 }
 
 /** Sends a user from their story to the matching California or New York legal center and form
  *  filler. Renders nothing for other states. */
-export default function StateNextSteps({ state, area, className }: Props) {
-  const route = stateRouteFor(state, area);
+export default function StateNextSteps({ state, area, detail, className }: Props) {
+  const route = stateRouteFor(state, area, detail);
   if (!route) return null;
   return (
     <Card className={`border-primary/30 bg-primary/5 ${className ?? ''}`} data-testid="state-next-steps">

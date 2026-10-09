@@ -33,10 +33,12 @@ export const NY_PROCEDURES: Record<NyCategoryKey, FilingProcedure> = {
     deadlines: [
       'Notice of Appeal: 30 days from sentencing (CPL §460.10).',
       'CPL §160.59 sealing: 10 years from sentence/release.',
+      'Clean Slate Act (CPL §160.57, in effect since Nov 16, 2024): eligible convictions are sealed automatically, misdemeanors 3 years and felonies 8 years after sentencing or release from incarceration, whichever is later. Courts have until Nov 16, 2027 to finish sealing.',
       'CPL §440.10 motion: no statutory deadline, but raise promptly.',
     ],
     steps: [
       { title: 'Pull your RAP sheet', detail: 'Request from NYS DCJS so you know which convictions exist and whether they qualify.', ref: 'https://www.criminaljustice.ny.gov/ojis/recordreview.htm' },
+      { title: 'Check for automatic Clean Slate sealing', detail: 'Under CPL §160.57 most convictions qualify for automatic sealing once the waiting period passes (3 years for a misdemeanor, 8 for a felony, counted from sentencing or release from incarceration, whichever is later), you are not on probation, parole, or post-release supervision, and no new charge is pending. A new conviction before sealing restarts the waiting period. Sex offenses and non-drug class A felonies are excluded. You do not need to file anything. Courts have until Nov 16, 2027 to finish sealing, so yours may not be sealed yet; check your RAP sheet with DCJS. Sealed records stay available to police, courts and some fingerprint-based background checks (for example, jobs with children or vulnerable people, and gun licenses).', ref: 'https://www.nycourts.gov/cleanslate' },
       { title: 'Confirm eligibility', detail: 'CPL §160.59 covers up to 2 convictions, max one felony, none violent or sex offenses.' },
       { title: 'Prepare the motion + supporting affidavits', detail: 'Include certificate of disposition for every prior conviction.' },
       { title: 'Serve the District Attorney', detail: 'DA has 45 days to respond and may consent or oppose.' },
@@ -44,7 +46,7 @@ export const NY_PROCEDURES: Record<NyCategoryKey, FilingProcedure> = {
       { title: 'Attend hearing (if any)', detail: 'Court weighs rehabilitation, time elapsed, and victim input.' },
       { title: 'Obtain sealing order', detail: 'Court forwards order to DCJS and arresting agency.' },
     ],
-    sources: ['https://www.nycourts.gov/help/criminal/criminal-records-sealing'],
+    sources: ['https://www.nycourts.gov/help/criminal/criminal-records-sealing', 'https://www.nycourts.gov/cleanslate'],
   },
   family: {
     category: 'family',
@@ -57,9 +59,9 @@ export const NY_PROCEDURES: Record<NyCategoryKey, FilingProcedure> = {
       'Custody modification: change in circumstances affecting child\'s best interests.',
     ],
     steps: [
-      { title: 'Choose the right petition', detail: 'Custody (GF-17), Visitation (GF-17), Support (4-3), Family Offense (8-2), or Support Modification (4-11).' },
+      { title: 'Choose the right petition', detail: 'Custody (GF-17), Visitation (GF-17), Custody/Visitation Modification (GF-40), Support (4-3), Family Offense (8-2), or Support Modification (4-11).' },
       { title: 'File at the Family Court intake clerk', detail: 'Walk-ins accepted; many counties offer Petition Room help.' },
-      { title: 'Service of process', detail: 'Court issues a summons; respondent must be served personally at least 8 days before hearing.' },
+      { title: 'Service of process', detail: 'Court issues a summons that must be delivered to the respondent before the court date: at least 8 days before for support petitions (FCA §427), at least 24 hours before for family offense petitions (FCA §826). Follow the service instructions on your summons.' },
       { title: 'Initial appearance', detail: 'Judge may issue temporary orders, refer to mediation, or appoint an Attorney for the Child.' },
       { title: 'Discovery / forensic eval (if ordered)', detail: 'Custody cases may include 18-B counsel, supervised visitation, or 730 evaluations.' },
       { title: 'Trial or settlement', detail: 'Many cases settle on consent. Trials are bench trials before the judge.' },
@@ -98,7 +100,7 @@ export const NY_PROCEDURES: Record<NyCategoryKey, FilingProcedure> = {
     deadlines: [
       '§1028 Application: must be heard within 3 court days of demand.',
       'Indicated SCR report appeal: 90 days from notice (OCFS).',
-      'Permanency hearings: every 6 months once placed.',
+      'Permanency hearings: the first must start no later than 6 months after the date 60 days after removal (about 8 months), then at least every 6 months (FCA §1089).',
     ],
     steps: [
       { title: 'Request 18-B counsel at first appearance', detail: 'Do not waive counsel. ACS / DSS will already have an attorney present.' },
@@ -106,7 +108,7 @@ export const NY_PROCEDURES: Record<NyCategoryKey, FilingProcedure> = {
       { title: 'Comply with court-ordered services', detail: 'Random drug screens, parenting classes, mental health eval as ordered.' },
       { title: 'File OCFS appeal in parallel', detail: 'Indicated SCR reports are appealed separately to OCFS — 90-day deadline.' },
       { title: 'Push for kinship placement', detail: 'Ask the court to place your child with a relative or family friend (FCA §1017).' },
-      { title: 'Attend every permanency hearing', detail: 'Every 6 months. Goal can shift from return-to-parent to TPR.' },
+      { title: 'Attend every permanency hearing', detail: 'The first must be held no later than about 8 months after removal, then at least every 6 months. Goal can shift from return-to-parent to TPR.' },
       { title: 'Trial (Fact-Finding) or consent disposition', detail: 'ACS must prove abuse or neglect by a preponderance of the evidence (FCA §1046). Clear and convincing evidence is required only for severe or repeated abuse findings and termination of parental rights.' },
     ],
     sources: ['https://www.nycourts.gov/new-york-city-family-court/child-protective-proceedings', 'https://ocfs.ny.gov/programs/cps/'],
@@ -120,7 +122,7 @@ export const NY_PROCEDURES: Record<NyCategoryKey, FilingProcedure> = {
       'Asylum (I-589): within 1 year of arrival.',
       'Motion to Reopen (EOIR): typically 90 days from final order.',
       'EAD renewal: file 180 days before expiration.',
-      'U-visa LEA certification: no statute of limitations on filing.',
+      'U-visa: no deadline to file the I-918, but the law enforcement certification (Supplement B) must be signed within the 6 months before you file (8 CFR 214.14(c)(2)(i)).',
     ],
     steps: [
       { title: 'Confirm immigration status and any prior orders', detail: 'Pull your EOIR record (1-800-898-7180) and FOIA your A-file if in proceedings.' },
@@ -136,7 +138,7 @@ export const NY_PROCEDURES: Record<NyCategoryKey, FilingProcedure> = {
   workplace: {
     category: 'workplace',
     title: 'Workplace — Wage Theft, UI, Workers Comp, PFL, Safety',
-    venue: 'NYS DOL / WCB / PFL Board / NYC DCWP — most are administrative, not court.',
+    venue: 'NYS DOL / WCB / your employer\'s Paid Family Leave insurance carrier / NYC DCWP — most are administrative, not court.',
     fees: 'Free across all NY labor agencies.',
     deadlines: [
       'Wage claim (NYSDOL): 6 years from non-payment.',
@@ -145,11 +147,11 @@ export const NY_PROCEDURES: Record<NyCategoryKey, FilingProcedure> = {
       'UI: file as soon as separation occurs; backdating limited.',
     ],
     steps: [
-      { title: 'Document the violation', detail: 'Pay stubs, schedules, texts, hours worked, WTPA notice (LS-605) at hire.' },
-      { title: 'Pick the correct agency', detail: 'NYSDOL (wages), WCB (injury), PFL Board (leave), NYC DCWP (sick/safe time, fair workweek).' },
-      { title: 'File the claim form', detail: 'LS-223 for wages, C-3 for comp, PFL-1 for paid family leave, UI online for unemployment.' },
+      { title: 'Document the violation', detail: 'Pay stubs, schedules, texts, hours worked, WTPA pay rate notice at hire (DOL templates such as LS 54 to LS 59).' },
+      { title: 'Pick the correct agency', detail: 'NYSDOL (wages), WCB (injury), your employer\'s PFL insurance carrier (PFL benefits; WCB for PFL job protection/retaliation), NYC DCWP (sick/safe time, fair workweek).' },
+      { title: 'File the claim form', detail: 'LS 223 for wages, C-3 for comp, PFL-1 (to the PFL carrier) for paid family leave, UI online for unemployment.' },
       { title: 'Cooperate with investigation', detail: 'Respond to information requests within deadlines; keep copies of everything.' },
-      { title: 'Hearing (if contested)', detail: 'NYSDOL informal conference; WCB / PFL has formal ALJ hearings.' },
+      { title: 'Hearing (if contested)', detail: 'NYSDOL informal conference; WCB holds hearings before a Workers\' Compensation Law Judge, including for Paid Family Leave discrimination/retaliation complaints (first ask your employer to reinstate you on PFL-DC-119; if they do not, file PFL-DC-120 with the WCB). A denied PFL benefit claim goes to arbitration through National Arbitration and Mediation (NAM), not a hearing.' },
       { title: 'Determination and appeal', detail: 'UI appeals to ALJ then Appeal Board; WCB to Board Panel then Appellate Division 3rd Dept.' },
       { title: 'Consider private suit in parallel', detail: 'NYLL §198 allows liquidated damages + attorney fees in court; statute of limitations is 6 years.' },
     ],
@@ -162,14 +164,14 @@ export const NY_PROCEDURES: Record<NyCategoryKey, FilingProcedure> = {
     fees: 'Small claims $15–$20; Housing Court $45; Supreme Court Index Number $210; Article 78 $210 + $95 RJI.',
     eFilingUrl: NYSCEF,
     deadlines: [
-      'Small claims default: 30 days to vacate.',
+      'Small claims default judgment: ask the court to vacate it within 1 year after you were served with a copy of the judgment, for an excusable default (CPLR 5015(a)(1)); no time limit if the summons was never properly served.',
       'Housing, nonpayment case: answer within 10 days of being served, in person at the clerk or in writing (RPAPL 732).',
       'Housing, holdover case: answer on the first court date, or 3 days before it if the notice of petition demands that (RPAPL 743).',
       'Article 78: 4 months from final agency action.',
       'Breach of contract: 6 years; consumer fraud: 3 years.',
     ],
     steps: [
-      { title: 'Pick the right court', detail: 'Under $10k NYC / $5k outside NYC = Small Claims. Up to $50k = Civil/County Court. Above $50k = Supreme Court.' },
+      { title: 'Pick the right court', detail: 'Under $10k NYC / $5k outside NYC = Small Claims. NYC Civil Court hears claims up to $50,000 (CCA §202). Outside NYC, City Courts hear up to $15,000 (UCCA §202) and County Courts up to $25,000 (Judiciary Law §190). Larger claims go to Supreme Court.' },
       { title: 'Draft the claim or petition', detail: 'Plain English statement of facts and dollar amount sought, or for housing the RPAPL ground for relief.' },
       { title: 'Pay the filing fee or apply for poor person relief', detail: 'Fee waivers granted on financial affidavit (CPLR 1101).' },
       { title: 'Serve the defendant', detail: 'Small claims served by the clerk via mail; Supreme Court requires personal service via CPLR 308.' },
@@ -186,7 +188,7 @@ export const NY_PROCEDURES: Record<NyCategoryKey, FilingProcedure> = {
     venue: 'NYS Division of Human Rights, NYC Commission on Human Rights, or EEOC.',
     fees: 'Free at all three agencies.',
     deadlines: [
-      'NYSDHR complaint: 3 years for all complaints filed on or after February 15, 2024 (Exec. Law §297(5)).',
+      'NYSDHR complaint: 3 years for discrimination that occurred on or after February 15, 2024 (Exec. Law §297(5)). For earlier acts it depends on the type: 3 years for workplace sexual harassment; for all other claims the 1-year deadline has already expired.',
       'NYC CHR complaint: 1 year; 3 years for gender-based harassment.',
       'EEOC charge: 300 days in NY (deferral state).',
       'Election of remedies: filing with NYSDHR generally bars later court suit on same facts.',

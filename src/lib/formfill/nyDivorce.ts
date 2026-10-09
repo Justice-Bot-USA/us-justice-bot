@@ -171,7 +171,7 @@ const ud2: FillableForm = {
     'Paragraph 8 (page 2): if a religious officiant performed the marriage, cross out "not" and tick the box that applies (barriers to remarriage).',
     'Grounds (pages 2–4): if you chose a ground other than §170(7), tick it and write the facts it asks for.',
     'Paragraph FIRST: leave "herein" if you are representing yourself.',
-    'Date and sign page 5, and complete the verification in front of a notary or as an affirmation.',
+    'Page 5: fill in the "Dated" line, then complete the date in the affirmation and sign it. It is an affirmation under penalty of perjury, so no notary is needed.',
     'UD-2 is served with a Summons with Verified Complaint (UD-1a). The court\'s free DIY program can prepare the whole packet.',
   ],
   fill: (a) => {

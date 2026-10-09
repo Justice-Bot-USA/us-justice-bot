@@ -307,7 +307,7 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
                     </div>
                   </div>
 
-                  <StateNextSteps state={caseData.state} area={`${caseData.legal_area} ${caseData.case_title ?? ''}`} />
+                  <StateNextSteps state={caseData.state} area={caseData.legal_area} detail={caseData.case_title} />
 
                   {/* Related Cases Display */}
                   {caseId && <RelatedCasesDisplay caseId={caseId} />}
