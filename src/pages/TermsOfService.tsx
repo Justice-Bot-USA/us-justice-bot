@@ -101,7 +101,7 @@ const TermsOfService = () => {
             <AlertTitle className="text-lg font-bold">IMPORTANT LEGAL DISCLAIMER</AlertTitle>
             <AlertDescription className="mt-2 space-y-2">
               <p>
-                <strong>US JUSTICE BOT IS NOT A LAW FIRM.</strong> We provide legal information and document preparation services, NOT legal advice.
+                <strong>JUSTICE BOT USA IS NOT A LAW FIRM.</strong> We provide legal information and document preparation services, NOT legal advice.
               </p>
               <p>
                 Our AI-powered services cannot and do not create an attorney-client relationship. Information provided through our platform should not be relied upon as a substitute for consultation with a licensed attorney in your jurisdiction.
@@ -184,7 +184,7 @@ const TermsOfService = () => {
           <div className="prose prose-lg dark:prose-invert max-w-none">
             <h2 className="text-2xl font-bold mb-4">1. Acceptance of Terms</h2>
             <p className="text-muted-foreground">
-              By accessing or using Justice Bot USA ("Service," "Platform," "we," "us," or "our"), you agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, you may not use our Service. These Terms constitute a legally binding agreement between you and Justice Bot USA.
+              Justice Bot USA (the "Service" or "Platform") is operated by Justice Bot Technologies Inc. ("Justice Bot," "we," "us," or "our"). By accessing or using the Service, you agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, you may not use the Service. These Terms constitute a legally binding agreement between you and Justice Bot Technologies Inc.
             </p>
 
             <h2 className="text-2xl font-bold mt-10 mb-4">2. Description of Service</h2>
@@ -279,7 +279,7 @@ const TermsOfService = () => {
 
             <h2 className="text-2xl font-bold mt-10 mb-4">10. Limitation of Liability</h2>
             <p className="text-muted-foreground">
-              TO THE MAXIMUM EXTENT PERMITTED BY LAW, US JUSTICE BOT SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, INCLUDING LOSS OF PROFITS, DATA, OR LEGAL OUTCOMES, ARISING FROM YOUR USE OF THE SERVICE.
+              TO THE MAXIMUM EXTENT PERMITTED BY LAW, JUSTICE BOT TECHNOLOGIES INC. SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, INCLUDING LOSS OF PROFITS, DATA, OR LEGAL OUTCOMES, ARISING FROM YOUR USE OF THE SERVICE.
             </p>
             <p className="text-muted-foreground mt-4">
               Our total liability for any claims arising from or related to the Service shall not exceed the amount you paid us in the 12 months preceding the claim.
@@ -287,7 +287,7 @@ const TermsOfService = () => {
 
             <h2 className="text-2xl font-bold mt-10 mb-4">11. Indemnification</h2>
             <p className="text-muted-foreground">
-              You agree to indemnify, defend, and hold harmless Justice Bot USA and its officers, directors, employees, and agents from any claims, damages, losses, or expenses arising from your use of the Service or violation of these Terms.
+              You agree to indemnify, defend, and hold harmless Justice Bot Technologies Inc. and its officers, directors, employees, and agents from any claims, damages, losses, or expenses arising from your use of the Service or violation of these Terms.
             </p>
 
             <h2 className="text-2xl font-bold mt-10 mb-4">12. Modifications to Terms</h2>
@@ -367,7 +367,7 @@ const TermsOfService = () => {
               For questions about these Terms of Service, please contact us:
             </p>
             <div className="bg-background rounded-lg p-6 border">
-              <p className="font-medium">Justice Bot USA Legal Team</p>
+              <p className="font-medium">Justice Bot Technologies Inc. (Justice Bot USA) — Legal</p>
               <p className="text-muted-foreground">Email: legal@justicebot-usa.com</p>
               <p className="text-muted-foreground">Website: justicebot-usa.com</p>
             </div>
