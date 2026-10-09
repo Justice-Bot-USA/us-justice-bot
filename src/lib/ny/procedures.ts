@@ -1,6 +1,7 @@
 // New York — Filing procedures for each legal area.
-// Generic, attorney-reviewed steps. Always paired with the
-// "legal information, not advice" disclaimer at the UI layer.
+// General legal information. Always paired with the "legal information, not advice"
+// disclaimer at the UI layer.
+// NOT yet reviewed by a New York-licensed attorney — required before marketing launch.
 import type { NyCategoryKey } from './forms';
 
 export interface ProcedureStep {
@@ -161,7 +162,8 @@ export const NY_PROCEDURES: Record<NyCategoryKey, FilingProcedure> = {
     eFilingUrl: NYSCEF,
     deadlines: [
       'Small claims default: 30 days to vacate.',
-      'Housing — answer eviction within 10 days of service.',
+      'Housing, nonpayment case: answer within 10 days of being served, in person at the clerk or in writing (RPAPL 732).',
+      'Housing, holdover case: answer on the first court date, or 3 days before it if the notice of petition demands that (RPAPL 743).',
       'Article 78: 4 months from final agency action.',
       'Breach of contract: 6 years; consumer fraud: 3 years.',
     ],
@@ -171,10 +173,11 @@ export const NY_PROCEDURES: Record<NyCategoryKey, FilingProcedure> = {
       { title: 'Pay the filing fee or apply for poor person relief', detail: 'Fee waivers granted on financial affidavit (CPLR 1101).' },
       { title: 'Serve the defendant', detail: 'Small claims served by the clerk via mail; Supreme Court requires personal service via CPLR 308.' },
       { title: 'Answer / appear', detail: 'Defendant has 20–30 days to answer in higher courts; small claims uses pre-scheduled hearings.' },
+      { title: 'Facing eviction in NYC? Get free help first', detail: 'Housing Court Answers runs a free hotline, (212) 962-4795, Monday–Friday 9am–5pm, with information tables in Manhattan, Brooklyn, the Bronx and Queens. It explains Housing Court procedure and refers tenants to free lawyers.', ref: 'https://housingcourtanswers.org/contact-us/' },
       { title: 'Trial / arbitration', detail: 'Small claims defaults to arbitration if both consent; otherwise bench trial.' },
       { title: 'Judgment + enforcement', detail: 'Use Information Subpoena, Wage Garnishment (CPLR 5231), or Property Execution to collect.' },
     ],
-    sources: ['https://www.nycourts.gov/courthelp/'],
+    sources: ['https://www.nycourts.gov/courthelp/', 'https://nycourts.gov/new-york-city-housing-court/answering-case-nyc-housing-court', 'https://housingcourtanswers.org/'],
   },
   'human-rights': {
     category: 'human-rights',

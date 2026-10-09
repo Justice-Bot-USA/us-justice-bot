@@ -31,8 +31,7 @@ const CATEGORY_OPTIONS = [
 // CA and NY have verified catalogs and form filling in their own legal centers.
 const STATE_CENTERS: Record<string, { name: string; center: string; fill?: string }> = {
   'US-CA': { name: 'California', center: '/ca/legal-center', fill: '/fill/ca' },
-  // NY form filling isn't built yet (official PDFs still needed), so no fill link.
-  'US-NY': { name: 'New York', center: '/ny/legal-center' },
+  'US-NY': { name: 'New York', center: '/ny/legal-center', fill: '/fill/ny' },
 };
 
 const LAUNCH_STATES = ['US-FED', 'US-CA', 'US-NY', 'US-TX', 'US-FL', 'US-IL', 'US-WA', 'US-MA', 'US-PA', 'US-GA', 'US-NJ'];
