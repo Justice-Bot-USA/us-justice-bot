@@ -43,7 +43,3 @@ export interface FillableForm {
   stillToDo: string[];
   fill(a: Answers): FillPlan;
 }
-
-/** Stripe form_type used to unlock the download of one filled form. */
-export const fillFormType = (f: Pick<FillableForm, 'state' | 'formNumber'>) =>
-  `fill:${f.state}:${f.formNumber}`;

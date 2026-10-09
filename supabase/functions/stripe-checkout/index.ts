@@ -169,7 +169,7 @@ async function handleVerifySession(
       user_id: data.userId,
       plan_type: "monthly",
       status: "active",
-      amount: 19.99,
+      amount: (subscription.items.data[0]?.price.unit_amount ?? 0) / 100,
       start_date: new Date().toISOString(),
       end_date: endDate.toISOString(),
       paypal_subscription_id: subscriptionId,

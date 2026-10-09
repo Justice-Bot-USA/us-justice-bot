@@ -3,11 +3,12 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Check, Shield, CreditCard, FileText, Layers, Zap } from 'lucide-react';
+import { Check, Shield, CreditCard, Zap } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { usePaywallAccess } from '@/hooks/usePaywallAccess';
 import { useToast } from '@/hooks/use-toast';
 import Header from '@/components/Header';
+import { PLAN } from '@/lib/pricing';
 import { invokeAuthed } from '@/lib/supabaseInvoke';
 import { 
   trackPurchase, 
@@ -44,7 +45,7 @@ const Pricing = () => {
         if (data.success) {
           const country = getDetectedCountry();
           if (data.type === 'subscription') {
-            trackPurchase('Justice Tools Access', '', country, 19.99, 'justice_tools_19.99');
+            trackPurchase(PLAN.name, '', country, PLAN.price, 'justice_bot_usa_access_25');
             toast({
               title: 'Subscription Activated!',
               description: 'Thank you for subscribing. You now have full access.',
@@ -105,8 +106,8 @@ const Pricing = () => {
     setLoading(key);
     
     const country = getDetectedCountry();
-    const valueMap: Record<string, number> = { monthly: 19.99, bundle: 49.99, form: 9.99 };
-    const nameMap: Record<string, string> = { monthly: 'Justice Tools Access', bundle: 'Case Preparation Bundle', form: 'Prepared Legal Form' };
+    const valueMap: Record<string, number> = { monthly: PLAN.price, bundle: 49.99, form: 9.99 };
+    const nameMap: Record<string, string> = { monthly: PLAN.name, bundle: 'Case Preparation Bundle', form: 'Prepared Legal Form' };
     const value = valueMap[key] || 9.99;
     const itemName = nameMap[key] || 'Prepared Legal Form';
     
@@ -156,148 +157,41 @@ const Pricing = () => {
           )}
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {/* Tier 1: Single Form */}
-          <Card className="relative">
-            <CardHeader>
-              <div className="flex items-center gap-2 mb-2">
-                <FileText className="w-5 h-5 text-primary" />
-                <CardTitle>Prepared Filing Pack</CardTitle>
-              </div>
-              <CardDescription>One form or document pack — no subscription required</CardDescription>
-              <div className="mt-4">
-                <span className="text-4xl font-bold">$9.99</span>
-                <span className="text-muted-foreground"> one-time</span>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <ul className="space-y-3 mb-6">
-                <li className="flex items-start">
-                  <Check className="w-5 h-5 text-primary mr-2 mt-0.5 flex-shrink-0" />
-                  <span>Correct official form(s) for your state</span>
-                </li>
-                <li className="flex items-start">
-                  <Check className="w-5 h-5 text-primary mr-2 mt-0.5 flex-shrink-0" />
-                  <span>Plain-language guidance</span>
-                </li>
-                <li className="flex items-start">
-                  <Check className="w-5 h-5 text-primary mr-2 mt-0.5 flex-shrink-0" />
-                  <span>Autofill assistance</span>
-                </li>
-                <li className="flex items-start">
-                  <Check className="w-5 h-5 text-primary mr-2 mt-0.5 flex-shrink-0" />
-                  <span>Filing checklist &amp; instructions</span>
-                </li>
-              </ul>
-              <Button 
-                className="w-full" 
-                variant="outline"
-                onClick={() => handleCheckout('create_one_time_payment', 'form')}
-                disabled={loading === 'form' || isAdmin}
-              >
-                <CreditCard className="w-4 h-4 mr-2" />
-                {isAdmin ? 'Free Access' : loading === 'form' ? 'Processing...' : 'Prepare My Forms — $9.99'}
-              </Button>
-            </CardContent>
-          </Card>
-
-          {/* Tier 2: Monthly Subscription */}
-          <Card className="relative border-primary shadow-lg scale-105">
-            <Badge className="absolute -top-3 left-1/2 -translate-x-1/2">
-              Most Popular
-            </Badge>
+        <div className="max-w-md mx-auto">
+          <Card className="relative border-primary shadow-lg">
             <CardHeader>
               <div className="flex items-center gap-2 mb-2">
                 <Zap className="w-5 h-5 text-primary" />
-                <CardTitle>Justice Tools Access</CardTitle>
+                <CardTitle>{PLAN.name}</CardTitle>
               </div>
-              <CardDescription>Unlimited access — cancel anytime</CardDescription>
+              <CardDescription>One plan. Unlimited use. Cancel anytime.</CardDescription>
               <div className="mt-4">
-                <span className="text-4xl font-bold">$19.99</span>
+                <span className="text-4xl font-bold">${PLAN.price}</span>
                 <span className="text-muted-foreground">/month</span>
               </div>
             </CardHeader>
             <CardContent>
               <ul className="space-y-3 mb-6">
-                <li className="flex items-start">
-                  <Check className="w-5 h-5 text-primary mr-2 mt-0.5 flex-shrink-0" />
-                  <span>Unlimited form preparation</span>
-                </li>
-                <li className="flex items-start">
-                  <Check className="w-5 h-5 text-primary mr-2 mt-0.5 flex-shrink-0" />
-                  <span>Unlimited record lookups</span>
-                </li>
-                <li className="flex items-start">
-                  <Check className="w-5 h-5 text-primary mr-2 mt-0.5 flex-shrink-0" />
-                  <span>Saved cases &amp; document uploads</span>
-                </li>
-                <li className="flex items-start">
-                  <Check className="w-5 h-5 text-primary mr-2 mt-0.5 flex-shrink-0" />
-                  <span>Progress tracking &amp; re-downloads</span>
-                </li>
-                <li className="flex items-start">
-                  <Check className="w-5 h-5 text-primary mr-2 mt-0.5 flex-shrink-0" />
-                  <span>All 50 states coverage</span>
-                </li>
+                {[
+                  'Unlimited filled official court forms (California now; New York coming soon)',
+                  'Unlimited form guides and filing checklists',
+                  'Unlimited public records (FOIA) request letters',
+                  'Saved cases, document uploads, and re-downloads',
+                  'State-verified guidance for California and New York',
+                ].map((item) => (
+                  <li key={item} className="flex items-start">
+                    <Check className="w-5 h-5 text-primary mr-2 mt-0.5 flex-shrink-0" />
+                    <span>{item}</span>
+                  </li>
+                ))}
               </ul>
-              <Button 
+              <Button
                 className="w-full"
                 onClick={() => handleCheckout('create_subscription', 'monthly')}
                 disabled={loading === 'monthly' || isAdmin || hasActiveSubscription}
               >
                 <CreditCard className="w-4 h-4 mr-2" />
-                {isAdmin ? 'Free Access' : hasActiveSubscription ? 'Current Plan' : loading === 'monthly' ? 'Processing...' : 'Subscribe — $19.99/mo'}
-              </Button>
-            </CardContent>
-          </Card>
-
-          {/* Tier 3: Case Builder Bundle */}
-          <Card className="relative">
-            <Badge className="absolute -top-3 left-1/2 -translate-x-1/2" variant="secondary">
-              High Intent
-            </Badge>
-            <CardHeader>
-              <div className="flex items-center gap-2 mb-2">
-                <Layers className="w-5 h-5 text-primary" />
-                <CardTitle>Case Preparation Bundle</CardTitle>
-              </div>
-              <CardDescription>Multiple forms + evidence organization</CardDescription>
-              <div className="mt-4">
-                <span className="text-4xl font-bold">$49.99</span>
-                <span className="text-muted-foreground"> one-time</span>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <ul className="space-y-3 mb-6">
-                <li className="flex items-start">
-                  <Check className="w-5 h-5 text-primary mr-2 mt-0.5 flex-shrink-0" />
-                  <span>Complete multi-form filing package</span>
-                </li>
-                <li className="flex items-start">
-                  <Check className="w-5 h-5 text-primary mr-2 mt-0.5 flex-shrink-0" />
-                  <span>Evidence organization tools</span>
-                </li>
-                <li className="flex items-start">
-                  <Check className="w-5 h-5 text-primary mr-2 mt-0.5 flex-shrink-0" />
-                  <span>Family court, small claims, protection orders</span>
-                </li>
-                <li className="flex items-start">
-                  <Check className="w-5 h-5 text-primary mr-2 mt-0.5 flex-shrink-0" />
-                  <span>Step-by-step filing guidance</span>
-                </li>
-                <li className="flex items-start">
-                  <Check className="w-5 h-5 text-primary mr-2 mt-0.5 flex-shrink-0" />
-                  <span>Immigration &amp; employment packets</span>
-                </li>
-              </ul>
-              <Button 
-                className="w-full" 
-                variant="default"
-                onClick={() => handleCheckout('create_bundle_payment', 'bundle')}
-                disabled={loading === 'bundle' || isAdmin}
-              >
-                <CreditCard className="w-4 h-4 mr-2" />
-                {isAdmin ? 'Free Access' : loading === 'bundle' ? 'Processing...' : 'Get Bundle — $49.99'}
+                {isAdmin ? 'Free Access' : hasActiveSubscription ? 'Current Plan' : loading === 'monthly' ? 'Processing...' : PLAN.cta}
               </Button>
             </CardContent>
           </Card>
@@ -311,7 +205,7 @@ const Pricing = () => {
             <CreditCard className="w-4 h-4" />
             <span>Secure payments powered by Stripe</span>
           </div>
-          <p className="text-sm text-muted-foreground">Cancel anytime • No hidden fees • 30-day money-back guarantee</p>
+          <p className="text-sm text-muted-foreground">Cancel anytime • No hidden fees</p>
         </div>
       </div>
     </div>

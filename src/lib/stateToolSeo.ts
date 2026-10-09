@@ -76,7 +76,7 @@ export function getStateToolSeo(match: StateToolMatch) {
         },
         {
           q: `How much does it cost to request arrest records in ${stateName}?`,
-          a: `Agencies may charge reasonable fees for copying and processing. Our tool generates the request letter for $9.99 (single PDF export) or $29.99 (bundle with follow-up and appeal template). Submitting the request to the agency is free.`,
+          a: `Agencies may charge reasonable fees for copying and processing. Writing the letter with our tool is free; the PDF export (with follow-up and appeal templates) is included in the $25/month plan. Submitting the request to the agency is free.`,
         },
       ],
     };

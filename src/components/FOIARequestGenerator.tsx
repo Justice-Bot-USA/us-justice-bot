@@ -37,6 +37,9 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { invokeAuthed } from '@/lib/supabaseInvoke';
+import { usePaywallAccess } from '@/hooks/usePaywallAccess';
+import { PLAN, startSubscriptionCheckout } from '@/lib/pricing';
+import { generateFoiaLetterPdf } from '@/lib/foiaPdf';
 
 const RECORD_TYPES = [
   { value: 'arrest_report', label: 'Arrest Report' },
@@ -68,6 +71,7 @@ const FOIARequestGenerator: React.FC<FOIARequestGeneratorProps> = ({
   defaultName = '',
 }) => {
   const { user } = useAuth();
+  const { hasAccess } = usePaywallAccess();
   const navigate = useNavigate();
 
   const [selectedState, setSelectedState] = useState(defaultState);
@@ -183,45 +187,25 @@ const FOIARequestGenerator: React.FC<FOIARequestGeneratorProps> = ({
       return;
     }
 
-    try {
-      const { data, error } = await invokeAuthed('stripe-checkout', {
-        body: {
-          action: 'create_one_time_payment',
-          formType: 'foia_records_request',
-        },
-      });
-      if (error) throw error;
-      if (data?.url) {
-        sessionStorage.setItem('pending_foia_letter', generatedLetter);
-        window.location.href = data.url;
-      }
-    } catch (err) {
-      console.error('Checkout error:', err);
-      toast.error('Failed to start checkout.');
-    }
-  };
-
-  const handleBundleCheckout = async () => {
-    if (!user) {
-      toast.error('Please sign in to purchase the bundle.');
-      navigate('/auth');
+    // Subscribers get the full set (request + follow-up + appeal) directly.
+    if (hasAccess) {
+      const url = URL.createObjectURL(generateFoiaLetterPdf(generatedLetter, true));
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Public-Records-Request-${new Date().toISOString().slice(0, 10)}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      toast.success('PDF downloaded.');
       return;
     }
 
     try {
-      const { data, error } = await invokeAuthed('stripe-checkout', {
-        body: {
-          action: 'create_bundle_payment',
-          bundleType: 'foia_bundle',
-        },
-      });
-      if (error) throw error;
-      if (data?.url) {
-        sessionStorage.setItem('pending_foia_letter', generatedLetter);
-        window.location.href = data.url;
-      }
+      sessionStorage.setItem('pending_foia_letter', generatedLetter);
+      await startSubscriptionCheckout();
     } catch (err) {
-      console.error('Bundle checkout error:', err);
+      console.error('Checkout error:', err);
       toast.error('Failed to start checkout.');
     }
   };
@@ -502,15 +486,7 @@ const FOIARequestGenerator: React.FC<FOIARequestGeneratorProps> = ({
               </Button>
               <Button onClick={handleExportPDF} className="gap-2 w-full" size="lg">
                 <Download className="h-4 w-4" />
-                Export as PDF — $9.99
-              </Button>
-              <Button
-                variant="secondary"
-                onClick={handleBundleCheckout}
-                className="gap-2 w-full"
-              >
-                <Download className="h-4 w-4" />
-                Bundle: Request + Follow-Up + Appeal — $29.99
+                {hasAccess ? 'Download PDF (request + follow-up + appeal)' : `Export as PDF — ${PLAN.priceLabel}, unlimited`}
               </Button>
             </div>
 

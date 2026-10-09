@@ -68,8 +68,8 @@ export function PaywallGuard({
       </CardHeader>
       <CardContent className="flex flex-col items-center gap-4">
         <p className="text-sm text-muted-foreground text-center max-w-md">
-          Prepare your official filing — no lawyer required. Single form ($9.99), 
-          monthly access ($19.99/mo), or Case Preparation Bundle ($49.99).
+          Prepare your official filing — no lawyer required. One plan, $25/month: unlimited forms,
+          guides, and records requests.
         </p>
         <div className="flex gap-3">
           <Button onClick={() => navigate('/pricing')}>

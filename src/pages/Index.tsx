@@ -130,7 +130,7 @@ const Index = () => {
         "@type": "Offer",
         price: "0",
         priceCurrency: "USD",
-        description: "Free informational guidance with paid document preparation from $9.99"
+        description: "Free informational guidance; unlimited document preparation for $25/month"
       }
     }
   };
@@ -150,7 +150,7 @@ const Index = () => {
     },
     {
       question: "What does it cost?",
-      answer: "Informational guidance is free. Prepared document packages start at $9.99 one-time. Monthly access for unlimited exports is $19.99/mo.",
+      answer: "Informational guidance is free. One plan, $25/month, gives unlimited filled court forms (California now), form guides, and records request letters. Cancel anytime.",
     },
     {
       question: "Can I use this for FOIA or public records requests?",

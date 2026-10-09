@@ -26,9 +26,11 @@ import {
   Unlock,
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import { usePaywallAccess } from '@/hooks/usePaywallAccess';
+import { PLAN, startSubscriptionCheckout } from '@/lib/pricing';
+import { fillableForState } from '@/lib/formfill';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-import { invokeAuthed } from '@/lib/supabaseInvoke';
 import {
   trackUSPrepareClicked,
   trackUSCheckoutStarted,
@@ -70,6 +72,7 @@ const PrepareFilingModal: React.FC<PrepareFilingModalProps> = ({
   source = 'lookup_results',
 }) => {
   const { user } = useAuth();
+  const { hasAccess } = usePaywallAccess();
   const navigate = useNavigate();
   const [selectedState, setSelectedState] = useState(defaultState);
   const [selectedIssue, setSelectedIssue] = useState('');
@@ -92,9 +95,16 @@ const PrepareFilingModal: React.FC<PrepareFilingModalProps> = ({
       return;
     }
 
+    // Subscribers already have access: take them to the forms instead of charging again.
+    if (hasAccess) {
+      onOpenChange(false);
+      navigate(fillableForState(selectedState).length ? `/fill/${selectedState.toLowerCase()}` : `/states/${selectedState}`);
+      return;
+    }
+
     setIsProcessing(true);
     trackUSPrepareClicked(source, selectedState, selectedIssue);
-    trackUSCheckoutStarted('filing_pack', 9.99);
+    trackUSCheckoutStarted('subscription', PLAN.price);
 
     try {
       // Store context for post-payment redirect
@@ -105,20 +115,7 @@ const PrepareFilingModal: React.FC<PrepareFilingModalProps> = ({
       };
       sessionStorage.setItem('pending_funnel_config', JSON.stringify(funnelConfig));
 
-      const { data, error } = await invokeAuthed('stripe-checkout', {
-        body: {
-          action: 'create_one_time_payment',
-          formType: selectedIssue,
-        },
-      });
-
-      if (error) throw error;
-
-      if (data?.url) {
-        window.location.href = data.url;
-      } else {
-        throw new Error('No checkout URL received');
-      }
+      await startSubscriptionCheckout();
     } catch (err) {
       console.error('Checkout error:', err);
       toast.error('Failed to start checkout. Please try again.');
@@ -203,7 +200,7 @@ const PrepareFilingModal: React.FC<PrepareFilingModalProps> = ({
             ) : (
               <>
                 <Unlock className="mr-2 h-4 w-4" />
-                Continue — $9.99
+                {hasAccess ? 'Continue — included in your plan' : PLAN.cta}
               </>
             )}
           </Button>

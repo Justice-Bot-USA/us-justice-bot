@@ -14,10 +14,9 @@ import { Download, ExternalLink, FileText, Loader2, Lock, ListChecks } from 'luc
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
 import { usePaywallAccess } from '@/hooks/usePaywallAccess';
-import { invokeAuthed } from '@/lib/supabaseInvoke';
-import { trackBeginCheckout } from '@/hooks/useAnalytics';
+import { PLAN, startSubscriptionCheckout } from '@/lib/pricing';
 import {
-  PARTY_QUESTIONS, fillFormType, fillableForState, getFillableForm, isFreeForm,
+  PARTY_QUESTIONS, fillableForState, getFillableForm, isFreeForm,
   type Answers, type FillableForm, type Question,
 } from '@/lib/formfill';
 
@@ -88,7 +87,7 @@ function FormList({ state }: { state: string }) {
                 <CardContent className="p-4 space-y-1">
                   <div className="flex items-center justify-between gap-2">
                     <span className="font-mono text-xs font-semibold">{f.formNumber}</span>
-                    <Badge variant="outline">{isFreeForm(f) ? 'Free' : '$9.99'}</Badge>
+                    <Badge variant="outline">{isFreeForm(f) ? 'Free' : 'Included in plan'}</Badge>
                   </div>
                   <div className="font-medium text-sm">{f.title}</div>
                   <p className="text-xs text-muted-foreground">{f.description}</p>
@@ -105,9 +104,9 @@ function FormList({ state }: { state: string }) {
 function FormFiller({ form }: { form: FillableForm }) {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { hasFormAccess, loading: accessLoading } = usePaywallAccess();
+  const { hasAccess } = usePaywallAccess();
   const [answers, setAnswers] = useState<Answers>(() => loadAnswers(form));
-  const [unlocked, setUnlocked] = useState(isFreeForm(form));
+  const unlocked = isFreeForm(form) || hasAccess;
   const [busy, setBusy] = useState(false);
 
   const questions = useMemo(
@@ -122,13 +121,6 @@ function FormFiller({ form }: { form: FillableForm }) {
       // Storage unavailable (private mode): answers just aren't kept across the checkout redirect.
     }
   }, [answers, form]);
-
-  useEffect(() => {
-    if (isFreeForm(form) || accessLoading || !user) return;
-    hasFormAccess(fillFormType(form)).then(setUnlocked);
-    // hasFormAccess is recreated each render; re-check only when the user or access state changes.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [form, user, accessLoading]);
 
   const missingRequired = questions.filter((q) => q.required && !answers[q.key]?.trim());
   const set = (k: string) => (v: string) => setAnswers((a) => ({ ...a, [k]: v }));
@@ -165,14 +157,8 @@ function FormFiller({ form }: { form: FillableForm }) {
     }
     setBusy(true);
     try {
-      trackBeginCheckout(9.99, 'US');
       sessionStorage.setItem('pending_fill_return', returnPath);
-      const { data, error } = await invokeAuthed('stripe-checkout', {
-        body: { action: 'create_one_time_payment', formType: fillFormType(form) },
-      });
-      if (error) throw error;
-      if (!data?.url) throw new Error('No checkout URL received');
-      window.location.href = data.url;
+      await startSubscriptionCheckout();
     } catch (e) {
       console.error(e);
       toast.error('Could not start checkout. Please try again.');
@@ -187,7 +173,7 @@ function FormFiller({ form }: { form: FillableForm }) {
         <div className="flex items-center gap-2 mb-1">
           <FileText className="h-5 w-5 text-primary" />
           <span className="font-mono text-sm font-semibold">{form.formNumber}</span>
-          <Badge variant="outline">{isFreeForm(form) ? 'Free' : '$9.99'}</Badge>
+          <Badge variant="outline">{isFreeForm(form) ? 'Free' : 'Included in plan'}</Badge>
         </div>
         <h1 className="text-2xl md:text-3xl font-bold">{form.title}</h1>
         <p className="text-muted-foreground mt-1">{form.description}</p>
@@ -225,8 +211,13 @@ function FormFiller({ form }: { form: FillableForm }) {
               ) : (
                 <Button className="w-full" onClick={checkout} disabled={busy || missingRequired.length > 0}>
                   {busy ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Lock className="h-4 w-4 mr-2" />}
-                  {user ? 'Pay $9.99 and download' : 'Sign in to continue'}
+                  {user ? PLAN.cta : 'Sign in to continue'}
                 </Button>
+              )}
+              {!unlocked && (
+                <p className="text-xs text-muted-foreground">
+                  One plan, {PLAN.priceLabel}: every form, guide, and records request, unlimited. Cancel anytime.
+                </p>
               )}
               <a href={form.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-primary inline-flex items-center gap-1">
                 Blank official form <ExternalLink className="h-3 w-3" />

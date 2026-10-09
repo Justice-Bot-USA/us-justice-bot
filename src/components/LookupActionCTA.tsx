@@ -18,7 +18,7 @@ const LookupActionCTA: React.FC<LookupActionCTAProps> = ({ onPrepareClick, state
       <div className="flex flex-col sm:flex-row gap-3">
         <Button onClick={onPrepareClick} className="gap-2">
           <FileText className="h-4 w-4" />
-          Prepare an official filing packet ($9.99)
+          Prepare an official filing packet
           <ArrowRight className="h-4 w-4" />
         </Button>
         <Button variant="outline" asChild>
