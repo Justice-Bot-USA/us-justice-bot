@@ -36,7 +36,7 @@ interface FunnelPaywallStepProps {
 const WHAT_YOU_GET = [
   { icon: FileText, label: 'Your legal pathway, step by step', description: 'From filing to resolution' },
   { icon: Download, label: 'Form guides for every form on your list', description: 'Purpose, fees, deadlines, and the official form link' },
-  { icon: Sparkles, label: 'Official court forms filled from your answers', description: '8 California and 2 New York forms today' },
+  { icon: Sparkles, label: 'Official court forms filled from your answers', description: 'California and New York court forms, ready to review and sign' },
   { icon: Shield, label: 'Filing checklists', description: 'What to file, where, and how' },
   { icon: Clock, label: 'Unlimited use', description: 'Every legal area and state, one monthly plan' },
 ];

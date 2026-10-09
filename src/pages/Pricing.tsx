@@ -174,7 +174,7 @@ const Pricing = () => {
             <CardContent>
               <ul className="space-y-3 mb-6">
                 {[
-                  'Every fillable official court form (8 California and 2 New York forms today)',
+                  'Official California and New York court forms, filled from your answers',
                   'Unlimited form guides and filing checklists',
                   'Unlimited public records (FOIA) request letters',
                   'Saved cases, document uploads, and re-downloads',

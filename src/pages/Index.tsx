@@ -28,7 +28,6 @@ const Header = lazy(() => import("@/components/Header"));
 const Footer = lazy(() => import("@/components/Footer"));
 const PricingComparison = lazy(() => import("@/components/PricingComparison"));
 const StatsBar = lazy(() => import("@/components/StatsBar"));
-const SuccessStories = lazy(() => import("@/components/SuccessStories"));
 const ClosingCTA = lazy(() => import("@/components/ClosingCTA"));
 
 const justiceSystems = [
@@ -331,11 +330,6 @@ const Index = () => {
           <div className="py-8">
             <PricingComparison />
           </div>
-        </Suspense>
-
-        {/* 9. Success Stories */}
-        <Suspense fallback={null}>
-          <SuccessStories language={language} />
         </Suspense>
 
         {/* 10. Partner With Us */}
