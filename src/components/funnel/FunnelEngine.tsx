@@ -23,13 +23,15 @@ import {
   FunnelConfig, 
   FunnelState, 
   FunnelStep,
+  US_STATE_NAMES,
   createInitialFunnelState,
   getNextStep,
   getPreviousStep,
   calculateProgress
 } from '@/lib/funnels';
 import { trackFunnelStart, trackStepComplete, trackStepDrop, trackStepSkip } from '@/lib/funnels/analytics';
-import { useAuth } from '@/hooks/useAuth';
+import { StateComingSoon } from './StateComingSoon';
+import { usePaywallAccess } from '@/hooks/usePaywallAccess';
 import { toast } from 'sonner';
 
 // Step Components
@@ -65,7 +67,7 @@ const STEP_LABELS: Record<FunnelStep, string> = {
   paywall: 'Unlock Access',
   merit_score: 'Summary',
   form_recommendation: 'Common Forms',
-  generate: 'Generate Documents',
+  generate: 'Form Guides',
   next_steps: 'Next Steps',
   payment: 'Unlock Full Access',
 };
@@ -76,23 +78,24 @@ export const FunnelEngine: React.FC<FunnelEngineProps> = ({
   onExit 
 }) => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { hasAccess, loading: accessLoading } = usePaywallAccess();
   const [state, setState] = useState<FunnelState>(() => createInitialFunnelState(config));
   const [isProcessing, setIsProcessing] = useState(false);
 
   // Track funnel start on mount
   useEffect(() => {
+    if (!config.enabled) return;
     trackFunnelStart(config.id, state.currentStep);
-  }, [config.id]);
+  }, [config.id, config.enabled]);
 
   // Track drop-off on unmount
   useEffect(() => {
     return () => {
-      if (!state.completedSteps.includes('next_steps')) {
+      if (config.enabled && !state.completedSteps.includes('next_steps')) {
         trackStepDrop(config.id, state.currentStep);
       }
     };
-  }, [config.id, state.currentStep, state.completedSteps]);
+  }, [config.id, config.enabled, state.currentStep, state.completedSteps]);
 
   const progress = calculateProgress(config, state.completedSteps);
   const currentStepIndex = config.steps.indexOf(state.currentStep);
@@ -130,7 +133,38 @@ export const FunnelEngine: React.FC<FunnelEngineProps> = ({
     }
   };
 
+  const isPaywallStep = state.currentStep === 'paywall' || state.currentStep === 'payment';
+
+  // The checks a step needs before the user can move past it with the shared Continue button
+  // (or a step's skip link). Returns a message for the user, or null when they can go on.
+  const blockReason = (): string | null => {
+    if (state.currentStep === 'triage') {
+      if (!state.data.caseTitle?.trim()) return 'Please give your case a short title.';
+      if (!state.data.caseDescription?.trim()) return 'Please describe your situation before you continue.';
+    }
+    if (isPaywallStep && !hasAccess) {
+      return accessLoading
+        ? 'Checking your plan. Please try again in a moment.'
+        : 'Forms and filling instructions are part of the monthly plan. Subscribe above to continue.';
+    }
+    return null;
+  };
+
+  const handleContinue = () => {
+    const reason = blockReason();
+    if (reason) {
+      toast.error(reason);
+      return;
+    }
+    goToNextStep();
+  };
+
   const skipStep = () => {
+    const reason = blockReason();
+    if (reason) {
+      toast.error(reason);
+      return;
+    }
     trackStepSkip(config.id, state.currentStep);
     goToNextStep();
   };
@@ -140,6 +174,11 @@ export const FunnelEngine: React.FC<FunnelEngineProps> = ({
     onExit?.();
     navigate('/');
   };
+
+  // States other than California and New York have no funnel, paywall or checkout.
+  if (!config.enabled) {
+    return <StateComingSoon stateName={US_STATE_NAMES[config.jurisdiction]} legalArea={config.legalArea} />;
+  }
 
   const renderStepContent = () => {
     const stepProps = {
@@ -256,8 +295,11 @@ export const FunnelEngine: React.FC<FunnelEngineProps> = ({
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               Processing...
             </Button>
+          ) : isPaywallStep && !hasAccess ? (
+            // Without the plan, the paywall step's own Subscribe button is the only way forward.
+            null
           ) : (
-            <Button onClick={goToNextStep}>
+            <Button onClick={handleContinue}>
               {currentStepIndex === config.steps.length - 1 ? 'Complete' : 'Continue'}
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>

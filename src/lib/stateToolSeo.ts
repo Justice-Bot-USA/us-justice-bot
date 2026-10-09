@@ -1,4 +1,6 @@
 import { states, stateAbbreviations } from './states';
+import { launchStateOf } from './stateRouting';
+import { PLAN } from './pricing';
 
 export type StateToolType = 'warrant-lookup' | 'court-forms' | 'arrest-records';
 
@@ -41,11 +43,18 @@ export function parseStateToolSlug(slug: string): StateToolMatch | null {
 export function getStateToolSeo(match: StateToolMatch) {
   const { stateName, stateCode, toolType } = match;
   const slug = stateName.toLowerCase().replace(/\s+/g, '-');
+  // Only California and New York are live. Other states get honest "coming soon" copy:
+  // no forms library, no paid plan, no request-letter tool.
+  const launch = launchStateOf(stateCode);
+  const launched = launch !== null;
 
   if (toolType === 'arrest-records') {
     return {
+      launched,
       title: `How to Request Arrest Records in ${stateName} | Justice Bot USA`,
-      description: `Request arrest reports, warrant returns, booking records, and court documents in ${stateName} (${stateCode}). Write a public records request letter that cites ${stateName}'s public records law.`,
+      description: launched
+        ? `Request arrest reports, warrant returns, booking records, and court documents in ${stateName} (${stateCode}). Write a public records request letter that cites ${stateName}'s public records law.`
+        : `General information on requesting arrest reports, booking records, and court documents in ${stateName}. Justice Bot USA is live in California and New York; ${stateName} is coming soon.`,
       h1: `How to Request Arrest Records in ${stateName}`,
       keywords: [
         `${stateName} arrest records request`,
@@ -56,7 +65,7 @@ export function getStateToolSeo(match: StateToolMatch) {
         `${stateName} booking records`,
       ],
       canonical: `https://justicebot-usa.com/${slug}-arrest-records`,
-      toolPath: '/public-records-request',
+      toolPath: launched ? '/public-records-request' : null,
       faqItems: [
         {
           q: `What arrest-related records can I request in ${stateName}?`,
@@ -68,56 +77,94 @@ export function getStateToolSeo(match: StateToolMatch) {
         },
         {
           q: `How do I request arrest records in ${stateName}?`,
-          a: `Submit a written public records request to the appropriate agency. Identify the correct agency, submit your request citing ${stateName}'s public records statute, wait for a response, and review or appeal if denied. Our tool generates a properly worded request letter for you.`,
+          a: launched
+            ? `Submit a written public records request to the appropriate agency. Identify the correct agency, submit your request citing ${stateName}'s public records statute, wait for a response, and review or appeal if denied. Our tool generates a properly worded request letter for you.`
+            : `Submit a written public records request to the agency that holds the records. Identify the records clearly, wait for the agency's response, and ask how to appeal if the request is denied.`,
         },
         {
-          q: `Does this check for active warrants in ${stateName}?`,
-          a: `No. This tool helps you request public records after the fact. It does not check for active warrants, access law enforcement databases, or determine warrant status. If you believe you have an active warrant, consult an attorney.`,
+          q: `Does Justice Bot USA check for active warrants in ${stateName}?`,
+          a: `No. We do not check for active warrants, access law enforcement databases, or determine warrant status. If you believe you have an active warrant, consult an attorney.`,
         },
         {
           q: `How much does it cost to request arrest records in ${stateName}?`,
-          a: `Agencies may charge fees set by state law, usually for copies (in California, generally only the direct cost of duplication). Writing the letter with our tool is free with an account; the PDF download is included in the $25/month plan.`,
+          a: launched
+            ? `Agencies may charge fees set by state law, usually for copies (in California, generally only the direct cost of duplication). Writing the letter with our tool is free with an account; the PDF download is included in the ${PLAN.priceLabel} plan.`
+            : `Agencies may charge fees set by ${stateName} law, usually for copies. Ask the agency about its fees before you send your request.`,
         },
       ],
     };
   }
 
   // court-forms
+  if (!launched) {
+    return {
+      launched,
+      title: `${stateName} Court Forms: Coming Soon | Justice Bot USA`,
+      description: `Where to find official ${stateName} court forms. Justice Bot USA's form filling is live in California and New York; ${stateName} is coming soon.`,
+      h1: `${stateName} Court Forms`,
+      keywords: [
+        `${stateName} court forms`,
+        `${stateName} legal forms`,
+        `${stateName} small claims forms`,
+        `${stateName} family court forms`,
+      ],
+      canonical: `https://justicebot-usa.com/${slug}-court-forms`,
+      toolPath: null,
+      faqItems: [
+        {
+          q: `Where can I find official ${stateName} court forms?`,
+          a: `On the ${stateName} court system's website, or from the clerk of the court where your case is filed. Justice Bot USA does not have ${stateName} forms yet; ${stateName} is coming soon.`,
+        },
+        {
+          q: `Do I have to pay court fees in ${stateName}?`,
+          a: `Courts charge their own filing fees. If you can't afford them, ask the court clerk whether you can apply for a fee waiver.`,
+        },
+        {
+          q: `Do I need a lawyer to fill out ${stateName} court forms?`,
+          a: `Not always. Many people file court forms without a lawyer. The court's self-help center or a local legal aid office is a good place to start, and for complex cases consider consulting a licensed ${stateName} attorney.`,
+        },
+      ],
+    };
+  }
+
+  const isCA = launch === 'CA';
   return {
-    title: `${stateName} Court Forms — Free Download | Justice Bot USA`,
-    description: `Browse and download official ${stateName} court forms for family, small claims, housing, employment, and more. Free access to ${stateCode} legal documents powered by Justice Bot USA.`,
+    launched,
+    title: `${stateName} Court Forms | Justice Bot USA`,
+    description: `Find official ${stateName} court forms for family, small claims, housing, and more, with filling instructions. Forms and filling instructions are included in the ${PLAN.priceLabel} plan; fee waiver forms are free.`,
     h1: `${stateName} Court Forms`,
     keywords: [
       `${stateName} court forms`,
-      `${stateCode} court forms free download`,
       `${stateName} legal forms`,
       `${stateName} small claims forms`,
       `${stateName} family court forms`,
     ],
     canonical: `https://justicebot-usa.com/${slug}-court-forms`,
-    toolPath: '/usa-forms',
+    toolPath: isCA ? '/fill/ca' : '/fill/ny',
     faqItems: [
       {
         q: `Where can I find official ${stateName} court forms?`,
-        a: `Our forms library includes official ${stateName} court documents sourced from state judiciary websites. You can also visit the ${stateName} Courts website directly for the most current versions.`,
+        a: isCA
+          ? 'Official California court forms are published by the Judicial Council of California on the California Courts website. Our California legal center links to the official versions and explains each one.'
+          : 'Official New York court forms are published by the New York State Unified Court System. Our New York legal center links to the official versions and explains each one.',
       },
       {
         q: `Are ${stateName} court forms free?`,
-        a: `Most official ${stateName} court forms are free to download. Our platform provides convenient access to these forms organized by legal area. Some courts may charge filing fees when you submit the forms.`,
+        a: `The official forms are free to download from the court's website. Courts charge their own filing fees, and you can ask for a fee waiver if you can't afford them. On Justice Bot USA, fee waiver forms are free; other forms and filling instructions are included in the ${PLAN.priceLabel} plan.`,
       },
       {
         q: `Do I need a lawyer to fill out ${stateName} court forms?`,
-        a: `Many ${stateName} residents file court forms without an attorney (pro se). Our platform provides guidance to help you complete forms correctly. For complex cases, consider consulting a licensed ${stateName} attorney.`,
+        a: `No. Many people in ${stateName} file court forms without a lawyer. Our filling instructions are legal information, not legal advice; you check, sign and file the forms yourself. For complex cases, consider consulting a licensed ${stateName} attorney.`,
       },
     ],
   };
 }
 
-/** Generate all state-tool slugs for sitemap */
+/** Generate state-tool slugs for the sitemap: launched states only (California and New York). */
 export function getAllStateToolSlugs(): string[] {
   const slugs: string[] = [];
   for (const state of states) {
-    if (state === 'District of Columbia') continue;
+    if (!launchStateOf(stateAbbreviations[state])) continue;
     const slug = state.toLowerCase().replace(/\s+/g, '-');
     slugs.push(`${slug}-court-forms`);
     slugs.push(`${slug}-arrest-records`);

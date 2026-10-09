@@ -9,7 +9,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 
 const TermsOfService = () => {
   const [language, setLanguage] = useState<'en' | 'es'>('en');
-  const lastUpdated = "January 4, 2026";
+  const lastUpdated = "October 9, 2026";
   const effectiveDate = "January 4, 2026";
 
   const stateJurisdictions = [
@@ -101,7 +101,7 @@ const TermsOfService = () => {
             <AlertTitle className="text-lg font-bold">IMPORTANT LEGAL DISCLAIMER</AlertTitle>
             <AlertDescription className="mt-2 space-y-2">
               <p>
-                <strong>JUSTICE BOT USA IS NOT A LAW FIRM.</strong> We provide legal information and document preparation services, NOT legal advice.
+                <strong>JUSTICE BOT USA IS NOT A LAW FIRM.</strong> We provide legal information and tools for filling official forms with your own answers, NOT legal advice. We do not choose forms or strategy for you, prepare documents on your behalf, or file or serve anything. Our content has not yet been reviewed by a licensed attorney.
               </p>
               <p>
                 Our AI-powered services cannot and do not create an attorney-client relationship. Information provided through our platform should not be relied upon as a substitute for consultation with a licensed attorney in your jurisdiction.
@@ -125,8 +125,8 @@ const TermsOfService = () => {
               <CardContent>
                 <ul className="text-sm text-muted-foreground space-y-1">
                   <li>• Legal information</li>
-                  <li>• Form preparation</li>
-                  <li>• Case guidance</li>
+                  <li>• Form-filling tools</li>
+                  <li>• General guidance</li>
                   <li>• Court information</li>
                 </ul>
               </CardContent>
@@ -143,6 +143,7 @@ const TermsOfService = () => {
                   <li>• Court representation</li>
                   <li>• Attorney-client privilege</li>
                   <li>• Guaranteed outcomes</li>
+                  <li>• Filing or serving papers</li>
                 </ul>
               </CardContent>
             </Card>
@@ -169,10 +170,9 @@ const TermsOfService = () => {
               </CardHeader>
               <CardContent>
                 <ul className="text-sm text-muted-foreground space-y-1">
-                  <li>• All 50 US states</li>
-                  <li>• Federal courts</li>
-                  <li>• District of Columbia</li>
-                  <li>• US territories (limited)</li>
+                  <li>• California (live)</li>
+                  <li>• New York (live)</li>
+                  <li>• Other 48 states: coming soon</li>
                 </ul>
               </CardContent>
             </Card>
@@ -193,9 +193,9 @@ const TermsOfService = () => {
             </p>
             <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
               <li>General legal information and educational resources</li>
-              <li>Legal form templates and document preparation assistance</li>
-              <li>Court and filing information for all 50 US states</li>
-              <li>AI-powered case analysis and guidance (informational only)</li>
+              <li>Official court and agency forms you fill in with your own answers, with plain-language filling instructions</li>
+              <li>Court and filing information for California and New York; other states coming soon</li>
+              <li>AI-generated plain-language summaries and general guidance (informational only)</li>
               <li>Links and references to official court resources</li>
             </ul>
 
@@ -267,7 +267,7 @@ const TermsOfService = () => {
               "Justice Bot", "Justice Bot USA", "Quorex", and "Quorex Solutions", and the related names and logos, are trademarks of Justice Bot Technologies Inc. You may not use them without our prior written permission.
             </p>
             <p className="text-muted-foreground mt-4">
-              Legal forms and documents you create using our Service are yours to use. However, the underlying templates and systems remain our intellectual property.
+              Filled forms you download from our Service are yours to use. The official forms themselves are published by courts and government agencies; our software and our original content remain our intellectual property.
             </p>
 
             <h2 className="text-2xl font-bold mt-10 mb-4">9. Disclaimer of Warranties</h2>
@@ -305,7 +305,7 @@ const TermsOfService = () => {
         {/* State Jurisdiction Section */}
         <section className="py-12 bg-muted/30">
           <div className="container mx-auto px-4 max-w-4xl">
-            <h2 className="text-2xl font-bold mb-6">14. Governing Law & Jurisdiction (All 50 States)</h2>
+            <h2 className="text-2xl font-bold mb-6">14. Governing Law & Jurisdiction</h2>
             <p className="text-muted-foreground mb-6">
               These Terms shall be governed by and construed in accordance with the laws of your state of residence. Any disputes shall be resolved in the appropriate courts of your state. Below is the designated court for each state:
             </p>

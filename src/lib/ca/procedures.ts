@@ -42,7 +42,7 @@ export const CA_PROCEDURES: Record<CaCategoryKey, CaFilingProcedure> = {
   family: {
     category: 'family',
     title: 'Family — Custody, Support, and Domestic Violence Orders',
-    venue: 'Superior Court (Family Division) in the county where the child lives.',
+    venue: 'Superior Court (Family Division). If there is already a family case about the child in California (such as a divorce or parentage case), ask for custody or support orders in that case. Domestic violence restraining orders can be filed in the county where you live or are staying, where the other person lives, or where the abuse happened (Family Code §6301).',
     fees: 'Request for Order (FL-300): $60, or $85 to change or enforce custody or visitation. No fee in domestic violence cases or for papers filed by the local child support agency.',
     deadlines: [
       'DV temporary orders: usually decided within 1 business day of filing.',

@@ -2,20 +2,71 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Badge, type BadgeProps } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ArrowLeft, FileText, Scale, Clock, DollarSign, MapPin, ExternalLink, ChevronRight } from "lucide-react";
 import Header from "@/components/Header";
 import { SEOHead } from "@/components/SEOHead";
 import { US_STATES } from "@/lib/states";
 import { legalAreaData } from "@/lib/legalAreaData";
+import { stateCourtWebsites } from "@/lib/formsLibraryData";
+import { launchStateOf, type LaunchState } from "@/lib/stateRouting";
+
+// Older links and the footer/sitemap use these slugs for the same pages.
+const AREA_ALIASES: Record<string, string> = {
+  "family-law": "family",
+  employment: "workplace",
+  "civil-rights": "civil",
+  "criminal-defense": "criminal",
+  "human-rights": "civil",
+  "workers-compensation": "workers-comp",
+  "consumer-protection": "consumer-rights",
+};
+
+// For the live states, each legal area points to the matching tab(s) of the source-checked
+// legal center instead of the old per-state data. An empty list means the center has no tab
+// for that area yet.
+const CENTER_TABS: Record<string, Record<LaunchState, string[]>> = {
+  family: { CA: ["family", "divorce"], NY: ["family", "divorce"] },
+  "small-claims": { CA: ["civil"], NY: ["civil"] },
+  workplace: { CA: ["workplace", "human-rights"], NY: ["workplace", "human-rights"] },
+  criminal: { CA: ["criminal"], NY: ["criminal"] },
+  housing: { CA: ["civil"], NY: ["civil"] },
+  civil: { CA: ["human-rights"], NY: ["human-rights"] },
+  consumer: { CA: ["civil"], NY: ["civil"] },
+  "consumer-rights": { CA: ["civil"], NY: ["civil"] },
+  "personal-injury": { CA: [], NY: [] },
+  immigration: { CA: [], NY: ["immigration"] },
+  federal: { CA: [], NY: [] },
+  "workers-comp": { CA: ["workplace"], NY: ["workplace"] },
+};
+
+const TAB_LABELS: Record<string, string> = {
+  family: "Family", divorce: "Divorce", civil: "Civil", workplace: "Workplace", criminal: "Criminal",
+  "human-rights": "Civil Rights", immigration: "Immigration", cps: "CPS",
+};
+
+const LIVE_STATE_INFO: Record<LaunchState, { name: string; center: string; fill: string; selfHelp: string; selfHelpName: string }> = {
+  CA: { name: "California", center: "/ca/legal-center", fill: "/fill/ca", selfHelp: "https://selfhelp.courts.ca.gov", selfHelpName: "California Courts Self-Help Guide" },
+  NY: { name: "New York", center: "/ny/legal-center", fill: "/fill/ny", selfHelp: "https://www.nycourts.gov/courthelp/", selfHelpName: "NY CourtHelp" },
+};
+
+// Areas that state court self-help sites don't cover: point to the federal source instead.
+const FEDERAL_SOURCES: Record<string, { name: string; url: string }[]> = {
+  federal: [{ name: "U.S. Courts pro se forms", url: "https://www.uscourts.gov/forms-rules/forms/civil-pro-se-forms" }],
+  immigration: [
+    { name: "USCIS forms", url: "https://www.uscis.gov/forms/all-forms" },
+    { name: "Immigration court self-help (EOIR)", url: "https://www.justice.gov/eoir/self-help-materials" },
+  ],
+};
 
 const LegalAreaPage = () => {
-  const { areaId } = useParams<{ areaId: string }>();
+  const { areaId: rawAreaId } = useParams<{ areaId: string }>();
   const navigate = useNavigate();
   const [selectedState, setSelectedState] = useState<string>("");
   const [language, setLanguage] = useState<'en' | 'es'>('en');
 
+  const areaId = rawAreaId ? AREA_ALIASES[rawAreaId] ?? rawAreaId : undefined;
   const areaData = areaId ? legalAreaData[areaId] : null;
 
   if (!areaData) {
@@ -31,7 +82,14 @@ const LegalAreaPage = () => {
   }
 
   const Icon = areaData.icon;
-  const stateGuidance = selectedState ? areaData.stateGuidance[selectedState] : null;
+  const liveState = launchStateOf(selectedState);
+  const liveInfo = liveState ? LIVE_STATE_INFO[liveState] : null;
+  const centerTabs = liveState && areaId ? CENTER_TABS[areaId]?.[liveState] ?? [] : [];
+  const fallbackSources = (areaId && FEDERAL_SOURCES[areaId]) ||
+    (liveInfo ? [{ name: liveInfo.selfHelpName, url: liveInfo.selfHelp }] : []);
+  // Live states use the legal center; the old per-state data is only shown for other states.
+  const stateGuidance = selectedState && !liveState ? areaData.stateGuidance[selectedState] : null;
+  const stateCourts = selectedState ? stateCourtWebsites[selectedState] : undefined;
 
   // Related areas for cross-linking (exclude current)
   const relatedAreaIds = Object.keys(legalAreaData)
@@ -44,7 +102,7 @@ const LegalAreaPage = () => {
     <div className="min-h-screen bg-background">
       <SEOHead
         title={`${areaData.title} Help by State — Justice Bot USA`}
-        description={`Free state-specific guidance for ${areaData.title.toLowerCase()} cases: forms, deadlines, fees, and key laws. Full guides for California and New York; other states coming soon.`}
+        description={`State-specific information for ${areaData.title.toLowerCase()} cases: forms, deadlines, fees, and key laws. Full guides for California and New York; other states coming soon.`}
         keywords={`${areaData.title.toLowerCase()}, ${areaData.keywords.join(", ")}, legal help by state, self-help legal`}
       />
       <Header language={language} onLanguageChange={setLanguage} />
@@ -69,7 +127,7 @@ const LegalAreaPage = () => {
               <div className="flex items-center gap-3 mb-2">
                 <h1 className="text-3xl md:text-4xl font-bold">{areaData.title}</h1>
                 {areaData.badge && (
-                  <Badge variant={areaData.badge.variant as any}>{areaData.badge.text}</Badge>
+                  <Badge variant={areaData.badge.variant as BadgeProps["variant"]}>{areaData.badge.text}</Badge>
                 )}
               </div>
               <p className="text-lg text-muted-foreground mb-4">{areaData.description}</p>
@@ -108,6 +166,67 @@ const LegalAreaPage = () => {
             </Select>
           </CardContent>
         </Card>
+
+        {/* Live states: point to the source-checked legal center */}
+        {liveInfo && (
+          <Card className="mb-8 border-primary/30 bg-primary/5">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Scale className="w-5 h-5 text-primary" />
+                {areaData.title} in {liveInfo.name}
+              </CardTitle>
+              <CardDescription>
+                {centerTabs.length > 0
+                  ? `Our ${liveInfo.name} legal center has the filing steps, deadlines, fees and official ${liveInfo.name} forms for this area, with sources. It is general legal information, not legal advice, and has not yet been reviewed by a licensed attorney.`
+                  : `Our ${liveInfo.name} legal center does not cover ${areaData.title.toLowerCase()} yet. For official information, see the ${fallbackSources.map((src) => src.name).join(" or the ")}.`}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="flex flex-wrap gap-3">
+              {centerTabs.map((tab, i) => (
+                <Button key={tab} asChild variant={i === 0 ? "default" : "outline"}>
+                  <Link to={`${liveInfo.center}?area=${tab}`}>
+                    {liveInfo.name} legal center: {TAB_LABELS[tab] ?? tab}
+                  </Link>
+                </Button>
+              ))}
+              {centerTabs.length > 0 ? (
+                <Button asChild variant="outline">
+                  <Link to={liveInfo.fill}>Fill {liveInfo.name} court forms</Link>
+                </Button>
+              ) : (
+                <>
+                  {fallbackSources.map((src) => (
+                    <Button key={src.url} asChild variant="outline">
+                      <a href={src.url} target="_blank" rel="noopener noreferrer">
+                        {src.name} <ExternalLink className="w-3 h-3 ml-1" />
+                      </a>
+                    </Button>
+                  ))}
+                  <Button asChild variant="outline">
+                    <Link to={liveInfo.center}>All {liveInfo.name} legal areas</Link>
+                  </Button>
+                </>
+              )}
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Other states are coming soon: their guidance has not been checked */}
+        {stateGuidance && (
+          <div className="mb-4 p-3 bg-amber-500/10 border border-amber-500/20 rounded-lg">
+            <p className="text-sm text-amber-800 dark:text-amber-200">
+              <strong>Coming soon:</strong> Justice Bot USA is live in California and New York. {selectedStateLabel} is coming soon,
+              and the general information below has not been checked against {selectedStateLabel} law. Confirm forms, deadlines and fees
+              {stateCourts ? (
+                <> with the{" "}
+                  <a href={stateCourts.selfHelp} target="_blank" rel="noopener noreferrer" className="underline">
+                    {selectedStateLabel} courts' self-help website
+                  </a>.
+                </>
+              ) : " with your state's courts."}
+            </p>
+          </div>
+        )}
 
         {/* State-Specific Guidance */}
         {stateGuidance && (

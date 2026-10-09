@@ -138,7 +138,7 @@ const NativeAmericanRights = () => (
   <LegalHelpLayout
     title="Native American Rights & Tribal Jurisdiction in the United States"
     metaTitle="Native American Rights & Tribal Jurisdiction Guide | Justice Bot USA"
-    metaDescription="Understand Native American legal rights, tribal courts, tribal jurisdiction, and how tribal membership may affect your legal matter. Respectful, accurate information."
+    metaDescription="Understand Native American legal rights, tribal courts, tribal jurisdiction, and how tribal membership may affect your legal matter. Legal information, not legal advice."
     keywords="native american rights, tribal jurisdiction, tribal court, federally recognized tribe, indian child welfare act, ICWA, tribal law, tribal sovereignty, native american legal rights"
     canonicalPath="/legal-help/native-american-rights"
     breadcrumbLabel="Native American Rights"

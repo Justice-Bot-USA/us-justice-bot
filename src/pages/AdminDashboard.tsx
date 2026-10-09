@@ -14,6 +14,7 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { toast } from 'sonner';
 import { FunnelAnalyticsDashboard } from '@/components/admin/FunnelAnalyticsDashboard';
+import { PLAN } from '@/lib/pricing';
 import { 
   Users, 
   MessageSquare, 
@@ -498,18 +499,14 @@ const AdminDashboard = () => {
                       <DollarSign className="h-4 w-4" />
                       Current Pricing
                     </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                       <div>
-                        <p className="font-medium">Monthly Plan</p>
-                        <p className="text-muted-foreground">$39.99/month</p>
+                        <p className="font-medium">{PLAN.name}</p>
+                        <p className="text-muted-foreground">{PLAN.priceLabel}, all forms and filling instructions included</p>
                       </div>
                       <div>
-                        <p className="font-medium">Yearly Plan</p>
-                        <p className="text-muted-foreground">$249.99/year</p>
-                      </div>
-                      <div>
-                        <p className="font-medium">Pay Per Form</p>
-                        <p className="text-muted-foreground">$5.99/form</p>
+                        <p className="font-medium">Not offered</p>
+                        <p className="text-muted-foreground">No yearly plan and no per-form or one-time purchases</p>
                       </div>
                     </div>
                   </div>

@@ -71,7 +71,9 @@ export const SmartTriageWizard: React.FC<SmartTriageWizardProps> = ({ onAnalysis
   const [currentStep, setCurrentStep] = useState(1);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisProgress, setAnalysisProgress] = useState(0);
-  const [uploadedFilesCount, setUploadedFilesCount] = useState(0);
+  // Only the files added in this wizard run are attached to the new case.
+  const [caseFiles, setCaseFiles] = useState<Array<{ id: string } & Record<string, unknown>>>([]);
+  const uploadedFilesCount = caseFiles.length;
   
   const [triageData, setTriageData] = useState<TriageData>({
     caseTitle: '',
@@ -124,12 +126,8 @@ export const SmartTriageWizard: React.FC<SmartTriageWizardProps> = ({ onAnalysis
     }
 
     try {
-      // Get uploaded files for this user
-      const { data: files } = await supabase
-        .from('case_files')
-        .select('*')
-        .eq('user_id', user?.id);
-
+      // Send only the files uploaded during this triage. Sending every case_files row the
+      // user owns made analyze-case-merit move all of their past uploads into the new case.
       const { data, error } = await supabase.functions.invoke('analyze-case-merit', {
         body: {
           caseData: {
@@ -140,7 +138,7 @@ export const SmartTriageWizard: React.FC<SmartTriageWizardProps> = ({ onAnalysis
             county: triageData.county,
             legalArea: triageData.legalArea
           },
-          uploadedFiles: files
+          uploadedFiles: caseFiles
         }
       });
 
@@ -307,7 +305,7 @@ export const SmartTriageWizard: React.FC<SmartTriageWizardProps> = ({ onAnalysis
           >
             <div className="text-center mb-6">
               <h3 className="text-xl font-semibold mb-2">Upload Your Evidence</h3>
-              <p className="text-muted-foreground">Your documents help us summarize your situation accurately</p>
+              <p className="text-muted-foreground">Optional. Files you add here are saved with this case only.</p>
             </div>
 
             <div className="p-4 bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg mb-4">
@@ -321,10 +319,16 @@ export const SmartTriageWizard: React.FC<SmartTriageWizardProps> = ({ onAnalysis
               </ul>
             </div>
 
-            <EvidenceUploader 
+            <EvidenceUploader
               onFilesUploaded={(files) => {
-                setUploadedFilesCount(files.length);
-                updateTriageData('hasEvidence', files.length > 0);
+                // Each call reports one batch; keep a running, de-duplicated list for this case.
+                setCaseFiles((prev) => {
+                  const seen = new Set(prev.map((f) => f.id));
+                  const added = files
+                    .filter((f) => f && typeof f.id === 'string' && !seen.has(f.id));
+                  return added.length ? [...prev, ...added] : prev;
+                });
+                if (files.length > 0) updateTriageData('hasEvidence', true);
               }}
             />
 

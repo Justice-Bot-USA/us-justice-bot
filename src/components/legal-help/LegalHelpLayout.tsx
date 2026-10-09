@@ -68,8 +68,6 @@ const LegalHelpLayout = ({
       url: "https://justicebot-usa.com",
     },
     mainEntityOfPage: canonicalUrl,
-    datePublished: "2025-01-01",
-    dateModified: new Date().toISOString().split("T")[0],
   };
 
   const breadcrumbSchema = {
@@ -243,7 +241,7 @@ const LegalHelpLayout = ({
         <section className="mb-10 bg-primary/5 rounded-2xl p-8 text-center">
           <h2 className="text-2xl font-bold text-foreground mb-3">Need Help Preparing Your Case?</h2>
           <p className="text-muted-foreground mb-6 max-w-lg mx-auto">
-            Use Justice Bot USA to organize evidence, generate documents, and prepare your timeline — all in one place.
+            Use Justice Bot USA to organize your documents, get a plain-language summary, and, in California and New York, fill in official court forms with your own answers.
           </p>
           <div className="flex flex-wrap gap-3 justify-center">
             {ctas.map((cta, i) => (
@@ -281,7 +279,7 @@ const LegalHelpLayout = ({
 
         {/* Disclaimer */}
         <div className="text-xs text-muted-foreground border-t pt-6 mt-10">
-          <p><strong>Disclaimer:</strong> This is legal information, not legal advice. Justice Bot USA provides procedural guidance to help you understand legal processes. For advice specific to your situation, consult a licensed attorney.</p>
+          <p><strong>Disclaimer:</strong> This is legal information, not legal advice. Justice Bot USA provides procedural guidance to help you understand legal processes; our content has not yet been reviewed by a licensed attorney. For advice specific to your situation, consult a licensed attorney.</p>
         </div>
       </main>
 

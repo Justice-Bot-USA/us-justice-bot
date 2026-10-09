@@ -22,7 +22,6 @@ import {
   FileText,
   Loader2,
   Shield,
-  Clock,
   Download,
   CheckCircle2,
   AlertTriangle,
@@ -41,6 +40,7 @@ import { invokeAuthed } from '@/lib/supabaseInvoke';
 import { usePaywallAccess } from '@/hooks/usePaywallAccess';
 import { PLAN, startSubscriptionCheckout } from '@/lib/pricing';
 import { generateFoiaLetterPdf } from '@/lib/foiaPdf';
+import { launchStateOf } from '@/lib/stateRouting';
 
 const RECORD_TYPES = [
   { value: 'arrest_report', label: 'Arrest Report' },
@@ -76,6 +76,8 @@ const FOIARequestGenerator: React.FC<FOIARequestGeneratorProps> = ({
   const navigate = useNavigate();
 
   const [selectedState, setSelectedState] = useState(defaultState);
+  // The monthly plan is only sold in California and New York.
+  const planOffered = !!launchStateOf(selectedState);
   const [recordType, setRecordType] = useState('');
   const [agencyName, setAgencyName] = useState('');
   const [subjectName, setSubjectName] = useState(defaultName);
@@ -200,6 +202,8 @@ const FOIARequestGenerator: React.FC<FOIARequestGeneratorProps> = ({
       toast.success('PDF downloaded.');
       return;
     }
+
+    if (!planOffered) return;
 
     try {
       sessionStorage.setItem('pending_foia_letter', generatedLetter);
@@ -484,10 +488,17 @@ const FOIARequestGenerator: React.FC<FOIARequestGeneratorProps> = ({
                 <Copy className="h-4 w-4" />
                 Copy to Clipboard (Free)
               </Button>
-              <Button onClick={handleExportPDF} className="gap-2 w-full" size="lg">
-                <Download className="h-4 w-4" />
-                {hasAccess ? 'Download PDF (request + follow-up + appeal)' : `Export as PDF — ${PLAN.priceLabel}, unlimited`}
-              </Button>
+              {hasAccess || planOffered ? (
+                <Button onClick={handleExportPDF} className="gap-2 w-full" size="lg">
+                  <Download className="h-4 w-4" />
+                  {hasAccess ? 'Download PDF (request + follow-up + appeal)' : `Export as PDF — ${PLAN.priceLabel}, unlimited`}
+                </Button>
+              ) : (
+                <p className="text-xs text-muted-foreground text-center">
+                  Our monthly plan is only offered in California and New York, so there is nothing to buy for this state.
+                  Copy the letter for free and send it to the agency yourself.
+                </p>
+              )}
             </div>
 
             <Button
@@ -499,17 +510,14 @@ const FOIARequestGenerator: React.FC<FOIARequestGeneratorProps> = ({
               ← Edit request details
             </Button>
 
-            {/* Trust badges */}
-            <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground">
-              <span className="flex items-center gap-1">
-                <Shield className="h-3 w-3" />
-                Secure Payment
-              </span>
-              <span className="flex items-center gap-1">
-                <Clock className="h-3 w-3" />
-                Instant Access
-              </span>
-            </div>
+            {!hasAccess && planOffered && (
+              <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground">
+                <span className="flex items-center gap-1">
+                  <Shield className="h-3 w-3" />
+                  Payment handled by Stripe
+                </span>
+              </div>
+            )}
 
             {/* Required disclaimers */}
             <div className="border-t pt-2 space-y-1">

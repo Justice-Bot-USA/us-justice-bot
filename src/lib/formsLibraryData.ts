@@ -1,3 +1,12 @@
+import {
+  CA_CRIMINAL_FORMS, CA_FAMILY_FORMS, CA_DIVORCE_FORMS, CA_CPS_FORMS,
+  CA_WORKPLACE_FORMS, CA_CIVIL_FORMS, CA_HUMAN_RIGHTS_FORMS,
+} from '@/lib/ca/forms';
+import {
+  NY_CRIMINAL_FORMS, NY_FAMILY_FORMS, NY_DIVORCE_FORMS, NY_CPS_FORMS,
+  NY_IMMIGRATION_FORMS, NY_WORKPLACE_FORMS, NY_CIVIL_FORMS, NY_HUMAN_RIGHTS_FORMS,
+} from '@/lib/ny/forms';
+
 export interface CourtForm {
   formNumber: string;
   name: string;
@@ -15,82 +24,69 @@ export interface StateFormsData {
   forms: Record<string, CourtForm[]>;
 }
 
+// ==================== LIVE STATES (CALIFORNIA, NEW YORK) ====================
+// California and New York forms come from the source-checked catalogs in src/lib/ca/forms.ts
+// and src/lib/ny/forms.ts (the same lists the legal centers use), arranged under this
+// library's tabs. Every other state below is "coming soon": its lists have not been checked.
+
+/** States whose forms come from the checked catalogs. */
+export const LIVE_FORM_STATES = ['CA', 'NY'] as const;
+
+const isSmallClaims = (f: CourtForm) => f.category === 'Small Claims';
+const isHousing = (f: CourtForm) => f.category.startsWith('Housing');
+const isFeeWaiver = (f: CourtForm) => f.category === 'Fee Waiver';
+
+/** Joins lists, keeping the first form with each form number. */
+const uniqueForms = (...lists: CourtForm[][]): CourtForm[] => {
+  const seen = new Set<string>();
+  return lists.flat().filter((f) => {
+    if (seen.has(f.formNumber)) return false;
+    seen.add(f.formNumber);
+    return true;
+  });
+};
+
+const liveStateForms = (c: {
+  criminal: CourtForm[]; family: CourtForm[]; divorce: CourtForm[]; cps: CourtForm[];
+  workplace: CourtForm[]; civil: CourtForm[]; humanRights: CourtForm[]; immigration?: CourtForm[];
+}): Record<string, CourtForm[]> => ({
+  family: uniqueForms(c.family, c.divorce),
+  'small-claims': [...c.civil.filter(isSmallClaims), ...c.civil.filter(isFeeWaiver)],
+  housing: [...c.civil.filter(isHousing), ...c.civil.filter(isFeeWaiver)],
+  criminal: c.criminal,
+  cps: c.cps,
+  employment: c.workplace,
+  'workers-rights': c.workplace,
+  'human-rights': c.humanRights,
+  ...(c.immigration ? { immigration: c.immigration } : {}),
+  general: c.civil.filter((f) => !isSmallClaims(f) && !isHousing(f)),
+});
+
 export const stateFormsLibrary: Record<string, StateFormsData> = {
   // ==================== CALIFORNIA ====================
   "CA": {
     stateName: "California",
     courtWebsite: "https://www.courts.ca.gov",
     selfHelpUrl: "https://selfhelp.courts.ca.gov",
-    forms: {
-      "family": [
-        { formNumber: "FL-100", name: "Petition - Marriage/Domestic Partnership", description: "Start divorce or legal separation proceedings", url: "https://www.courts.ca.gov/documents/fl100.pdf", category: "Divorce", feeAmount: "$435-$450", feeWaiverAvailable: true },
-        { formNumber: "FL-110", name: "Summons (Family Law)", description: "Official notice to spouse/partner", url: "https://www.courts.ca.gov/documents/fl110.pdf", category: "Divorce" },
-        { formNumber: "FL-115", name: "Proof of Service of Summons", description: "Confirm spouse was properly served", url: "https://www.courts.ca.gov/documents/fl115.pdf", category: "Divorce" },
-        { formNumber: "FL-120", name: "Response - Marriage/Domestic Partnership", description: "Respond to divorce petition", url: "https://www.courts.ca.gov/documents/fl120.pdf", category: "Divorce", feeAmount: "$435-$450", feeWaiverAvailable: true },
-        { formNumber: "FL-150", name: "Income and Expense Declaration", description: "Financial disclosure for support calculations", url: "https://www.courts.ca.gov/documents/fl150.pdf", category: "Financial" },
-        { formNumber: "FL-160", name: "Property Declaration", description: "List community and separate property", url: "https://www.courts.ca.gov/documents/fl160.pdf", category: "Financial" },
-        { formNumber: "FL-300", name: "Request for Order", description: "Request temporary orders from court", url: "https://www.courts.ca.gov/documents/fl300.pdf", category: "Motions", feeAmount: "$60", feeWaiverAvailable: true },
-        { formNumber: "FL-311", name: "Child Custody and Visitation Application", description: "Request custody/visitation orders", url: "https://www.courts.ca.gov/documents/fl311.pdf", category: "Custody" },
-        { formNumber: "FL-341", name: "Child Custody and Visitation Order", description: "Final custody order attachment", url: "https://www.courts.ca.gov/documents/fl341.pdf", category: "Custody" },
-        { formNumber: "FL-342", name: "Child Support Information and Order Attachment", description: "Child support order details", url: "https://www.courts.ca.gov/documents/fl342.pdf", category: "Support" },
-        { formNumber: "DV-100", name: "Request for Domestic Violence Restraining Order", description: "Protection from abuse", url: "https://www.courts.ca.gov/documents/dv100.pdf", category: "Protection Orders", feeAmount: "Free", feeWaiverAvailable: true },
-        { formNumber: "DV-110", name: "Temporary Restraining Order", description: "Emergency protection order", url: "https://www.courts.ca.gov/documents/dv110.pdf", category: "Protection Orders" },
-      ],
-      "small-claims": [
-        { formNumber: "SC-100", name: "Plaintiff's Claim and ORDER to Go to Small Claims Court", description: "Start your small claims case", url: "https://www.courts.ca.gov/documents/sc100.pdf", category: "Filing", feeAmount: "$30-$75", feeWaiverAvailable: true },
-        { formNumber: "SC-103", name: "Small Claims Case Questionnaire", description: "Help court understand your case", url: "https://www.courts.ca.gov/documents/sc103.pdf", category: "Filing" },
-        { formNumber: "SC-104", name: "Defendant's Claim and ORDER to Go to Small Claims Court", description: "Counter-claim against plaintiff", url: "https://www.courts.ca.gov/documents/sc104.pdf", category: "Response", feeAmount: "$30-$75", feeWaiverAvailable: true },
-        { formNumber: "SC-105", name: "Amendment to Claim", description: "Change your claim before hearing", url: "https://www.courts.ca.gov/documents/sc105.pdf", category: "Amendments" },
-        { formNumber: "SC-107", name: "Request to Amend Claim Before Hearing", description: "Modify claim details", url: "https://www.courts.ca.gov/documents/sc107.pdf", category: "Amendments" },
-        { formNumber: "SC-120", name: "Request to Pay Judgment in Installments", description: "Payment plan request", url: "https://www.courts.ca.gov/documents/sc120.pdf", category: "Judgment" },
-        { formNumber: "SC-133", name: "Request to Postpone Trial", description: "Ask for new hearing date", url: "https://www.courts.ca.gov/documents/sc133.pdf", category: "Motions" },
-        { formNumber: "SC-134", name: "Declaration and Order (Postponement)", description: "Declaration supporting postponement", url: "https://www.courts.ca.gov/documents/sc134.pdf", category: "Motions" },
-        { formNumber: "SC-500", name: "Subpoena for Personal Appearance", description: "Require witness to appear", url: "https://www.courts.ca.gov/documents/sc500.pdf", category: "Discovery" },
-      ],
-      "employment": [
-        { formNumber: "DLSE-1", name: "Initial Report or Claim", description: "File wage claim with Labor Commissioner", url: "https://www.dir.ca.gov/dlse/howtofilewageclaim.htm", category: "Wage Claims" },
-        { formNumber: "CRD Complaint", name: "Pre-Complaint Inquiry", description: "File discrimination complaint", url: "https://calcivilrights.ca.gov/complaintprocess/", category: "Discrimination", feeAmount: "Free" },
-        { formNumber: "DWC-1", name: "Workers' Compensation Claim Form", description: "Report workplace injury", url: "https://www.dir.ca.gov/dwc/DWCForm1.pdf", category: "Workers Comp" },
-        { formNumber: "WCAB Application", name: "Application for Adjudication of Claim", description: "Start workers comp case", url: "https://www.dir.ca.gov/dwc/wcab.htm", category: "Workers Comp" },
-        { formNumber: "DE 2501", name: "Claim for Disability Insurance Benefits", description: "Apply for state disability", url: "https://edd.ca.gov/en/disability/how_to_file_a_di_claim_by_mail/", category: "Disability" },
-        { formNumber: "DE 2501F", name: "Claim for Paid Family Leave Benefits", description: "Apply for paid family leave", url: "https://edd.ca.gov/en/disability/how_to_file_a_pfl_claim_by_mail/", category: "Family Leave" },
-      ],
-      "housing": [
-        { formNumber: "UD-100", name: "Complaint - Unlawful Detainer", description: "Landlord eviction lawsuit", url: "https://www.courts.ca.gov/documents/ud100.pdf", category: "Eviction", feeAmount: "$240-$450", feeWaiverAvailable: true },
-        { formNumber: "UD-101", name: "Plaintiff's Mandatory Cover Sheet", description: "Required cover sheet for UD", url: "https://www.courts.ca.gov/documents/ud101.pdf", category: "Eviction" },
-        { formNumber: "UD-105", name: "Answer - Unlawful Detainer", description: "Tenant response to eviction", url: "https://www.courts.ca.gov/documents/ud105.pdf", category: "Defense", feeAmount: "$240-$450", feeWaiverAvailable: true },
-        { formNumber: "UD-115", name: "Request for Entry of Default", description: "Request default judgment", url: "https://www.courts.ca.gov/documents/ud115.pdf", category: "Default" },
-        { formNumber: "SC-500A", name: "Security Deposit Demand Letter", description: "Demand return of deposit", url: "https://selfhelp.courts.ca.gov/small-claims/security-deposit", category: "Deposits" },
-        { formNumber: "MC-030", name: "Declaration", description: "Written statement under penalty of perjury", url: "https://www.courts.ca.gov/documents/mc030.pdf", category: "General" },
-      ],
-      "criminal": [
-        { formNumber: "CR-180", name: "Petition for Dismissal", description: "Request expungement (PC 1203.4)", url: "https://www.courts.ca.gov/documents/cr180.pdf", category: "Expungement", feeAmount: "No filing fee", feeWaiverAvailable: true },
-        { formNumber: "CR-181", name: "Order for Dismissal", description: "Court order granting expungement", url: "https://www.courts.ca.gov/documents/cr181.pdf", category: "Expungement" },
-        { formNumber: "CR-105", name: "Petition for Reduction to Misdemeanor", description: "Reduce felony wobbler to misdemeanor", url: "https://www.courts.ca.gov/documents/cr105.pdf", category: "Record Relief" },
-        { formNumber: "GC-310", name: "Petition for Appointment of Guardian", description: "Seek guardianship of minor", url: "https://www.courts.ca.gov/documents/gc310.pdf", category: "Guardianship" },
-      ],
-      "general": [
-        { formNumber: "FW-001", name: "Request to Waive Court Fees", description: "Apply for fee waiver", url: "https://www.courts.ca.gov/documents/fw001.pdf", category: "Fee Waiver", feeAmount: "Free" },
-        { formNumber: "FW-003", name: "Order on Court Fee Waiver", description: "Court decision on fee waiver", url: "https://www.courts.ca.gov/documents/fw003.pdf", category: "Fee Waiver" },
-        { formNumber: "MC-025", name: "Attachment to Judicial Council Form", description: "Extra pages for any form", url: "https://www.courts.ca.gov/documents/mc025.pdf", category: "General" },
-        { formNumber: "POS-010", name: "Proof of Service of Summons", description: "Confirm service of process", url: "https://www.courts.ca.gov/documents/pos010.pdf", category: "Service" },
-        { formNumber: "POS-030", name: "Proof of Service by First-Class Mail", description: "Confirm mailed service", url: "https://www.courts.ca.gov/documents/pos030.pdf", category: "Service" },
-        { formNumber: "CM-010", name: "Civil Case Cover Sheet", description: "Required for civil cases", url: "https://www.courts.ca.gov/documents/cm010.pdf", category: "Civil" },
-      ],
-      "personal-injury": [
-        { formNumber: "CM-010", name: "Civil Case Cover Sheet", description: "Required cover sheet for all civil cases including personal injury", url: "https://www.courts.ca.gov/documents/cm010.pdf", category: "Filing", feeAmount: "$435-$450", feeWaiverAvailable: true },
-        { formNumber: "PLD-PI-001", name: "Complaint - Personal Injury, Property Damage, Wrongful Death", description: "Main complaint form for personal injury lawsuits", url: "https://www.courts.ca.gov/documents/pldpi001.pdf", category: "Filing" },
-        { formNumber: "PLD-PI-002", name: "Cause of Action - Motor Vehicle", description: "Attachment for motor vehicle accident claims", url: "https://www.courts.ca.gov/documents/pldpi002.pdf", category: "Auto Accident" },
-        { formNumber: "PLD-PI-003", name: "Cause of Action - Premises Liability", description: "Attachment for slip and fall/property injuries", url: "https://www.courts.ca.gov/documents/pldpi003.pdf", category: "Premises Liability" },
-        { formNumber: "SUM-100", name: "Summons", description: "Notice to defendant of lawsuit", url: "https://www.courts.ca.gov/documents/sum100.pdf", category: "Service" },
-        { formNumber: "POS-010", name: "Proof of Service of Summons", description: "Confirm defendant was properly served", url: "https://www.courts.ca.gov/documents/pos010.pdf", category: "Service" },
-        { formNumber: "CM-110", name: "Case Management Statement", description: "Required case management document", url: "https://www.courts.ca.gov/documents/cm110.pdf", category: "Case Management" },
-        { formNumber: "DISC-001", name: "Form Interrogatories - General", description: "Standard discovery questions for opposing party", url: "https://www.courts.ca.gov/documents/disc001.pdf", category: "Discovery" },
-        { formNumber: "FW-001", name: "Request to Waive Court Fees", description: "Apply for fee waiver if low income", url: "https://www.courts.ca.gov/documents/fw001.pdf", category: "Fee Waiver", feeAmount: "Free" },
-      ],
-    }
+    forms: liveStateForms({
+      criminal: CA_CRIMINAL_FORMS, family: CA_FAMILY_FORMS, divorce: CA_DIVORCE_FORMS, cps: CA_CPS_FORMS,
+      workplace: CA_WORKPLACE_FORMS, civil: CA_CIVIL_FORMS, humanRights: CA_HUMAN_RIGHTS_FORMS,
+    }),
   },
 
+  // ==================== NEW YORK ====================
+  "NY": {
+    stateName: "New York",
+    courtWebsite: "https://www.nycourts.gov",
+    selfHelpUrl: "https://www.nycourts.gov/courthelp/",
+    forms: liveStateForms({
+      criminal: NY_CRIMINAL_FORMS, family: NY_FAMILY_FORMS, divorce: NY_DIVORCE_FORMS, cps: NY_CPS_FORMS,
+      workplace: NY_WORKPLACE_FORMS, civil: NY_CIVIL_FORMS, humanRights: NY_HUMAN_RIGHTS_FORMS,
+      immigration: NY_IMMIGRATION_FORMS,
+    }),
+  },
+
+  // ==================== COMING SOON (not yet checked) ====================
   // ==================== TEXAS ====================
   "TX": {
     stateName: "Texas",
@@ -138,59 +134,6 @@ export const stateFormsLibrary: Record<string, StateFormsData> = {
         { formNumber: "Request for Production", name: "Request for Production of Documents", description: "Request defendant's documents and records", url: "https://texaslawhelp.org/legal-help/personal-injury", category: "Discovery" },
         { formNumber: "Medical Authorization", name: "Authorization for Release of Medical Records", description: "HIPAA-compliant medical records release", url: "https://texaslawhelp.org/legal-help/personal-injury", category: "Medical Records" },
         { formNumber: "Statement of Inability", name: "Statement of Inability to Afford Payment", description: "Texas fee waiver application", url: "https://texaslawhelp.org/form/fee-waiver", category: "Fee Waiver", feeAmount: "Free" },
-      ],
-    }
-  },
-
-  // ==================== NEW YORK ====================
-  "NY": {
-    stateName: "New York",
-    courtWebsite: "https://www.nycourts.gov",
-    selfHelpUrl: "https://www.nycourts.gov/courthelp/",
-    forms: {
-      "family": [
-        { formNumber: "UD-2", name: "Summons With Notice (Divorce)", description: "Start uncontested divorce", url: "https://www.nycourts.gov/divorce-resources/statewide-divorce-forms", category: "Divorce", feeAmount: "$335", feeWaiverAvailable: true },
-        { formNumber: "UD-11", name: "Verified Complaint for Divorce", description: "Detailed divorce allegations", url: "https://www.nycourts.gov/divorce-resources/statewide-divorce-forms", category: "Divorce" },
-        { formNumber: "UD-6", name: "Affidavit of Defendant", description: "Defendant's consent to divorce", url: "https://www.nycourts.gov/divorce-resources/statewide-divorce-forms", category: "Divorce" },
-        { formNumber: "UD-8", name: "Sworn Statement of Removal of Barriers", description: "Religious barriers statement", url: "https://www.nycourts.gov/divorce-resources/statewide-divorce-forms", category: "Divorce" },
-        { formNumber: "Order of Protection Petition", name: "Family Offense Petition", description: "Request protection order", url: "https://www.nycourts.gov/help/safety-violence/filing-family-offense-petition-domestic-violence", category: "Protection Orders", feeAmount: "Free" },
-        { formNumber: "Custody Petition", name: "Petition for Custody", description: "Request child custody", url: "https://www.nycourts.gov/help/family-issues-divorce", category: "Custody", feeAmount: "Free" },
-        { formNumber: "Support Petition", name: "Petition for Child Support", description: "Request child support order", url: "https://www.nycourts.gov/help/family-issues-divorce", category: "Support", feeAmount: "Free" },
-      ],
-      "small-claims": [
-        { formNumber: "CIV-SC-50", name: "Small Claims Complaint", description: "Start small claims case (up to $10,000)", url: "https://www.nycourts.gov/forms/statement-claim-small-claims", category: "Filing", feeAmount: "$15-$20", feeWaiverAvailable: true },
-        { formNumber: "Commercial Claims Form", name: "Commercial Small Claims", description: "Business small claims (up to $10,000)", url: "https://www.nycourts.gov/forms/statement-claim-small-claims", category: "Filing", feeAmount: "$25-$35" },
-        { formNumber: "Motion to Vacate Default", name: "Motion to Vacate Default", description: "Reopen case after default", url: "https://www.nycourts.gov/forms/statement-claim-small-claims", category: "Motions" },
-        { formNumber: "Subpoena", name: "Small Claims Subpoena", description: "Compel witness attendance", url: "https://www.nycourts.gov/forms/statement-claim-small-claims", category: "Discovery" },
-      ],
-      "employment": [
-        { formNumber: "DOL UI-1", name: "Unemployment Insurance Claim", description: "Apply for unemployment benefits", url: "https://dol.ny.gov/unemployment/file-your-first-claim-background", category: "Unemployment" },
-        { formNumber: "DOL LS-223", name: "Claim for Unpaid Wages", description: "Report wage theft", url: "https://dol.ny.gov/unpaidwithheld-wages-and-டமages", category: "Wage Claims", feeAmount: "Free" },
-        { formNumber: "DHR Complaint", name: "Human Rights Complaint", description: "File discrimination complaint", url: "https://dhr.ny.gov/complaint", category: "Discrimination", feeAmount: "Free" },
-      ],
-      "housing": [
-        { formNumber: "NYLP-1", name: "Notice of Petition (Eviction)", description: "Landlord eviction notice", url: "https://www.nycourts.gov/help/homes-evictions", category: "Eviction", feeAmount: "$45" },
-        { formNumber: "Answer in Eviction", name: "Answer in Housing Court", description: "Tenant response to eviction", url: "https://www.nycourts.gov/help/homes-evictions", category: "Defense", feeAmount: "Free" },
-        { formNumber: "HP Action", name: "HP Action for Repairs", description: "Sue landlord for repairs", url: "https://www.nycourts.gov/new-york-city-housing-court/starting-hp-proceeding-obtain-repairs", category: "Repairs", feeAmount: "Free" },
-        { formNumber: "Order to Show Cause", name: "Order to Show Cause (Housing)", description: "Emergency housing motion", url: "https://www.nycourts.gov/help/homes-evictions", category: "Motions" },
-      ],
-      "criminal": [
-        { formNumber: "CPL 160.59 Motion", name: "Motion to Seal Criminal Record", description: "Seal eligible convictions", url: "https://www.nycourts.gov/help/criminal/criminal-records-sealing", category: "Record Sealing", feeAmount: "Free" },
-        { formNumber: "Certificate of Relief", name: "Application for Certificate of Relief", description: "Remove legal disabilities from conviction", url: "https://www.nycourts.gov/help/criminal/getting-rights-back", category: "Certificates", feeAmount: "Free" },
-      ],
-      "general": [
-        { formNumber: "Fee Waiver Application", name: "Poor Person Application", description: "Request court fee waiver", url: "https://www.nycourts.gov/help/representing-yourself-court/fee-waivers-poor-persons-relief", category: "Fee Waiver", feeAmount: "Free" },
-        { formNumber: "Affidavit of Service", name: "Affidavit of Service", description: "Prove papers were served", url: "https://www.nycourts.gov/help/representing-yourself-court/how-legal-papers-are-delivered-service", category: "Service" },
-      ],
-      "personal-injury": [
-        { formNumber: "Summons", name: "Summons in Supreme Court", description: "Official notice initiating personal injury lawsuit", url: "https://www.nycourts.gov/forms/", category: "Filing", feeAmount: "$335", feeWaiverAvailable: true },
-        { formNumber: "Verified Complaint", name: "Verified Complaint (Personal Injury)", description: "Detailed complaint for personal injury claims", url: "https://www.nycourts.gov/forms/", category: "Filing" },
-        { formNumber: "RJI", name: "Request for Judicial Intervention", description: "Requests court assignment for case management", url: "https://www.nycourts.gov/forms/", category: "Case Management", feeAmount: "$95" },
-        { formNumber: "Bill of Particulars", name: "Bill of Particulars", description: "Detailed statement of injuries and damages claimed", url: "https://www.nycourts.gov/forms/", category: "Pleadings" },
-        { formNumber: "Demand for Discovery", name: "Combined Demands for Discovery", description: "Request for interrogatories, documents, and admissions", url: "https://www.nycourts.gov/forms/", category: "Discovery" },
-        { formNumber: "Notice of Medical Exam", name: "Notice of Independent Medical Examination", description: "Notice for defense medical examination (IME)", url: "https://www.nycourts.gov/forms/", category: "Discovery" },
-        { formNumber: "Note of Issue", name: "Note of Issue and Certificate of Readiness", description: "Certifies case is ready for trial", url: "https://www.nycourts.gov/forms/", category: "Trial Prep", feeAmount: "$125" },
-        { formNumber: "Poor Person Application", name: "Poor Persons Application", description: "Fee waiver for low-income litigants", url: "https://www.nycourts.gov/help/representing-yourself-court/fee-waivers-poor-persons-relief", category: "Fee Waiver", feeAmount: "Free" },
       ],
     }
   },

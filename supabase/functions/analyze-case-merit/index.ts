@@ -201,7 +201,9 @@ Return only valid JSON with exactly this structure:
           .from('case_files')
           .update({ case_id: caseRecord.id })
           .in('id', fileIds)
-          .eq('user_id', userId);
+          .eq('user_id', userId)
+          // Never move a file that already belongs to another case.
+          .is('case_id', null);
         
         if (linkError) {
           console.error('Error linking files to case:', linkError);

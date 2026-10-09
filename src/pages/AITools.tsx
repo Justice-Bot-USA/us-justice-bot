@@ -32,17 +32,17 @@ const tools = [
   },
   {
     icon: FileText,
-    title: "Form Generator",
-    description: "Generate state-specific legal forms pre-filled with your case information. Download court-ready documents with proper formatting.",
-    features: ["State-specific forms", "Auto-fill capability", "Court formatting", "PDF export"],
+    title: "Official Form Filling",
+    description: "In California and New York, fill in official court forms with your own answers and download the PDF. You review, sign, and file it yourself. Other states coming soon.",
+    features: ["Official CA & NY forms", "Plain-language instructions", "Your own answers", "PDF download"],
     status: "Available",
-    link: "/case-analysis"
+    link: "/forms-library"
   },
   {
     icon: FolderOpen,
-    title: "Evidence Organizer",
-    description: "Upload, organize, and manage your case evidence. Tag documents, create timelines, and build a comprehensive evidence package.",
-    features: ["File management", "Evidence tagging", "Timeline creation", "Cloud storage sync"],
+    title: "Evidence Upload & Summary",
+    description: "Upload your documents with your story and get a plain-language summary of your situation, built from what you tell us. Not legal advice.",
+    features: ["Document upload", "Plain-language summary", "Saved with your case", "Links to official sources"],
     status: "Available",
     link: "/case-analysis"
   }
@@ -152,8 +152,8 @@ const AITools = () => {
             Ready to Get Started?
           </h2>
           <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
-            Our AI-powered tools are here to help you understand your legal situation 
-            and take the right steps forward.
+            Our AI-powered tools can help you understand your legal situation and find
+            official forms and resources. They do not give legal advice.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg">
@@ -175,8 +175,9 @@ const AITools = () => {
       <footer className="bg-muted/30 py-8 border-t">
         <div className="container mx-auto px-4 text-center text-muted-foreground text-sm">
           <p>
-            These AI tools provide educational information only and do not constitute legal advice. 
-            For specific legal matters, please consult a licensed attorney.
+            These AI tools provide educational information only and do not constitute legal advice. AI answers can be
+            wrong, and our content has not yet been reviewed by a licensed attorney. For specific legal matters, please
+            consult a licensed attorney.
           </p>
         </div>
       </footer>

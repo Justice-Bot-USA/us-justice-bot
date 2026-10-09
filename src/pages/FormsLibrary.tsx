@@ -29,7 +29,13 @@ import {
 } from 'lucide-react';
 import { states, stateAbbreviations } from '@/lib/states';
 import { getFillableByFormNumber } from '@/lib/formfill';
-import { getStateFormsData, stateCourtWebsites, legalAreaCategories, CourtForm, federalCourtForms, federalCourtInfo } from '@/lib/formsLibraryData';
+import { getStateFormsData, stateCourtWebsites, legalAreaCategories, CourtForm, federalCourtForms, federalCourtInfo, LIVE_FORM_STATES, stateFormsLibrary } from '@/lib/formsLibraryData';
+import { stateRouteFor } from '@/lib/stateRouting';
+
+// California and New York forms come from the checked catalogs behind the legal centers.
+const isLiveState = (code: string) => (LIVE_FORM_STATES as readonly string[]).includes(code);
+// Other states with a longer (not yet checked) list of official links.
+const LINKED_STATES = ['TX', 'FL', 'IL'];
 
 const categoryIcons: Record<string, React.ReactNode> = {
   "family": <Heart className="h-5 w-5" />,
@@ -83,8 +89,11 @@ export default function FormsLibrary() {
   const stateName = stateInfo?.name || selectedState;
   const hasFederalResults = !!searchResults?.some((r) => r.federal);
 
-  const hasDetailedData = selectedCategory === 'federal' || ['CA', 'TX', 'NY', 'FL', 'IL'].includes(selectedState);
+  const isLive = isLiveState(selectedState);
+  const hasDetailedData = selectedCategory === 'federal' || isLive || LINKED_STATES.includes(selectedState);
   const isFederalCategory = selectedCategory === 'federal';
+  // Filing steps for the open tab in the California / New York legal center.
+  const centerRoute = isLive ? stateRouteFor(selectedState, selectedCategory) : null;
 
   return (
     <div className="min-h-screen bg-background">
@@ -110,7 +119,7 @@ export default function FormsLibrary() {
             <FileText className="h-10 w-10" />
             <div>
               <h1 className="text-3xl font-bold">Court Forms Library</h1>
-              <p className="text-primary-foreground/80">Official court forms · verified for California and New York, other states coming soon</p>
+              <p className="text-primary-foreground/80">Official court forms for California and New York · other states coming soon</p>
             </div>
           </div>
         </div>
@@ -130,10 +139,9 @@ export default function FormsLibrary() {
                   <SelectContent className="max-h-[300px]">
                     {states.map((state) => {
                       const abbr = stateAbbreviations[state] || state;
-                      const hasDetailed = ['CA', 'TX', 'NY', 'FL', 'IL'].includes(abbr);
                       return (
                         <SelectItem key={abbr} value={abbr}>
-                          {state} {hasDetailed && '✓'}
+                          {state}{isLiveState(abbr) ? ' ✓' : ' (coming soon)'}
                         </SelectItem>
                       );
                     })}
@@ -171,9 +179,11 @@ export default function FormsLibrary() {
                   <p className="text-muted-foreground text-sm">
                     {isFederalCategory 
                       ? 'Federal court forms apply nationwide for U.S. District Courts'
-                      : hasDetailedData 
-                        ? 'Detailed forms with official court links available'
-                        : 'Basic form templates - visit state court website for official forms'
+                      : isLive
+                        ? `${stateName} forms from our ${stateName} legal center, with links to the official court pages`
+                        : selectedState in stateFormsLibrary
+                          ? `${stateName} is coming soon. These links have not been checked yet; confirm each form on the official court website.`
+                          : `${stateName} is coming soon. These are general form types, not official ${stateName} forms.`
                     }
                   </p>
                 </div>
@@ -222,12 +232,22 @@ export default function FormsLibrary() {
                 )}
               </div>
             </div>
-            {!hasDetailedData && !isFederalCategory && (
+            {!isLive && !isFederalCategory && (
               <div className="mt-4 p-3 bg-amber-500/10 border border-amber-500/20 rounded-lg">
                 <p className="text-sm text-amber-800 dark:text-amber-200">
-                  <strong>Note:</strong> Detailed forms data is available for CA, TX, NY, FL, and IL. 
-                  For other states, please visit the official court website above for specific form numbers and requirements.
+                  <strong>Note:</strong> Justice Bot USA is live in California and New York; other states are coming soon.
+                  For {stateName}, please visit the official court website above for specific form numbers and requirements.
                 </p>
+              </div>
+            )}
+            {centerRoute && !isFederalCategory && (
+              <div className="mt-4 flex flex-wrap gap-2">
+                <Button size="sm" asChild>
+                  <Link to={centerRoute.centerPath}>{stateName} filing steps, fees and deadlines</Link>
+                </Button>
+                <Button size="sm" variant="outline" asChild>
+                  <Link to={centerRoute.fillPath}>Fill {stateName} court forms</Link>
+                </Button>
               </div>
             )}
             {isFederalCategory && (
@@ -262,7 +282,7 @@ export default function FormsLibrary() {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {searchResults.map(({ form, area }, index) => (
                   <FormCard key={`${form.formNumber}-${index}`} form={form} area={area} state={selectedState}
-                    hasDetailedData={area === 'Federal Court' || ['CA', 'TX', 'NY', 'FL', 'IL'].includes(selectedState)} />
+                    hasDetailedData={area === 'Federal Court' || isLive || LINKED_STATES.includes(selectedState)} />
                 ))}
               </div>
             ) : (
@@ -306,7 +326,9 @@ export default function FormsLibrary() {
                   <FileText className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
                   <h3 className="text-lg font-semibold mb-2">No Forms Found</h3>
                   <p className="text-muted-foreground">
-                    {`No ${category.name} forms available for this state`}
+                    {isLive
+                      ? `Our ${stateName} catalog does not include ${category.name} forms yet. Check the ${stateName} courts' self-help website.`
+                      : `No ${category.name} forms available for this state`}
                   </p>
                 </Card>
               )}
@@ -333,7 +355,7 @@ export default function FormsLibrary() {
                 <Button variant="outline" className="w-full h-auto py-4 flex flex-col items-center gap-2">
                   <FileText className="h-6 w-6" />
                   <span className="font-medium">Case Analysis</span>
-                  <span className="text-xs text-muted-foreground">Get personalized form recommendations</span>
+                  <span className="text-xs text-muted-foreground">Get a plain-language summary of your situation</span>
                 </Button>
               </Link>
               <Link to="/ai-tools/use">

@@ -4,92 +4,11 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Shield, Lock, Eye, Database, UserCheck, Globe } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 const PrivacyPolicy = () => {
   const [language, setLanguage] = useState<'en' | 'es'>('en');
-  const lastUpdated = "January 4, 2026";
+  const lastUpdated = "October 9, 2026";
 
-  const stateSpecificNotices = [
-    {
-      state: "California",
-      law: "California Consumer Privacy Act (CCPA) & California Privacy Rights Act (CPRA)",
-      rights: [
-        "Right to know what personal information is collected",
-        "Right to delete personal information",
-        "Right to opt-out of sale/sharing of personal information",
-        "Right to non-discrimination for exercising privacy rights",
-        "Right to correct inaccurate personal information",
-        "Right to limit use of sensitive personal information"
-      ]
-    },
-    {
-      state: "Virginia",
-      law: "Virginia Consumer Data Protection Act (VCDPA)",
-      rights: [
-        "Right to access personal data",
-        "Right to correct inaccuracies",
-        "Right to delete personal data",
-        "Right to data portability",
-        "Right to opt out of targeted advertising"
-      ]
-    },
-    {
-      state: "Colorado",
-      law: "Colorado Privacy Act (CPA)",
-      rights: [
-        "Right to access, correct, and delete personal data",
-        "Right to data portability",
-        "Right to opt out of targeted advertising and sale of data"
-      ]
-    },
-    {
-      state: "Connecticut",
-      law: "Connecticut Data Privacy Act (CTDPA)",
-      rights: [
-        "Right to access and delete personal data",
-        "Right to correct inaccuracies",
-        "Right to data portability",
-        "Right to opt out of sale and targeted advertising"
-      ]
-    },
-    {
-      state: "Utah",
-      law: "Utah Consumer Privacy Act (UCPA)",
-      rights: [
-        "Right to access and delete personal data",
-        "Right to data portability",
-        "Right to opt out of sale of personal data"
-      ]
-    },
-    {
-      state: "Texas",
-      law: "Texas Data Privacy and Security Act (TDPSA)",
-      rights: [
-        "Right to access, correct, and delete personal data",
-        "Right to data portability",
-        "Right to opt out of sale and targeted advertising"
-      ]
-    },
-    {
-      state: "Oregon",
-      law: "Oregon Consumer Privacy Act (OCPA)",
-      rights: [
-        "Right to access, correct, and delete personal data",
-        "Right to data portability",
-        "Right to opt out of targeted advertising"
-      ]
-    },
-    {
-      state: "Montana",
-      law: "Montana Consumer Data Privacy Act (MTCDPA)",
-      rights: [
-        "Right to access, correct, and delete personal data",
-        "Right to data portability",
-        "Right to opt out of targeted advertising and sale"
-      ]
-    }
-  ];
 
   return (
     <>
@@ -129,7 +48,7 @@ const PrivacyPolicy = () => {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">
-                  We use industry-standard encryption and security measures to protect your personal information.
+                  We use encrypted connections (HTTPS/TLS) and a cloud provider with access controls to help protect your personal information.
                 </p>
               </CardContent>
             </Card>
@@ -141,7 +60,7 @@ const PrivacyPolicy = () => {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">
-                  We are transparent about what data we collect and how we use it. No hidden practices.
+                  This policy explains what data we collect, how we use it, and who we share it with.
                 </p>
               </CardContent>
             </Card>
@@ -153,7 +72,7 @@ const PrivacyPolicy = () => {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">
-                  You have the right to access, correct, and delete your personal data at any time.
+                  You can ask us to access, correct, or delete your personal data at any time.
                 </p>
               </CardContent>
             </Card>
@@ -171,15 +90,15 @@ const PrivacyPolicy = () => {
             <h3 className="text-xl font-semibold mt-6 mb-3">Personal Information</h3>
             <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
               <li>Name and contact information (email address)</li>
-              <li>Account credentials (encrypted passwords)</li>
-              <li>Payment information (processed securely through PayPal)</li>
+              <li>Account credentials (passwords are stored in hashed form by our authentication provider)</li>
+              <li>Payment information (processed by Stripe, our payment processor; we do not see or store your full card number)</li>
               <li>Legal case information you voluntarily provide</li>
               <li>State of residence for jurisdiction-specific guidance</li>
             </ul>
 
             <h3 className="text-xl font-semibold mt-6 mb-3">Automatically Collected Information</h3>
             <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
-              <li>IP address (anonymized for analytics)</li>
+              <li>IP address (received by our hosting and analytics providers; we use Google Analytics)</li>
               <li>Browser type and device information</li>
               <li>Pages visited and features used</li>
               <li>Date and time of access</li>
@@ -188,7 +107,7 @@ const PrivacyPolicy = () => {
             <h2 className="text-2xl font-bold mt-12 mb-4">How We Use Your Information</h2>
             <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
               <li>To provide AI-powered legal information and guidance</li>
-              <li>To generate legal forms based on your input</li>
+              <li>To fill official forms with the answers you give</li>
               <li>To improve our services and user experience</li>
               <li>To communicate important updates about our service</li>
               <li>To comply with legal obligations</li>
@@ -200,7 +119,7 @@ const PrivacyPolicy = () => {
               We do NOT sell your personal information. We may share information only in the following circumstances:
             </p>
             <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
-              <li><strong>Service Providers:</strong> Third-party services that help us operate (e.g., hosting, payment processing)</li>
+              <li><strong>Service Providers:</strong> Third-party services that help us operate, such as hosting, payment processing (Stripe), analytics (Google Analytics), and the AI service that processes your questions and case details</li>
               <li><strong>Legal Requirements:</strong> When required by law, court order, or government request</li>
               <li><strong>Safety:</strong> To protect the rights, safety, and property of our users</li>
               <li><strong>Business Transfers:</strong> In connection with a merger, acquisition, or sale of assets</li>
@@ -208,7 +127,7 @@ const PrivacyPolicy = () => {
 
             <h2 className="text-2xl font-bold mt-12 mb-4">Data Retention</h2>
             <p className="text-muted-foreground">
-              We retain your personal information only for as long as necessary to provide our services and fulfill the purposes described in this policy. Case data is retained for the duration of your account plus 7 years to comply with legal requirements. You may request deletion of your data at any time.
+              We keep your personal information, including case data, while your account is open and as long as needed for the purposes described in this policy. You may ask us to delete your data at any time by emailing privacy@justicebot-usa.com; we may keep limited records where the law requires it.
             </p>
 
             <h2 className="text-2xl font-bold mt-12 mb-4">Cookies and Tracking</h2>
@@ -223,56 +142,29 @@ const PrivacyPolicy = () => {
           </div>
         </section>
 
-        {/* State-Specific Rights */}
+        {/* Privacy Rights */}
         <section className="py-12 bg-muted/30">
           <div className="container mx-auto px-4 max-w-4xl">
             <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
               <Globe className="h-6 w-6 text-primary" />
-              State-Specific Privacy Rights
+              Your Privacy Rights
             </h2>
-            <p className="text-muted-foreground mb-6">
-              Depending on your state of residence, you may have additional privacy rights under state law. Below are the specific rights afforded to residents of states with comprehensive privacy legislation:
+            <p className="text-muted-foreground mb-4">
+              We offer the following to every user, wherever you live:
             </p>
-
-            <Accordion type="single" collapsible className="w-full">
-              {stateSpecificNotices.map((state, index) => (
-                <AccordionItem key={state.state} value={`state-${index}`}>
-                  <AccordionTrigger className="text-lg font-semibold">
-                    {state.state} Residents
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    <p className="font-medium text-primary mb-2">{state.law}</p>
-                    <p className="text-muted-foreground mb-3">As a {state.state} resident, you have the following rights:</p>
-                    <ul className="list-disc pl-6 space-y-1 text-muted-foreground">
-                      {state.rights.map((right, i) => (
-                        <li key={i}>{right}</li>
-                      ))}
-                    </ul>
-                    <p className="mt-4 text-sm text-muted-foreground">
-                      To exercise these rights, contact us at privacy@justicebot-usa.com or use the "My Data" section in your account settings.
-                    </p>
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-
-              <AccordionItem value="other-states">
-                <AccordionTrigger className="text-lg font-semibold">
-                  All Other States
-                </AccordionTrigger>
-                <AccordionContent>
-                  <p className="text-muted-foreground mb-3">
-                    Even if your state does not have comprehensive privacy legislation, we extend the following rights to all users:
-                  </p>
-                  <ul className="list-disc pl-6 space-y-1 text-muted-foreground">
-                    <li>Right to access your personal information</li>
-                    <li>Right to request correction of inaccurate data</li>
-                    <li>Right to request deletion of your data</li>
-                    <li>Right to receive a copy of your data (data portability)</li>
-                    <li>Right to opt out of marketing communications</li>
-                  </ul>
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
+            <ul className="list-disc pl-6 space-y-1 text-muted-foreground mb-6">
+              <li>Access: ask what personal information we hold about you</li>
+              <li>Correction: ask us to correct inaccurate information</li>
+              <li>Deletion: ask us to delete your personal information</li>
+              <li>A copy: ask for a copy of your information</li>
+              <li>Marketing: opt out of marketing emails</li>
+            </ul>
+            <p className="text-muted-foreground mb-4">
+              To make any of these requests, email privacy@justicebot-usa.com from the address on your account.
+            </p>
+            <p className="text-sm text-muted-foreground">
+              Some state laws, such as the California Consumer Privacy Act, give residents additional privacy rights when the law applies to a business. Whether or not a particular law applies to us, you can use the rights above.
+            </p>
           </div>
         </section>
 
@@ -285,7 +177,7 @@ const PrivacyPolicy = () => {
           <div className="bg-muted/50 rounded-lg p-6">
             <p className="font-medium">Justice Bot Technologies Inc. (Justice Bot USA) — Privacy</p>
             <p className="text-muted-foreground">Email: privacy@justicebot-usa.com</p>
-            <p className="text-muted-foreground">Response Time: Within 45 days as required by applicable state laws</p>
+            <p className="text-muted-foreground">Response time: we aim to respond within 45 days</p>
           </div>
 
           <div className="mt-8 p-4 border border-destructive/30 rounded-lg bg-destructive/5">

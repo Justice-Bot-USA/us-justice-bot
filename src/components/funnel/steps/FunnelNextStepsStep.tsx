@@ -9,6 +9,8 @@ import {
 } from 'lucide-react';
 import { FunnelConfig, FunnelState, US_STATE_NAMES, LEGAL_AREA_NAMES } from '@/lib/funnels';
 import { trackConversion } from '@/lib/funnels/analytics';
+import { stateRouteFor } from '@/lib/stateRouting';
+import { stateCourtWebsites } from '@/lib/formsLibraryData';
 import { useNavigate } from 'react-router-dom';
 
 interface FunnelNextStepsStepProps {
@@ -28,60 +30,106 @@ interface NextStep {
   icon: React.ReactNode;
   action: string;
   priority: 'high' | 'medium' | 'low';
+  /** In-app route. */
   link?: string;
+  /** Outside website, opened in a new tab. */
+  href?: string;
 }
 
-const getNextSteps = (config: FunnelConfig, state: FunnelState): NextStep[] => {
-  const stateName = US_STATE_NAMES[config.jurisdiction];
+// Statewide legal aid directories for the live states; LawHelp.org lists the others.
+const LEGAL_AID_SITE: Record<string, string> = {
+  CA: 'https://www.lawhelpca.org/',
+  NY: 'https://www.lawhelpny.org/',
+};
+const NATIONAL_LEGAL_AID_SITE = 'https://www.lawhelp.org';
+const CA_FIND_COURT = 'https://www.courts.ca.gov/find-my-court.htm';
+
+// State-specific text for the live states (checked against CCP §1167, CA small claims
+// service rules, NYC Civil Court Act §1803 and RPAPL 732/743). Other states get general text.
+const FAMILY_DISCLOSURE: Record<string, { description: string; link: string }> = {
+  CA: { description: 'In a California divorce, both spouses must exchange financial disclosure forms (FL-140, FL-142 and FL-150), even if you agree on everything.', link: '/ca/legal-center?area=divorce' },
+  NY: { description: 'In a New York divorce, a contested case needs a sworn Statement of Net Worth, and a case with children usually needs the child support worksheet (UD-8(3)).', link: '/ny/legal-center?area=divorce' },
+};
+const SMALL_CLAIMS_SERVICE: Record<string, { title: string; description: string }> = {
+  CA: { title: 'Serve the Defendant', description: 'An adult who is not you, or the court clerk by certified mail (for a fee), must serve the defendant at least 15 days before the court date (20 days if they live outside the county). Then file the proof of service (SC-104) at least 5 days before the hearing.' },
+  NY: { title: 'Notice to the Defendant', description: 'In New York small claims, the court clerk mails the notice of claim to the defendant by first-class and certified mail. You do not serve it yourself.' },
+};
+const EVICTION_DEADLINE: Record<string, string> = {
+  CA: 'If you were served with an eviction Summons and Complaint, you generally have 10 court days to file an Answer (UD-105). Weekends and court holidays don\'t count, and service that was not in person can move the deadline.',
+  NY: 'Nonpayment case in NYC Housing Court: answer within 10 days of being served. In other courts, and in holdover cases, answer on the court date on your papers (or 3 days before it if the notice of petition says so).',
+};
+
+const getNextSteps = (config: FunnelConfig): NextStep[] => {
+  const code = (config.jurisdiction || '').toUpperCase();
+  const stateName = US_STATE_NAMES[config.jurisdiction] ?? config.jurisdiction;
   const legalArea = config.legalArea;
-  
+  // California and New York have our own legal centers; other states are coming soon,
+  // so their steps point to the state courts' self-help website instead.
+  const route = stateRouteFor(code, legalArea);
+  const courts = stateCourtWebsites[code];
+  const rules: Pick<NextStep, 'link' | 'href'> = route
+    ? { link: route.centerPath }
+    : courts ? { href: courts.selfHelp } : {};
+  const rulesName = route ? `${stateName} filing steps` : `${stateName} courts' self-help website`;
+  const findCourt: Pick<NextStep, 'link' | 'href'> = code === 'CA'
+    ? { href: CA_FIND_COURT }
+    : route ? { link: route.centerPath } : courts ? { href: courts.website } : {};
+
   const commonSteps: NextStep[] = [
     {
       id: 'review-docs',
-      title: 'Review Your Documents',
-      description: 'Carefully review all generated forms for accuracy before filing',
+      title: 'Review Your Forms',
+      description: 'Check every form you filled in for accuracy before you file it. You file the forms yourself.',
       icon: <FileText className="h-5 w-5" />,
-      action: 'Open Documents',
+      action: 'Open My Cases',
       priority: 'high',
       link: '/my-cases',
     },
     {
       id: 'court-filing',
       title: 'File with the Court',
-      description: `Submit your documents to the ${stateName} court clerk`,
+      description: route
+        ? `File your forms with the ${stateName} court clerk. The ${rulesName} explain where to file and the fees.`
+        : `File your forms with the ${stateName} court clerk. ${stateName} is coming soon on Justice Bot USA, so check the ${rulesName} for where to file.`,
       icon: <Building2 className="h-5 w-5" />,
       action: 'Find Court',
       priority: 'high',
+      ...findCourt,
     },
   ];
 
   const areaSpecificSteps: Record<string, NextStep[]> = {
     'family': [
       {
-        id: 'serve-spouse',
-        title: 'Serve Your Spouse',
-        description: 'Arrange for proper service of process within 60 days',
+        id: 'serve-other-party',
+        title: 'Serve the Other Party',
+        description: `The papers must be served the way the court requires (usually by an adult who is not you), and proof of service filed. How and by when depends on the type of case; see the ${rulesName}.`,
         icon: <Calendar className="h-5 w-5" />,
-        action: 'Learn More',
+        action: 'See Service Rules',
         priority: 'high',
+        ...rules,
       },
       {
         id: 'financial-disclosure',
-        title: 'Complete Financial Disclosure',
-        description: 'Prepare income and expense declarations',
+        title: 'Financial Disclosure',
+        description: FAMILY_DISCLOSURE[code]?.description
+          ?? `Your court may require income and expense forms. Check the ${rulesName}.`,
         icon: <FileText className="h-5 w-5" />,
-        action: 'Start Form',
+        action: 'See the Forms',
         priority: 'medium',
+        ...(FAMILY_DISCLOSURE[code] ? { link: FAMILY_DISCLOSURE[code].link } : rules),
       },
     ],
     'small-claims': [
       {
         id: 'service',
-        title: 'Serve the Defendant',
-        description: 'Have someone 18+ serve the claim on the defendant',
+        title: SMALL_CLAIMS_SERVICE[code]?.title ?? 'Serve the Defendant',
+        description: SMALL_CLAIMS_SERVICE[code]?.description
+          ?? `Service rules differ by state. Check the ${rulesName}.`,
         icon: <Calendar className="h-5 w-5" />,
-        action: 'Learn About Service',
+        action: 'See Service Rules',
         priority: 'high',
+        ...rules,
       },
       {
         id: 'prepare-evidence',
@@ -90,26 +138,30 @@ const getNextSteps = (config: FunnelConfig, state: FunnelState): NextStep[] => {
         icon: <FileText className="h-5 w-5" />,
         action: 'Evidence Guide',
         priority: 'medium',
+        link: '/legal-help/small-claims-evidence',
       },
     ],
     'housing': [
       {
         id: 'deadline',
         title: 'Note Your Response Deadline',
-        description: 'You typically have 5 days to respond to an eviction',
+        description: EVICTION_DEADLINE[code]
+          ?? `Eviction deadlines are short and differ by state. Check the papers you were served and the ${rulesName} right away.`,
         icon: <Calendar className="h-5 w-5" />,
-        action: 'Set Reminder',
+        action: 'See the Deadline Rules',
         priority: 'high',
+        ...rules,
       },
     ],
     'criminal': [
       {
         id: 'court-date',
         title: 'Confirm Court Appearance',
-        description: 'Check your court date and time',
+        description: 'Your court date and courtroom are on your paperwork (such as a citation, notice to appear, or release papers). If you are unsure, call the court clerk.',
         icon: <Calendar className="h-5 w-5" />,
         action: 'Find Court Info',
         priority: 'high',
+        ...(code === 'CA' ? { href: CA_FIND_COURT } : courts ? { href: courts.selfHelp } : {}),
       },
     ],
   };
@@ -117,11 +169,13 @@ const getNextSteps = (config: FunnelConfig, state: FunnelState): NextStep[] => {
   const resourceStep: NextStep = {
     id: 'resources',
     title: 'Access Legal Resources',
-    description: `View ${stateName} self-help resources and legal aid options`,
+    description: route
+      ? `See the ${stateName} filing steps, deadlines, fees and official forms`
+      : `${stateName} is coming soon on Justice Bot USA. See the ${rulesName}.`,
     icon: <BookOpen className="h-5 w-5" />,
     action: 'Browse Resources',
     priority: 'low',
-    link: '/ai-tools',
+    ...rules,
   };
 
   const legalAidStep: NextStep = {
@@ -131,6 +185,7 @@ const getNextSteps = (config: FunnelConfig, state: FunnelState): NextStep[] => {
     icon: <Phone className="h-5 w-5" />,
     action: 'Find Legal Aid',
     priority: 'medium',
+    href: LEGAL_AID_SITE[code] ?? NATIONAL_LEGAL_AID_SITE,
   };
 
   return [
@@ -146,10 +201,10 @@ export const FunnelNextStepsStep: React.FC<FunnelNextStepsStepProps> = ({
   state,
 }) => {
   const navigate = useNavigate();
-  const nextSteps = getNextSteps(config, state);
+  const nextSteps = getNextSteps(config);
   const stateName = US_STATE_NAMES[config.jurisdiction];
   const legalAreaName = LEGAL_AREA_NAMES[config.legalArea];
-  const complexityScore = (state.data as any)?.complexityScore ?? 0;
+  const complexityScore = Number((state.data as Record<string, unknown> | undefined)?.complexityScore ?? 0);
 
   React.useEffect(() => {
     trackConversion(config.id);
@@ -170,7 +225,7 @@ export const FunnelNextStepsStep: React.FC<FunnelNextStepsStepProps> = ({
         <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
           <CheckCircle2 className="h-8 w-8 text-primary" />
         </div>
-        <h3 className="text-2xl font-semibold mb-2">Your Case is Ready!</h3>
+        <h3 className="text-2xl font-semibold mb-2">Your Next Steps</h3>
         <p className="text-muted-foreground">
           Here's what to do next with your {legalAreaName.toLowerCase()} case in {stateName}
         </p>
@@ -196,14 +251,23 @@ export const FunnelNextStepsStep: React.FC<FunnelNextStepsStepProps> = ({
                     </Badge>
                   </div>
                   <p className="text-sm text-muted-foreground mb-2">{step.description}</p>
-                  <Button 
-                    variant="link" 
-                    className="h-auto p-0 text-primary"
-                    onClick={() => step.link && navigate(step.link)}
-                  >
-                    {step.action}
-                    <ArrowRight className="h-3 w-3 ml-1" />
-                  </Button>
+                  {step.href ? (
+                    <Button variant="link" className="h-auto p-0 text-primary" asChild>
+                      <a href={step.href} target="_blank" rel="noopener noreferrer">
+                        {step.action}
+                        <ExternalLink className="h-3 w-3 ml-1" />
+                      </a>
+                    </Button>
+                  ) : step.link ? (
+                    <Button
+                      variant="link"
+                      className="h-auto p-0 text-primary"
+                      onClick={() => step.link && navigate(step.link)}
+                    >
+                      {step.action}
+                      <ArrowRight className="h-3 w-3 ml-1" />
+                    </Button>
+                  ) : null}
                 </div>
               </div>
             </CardContent>

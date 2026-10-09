@@ -58,7 +58,7 @@ export default function NewYorkLegalCenter() {
     <div className="flex flex-col min-h-screen bg-background">
       <Helmet>
         <title>New York Legal Center — Forms, Procedures & Filing | Justice Bot USA</title>
-        <meta name="description" content="Comprehensive New York legal resources across 8 areas: criminal, family, divorce, CPS, immigration, workplace, civil, and human rights — with official forms and filing procedures sourced from NY Courts and state agencies." />
+        <meta name="description" content="New York legal information across 8 areas: criminal, family, divorce, CPS, immigration, workplace, civil, and human rights — with official forms and filing procedures sourced from NY Courts and state agencies." />
         <link rel="canonical" href="https://justicebot-usa.com/ny/legal-center" />
       </Helmet>
       <Header language="en" onLanguageChange={() => {}} />

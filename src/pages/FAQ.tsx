@@ -19,23 +19,23 @@ const FAQ = () => {
       faqs: [
         {
           question: "What is Justice Bot USA?",
-          answer: "Justice Bot USA is an AI-powered legal information platform that helps everyday Americans understand their legal rights and navigate the court system. We provide legal information, form preparation assistance, and guidance for all 50 US states. We are NOT a law firm and do not provide legal advice."
+          answer: "Justice Bot USA is an AI-powered legal information platform that helps everyday Americans understand their legal rights and navigate the court system. We are live in California and New York, where you can read plain-language guides and fill in official court forms with your own answers. The other 48 states are coming soon. We are NOT a law firm and do not provide legal advice."
         },
         {
           question: "Is Justice Bot USA a law firm?",
-          answer: "No, Justice Bot USA is NOT a law firm. We provide legal information and document preparation services, not legal advice. Our AI-powered tools help you understand legal processes and prepare documents, but we cannot represent you in court or give legal opinions specific to your case. For legal advice, you should consult with a licensed attorney."
+          answer: "No, Justice Bot USA is NOT a law firm. We provide legal information and tools for filling official forms with your own answers, not legal advice. We do not choose forms or a strategy for you, prepare documents on your behalf, or file or serve anything. We cannot represent you in court or give legal opinions specific to your case. Our content has not yet been reviewed by a licensed attorney. For legal advice, you should consult with a licensed attorney."
         },
         {
           question: "What states do you cover?",
-          answer: "We provide information and services for all 50 US states, the District of Columbia, and federal courts. Our database includes state-specific forms, court procedures, and filing requirements for each jurisdiction."
+          answer: "We are live in California and New York, with state-specific guides, official court forms, and filling instructions for each. We also link to official federal court forms. The other 48 states are coming soon."
         },
         {
           question: "Is the information on Justice Bot USA accurate?",
-          answer: "We strive to provide accurate and up-to-date information. However, laws change frequently and vary by jurisdiction. We recommend always verifying information with official court websites and consulting with an attorney for complex matters. Our information is for educational purposes only."
+          answer: "We try to keep our information accurate and up to date, but our content has not yet been reviewed by a licensed attorney, and laws change and vary by jurisdiction. We recommend always verifying information with official court websites and consulting with an attorney for complex matters. Our information is for educational purposes only."
         },
         {
           question: "Who should use Justice Bot USA?",
-          answer: "Justice Bot USA is designed for self-represented litigants (pro se), individuals seeking to understand their legal rights, people who need help preparing legal documents, and anyone looking for general legal information. If your case involves significant assets, criminal charges, or complex legal issues, we recommend consulting with an attorney."
+          answer: "Justice Bot USA is designed for self-represented litigants (pro se), individuals seeking to understand their legal rights, people filling in their own court forms, and anyone looking for general legal information. If your case involves significant assets, criminal charges, or complex legal issues, we recommend consulting with an attorney."
         }
       ]
     },
@@ -45,11 +45,11 @@ const FAQ = () => {
       faqs: [
         {
           question: "What legal areas do you cover?",
-          answer: "We cover a wide range of legal areas including: Family Law (divorce, custody, child support), Small Claims Court, Landlord-Tenant disputes, Employment Law, Consumer Rights, Personal Injury guidance, Traffic violations, Bankruptcy basics, Immigration resources, and Civil Rights matters."
+          answer: "Our California and New York legal centers cover criminal record relief, family law (custody, support, protective orders), divorce, child protective (dependency) cases, workplace issues, civil matters such as small claims and evictions, and discrimination complaints. The New York center also covers immigration. We also have general guides on other topics. Other states are coming soon."
         },
         {
           question: "Can Justice Bot USA help me file for divorce?",
-          answer: "Yes, we can help you understand the divorce process in your state, find the official forms, and fill them in from your answers. However, for contested divorces, cases involving significant assets, or situations with domestic violence, we strongly recommend working with a family law attorney."
+          answer: "In California and New York, we explain the divorce process in plain language, link to the official forms, and let you fill them in with your own answers. You review, sign, and file them yourself; we do not file anything for you. However, for contested divorces, cases involving significant assets, or situations with domestic violence, we strongly recommend working with a family law attorney."
         },
         {
           question: "Do you help with criminal cases?",
@@ -57,11 +57,11 @@ const FAQ = () => {
         },
         {
           question: "Can you help me sue someone in small claims court?",
-          answer: "Yes! Small claims court is designed for self-represented parties, and our tools can help you understand the process, find the official forms and fee information for your court, and organize your documents."
+          answer: "Yes! Small claims court is designed for self-represented parties, and in California and New York our tools can help you understand the process and find the official forms. You can fill in the California claim (SC-100) and the New York City claim (CIV-SC-50) with your own answers; small claims courts outside New York City use their own forms. You file and serve the papers yourself."
         },
         {
           question: "What types of legal forms do you provide?",
-          answer: "We provide access to thousands of legal forms including court filings, demand letters, contracts, affidavits, motions, and various civil and family law documents. All forms are state-specific and regularly updated to reflect current requirements."
+          answer: "We link to official California and New York court and agency forms, plus federal court forms, and for some California and New York forms you can fill them in online with your own answers. All forms and their filling instructions are included in the $25/month plan, and fee waiver forms are free. Always confirm with the court that you have the current version before you file."
         }
       ]
     },
@@ -70,8 +70,8 @@ const FAQ = () => {
       icon: Bot,
       faqs: [
         {
-          question: "How does the AI legal assistant work?",
-          answer: "Our AI legal assistant uses advanced language models trained on legal information to answer your questions, help you understand legal concepts, and guide you through processes. It gives general information based on what you tell it. Remember, AI responses are for informational purposes only."
+          question: "How do the AI tools work?",
+          answer: "Our AI tools use a general-purpose AI model to explain legal processes in plain language based on what you tell them. AI answers can be wrong and are not legal advice, and our content has not yet been reviewed by a licensed attorney. Check important information against official court sources."
         },
         {
           question: "Does Justice Bot rate my case or predict the outcome?",
@@ -79,15 +79,15 @@ const FAQ = () => {
         },
         {
           question: "How accurate is the AI?",
-          answer: "Our AI is designed to provide helpful and accurate information, but it has limitations. It cannot fully understand all nuances of your specific situation, local court practices, or recent legal changes. Always verify important information and consider consulting with an attorney for significant legal matters."
+          answer: "AI can make mistakes, and it has limitations. It cannot fully understand all nuances of your specific situation, local court practices, or recent legal changes. Always verify important information and consider consulting with an attorney for significant legal matters."
         },
         {
           question: "Can the AI write legal documents for me?",
-          answer: "Our AI can help you draft certain legal documents and fill out forms based on information you provide. However, you should always review documents carefully before filing, as you are responsible for their accuracy and completeness."
+          answer: "No. You fill in official forms with your own answers, and we give plain-language filling instructions. Our AI can explain what a form or a document says, but it does not write legal documents for you or decide what you should say. Review everything carefully before you sign and file; you are responsible for what you file."
         },
         {
           question: "Is my conversation with the AI confidential?",
-          answer: "Your conversations are stored securely and are not shared with third parties for marketing. However, communications with our AI are NOT protected by attorney-client privilege since we are not a law firm. For truly confidential legal discussions, consult with a licensed attorney."
+          answer: "We do not sell your conversations or share them for marketing. To answer you, what you type is sent to the AI service provider that powers our tools. However, communications with our AI are NOT protected by attorney-client privilege since we are not a law firm. For truly confidential legal discussions, consult with a licensed attorney."
         }
       ]
     },
@@ -97,23 +97,23 @@ const FAQ = () => {
       faqs: [
         {
           question: "How much does Justice Bot USA cost?",
-          answer: "We offer various pricing tiers including free basic access, premium subscriptions, and pay-per-use options for certain features. Visit our Pricing page for current rates. We believe legal information should be accessible, so many basic features are available at no cost."
+          answer: "Justice Bot USA has one plan: $25/month. All forms and filling instructions are included, and fee waiver forms are free. Our general guides are free to read. Courts and government agencies may charge their own fees, such as filing fees; those are separate from our plan."
         },
         {
           question: "Do you offer refunds?",
-          answer: "Yes, we offer a 30-day money-back guarantee on all subscription purchases. If you're not satisfied with our service, contact our support team within 30 days of purchase for a full refund."
+          answer: "Yes. Refunds are available within 30 days of purchase if you are not satisfied. Email billing@justicebot-usa.com to request one."
         },
         {
           question: "What payment methods do you accept?",
-          answer: "We accept major credit cards and PayPal. All payments are processed securely through encrypted connections. We never store your full credit card information on our servers."
+          answer: "We accept card payments through Stripe, our payment processor. Your card details go directly to Stripe; we never see or store your full card number."
         },
         {
           question: "Can I cancel my subscription anytime?",
-          answer: "Yes, you can cancel your subscription at any time from your account settings. You'll continue to have access until the end of your current billing period. There are no cancellation fees."
+          answer: "Yes. To cancel, email billing@justicebot-usa.com or open a ticket on our Support page, and we will cancel your subscription. There are no cancellation fees."
         },
         {
           question: "Are there discounts for low-income users?",
-          answer: "We are committed to access to justice. We offer reduced rates for users who qualify based on income guidelines. Contact our support team to learn about assistance programs. We also provide links to free legal aid resources in every state."
+          answer: "We have one plan, $25/month, with every form and filling instruction included; we do not currently offer reduced rates. If you can't afford court fees, you may qualify for a court fee waiver, and our fee waiver forms are free. Our Legal Disclaimer page links to state bar associations, which can refer you to a lawyer."
         }
       ]
     },
@@ -123,7 +123,7 @@ const FAQ = () => {
       faqs: [
         {
           question: "How do you protect my personal information?",
-          answer: "We use industry-standard encryption (SSL/TLS) for all data transmission, secure cloud storage with access controls, regular security audits, and strict data access policies. Your personal information is never sold to third parties."
+          answer: "We use encrypted connections (HTTPS/TLS) for data in transit and store data with a cloud provider that uses access controls. We do not sell your personal information."
         },
         {
           question: "What data do you collect?",
@@ -131,15 +131,15 @@ const FAQ = () => {
         },
         {
           question: "Can I delete my data?",
-          answer: "Yes, you have the right to request deletion of your personal data. You can do this through your account settings or by contacting our privacy team. We will delete your data in accordance with applicable state privacy laws."
+          answer: "Yes. Email privacy@justicebot-usa.com to ask us to delete your personal data. We offer this to every user, wherever you live."
         },
         {
           question: "Do you comply with state privacy laws?",
-          answer: "Yes, we comply with all applicable state privacy laws including CCPA (California), VCDPA (Virginia), CPA (Colorado), and other state privacy regulations. We extend privacy rights to all users regardless of state."
+          answer: "Our Privacy Policy explains the privacy rights we offer to all users, wherever they live, and how to use them. Email privacy@justicebot-usa.com with any privacy request."
         },
         {
           question: "Is my case information confidential?",
-          answer: "Your case information is stored securely and is not shared with other users or third parties. However, unlike communications with an attorney, information shared with Justice Bot USA is NOT protected by attorney-client privilege."
+          answer: "Your case information is not shown to other users. To run the service, we share it with service providers, such as our hosting provider and the AI service that processes your questions. We never sell it. However, unlike communications with an attorney, information shared with Justice Bot USA is NOT protected by attorney-client privilege."
         }
       ]
     },
@@ -149,23 +149,23 @@ const FAQ = () => {
       faqs: [
         {
           question: "How do I find my local courthouse?",
-          answer: "Use our Court Locator tool to find courthouses in your area. Enter your state and county, and we'll show you relevant courts with addresses, phone numbers, hours of operation, and links to their websites."
+          answer: "Your state court system's website lists its courthouses: courts.ca.gov for California and nycourts.gov for New York. Our California and New York legal centers also link to official court pages."
         },
         {
           question: "What are filing fees?",
-          answer: "Filing fees vary by court type, case type, and state. Our tools can help you estimate fees for your specific situation. Many courts offer fee waivers for low-income individuals—we can help you determine if you qualify and find the waiver forms."
+          answer: "Filing fees are set by courts and vary by court, case type, and state. They are separate from our plan. Courts can waive fees for people who can't afford them. Our California and New York fee waiver forms are free, and the court decides whether you qualify."
         },
         {
           question: "How do I serve legal papers?",
-          answer: "Service of process requirements vary by state and document type. Generally, you cannot serve papers yourself—you must use a process server, sheriff, or another adult who is not party to the case. Our guides explain the specific requirements for your jurisdiction."
+          answer: "Service of process requirements vary by state and document type. Generally, you cannot serve papers yourself—you must use a process server, sheriff, or another adult who is not party to the case. Our California and New York guides describe the general rules; check your court's instructions for your case."
         },
         {
           question: "What is a statute of limitations?",
-          answer: "A statute of limitations is the deadline for filing a lawsuit. These deadlines vary by state and type of case. Missing the deadline can permanently bar your claim. Our tools can help you identify relevant deadlines, but you should verify with an attorney for important matters."
+          answer: "A statute of limitations is the deadline for filing a lawsuit. These deadlines vary by state and type of case. Missing the deadline can permanently bar your claim. Our guides describe some common deadlines in general terms, but we cannot tell you which deadline applies to your case; check with the court or a lawyer."
         },
         {
           question: "Can I represent myself in court?",
-          answer: "Yes, you have the constitutional right to represent yourself (pro se). Many people successfully handle cases in small claims court, family court, and other venues. However, for complex cases or those with significant consequences, attorney representation is recommended."
+          answer: "Generally, yes. Individuals can usually represent themselves in court (called appearing pro se, or in pro per in California); businesses usually need a lawyer, with exceptions such as small claims. Many people handle their own cases in small claims court, family court, and other courts. However, for complex cases or those with significant consequences, attorney representation is recommended."
         }
       ]
     },
@@ -175,15 +175,15 @@ const FAQ = () => {
       faqs: [
         {
           question: "How do I download forms?",
-          answer: "Visit our Forms Library, select your state and legal area, and browse available forms. You can download forms as PDFs or use our interactive form builder to fill them out online. Some forms are free; others require a subscription."
+          answer: "Visit our Forms Library, select your state and legal area, and browse available forms. You can download blank official forms, and for some California and New York forms you can fill them in online with your own answers. Fee waiver forms are free; all other forms and their filling instructions are included in the $25/month plan."
         },
         {
           question: "Are your forms accepted by courts?",
-          answer: "Our forms are based on official court forms and templates. However, some courts have specific local requirements or prefer their own forms. Always check with your local court clerk to confirm form requirements before filing."
+          answer: "We use the official forms published by courts and government agencies; we do not make our own versions. However, some courts have local requirements or local forms. Always check with your local court clerk to confirm form requirements before filing."
         },
         {
           question: "Can I save my forms and come back later?",
-          answer: "Yes, if you create an account, you can save your progress on forms and return to complete them later. Your saved documents are stored securely in your account dashboard."
+          answer: "Your answers on a form are kept in your browser while you work, so you can leave and return in the same session. Download your filled form when you finish; we recommend keeping your own copy."
         },
         {
           question: "How do I know which forms I need?",
@@ -191,7 +191,7 @@ const FAQ = () => {
         },
         {
           question: "Can I edit forms after downloading?",
-          answer: "PDF forms can be filled out digitally using PDF software. Our interactive forms can be edited anytime before final download. Once filed with a court, you would need to file amended documents to make changes."
+          answer: "PDF forms can be filled out digitally using PDF software. On our form-filling pages you can change your answers and download the form again. Once filed with a court, you would need to file amended documents to make changes."
         }
       ]
     },
@@ -201,23 +201,23 @@ const FAQ = () => {
       faqs: [
         {
           question: "How do I contact support?",
-          answer: "You can reach our support team via email at support@justicebot-usa.com, through our Support page ticket system, or via the live chat widget on our website. We typically respond within 24 hours."
+          answer: "Email support@justicebot-usa.com, or sign in and open a ticket on our Support page."
         },
         {
           question: "Do you offer phone support?",
-          answer: "Currently, we provide support primarily through email and chat. This allows us to keep costs low and provide documented responses. For urgent matters, our chat support offers the fastest response times."
+          answer: "No. We provide support by email and through support tickets on our Support page. For anything urgent about your case, contact the court or a lawyer."
         },
         {
           question: "What if I need help using the website?",
-          answer: "We offer interactive tutorials, help guides, and video walkthroughs for all major features. Our AI assistant can also answer questions about how to use specific tools. If you're still stuck, contact our support team."
+          answer: "Our free legal help guides explain each step. If you get stuck, email support@justicebot-usa.com or open a ticket on our Support page."
         },
         {
           question: "Can I get a refund if the service doesn't help me?",
-          answer: "We offer a 30-day money-back guarantee. If our service doesn't meet your needs, contact support within 30 days of purchase for a full refund. No questions asked."
+          answer: "Refunds are available within 30 days of purchase if you are not satisfied. Email billing@justicebot-usa.com to request one."
         },
         {
           question: "Do you have resources in Spanish?",
-          answer: "Yes, we offer bilingual support in English and Spanish. Use the language toggle in the header to switch languages. Many of our guides, forms guidance, and AI responses are available in Spanish."
+          answer: "Partly. Some pages have a Spanish option in the language menu in the header, but most of our guides and filling instructions are in English only for now. Your court's self-help center may have materials in Spanish."
         }
       ]
     }
@@ -237,7 +237,7 @@ const FAQ = () => {
     <>
       <Helmet>
         <title>FAQ - Frequently Asked Questions | Justice Bot USA</title>
-        <meta name="description" content="Find answers to common questions about Justice Bot USA, our AI legal tools, pricing, privacy, and how to use our services for all 50 US states." />
+        <meta name="description" content="Find answers to common questions about Justice Bot USA, our AI legal tools, pricing, privacy, and how to use our services in California and New York." />
         <meta name="robots" content="index, follow" />
         <link rel="canonical" href="https://justicebot-usa.com/faq" />
       </Helmet>

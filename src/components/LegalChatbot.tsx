@@ -164,8 +164,9 @@ export function LegalChatbot() {
             Ask Your Legal Question
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Get instant, state-specific legal information for all 50 US states. 
-            Our AI understands federal and state law, court procedures, and your rights.
+            Ask a question and get general legal information in plain language. Our state guides are live
+            for California and New York; other states are coming soon. AI answers can be wrong, so check
+            them against official court sources.
           </p>
         </div>
 
@@ -325,8 +326,9 @@ export function LegalChatbot() {
 
             {/* Disclaimer */}
             <p className="text-xs text-muted-foreground text-center">
-              This AI provides educational legal information, not legal advice. 
-              For your specific situation, consult a licensed attorney in your state.
+              This AI provides educational legal information, not legal advice, and our content has not
+              yet been reviewed by a licensed attorney. For your specific situation, consult a licensed
+              attorney in your state.
             </p>
           </CardContent>
         </Card>
@@ -334,16 +336,16 @@ export function LegalChatbot() {
         {/* Quick Stats */}
         <div className="grid grid-cols-3 gap-4 mt-8">
           <div className="text-center p-4 bg-muted/50 rounded-lg">
-            <p className="text-2xl font-bold text-primary">50</p>
-            <p className="text-sm text-muted-foreground">States Covered</p>
+            <p className="text-2xl font-bold text-primary">CA &amp; NY</p>
+            <p className="text-sm text-muted-foreground">Live States</p>
           </div>
           <div className="text-center p-4 bg-muted/50 rounded-lg">
-            <p className="text-2xl font-bold text-primary">10+</p>
-            <p className="text-sm text-muted-foreground">Legal Areas</p>
+            <p className="text-2xl font-bold text-primary">{LEGAL_AREAS.length}</p>
+            <p className="text-sm text-muted-foreground">Legal Areas to Choose</p>
           </div>
           <div className="text-center p-4 bg-muted/50 rounded-lg">
-            <p className="text-2xl font-bold text-primary">24/7</p>
-            <p className="text-sm text-muted-foreground">Always Available</p>
+            <p className="text-2xl font-bold text-primary">Free</p>
+            <p className="text-sm text-muted-foreground">With a free account</p>
           </div>
         </div>
       </div>

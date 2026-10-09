@@ -465,7 +465,7 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
                   </div>
                   <CardTitle className="text-2xl">Your Book of Documents</CardTitle>
                   <CardDescription className="text-lg">
-                    Organized, numbered, and court-ready
+                    Your uploaded documents, organized and numbered
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
@@ -473,11 +473,12 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
                   <div className="p-4 bg-yellow-50 dark:bg-yellow-950 border border-yellow-200 dark:border-yellow-800 rounded-lg">
                     <h4 className="font-semibold text-yellow-900 dark:text-yellow-100 mb-2 flex items-center gap-2">
                       <AlertCircle className="h-5 w-5" />
-                      Courts Reject Disorganized Filings
+                      Check Your Court's Rules
                     </h4>
                     <p className="text-sm text-yellow-800 dark:text-yellow-200">
-                      Your Book of Documents will be professionally organized with numbered exhibits, 
-                      a table of contents, and proper formatting that courts expect.
+                      Your Book of Documents puts the files you uploaded into one PDF with numbered exhibits and a
+                      table of contents. Courts have their own rules for labeling and filing exhibits, so check
+                      your court's rules or self-help center before you file.
                     </p>
                   </div>
 
@@ -486,7 +487,7 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
                     <h4 className="font-semibold">What You'll Get:</h4>
                     <div className="grid gap-3">
                       {[
-                        { icon: FileText, text: 'Court-ready PDF with all documents' },
+                        { icon: FileText, text: 'One PDF with all your uploaded documents' },
                         { icon: ClipboardCheck, text: 'Numbered exhibits with table of contents' },
                         { icon: MapPin, text: 'General filing information for your state' },
                         { icon: Building2, text: 'How to find your court\'s self-help center' },
@@ -543,14 +544,14 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
                       ) : (
                         <>
                           <Unlock className="mr-2 h-5 w-5" />
-                          Unlock Book of Documents - $7.99
+                          Unlock Book of Documents — {PLAN.priceLabel}
                         </>
                       )}
                     </Button>
                   )}
 
                   <p className="text-center text-sm text-muted-foreground">
-                    Secure payment via PayPal • Instant access
+                    Secure checkout via Stripe • Cancel any time by contacting support
                   </p>
                 </CardContent>
               </Card>

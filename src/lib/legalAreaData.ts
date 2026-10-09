@@ -17,6 +17,10 @@ export interface LegalAreaData {
   stateGuidance: Record<string, StateGuidance>;
 }
 
+// California and New York (the live states) are not listed here: LegalAreaPage sends them to
+// the source-checked legal centers (/ca/legal-center, /ny/legal-center). The guidance below is
+// for states that are coming soon and has not been checked.
+
 // Default guidance template
 const createDefaultGuidance = (area: string): StateGuidance => ({
   forms: [
@@ -37,255 +41,6 @@ const createDefaultGuidance = (area: string): StateGuidance => ({
     { name: "Court Rules", summary: "Local court procedures and requirements" },
   ],
 });
-
-// ==================== CALIFORNIA ====================
-
-const californiaFamilyLaw: StateGuidance = {
-  forms: [
-    { name: "FL-100 (Petition)", description: "Marriage/Domestic Partnership petition", url: "https://www.courts.ca.gov/documents/fl100.pdf" },
-    { name: "FL-110 (Summons)", description: "Family Law Summons", url: "https://www.courts.ca.gov/documents/fl110.pdf" },
-    { name: "FL-150 (Income & Expense)", description: "Declaration of Income and Expenses", url: "https://www.courts.ca.gov/documents/fl150.pdf" },
-    { name: "FL-160 (Property Declaration)", description: "Property Declaration form", url: "https://www.courts.ca.gov/documents/fl160.pdf" },
-    { name: "FL-300 (Request for Order)", description: "Request temporary orders", url: "https://www.courts.ca.gov/documents/fl300.pdf" },
-  ],
-  deadlines: [
-    { name: "Divorce Waiting Period", timeframe: "6 months minimum from service" },
-    { name: "Response Deadline", timeframe: "30 days after service" },
-    { name: "Temporary Orders", timeframe: "File within 30 days for urgent matters" },
-  ],
-  fees: [
-    { name: "Petition Filing Fee", amount: "$435-$450" },
-    { name: "Response Filing Fee", amount: "$435-$450" },
-    { name: "Fee Waiver Available", amount: "Form FW-001 if income qualifies" },
-  ],
-  laws: [
-    { name: "California Family Code", summary: "Governs divorce, custody, support, and property division" },
-    { name: "Community Property Law", summary: "CA is a community property state - assets split 50/50" },
-    { name: "Best Interests of Child Standard", summary: "Custody decisions based on child's wellbeing" },
-  ],
-};
-
-const californiaSmallClaims: StateGuidance = {
-  forms: [
-    { name: "SC-100 (Plaintiff's Claim)", description: "Main small claims filing form", url: "https://www.courts.ca.gov/documents/sc100.pdf" },
-    { name: "SC-104 (Defendant's Claim)", description: "Counter-claim by defendant", url: "https://www.courts.ca.gov/documents/sc104.pdf" },
-    { name: "SC-500 (Subpoena)", description: "To compel witness attendance", url: "https://www.courts.ca.gov/documents/sc500.pdf" },
-    { name: "SC-105 (Amendment)", description: "Amend your claim", url: "https://www.courts.ca.gov/documents/sc105.pdf" },
-  ],
-  deadlines: [
-    { name: "Contract Claims", timeframe: "4 years written, 2 years oral" },
-    { name: "Property Damage", timeframe: "3 years from incident" },
-    { name: "Personal Injury", timeframe: "2 years from injury" },
-  ],
-  fees: [
-    { name: "Claims up to $1,500", amount: "$30" },
-    { name: "Claims $1,501-$5,000", amount: "$50" },
-    { name: "Claims $5,001-$10,000", amount: "$75" },
-  ],
-  laws: [
-    { name: "CCP § 116.220", summary: "Small claims limit is $10,000 ($5,000 for businesses)" },
-    { name: "No Attorney Representation", summary: "Parties must represent themselves" },
-    { name: "One Venue Appeal", summary: "Losing party can request new trial" },
-  ],
-};
-
-const californiaEmployment: StateGuidance = {
-  forms: [
-    { name: "DFEH Complaint Form", description: "File discrimination complaint with Civil Rights Dept", url: "https://calcivilrights.ca.gov/complaintprocess/" },
-    { name: "DIR Wage Claim (DLSE-1)", description: "File wage theft claim", url: "https://www.dir.ca.gov/dlse/howtofilewageclaim.htm" },
-    { name: "WCAB Application", description: "Workers compensation claim", url: "https://www.dir.ca.gov/dwc/iwguides.html" },
-  ],
-  deadlines: [
-    { name: "DFEH Complaint", timeframe: "3 years from discriminatory act" },
-    { name: "Wage Claims", timeframe: "3 years for most claims" },
-    { name: "Wrongful Termination", timeframe: "2 years from termination" },
-  ],
-  fees: [
-    { name: "DFEH Filing", amount: "Free" },
-    { name: "Labor Board Claim", amount: "Free" },
-    { name: "Civil Court Filing", amount: "$435+" },
-  ],
-  laws: [
-    { name: "FEHA", summary: "Fair Employment & Housing Act - broadest protections in US" },
-    { name: "Labor Code § 201-204", summary: "Final pay requirements" },
-    { name: "Labor Code § 1102.5", summary: "Whistleblower protections" },
-  ],
-};
-
-const californiaHousing: StateGuidance = {
-  forms: [
-    { name: "UD-100 (Unlawful Detainer)", description: "Landlord's eviction complaint", url: "https://www.courts.ca.gov/documents/ud100.pdf" },
-    { name: "UD-105 (Answer)", description: "Tenant's response to eviction", url: "https://www.courts.ca.gov/documents/ud105.pdf" },
-    { name: "SC-500 (Small Claims)", description: "Security deposit claims", url: "https://www.courts.ca.gov/documents/sc500.pdf" },
-  ],
-  deadlines: [
-    { name: "Answer to Eviction", timeframe: "5 days from service" },
-    { name: "Security Deposit Return", timeframe: "21 days after move-out" },
-    { name: "Rent Increase Notice", timeframe: "30-90 days depending on amount" },
-  ],
-  fees: [
-    { name: "Unlawful Detainer Filing", amount: "$240-$450" },
-    { name: "Small Claims Filing", amount: "$30-$75" },
-  ],
-  laws: [
-    { name: "Civil Code § 1940-1954", summary: "Landlord-tenant rights and obligations" },
-    { name: "AB 1482 (Tenant Protection Act)", summary: "Rent caps and just cause eviction statewide" },
-    { name: "Civil Code § 1950.5", summary: "Security deposit rules" },
-  ],
-};
-
-const californiaCriminal: StateGuidance = {
-  forms: [
-    { name: "CR-180 (Expungement)", description: "Petition for dismissal of conviction", url: "https://www.courts.ca.gov/documents/cr180.pdf" },
-    { name: "CR-181 (Reduction)", description: "Petition to reduce felony to misdemeanor", url: "https://www.courts.ca.gov/documents/cr181.pdf" },
-    { name: "CR-105 (Bail Application)", description: "Motion to reduce bail", url: "https://www.courts.ca.gov/documents/cr105.pdf" },
-  ],
-  deadlines: [
-    { name: "Arraignment", timeframe: "48 hours if in custody (excluding weekends)" },
-    { name: "Speedy Trial", timeframe: "60 days felony, 45 days misdemeanor" },
-    { name: "Expungement Eligibility", timeframe: "After probation completion" },
-  ],
-  fees: [
-    { name: "Expungement Filing", amount: "$120-$150" },
-    { name: "Public Defender", amount: "Free if income qualifies" },
-  ],
-  laws: [
-    { name: "Penal Code § 1203.4", summary: "Expungement/dismissal of convictions" },
-    { name: "Prop 47", summary: "Reduced penalties for certain felonies" },
-    { name: "Prop 64", summary: "Cannabis legalization and resentencing" },
-  ],
-};
-
-// ==================== NEW YORK ====================
-
-const newYorkFamilyLaw: StateGuidance = {
-  forms: [
-    { name: "UD-2 (Summons with Notice)", description: "Initiates matrimonial action", url: "https://www.nycourts.gov/divorce-resources/statewide-divorce-forms" },
-    { name: "UD-3 (Verified Complaint)", description: "Details grounds for divorce", url: "https://www.nycourts.gov/divorce-resources/statewide-divorce-forms" },
-    { name: "Statement of Net Worth", description: "Mandatory financial disclosure", url: "https://www.nycourts.gov/divorce-resources/statewide-divorce-forms" },
-    { name: "UD-8 (Affidavit of Defendant)", description: "Defendant's sworn statement", url: "https://www.nycourts.gov/divorce-resources/statewide-divorce-forms" },
-    { name: "UD-11 (Findings of Fact)", description: "Proposed findings for judge", url: "https://www.nycourts.gov/divorce-resources/statewide-divorce-forms" },
-  ],
-  deadlines: [
-    { name: "No Waiting Period", timeframe: "NY has no mandatory waiting period" },
-    { name: "Response (Personal Service)", timeframe: "20 days after service" },
-    { name: "Response (Other Service)", timeframe: "30 days after service" },
-    { name: "Separation Agreement", timeframe: "Must be signed 1 year before filing" },
-  ],
-  fees: [
-    { name: "Index Number Fee", amount: "$210" },
-    { name: "Request for Judicial Intervention", amount: "$95" },
-    { name: "Note of Issue", amount: "$30" },
-    { name: "Poor Person Application", amount: "Free filing if approved" },
-  ],
-  laws: [
-    { name: "Domestic Relations Law § 170", summary: "Grounds for divorce including no-fault" },
-    { name: "Equitable Distribution Law", summary: "Property divided fairly, not necessarily equally" },
-    { name: "DRL § 236", summary: "Maintenance (alimony) guidelines" },
-    { name: "DRL § 240", summary: "Child custody and support standards" },
-  ],
-};
-
-const newYorkSmallClaims: StateGuidance = {
-  forms: [
-    { name: "Small Claims Summons", description: "Initiates small claims action", url: "https://www.nycourts.gov/forms/statement-claim-small-claims" },
-    { name: "Commercial Claims Form", description: "For business plaintiffs", url: "https://www.nycourts.gov/forms/statement-claim-small-claims" },
-    { name: "Subpoena Form", description: "Compel witness attendance", url: "https://www.nycourts.gov/forms/statement-claim-small-claims" },
-    { name: "Income Execution", description: "Wage garnishment after judgment", url: "https://www.nycourts.gov/forms/statement-claim-small-claims" },
-  ],
-  deadlines: [
-    { name: "Contract Claims", timeframe: "6 years" },
-    { name: "Personal Injury", timeframe: "3 years" },
-    { name: "Property Damage", timeframe: "3 years" },
-    { name: "Judgment Collection", timeframe: "20 years" },
-  ],
-  fees: [
-    { name: "Claims up to $1,000", amount: "$15" },
-    { name: "Claims $1,001-$5,000", amount: "$20" },
-    { name: "Claims $5,001-$10,000", amount: "$25" },
-    { name: "Commercial Claims", amount: "$35-$70" },
-  ],
-  laws: [
-    { name: "NYC Civil Court Act § 1801", summary: "Small claims limit is $10,000" },
-    { name: "CPLR Article 18", summary: "Small claims procedure" },
-    { name: "Uniform City Court Act", summary: "Outside NYC small claims rules" },
-  ],
-};
-
-const newYorkEmployment: StateGuidance = {
-  forms: [
-    { name: "DHR Complaint Form", description: "File discrimination complaint", url: "https://dhr.ny.gov/complaint" },
-    { name: "DOL Wage Claim (LS 223)", description: "File unpaid wage claim", url: "https://dol.ny.gov/unpaidwithheld-wages-labor-standards-complaints" },
-    { name: "EEOC Intake Questionnaire", description: "Federal discrimination complaint", url: "https://www.eeoc.gov/federal-sector/filing-formal-complaint" },
-  ],
-  deadlines: [
-    { name: "DHR Complaint", timeframe: "3 years from discriminatory act" },
-    { name: "Wage Claims", timeframe: "6 years for most claims" },
-    { name: "EEOC Filing", timeframe: "300 days from violation" },
-    { name: "Wrongful Termination", timeframe: "3 years" },
-  ],
-  fees: [
-    { name: "DHR Filing", amount: "Free" },
-    { name: "DOL Wage Claim", amount: "Free" },
-    { name: "EEOC Filing", amount: "Free" },
-  ],
-  laws: [
-    { name: "NY Human Rights Law", summary: "Broad discrimination protections" },
-    { name: "Labor Law § 191", summary: "Wage payment requirements" },
-    { name: "Labor Law § 740", summary: "Whistleblower protections" },
-    { name: "NYC Human Rights Law", summary: "Strongest local protections in nation" },
-  ],
-};
-
-const newYorkHousing: StateGuidance = {
-  forms: [
-    { name: "Notice of Petition & Petition", description: "Landlord's eviction filing", url: "https://www.nycourts.gov/new-york-city-housing-court" },
-    { name: "Answer in Housing Court", description: "Tenant's response to eviction", url: "https://www.nycourts.gov/new-york-city-housing-court" },
-    { name: "HP Action Forms", description: "Tenant complaint for repairs", url: "https://www.nycourts.gov/new-york-city-housing-court" },
-    { name: "Order to Show Cause", description: "Emergency relief request", url: "https://www.nycourts.gov/new-york-city-housing-court" },
-  ],
-  deadlines: [
-    { name: "Answer to Eviction", timeframe: "Within 10 days" },
-    { name: "Security Deposit Return", timeframe: "14 days after move-out" },
-    { name: "Rent Stabilized Renewal", timeframe: "90-150 days before expiration" },
-  ],
-  fees: [
-    { name: "Nonpayment Petition", amount: "$45" },
-    { name: "Holdover Petition", amount: "$45" },
-    { name: "HP Action (Tenant)", amount: "Free" },
-  ],
-  laws: [
-    { name: "Real Property Law § 226-b", summary: "Subletting rights" },
-    { name: "HSTPA 2019", summary: "Rent stabilization reforms" },
-    { name: "RPL § 227-a", summary: "Constructive eviction remedies" },
-    { name: "NYC Admin Code § 27-2005", summary: "Housing maintenance code" },
-  ],
-};
-
-const newYorkCriminal: StateGuidance = {
-  forms: [
-    { name: "CPL 160.59 Motion", description: "Petition for record sealing", url: "https://www.nycourts.gov/help/criminal/criminal-records-sealing" },
-    { name: "Certificate of Relief", description: "Removes employment barriers", url: "https://doccs.ny.gov/certificate-relief-disabilities" },
-    { name: "Bail Application", description: "Request for bail modification", url: "https://www.nycourts.gov/help/criminal/criminal-records-sealing" },
-  ],
-  deadlines: [
-    { name: "Arraignment", timeframe: "24 hours if in custody" },
-    { name: "Speedy Trial (Felony)", timeframe: "6 months" },
-    { name: "Speedy Trial (Misdemeanor)", timeframe: "90 days" },
-    { name: "Sealing Eligibility", timeframe: "10 years after sentence completion" },
-  ],
-  fees: [
-    { name: "Record Sealing", amount: "Free" },
-    { name: "Certificate of Relief", amount: "Free" },
-    { name: "Public Defender", amount: "Free if income qualifies" },
-  ],
-  laws: [
-    { name: "CPL 160.59", summary: "Criminal record sealing law" },
-    { name: "Bail Reform Law 2020", summary: "Eliminated cash bail for most misdemeanors" },
-    { name: "Marijuana Regulation & Taxation Act", summary: "Legalization and expungement" },
-    { name: "Correction Law Article 23-A", summary: "Fair Chance Act for employment" },
-  ],
-};
 
 // ==================== FLORIDA ====================
 
@@ -602,39 +357,6 @@ const texasSmallClaims: StateGuidance = {
 
 // ==================== PERSONAL INJURY STATE-SPECIFIC ====================
 
-const californiaPersonalInjury: StateGuidance = {
-  forms: [
-    { name: "Judicial Council Form CM-010", description: "Civil Case Cover Sheet (required for all PI cases)", url: "https://www.courts.ca.gov/documents/cm010.pdf" },
-    { name: "Judicial Council Form PLD-PI-001", description: "Complaint—Personal Injury, Property Damage, Wrongful Death", url: "https://www.courts.ca.gov/documents/pldpi001.pdf" },
-    { name: "Judicial Council Form SUM-100", description: "Summons", url: "https://www.courts.ca.gov/documents/sum100.pdf" },
-    { name: "Judicial Council Form POS-010", description: "Proof of Service of Summons", url: "https://www.courts.ca.gov/documents/pos010.pdf" },
-    { name: "Judicial Council Form MC-030", description: "Declaration (for witness statements)", url: "https://www.courts.ca.gov/documents/mc030.pdf" },
-    { name: "Form FW-001", description: "Fee Waiver Request", url: "https://www.courts.ca.gov/documents/fw001.pdf" },
-  ],
-  deadlines: [
-    { name: "Personal Injury (General)", timeframe: "2 years from date of injury (CCP § 335.1)" },
-    { name: "Medical Malpractice", timeframe: "3 years from injury OR 1 year from discovery, whichever is earlier (CCP § 340.5)" },
-    { name: "Government Claims (vs. city/county/state)", timeframe: "6 months to file administrative claim, then 6 months to sue if rejected (Gov Code § 911.2)" },
-    { name: "Wrongful Death", timeframe: "2 years from date of death (CCP § 335.1)" },
-    { name: "Product Liability", timeframe: "2 years from injury (CCP § 335.1)" },
-    { name: "Minor's Claims", timeframe: "Tolled until age 18, then 2 years" },
-  ],
-  fees: [
-    { name: "Unlimited Civil Filing (over $25K)", amount: "$435" },
-    { name: "Limited Civil Filing (under $25K)", amount: "$225" },
-    { name: "Service of Process", amount: "$40-$150" },
-    { name: "Jury Fees (deposit)", amount: "$150" },
-    { name: "Fee Waiver", amount: "Available for low income (Form FW-001)" },
-  ],
-  laws: [
-    { name: "CCP § 335.1", summary: "2-year statute of limitations for personal injury" },
-    { name: "Civil Code § 1714", summary: "General negligence liability standard" },
-    { name: "CCP § 340.5", summary: "Special medical malpractice limitations" },
-    { name: "Pure Comparative Fault", summary: "Recovery reduced by your percentage of fault (Li v. Yellow Cab)" },
-    { name: "MICRA (Medical Injury Compensation Reform Act)", summary: "Caps non-economic damages in med mal at $350K (increasing to $750K by 2033)" },
-  ],
-};
-
 const texasPersonalInjury: StateGuidance = {
   forms: [
     { name: "Original Petition", description: "Initial complaint document (no standard form)", url: "https://www.txcourts.gov/programs-services/self-help/" },
@@ -699,39 +421,6 @@ const floridaPersonalInjury: StateGuidance = {
   ],
 };
 
-const newYorkPersonalInjury: StateGuidance = {
-  forms: [
-    { name: "Summons with Notice", description: "Initiates lawsuit without complaint", url: "https://www.nycourts.gov/forms?node_field_court_type%5B171%5D=171" },
-    { name: "Verified Complaint", description: "Detailed allegations of negligence", url: "https://www.nycourts.gov/forms?node_field_court_type%5B171%5D=171" },
-    { name: "Request for Judicial Intervention (RJI)", description: "Assigns judge to case", url: "https://www.nycourts.gov/forms?node_field_court_type%5B171%5D=171" },
-    { name: "Statement of Readiness", description: "Certificate case is ready for trial", url: "https://www.nycourts.gov/forms?node_field_court_type%5B171%5D=171" },
-    { name: "Poor Person Application", description: "Fee waiver for indigent litigants", url: "https://www.nycourts.gov/courts/new-york-state-filing-fees" },
-    { name: "Bill of Particulars", description: "Detailed breakdown of damages claimed", url: "https://www.nycourts.gov/forms?node_field_court_type%5B171%5D=171" },
-  ],
-  deadlines: [
-    { name: "Personal Injury (General)", timeframe: "3 years from date of injury (CPLR § 214)" },
-    { name: "Medical Malpractice", timeframe: "2.5 years from act OR last treatment in continuous course (CPLR § 214-a)" },
-    { name: "Wrongful Death", timeframe: "2 years from date of death (EPTL § 5-4.1)" },
-    { name: "Government Claims (Notice of Claim)", timeframe: "90 days to file Notice of Claim, then 1 year + 90 days to sue" },
-    { name: "Product Liability", timeframe: "3 years from injury" },
-    { name: "Motor Vehicle Accidents", timeframe: "3 years (serious injury threshold applies for pain/suffering)" },
-  ],
-  fees: [
-    { name: "Supreme Court Filing (Index Number)", amount: "$210" },
-    { name: "Request for Judicial Intervention", amount: "$95" },
-    { name: "Civil Court Filing (under $25K)", amount: "$45" },
-    { name: "Service of Process", amount: "$75-$150" },
-    { name: "Poor Person Status", amount: "Fee waiver available" },
-  ],
-  laws: [
-    { name: "CPLR § 214", summary: "3-year statute of limitations for negligence" },
-    { name: "Pure Comparative Fault", summary: "Recovery reduced by your percentage of fault (even if 99%)" },
-    { name: "No-Fault Insurance Law (VTL § 5102)", summary: "Serious injury threshold for non-economic damages in auto cases" },
-    { name: "CPLR § 1602", summary: "Joint and several liability rules" },
-    { name: "Labor Law §§ 240, 241", summary: "Strict liability for construction accidents (Scaffold Law)" },
-  ],
-};
-
 // Remaining states get default guidance
 const remainingStates = ["AL", "AK", "AZ", "AR", "CO", "CT", "DE", "GA", "HI", "ID", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "UT", "VT", "VA", "WA", "WV", "WI", "WY", "DC"];
 
@@ -749,9 +438,7 @@ export const legalAreaData: Record<string, LegalAreaData> = {
       "Modification of Orders", "Enforcement of Orders",
     ],
     stateGuidance: {
-      "CA": californiaFamilyLaw,
       "TX": texasFamilyLaw,
-      "NY": newYorkFamilyLaw,
       "FL": floridaFamilyLaw,
       "IL": illinoisFamilyLaw,
       ...Object.fromEntries(remainingStates.map(s => [s, createDefaultGuidance("family")])),
@@ -770,9 +457,7 @@ export const legalAreaData: Record<string, LegalAreaData> = {
       "Unpaid Wages", "Neighbor Disputes", "Pet-Related Damages",
     ],
     stateGuidance: {
-      "CA": californiaSmallClaims,
       "TX": texasSmallClaims,
-      "NY": newYorkSmallClaims,
       "FL": floridaSmallClaims,
       "IL": illinoisSmallClaims,
       ...Object.fromEntries(remainingStates.map(s => [s, createDefaultGuidance("small-claims")])),
@@ -791,8 +476,6 @@ export const legalAreaData: Record<string, LegalAreaData> = {
       "Severance Negotiations", "Unemployment Benefits", "EEOC Complaints",
     ],
     stateGuidance: {
-      "CA": californiaEmployment,
-      "NY": newYorkEmployment,
       "FL": floridaEmployment,
       "IL": illinoisEmployment,
       ...Object.fromEntries([...remainingStates, "TX"].map(s => [s, createDefaultGuidance("employment")])),
@@ -811,8 +494,6 @@ export const legalAreaData: Record<string, LegalAreaData> = {
       "Misdemeanor vs Felony", "Juvenile Offenses",
     ],
     stateGuidance: {
-      "CA": californiaCriminal,
-      "NY": newYorkCriminal,
       "FL": floridaCriminal,
       "IL": illinoisCriminal,
       ...Object.fromEntries([...remainingStates, "TX"].map(s => [s, createDefaultGuidance("criminal")])),
@@ -831,8 +512,6 @@ export const legalAreaData: Record<string, LegalAreaData> = {
       "Mold/Pest Issues", "Utility Disputes", "Section 8 Issues",
     ],
     stateGuidance: {
-      "CA": californiaHousing,
-      "NY": newYorkHousing,
       "FL": floridaHousing,
       "IL": illinoisHousing,
       ...Object.fromEntries([...remainingStates, "TX"].map(s => [s, createDefaultGuidance("housing")])),
@@ -851,7 +530,7 @@ export const legalAreaData: Record<string, LegalAreaData> = {
       "ACLU Assistance", "DOJ Complaints", "Class Action Suits",
     ],
     stateGuidance: Object.fromEntries(
-      ["CA", "TX", "NY", "FL", "IL", ...remainingStates].map(s => [s, createDefaultGuidance("civil-rights")])
+      ["TX", "FL", "IL", ...remainingStates].map(s => [s, createDefaultGuidance("civil-rights")])
     ),
   },
   "consumer": {
@@ -867,7 +546,7 @@ export const legalAreaData: Record<string, LegalAreaData> = {
       "CFPB Complaints", "Class Action Eligibility", "Bankruptcy Options",
     ],
     stateGuidance: Object.fromEntries(
-      ["CA", "TX", "NY", "FL", "IL", ...remainingStates].map(s => [s, createDefaultGuidance("consumer")])
+      ["TX", "FL", "IL", ...remainingStates].map(s => [s, createDefaultGuidance("consumer")])
     ),
   },
   "personal-injury": {
@@ -883,10 +562,8 @@ export const legalAreaData: Record<string, LegalAreaData> = {
       "Insurance Claims", "Settlement Negotiation", "Pain and Suffering",
     ],
     stateGuidance: {
-      "CA": californiaPersonalInjury,
       "TX": texasPersonalInjury,
       "FL": floridaPersonalInjury,
-      "NY": newYorkPersonalInjury,
       ...Object.fromEntries(["IL", ...remainingStates].map(s => [s, createDefaultGuidance("personal-injury")])),
     },
   },
@@ -903,7 +580,7 @@ export const legalAreaData: Record<string, LegalAreaData> = {
       "Detention Issues", "Travel Documents", "Removal Proceedings",
     ],
     stateGuidance: Object.fromEntries(
-      ["CA", "TX", "NY", "FL", "IL", ...remainingStates].map(s => [s, createDefaultGuidance("immigration")])
+      ["TX", "FL", "IL", ...remainingStates].map(s => [s, createDefaultGuidance("immigration")])
     ),
   },
   "federal": {
@@ -919,14 +596,14 @@ export const legalAreaData: Record<string, LegalAreaData> = {
       "Federal Tort Claims", "Administrative Hearings", "Whistleblower Protection",
     ],
     stateGuidance: Object.fromEntries(
-      ["CA", "TX", "NY", "FL", "IL", ...remainingStates].map(s => [s, createDefaultGuidance("federal")])
+      ["TX", "FL", "IL", ...remainingStates].map(s => [s, createDefaultGuidance("federal")])
     ),
   },
 
   // ==================== WORKERS' COMPENSATION ====================
   "workers-comp": {
     title: "Workers' Compensation",
-    description: "On-the-job injury claims, occupational diseases, employer disputes, and disability benefit appeals across all 50 states.",
+    description: "On-the-job injury claims, occupational diseases, employer disputes, and disability benefit appeals.",
     icon: Briefcase,
     keywords: ["Work Injury", "Workers Comp Claim", "Occupational Disease", "Employer Dispute", "Disability Benefits", "Medical Coverage"],
     badge: { text: "Important", variant: "secondary" },
@@ -937,31 +614,6 @@ export const legalAreaData: Record<string, LegalAreaData> = {
       "Third-Party Liability Suits", "Death Benefits", "Retaliation for Filing",
     ],
     stateGuidance: {
-      "CA": {
-        forms: [
-          { name: "DWC 1 (Claim Form)", description: "Primary workers' comp claim form — employer must provide within 1 day of injury report", url: "https://www.dir.ca.gov/dwc/forms.html" },
-          { name: "PR-2 (Medical Report)", description: "Primary treating physician's progress report", url: "https://www.dir.ca.gov/dwc/forms.html" },
-          { name: "DEU Form 100 (Disability Evaluation)", description: "Request for permanent disability evaluation", url: "https://www.dir.ca.gov/dwc/forms.html" },
-          { name: "WCAB Application (WCAB-1)", description: "File a case with the Workers' Comp Appeals Board", url: "https://www.dir.ca.gov/wcab/wcab.html" },
-        ],
-        deadlines: [
-          { name: "Report Injury to Employer", timeframe: "30 days from injury (or discovery of occupational disease)" },
-          { name: "File Claim Form (DWC 1)", timeframe: "1 year from injury — employer must provide form within 1 working day" },
-          { name: "Petition for Reconsideration", timeframe: "20 days from WCAB order" },
-          { name: "Application After Denial", timeframe: "5 years from date of injury to file WCAB Application" },
-        ],
-        fees: [
-          { name: "Filing a Claim", amount: "Free (employer-funded insurance)" },
-          { name: "WCAB Filing", amount: "Free" },
-          { name: "Attorney Fees (if hired)", amount: "Contingency — typically 9–12% of settlement, court-approved" },
-        ],
-        laws: [
-          { name: "Labor Code § 3600", summary: "Establishes employer liability for work injuries without fault" },
-          { name: "Labor Code § 132a", summary: "Prohibits employer retaliation for filing a workers' comp claim" },
-          { name: "Labor Code § 4600", summary: "Employer must pay for all reasonable and necessary medical care" },
-          { name: "Labor Code § 4660", summary: "Permanent disability rating schedule" },
-        ],
-      },
       "TX": {
         forms: [
           { name: "DWC Form-041 (Employer First Report)", description: "Employer's first report of injury or illness", url: "https://www.tdi.texas.gov/wc/forms/dwcforms.html" },
@@ -985,29 +637,6 @@ export const legalAreaData: Record<string, LegalAreaData> = {
           { name: "Labor Code § 451.001", summary: "Retaliation prohibition — cannot fire for filing a claim" },
           { name: "Labor Code § 408.001", summary: "Exclusive remedy — if employer subscribes, no civil suit" },
           { name: "Non-subscriber Liability", summary: "Non-subscribing employers lose common law defenses" },
-        ],
-      },
-      "NY": {
-        forms: [
-          { name: "C-3 (Employee Claim)", description: "Employee's claim for compensation benefits", url: "https://www.wcb.ny.gov/content/main/forms/AllForms.jsp" },
-          { name: "C-3.3 (Occupational Disease)", description: "Claim for occupational disease", url: "https://www.wcb.ny.gov/content/main/forms/AllForms.jsp" },
-          { name: "MG-1 (Medical Report)", description: "Initial medical report by treating physician", url: "https://www.wcb.ny.gov/content/main/forms/AllForms.jsp" },
-          { name: "RFA-1 (Request for Action)", description: "Request a hearing or board action", url: "https://www.wcb.ny.gov/content/main/forms/AllForms.jsp" },
-        ],
-        deadlines: [
-          { name: "Report Injury to Employer", timeframe: "30 days from accident or knowledge of occupational disease" },
-          { name: "File C-3 Claim", timeframe: "2 years from accident or last benefit payment" },
-          { name: "File C-3.3 (Occupational Disease)", timeframe: "2 years from disablement or knowledge of disease" },
-        ],
-        fees: [
-          { name: "Filing Claim with WCB", amount: "Free" },
-          { name: "Attorney Fees", amount: "Maximum 15% of disputed amounts — WCB must approve" },
-        ],
-        laws: [
-          { name: "NY Workers' Compensation Law § 21", summary: "Presumption that accident arose out of employment" },
-          { name: "WCL § 120", summary: "Anti-retaliation protections" },
-          { name: "WCL § 15(8)", summary: "Special fund for re-opened cases and second injuries" },
-          { name: "WCL § 39", summary: "Employer must post notice of workers' comp coverage" },
         ],
       },
       "FL": {
@@ -1056,7 +685,7 @@ export const legalAreaData: Record<string, LegalAreaData> = {
           { name: "Section 8.1a", summary: "Fee schedule for medical services" },
         ],
       },
-      ...Object.fromEntries(remainingStates.filter(s => !["CA","TX","NY","FL","IL"].includes(s)).map(s => [s, createDefaultGuidance("workers-comp")])),
+      ...Object.fromEntries(remainingStates.filter(s => !["TX","FL","IL"].includes(s)).map(s => [s, createDefaultGuidance("workers-comp")])),
     },
   },
 
@@ -1074,34 +703,6 @@ export const legalAreaData: Record<string, LegalAreaData> = {
       "CFPB Complaints", "FTC Complaints", "Class Action Eligibility",
     ],
     stateGuidance: {
-      "CA": {
-        forms: [
-          { name: "DFPI Complaint Form", description: "File complaint against financial institutions with CA Dept of Financial Protection & Innovation", url: "https://dfpi.ca.gov/file-a-complaint/" },
-          { name: "CA AG Consumer Complaint", description: "File complaint with California Attorney General's office", url: "https://oag.ca.gov/contact/consumer-complaint-against-business-or-company" },
-          { name: "CFPB Complaint Form", description: "Federal complaint for debt collection, credit reports, or loan issues", url: "https://www.consumerfinance.gov/complaint/" },
-          { name: "Small Claims SC-100", description: "Sue for consumer fraud damages up to $10,000", url: "https://www.courts.ca.gov/documents/sc100.pdf" },
-        ],
-        deadlines: [
-          { name: "FCRA Dispute (Credit Bureaus)", timeframe: "30 days for bureau to investigate; no SOL on disputes" },
-          { name: "FDCPA Lawsuit", timeframe: "1 year from violation date" },
-          { name: "Lemon Law Claim (Song-Beverly)", timeframe: "4 years from purchase or last repair attempt" },
-          { name: "Consumer Fraud (UCL)", timeframe: "4 years under Business & Professions Code § 17200" },
-          { name: "Deceptive Advertising", timeframe: "3 years for private suits under CLRA" },
-        ],
-        fees: [
-          { name: "AG Complaint", amount: "Free" },
-          { name: "CFPB / FTC Complaint", amount: "Free" },
-          { name: "Small Claims Filing", amount: "$30–$75" },
-          { name: "CLRA Lawsuit", amount: "Attorneys' fees recoverable if you win" },
-        ],
-        laws: [
-          { name: "Rosenthal Fair Debt Collection Act", summary: "CA version of FDCPA — covers original creditors too" },
-          { name: "Song-Beverly Consumer Warranty Act", summary: "CA Lemon Law — broader protections than federal" },
-          { name: "CLRA (Civil Code § 1770)", summary: "Consumers Legal Remedies Act — prohibits 27 deceptive practices" },
-          { name: "UCL (Bus. & Prof. Code § 17200)", summary: "Unfair Competition Law — private right of action for unfair practices" },
-          { name: "FCRA (federal)", summary: "Fair Credit Reporting Act — credit report accuracy and dispute rights" },
-        ],
-      },
       "TX": {
         forms: [
           { name: "TX AG Consumer Complaint Form", description: "File complaint with Texas Attorney General Consumer Protection Division", url: "https://www.texasattorneygeneral.gov/consumer-protection/file-consumer-complaint" },
@@ -1125,32 +726,6 @@ export const legalAreaData: Record<string, LegalAreaData> = {
           { name: "Finance Code § 392", summary: "Texas version of FDCPA — debt collection regulations" },
           { name: "TX Lemon Law (Transportation Code Ch. 2301)", summary: "Defective vehicle repurchase or replacement" },
           { name: "FCRA (federal)", summary: "Fair Credit Reporting Act — dispute rights for credit errors" },
-        ],
-      },
-      "NY": {
-        forms: [
-          { name: "NY AG Consumer Complaint Form", description: "File complaint with New York Attorney General", url: "https://ag.ny.gov/complaint-forms" },
-          { name: "DFS Consumer Complaint Form", description: "Complaints against banks, lenders, or insurance companies", url: "https://www.dfs.ny.gov/consumers/file_a_complaint" },
-          { name: "NYC DCA Complaint", description: "NYC residents — complaint against licensed businesses", url: "https://www.nyc.gov/site/dca/consumers/file-complaint.page" },
-          { name: "CFPB Complaint", description: "Federal portal for financial product issues", url: "https://www.consumerfinance.gov/complaint/" },
-        ],
-        deadlines: [
-          { name: "GBL § 349 Lawsuit", timeframe: "3 years from deceptive act" },
-          { name: "FDCPA Lawsuit", timeframe: "1 year from violation" },
-          { name: "Identity Theft Claim", timeframe: "Dispute credit bureau errors within reasonable time; 2-year SOL for lawsuit" },
-          { name: "Lemon Law (NY)", timeframe: "Within 4 years of purchase; must first attempt resolution through manufacturer" },
-        ],
-        fees: [
-          { name: "AG / DFS Complaint", amount: "Free" },
-          { name: "Small Claims Filing", amount: "$15–$25 depending on amount" },
-          { name: "GBL § 349 Lawsuit", amount: "Attorney fees recoverable; minimum $50 statutory damages" },
-        ],
-        laws: [
-          { name: "GBL § 349", summary: "Deceptive acts and practices — private right of action + $50 minimum damages" },
-          { name: "GBL § 350", summary: "False advertising — private right of action" },
-          { name: "NY Lemon Law (GBL § 198-a)", summary: "Refund or replacement for defective vehicles within first 18k miles / 2 years" },
-          { name: "NY FDCPA (GBL § 601)", summary: "NY Debt Collection Practices — additional protections on top of federal FDCPA" },
-          { name: "FCRA (federal)", summary: "Fair Credit Reporting Act — dispute rights, free annual credit reports" },
         ],
       },
       "FL": {
@@ -1204,7 +779,7 @@ export const legalAreaData: Record<string, LegalAreaData> = {
           { name: "FCRA (federal)", summary: "Fair Credit Reporting Act — governs credit bureau accuracy" },
         ],
       },
-      ...Object.fromEntries(remainingStates.filter(s => !["CA","TX","NY","FL","IL"].includes(s)).map(s => [s, createDefaultGuidance("consumer-rights")])),
+      ...Object.fromEntries(remainingStates.filter(s => !["TX","FL","IL"].includes(s)).map(s => [s, createDefaultGuidance("consumer-rights")])),
     },
   },
 };

@@ -14,7 +14,7 @@ const CivilRightsHelp = () => (
       { title: "Know Your Protected Class", description: "Federal law protects against discrimination based on race, color, national origin, sex (including pregnancy and gender identity), religion, disability, age (40+), and genetic information. State laws may add more protections." },
       { title: "Document Everything", description: "Keep detailed records: dates, times, witnesses, what was said/done, who was involved, and how it affected you. Save emails, texts, policies, and any other evidence." },
       { title: "File with the Correct Agency", description: "Employment discrimination: EEOC or your state's civil rights agency. Housing discrimination: HUD or state agency. Public accommodation: DOJ Civil Rights Division or state agency." },
-      { title: "Meet the Filing Deadline", description: "Federal employment complaints must be filed within 180 days (300 if your state has its own agency). Housing complaints: 1 year with HUD. Don't wait — deadlines are strictly enforced." },
+      { title: "Meet the Filing Deadline", description: "Workplace discrimination charges with the EEOC generally must be filed within 180 days, or 300 days where a state or local agency enforces a similar law (42 U.S.C. §2000e-5(e)). Federal employees usually must contact their agency's EEO counselor within 45 days. Housing complaints to HUD: within 1 year. Don't wait — deadlines are strictly enforced." },
       { title: "Cooperate with the Investigation", description: "The agency will investigate, possibly mediate, and determine whether there's reasonable cause. You may need to provide additional information or participate in mediation." },
     ]}
     evidenceItems={[
@@ -37,8 +37,8 @@ const CivilRightsHelp = () => (
     ]}
     ctas={[
       { label: "Get a Plain-Language Summary", href: "/case-analysis" },
-      { label: "Generate Complaint Draft", href: "/ai-tools/use" },
-      { label: "Build Your Timeline", href: "/ai-tools/use" },
+      { label: "California Civil Rights Steps", href: "/ca/legal-center?area=human-rights" },
+      { label: "New York Human Rights Steps", href: "/ny/legal-center?area=human-rights" },
     ]}
     relatedPages={[
       { label: "Workplace Discrimination", href: "/legal-help/workplace-discrimination" },

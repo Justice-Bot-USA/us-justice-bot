@@ -19,8 +19,6 @@ const categories = [
       { label: "Eviction Notice: What to Do", href: "/legal-help/eviction-notice-what-to-do" },
       { label: "🔧 Free Eviction Defense Tool", href: "/free-eviction-defense-tool" },
       { label: "California Eviction Process", href: "/legal-help/california-eviction-process" },
-      { label: "Texas Eviction Process", href: "/legal-help/texas-eviction-process" },
-      { label: "Florida Eviction Process", href: "/legal-help/florida-eviction-process" },
       { label: "New York Eviction Process", href: "/legal-help/new-york-eviction-process" },
     ],
   },
@@ -34,7 +32,6 @@ const categories = [
       { label: "Defending Small Claims", href: "/legal-help/how-to-defend-small-claims" },
       { label: "Small Claims Evidence", href: "/legal-help/small-claims-evidence" },
       { label: "🔧 Free Small Claims Case Builder", href: "/free-small-claims-case-builder" },
-      { label: "Texas Small Claims Court", href: "/legal-help/texas-small-claims-court" },
       { label: "New York Small Claims Court", href: "/legal-help/new-york-small-claims-court" },
     ],
   },
@@ -50,7 +47,6 @@ const categories = [
       { label: "Protective Orders", href: "/legal-help/protective-orders" },
       { label: "🔧 Free Custody Case Organizer", href: "/free-custody-case-organizer" },
       { label: "California Child Custody", href: "/legal-help/california-child-custody" },
-      { label: "Florida Child Custody", href: "/legal-help/florida-child-custody" },
     ],
   },
   {
@@ -119,7 +115,7 @@ const LegalHelpIndex = () => {
     <div className="min-h-screen bg-background">
       <Helmet>
         <title>Free Legal Help Library | Eviction, Small Claims, Family Court | Justice Bot USA</title>
-        <meta name="description" content="Free legal help guides covering eviction defense, small claims court, family law, civil rights, criminal defense, workers' comp, and Native American tribal rights. Step-by-step guidance, with full California and New York coverage and other states coming soon." />
+        <meta name="description" content="Free legal help guides covering eviction defense, small claims court, family law, civil rights, criminal defense, workers' comp, and Native American tribal rights. Step-by-step guidance for California and New York, with other states coming soon." />
         <meta name="keywords" content="free legal help, eviction help, small claims court, tenant rights, child custody, discrimination complaint, workers compensation, tribal rights, legal guide" />
         <link rel="canonical" href="https://justicebot-usa.com/legal-help" />
         <meta property="og:title" content="Free Legal Help Library | Justice Bot USA" />
@@ -139,7 +135,7 @@ const LegalHelpIndex = () => {
 
         <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-3">Free Legal Help Library</h1>
         <p className="text-lg text-muted-foreground mb-10 max-w-2xl">
-          Plain-language guides to common legal issues in the United States. Understand the process, know your rights, and prepare your case with free tools.
+          Plain-language guides to common legal issues in the United States, with state-specific steps for California and New York (other states coming soon). Understand the process, know your rights, and get organized.
         </p>
 
         <div className="space-y-8">
@@ -189,7 +185,7 @@ const LegalHelpIndex = () => {
         </div>
 
         <div className="text-xs text-muted-foreground border-t pt-6 mt-10">
-          <p><strong>Disclaimer:</strong> This is legal information, not legal advice. For advice specific to your situation, consult a licensed attorney.</p>
+          <p><strong>Disclaimer:</strong> This is legal information, not legal advice, and our content has not yet been reviewed by a licensed attorney. For advice specific to your situation, consult a licensed attorney.</p>
         </div>
       </main>
 

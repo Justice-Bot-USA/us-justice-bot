@@ -27,16 +27,16 @@ const journeys = [
     icon: Compass,
     emoji: "🧭",
     title: "Understand My Situation",
-    description: "For users who are confused, overwhelmed, or unsure where to begin. Get plain-language clarity on your legal or administrative issue.",
+    description: "For users who are confused, overwhelmed, or unsure where to begin. Pick California or New York for plain-language information on common legal problems and the official steps.",
     cta: "Get clarity",
-    href: "/case-analysis",
+    href: "#choose-state",
     journeyType: "understand",
   },
   {
     icon: FileSearch,
     emoji: "📄",
     title: "Request Official Records",
-    description: "You know records exist but don't know how to get them. We'll guide you through the FOIA or public-records request process for your state.",
+    description: "You know records exist but don't know how to get them. We'll help you write a state public records request letter that cites your state's public records law.",
     cta: "Request records",
     href: "/foia-request-generator",
     journeyType: "records",
@@ -44,9 +44,9 @@ const journeys = [
   {
     icon: FileText,
     emoji: "✍️",
-    title: "Prepare Documents or Letters",
-    description: "Need paperwork help? Select your document type, fill in guided inputs, preview, and export — step by step.",
-    cta: "Prepare documents",
+    title: "Find Official Court Forms",
+    description: "Find the official California or New York court forms for common situations, with plain-language filling instructions. Some forms can be filled in online.",
+    cta: "Find forms",
     href: "/forms-library",
     journeyType: "documents",
   },
@@ -87,7 +87,7 @@ const StartPage = () => {
     "@context": "https://schema.org",
     "@type": "WebPage",
     name: "Start Your Legal Journey — Justice Bot USA",
-    description: "Choose your path: understand your situation, request records, prepare documents, navigate court processes, or learn your options.",
+    description: "Choose your path: understand your situation, request records, find official court forms, navigate court processes, or learn your options.",
     url: "https://justicebot-usa.com/start",
     isPartOf: {
       "@type": "WebSite",
@@ -99,14 +99,14 @@ const StartPage = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
-        title="Start Your Legal Journey | Justice Bot USA — Powered by Justice Bot USA"
-        description="Choose where to start: understand your legal situation, request official records, prepare documents, navigate court processes, or learn your options. Informational guidance only."
-        keywords="legal journey, legal guidance, FOIA request, court process, self-represented, legal information, document preparation"
+        title="Start Your Legal Journey | Justice Bot USA"
+        description="Choose where to start: understand your legal situation, request official records, find official court forms, navigate court processes, or learn your options. Legal information only."
+        keywords="legal guidance, public records request, court process, self-represented, legal information, court forms, California, New York"
         url="https://justicebot-usa.com/start"
       />
       <EnhancedSEO
         title="Start Your Legal Journey | Justice Bot USA"
-        description="Step-by-step legal guidance for self-represented individuals. Choose your path and get started immediately."
+        description="Plain-language legal information and official court forms for self-represented people in California and New York."
         canonicalUrl="https://justicebot-usa.com/start"
         structuredData={structuredData}
       />
@@ -126,7 +126,7 @@ const StartPage = () => {
 
         {/* Subtext */}
         <p className="text-lg text-muted-foreground text-center max-w-2xl mx-auto mb-16">
-          You don't need to know the right form or process yet. Justice Bot USA helps you start in the right place and guides you forward — clearly, lawfully, and at your pace.
+          You don't need to know the process yet. Justice Bot USA gives you plain-language legal information and official court forms for California and New York, so you can decide your next step at your own pace. Other states are coming soon.
         </p>
 
         {/* Primary Question */}

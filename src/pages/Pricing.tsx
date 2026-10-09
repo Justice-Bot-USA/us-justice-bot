@@ -146,7 +146,7 @@ const Pricing = () => {
       
       <div className="container mx-auto px-4 py-16">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4">Prepare Your Official Filing — No Lawyer Required</h1>
+          <h1 className="text-4xl font-bold mb-4">For People Representing Themselves: Fill In Your Own Court Forms</h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             Official court forms, plain-language guidance, and step-by-step filing instructions. Live in California and New York; the other 48 states are coming soon.
           </p>
@@ -165,7 +165,7 @@ const Pricing = () => {
                 <Zap className="w-5 h-5 text-primary" />
                 <CardTitle>{PLAN.name}</CardTitle>
               </div>
-              <CardDescription>One plan. Unlimited use. Cancel anytime.</CardDescription>
+              <CardDescription>One plan. All forms and filling instructions included. Cancel any time by contacting support.</CardDescription>
               <div className="mt-4">
                 <span className="text-4xl font-bold">${PLAN.price}</span>
                 <span className="text-muted-foreground">/month</span>
@@ -174,10 +174,10 @@ const Pricing = () => {
             <CardContent>
               <ul className="space-y-3 mb-6">
                 {[
-                  'Official California and New York court forms, filled from your answers',
-                  'Unlimited form guides and filing checklists',
+                  'Fill in official California and New York court forms with your own answers',
+                  'Step-by-step filling instructions for California and New York forms',
                   'Saved cases, document uploads, and re-downloads',
-                  'State-verified guidance for California and New York',
+                  'Plain-language guidance with links to official court and agency sources',
                 ].map((item) => (
                   <li key={item} className="flex items-start">
                     <Check className="w-5 h-5 text-primary mr-2 mt-0.5 flex-shrink-0" />
@@ -199,13 +199,13 @@ const Pricing = () => {
 
         <div className="mt-12 text-center space-y-3">
           <p className="text-sm text-muted-foreground italic">
-            This is legal information, not legal advice. No lawyer fees. No legal advice.
+            This is legal information, not legal advice. We are not a law firm, and our content has not yet been reviewed by a licensed attorney.
           </p>
           <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
             <CreditCard className="w-4 h-4" />
             <span>Secure payments powered by Stripe</span>
           </div>
-          <p className="text-sm text-muted-foreground">Cancel anytime.</p>
+          <p className="text-sm text-muted-foreground">Cancel any time by contacting support.</p>
           <p className="text-sm text-muted-foreground max-w-2xl mx-auto">{THIRD_PARTY_FEES_NOTE}</p>
         </div>
       </div>

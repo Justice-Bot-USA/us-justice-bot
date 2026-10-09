@@ -25,7 +25,7 @@ const demoSteps = [
   {
     id: 1,
     title: "Describe Your Legal Issue",
-    description: "Tell us about your situation in plain language. Our AI understands context and asks clarifying questions.",
+    description: "Tell us about your situation in plain language and answer a few short questions.",
     icon: FileText,
     color: "bg-blue-500",
     demo: {
@@ -54,30 +54,28 @@ const demoSteps = [
   {
     id: 3,
     title: "Upload Evidence",
-    description: "Organize your documents and evidence. Our AI extracts key facts automatically.",
+    description: "Add your documents so your summary reflects them, and keep them in one place.",
     icon: Upload,
     color: "bg-orange-500",
     demo: {
       type: "evidence",
       files: [
-        { name: "lease_agreement.pdf", status: "Analyzed", keyFacts: 3 },
-        { name: "deposit_receipt.jpg", status: "Analyzed", keyFacts: 2 },
-        { name: "move_out_photos.zip", status: "Analyzed", keyFacts: 8 }
+        { name: "lease_agreement.pdf", status: "Uploaded" },
+        { name: "deposit_receipt.jpg", status: "Uploaded" },
+        { name: "move_out_photos.jpg", status: "Uploaded" }
       ]
     }
   },
   {
     id: 4,
-    title: "Generate Your Forms",
-    description: "Get customized legal forms pre-filled with your information, ready to file.",
+    title: "Fill In Official Forms",
+    description: "In California and New York, fill in the official court form with your own answers and download it. You review, sign, and file it yourself.",
     icon: ClipboardCheck,
     color: "bg-red-500",
     demo: {
       type: "forms",
       forms: [
-        { name: "Small Claims Complaint", status: "Ready", pages: 4 },
-        { name: "Demand Letter", status: "Ready", pages: 2 },
-        { name: "Evidence Summary", status: "Ready", pages: 6 }
+        { name: "SC-100 Plaintiff's Claim (California)", note: "Filled with your own answers" }
       ]
     }
   }
@@ -172,7 +170,6 @@ const DemoJourney = () => {
                   <span className="font-medium">{file.name}</span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <Badge variant="secondary">{file.keyFacts} key facts extracted</Badge>
                   <Badge className="bg-green-500">{file.status}</Badge>
                 </div>
               </motion.div>
@@ -195,7 +192,7 @@ const DemoJourney = () => {
                   <ClipboardCheck className="h-5 w-5 text-primary" />
                   <div>
                     <p className="font-medium">{form.name}</p>
-                    <p className="text-xs text-muted-foreground">{form.pages} pages</p>
+                    <p className="text-xs text-muted-foreground">{form.note}</p>
                   </div>
                 </div>
                 <Button size="sm" variant="outline">
@@ -204,8 +201,8 @@ const DemoJourney = () => {
               </motion.div>
             ))}
             <div className="p-4 bg-primary/10 rounded-lg text-center mt-6">
-              <p className="font-medium text-primary">All forms ready to download!</p>
-              <p className="text-sm text-muted-foreground">Pre-filled with your case information</p>
+              <p className="font-medium text-primary">Your form is ready to download</p>
+              <p className="text-sm text-muted-foreground">Review it, finish anything only you can decide, then sign and file it yourself.</p>
             </div>
           </div>
         );
@@ -219,7 +216,7 @@ const DemoJourney = () => {
     <div className="min-h-screen bg-background">
       <SEOHead
         title="Demo Journey - See Justice Bot USA in Action | Interactive Walkthrough"
-        description="Experience a complete walkthrough of the Justice Bot USA legal assistance platform. See how our AI helps you from case description to filing-ready forms."
+        description="Experience a complete walkthrough of the Justice Bot USA legal assistance platform. See how our AI helps you go from describing your situation to filling in official court forms with your own answers."
         url="https://justicebot-usa.com/demo-journey"
       />
       
@@ -335,7 +332,7 @@ const DemoJourney = () => {
           <div className="text-center mt-16 p-8 bg-primary/5 rounded-2xl max-w-2xl mx-auto">
             <h2 className="text-2xl font-bold mb-4">Ready to Start Your Case?</h2>
             <p className="text-muted-foreground mb-6">
-              Get the same AI-powered legal guidance for your real situation. It takes less than 5 minutes.
+              Get the same AI-powered legal information for your real situation.
             </p>
             <Button size="lg" asChild>
               <Link to="/case-analysis">

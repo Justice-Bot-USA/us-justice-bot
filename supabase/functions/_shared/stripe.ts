@@ -5,8 +5,9 @@ import Stripe from "https://esm.sh/stripe@18.5.0";
 // Access", lookup key justicebot_usa_monthly_25). STRIPE_PRICE_MONTHLY can override it.
 // The legacy $19.99/month price (price_1T10c4Pr9cYwQq3CJqfwzpqo) stays active in Stripe
 // but is no longer offered.
-// Legacy one-time prices (kept so older links and pending checkouts still work):
-// Single Form $9.99, Bundle $49.99, FOIA Single $9.99, FOIA Bundle $29.99.
+// Legacy one-time prices: Single Form $9.99, Bundle $49.99, FOIA Single $9.99, FOIA Bundle $29.99.
+// No new checkouts are created for them (stripe-checkout rejects those actions); the IDs stay
+// so sessions already paid for them can still be verified.
 export const PRICE_IDS = {
   per_form: "price_1SspQoPr9cYwQq3CUtFuCkxA",
   monthly: Deno.env.get("STRIPE_PRICE_MONTHLY") || "price_1UOYQSPr9cYwQq3CbOAjTe6i",

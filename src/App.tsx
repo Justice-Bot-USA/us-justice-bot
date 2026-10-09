@@ -33,7 +33,6 @@ const NewYorkLegalCenter = lazy(() => import("./pages/NewYorkLegalCenter"));
 const CaliforniaLegalCenter = lazy(() => import("./pages/CaliforniaLegalCenter"));
 const FormFillPage = lazy(() => import("./pages/FormFillPage"));
 const CriminalDefenseGuide = lazy(() => import("./pages/CriminalDefenseGuide"));
-const CaseLawSearch = lazy(() => import("./pages/CaseLawSearch"));
 const BookOfDocuments = lazy(() => import("./pages/BookOfDocuments"));
 const CaseJourney = lazy(() => import("./pages/CaseJourney"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
@@ -41,7 +40,6 @@ const TermsOfService = lazy(() => import("./pages/TermsOfService"));
 const LegalDisclaimer = lazy(() => import("./pages/LegalDisclaimer"));
 const FAQ = lazy(() => import("./pages/FAQ"));
 const DemoJourney = lazy(() => import("./pages/DemoJourney"));
-const SexOffenderRegistry = lazy(() => import("./pages/SexOffenderRegistry"));
 const CourtRecordsLookup = lazy(() => import("./pages/CourtRecordsLookup"));
 const CourtListenerSearch = lazy(() => import("./pages/CourtListenerSearch"));
 const SelfHelpHub = lazy(() => import("./pages/SelfHelpHub"));
@@ -131,7 +129,8 @@ export default function App() {
               <Route path="/fill/:state" element={<FormFillPage />} />
               <Route path="/fill/:state/:formId" element={<FormFillPage />} />
               <Route path="/criminal-defense-guide" element={<CriminalDefenseGuide />} />
-              <Route path="/case-law-search" element={<CaseLawSearch />} />
+              {/* Case Law Search retired: it asked the AI for case citations from memory, not a legal database. */}
+              <Route path="/case-law-search" element={<Navigate to="/legal-areas" replace />} />
               <Route path="/book-of-documents" element={<BookOfDocuments />} />
               <Route path="/case-journey" element={<CaseJourney />} />
               <Route path="/case/:caseId" element={<CaseJourney />} />
@@ -141,7 +140,8 @@ export default function App() {
               <Route path="/faq" element={<FAQ />} />
               <Route path="/demo-journey" element={<DemoJourney />} />
               <Route path="/warrant-lookup" element={<Navigate to="/criminal-defense-guide" replace />} />
-              <Route path="/sex-offender-registry" element={<SexOffenderRegistry />} />
+              {/* Sex offender lookup retired: we hold no registry data and do not access law-enforcement databases. */}
+              <Route path="/sex-offender-registry" element={<Navigate to="/" replace />} />
               <Route path="/court-records" element={<CourtRecordsLookup />} />
               <Route path="/courtlistener" element={<CourtListenerSearch />} />
               <Route path="/self-help" element={<SelfHelpHub />} />

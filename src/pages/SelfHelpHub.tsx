@@ -125,7 +125,7 @@ const SelfHelpHub = () => {
         <title>Self-Help Legal Guide | Justice Bot USA — Tools for Self-Represented Litigants</title>
         <meta name="description" content="Free self-help legal tools for self-represented litigants. Identify your case type, find court forms, research case law, organize evidence, and prepare for court. Not legal advice." />
         <meta name="robots" content="index, follow" />
-        <link rel="canonical" href="https://us-justice-bot.lovable.app/self-help" />
+        <link rel="canonical" href="https://justicebot-usa.com/self-help" />
       </Helmet>
 
       <Header language={language} onLanguageChange={setLanguage} />

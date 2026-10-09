@@ -15,12 +15,12 @@ const FreeEvictionDefenseTool = () => {
     <div className="min-h-screen bg-background">
       <Helmet>
         <title>Free Eviction Defense Tool | Prepare Your Case | Justice Bot USA</title>
-        <meta name="description" content="Free eviction defense tool. Organize evidence, identify defenses, generate court documents, and prepare your timeline. Built for tenants facing eviction." />
+        <meta name="description" content="Free eviction help for tenants: organize your evidence, learn about possible defenses, and build a timeline. In California, fill in the official eviction Answer (UD-105) for free." />
         <meta name="keywords" content="free eviction defense tool, eviction help, fight eviction free, tenant defense tool, eviction court preparation" />
         <link rel="canonical" href="https://justicebot-usa.com/free-eviction-defense-tool" />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org", "@type": "WebApplication",
-          name: "Free Eviction Defense Tool", description: "Organize your eviction defense case with AI-powered tools.",
+          name: "Free Eviction Defense Tool", description: "Organize your evidence and learn about the eviction process. Legal information, not legal advice.",
           url: "https://justicebot-usa.com/free-eviction-defense-tool", applicationCategory: "LegalService", offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
         })}</script>
       </Helmet>
@@ -36,18 +36,18 @@ const FreeEvictionDefenseTool = () => {
           <Badge variant="secondary" className="mb-4">Free Tool</Badge>
           <h1 className="text-3xl md:text-5xl font-bold text-foreground mb-4">Free Eviction Defense Tool</h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
-            Don't face eviction unprepared. Use our AI-powered tools to organize your defense, identify possible defenses, and generate court-ready documents.
+            Don't face eviction unprepared. Organize your evidence, learn about defenses tenants commonly raise, and build a timeline. In California, fill in the official eviction Answer form (UD-105) for free.
           </p>
           <Button asChild size="lg" className="text-lg px-8">
-            <Link to="/case-analysis">Start Your Defense Now <ArrowRight className="ml-2 h-5 w-5" /></Link>
+            <Link to="/case-analysis">Get Started <ArrowRight className="ml-2 h-5 w-5" /></Link>
           </Button>
         </div>
 
         <div className="grid md:grid-cols-3 gap-6 mb-12">
           {[
-            { icon: Shield, title: "Identify Defenses", desc: "Our AI analyzes your situation and identifies applicable legal defenses based on your state's tenant protection laws." },
-            { icon: FileText, title: "Generate Documents", desc: "Create court-ready Answer forms, motions, and evidence summaries tailored to your jurisdiction." },
-            { icon: Clock, title: "Build Timeline", desc: "Organize your evidence chronologically to present a clear, compelling case in court." },
+            { icon: Shield, title: "Learn About Defenses", desc: "Read plain-language information about defenses tenants commonly raise in California and New York. We don't tell you which defense applies to you." },
+            { icon: FileText, title: "Answer Form (California)", desc: "In California, fill in the official eviction Answer form (UD-105) with your own answers, free. Other states are coming soon." },
+            { icon: Clock, title: "Build a Timeline", desc: "Put what happened and your evidence in date order so the facts are easy to follow." },
           ].map((f, i) => (
             <Card key={i}><CardContent className="p-6 text-center">
               <f.icon className="h-10 w-10 text-primary mx-auto mb-3" />
@@ -61,7 +61,7 @@ const FreeEvictionDefenseTool = () => {
           <CardContent className="p-6">
             <h2 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2"><Scale className="h-5 w-5 text-primary" /> How It Works</h2>
             <div className="space-y-3">
-              {["Tell us about your situation — state, notice type, and timeline", "Our AI identifies applicable defenses and relevant laws", "Upload evidence — photos, receipts, communications", "Generate court documents and an organized case summary", "Get step-by-step guidance for your court hearing"].map((s, i) => (
+              {["Tell us about your situation — state, notice type, and timeline", "Get a plain-language summary and links to official California and New York resources", "Upload evidence — photos, receipts, communications", "In California, fill in the official Answer form (UD-105) with your own answers", "Read general information about what happens at an eviction hearing"].map((s, i) => (
                 <div key={i} className="flex items-start gap-3"><CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" /><p className="text-sm text-foreground/90">{s}</p></div>
               ))}
             </div>
@@ -70,9 +70,9 @@ const FreeEvictionDefenseTool = () => {
 
         <div className="bg-primary/5 rounded-2xl p-8 text-center mb-12">
           <h2 className="text-2xl font-bold text-foreground mb-3">Ready to Build Your Defense?</h2>
-          <p className="text-muted-foreground mb-6">Join thousands of tenants who have used Justice Bot USA to prepare their eviction defense.</p>
+          <p className="text-muted-foreground mb-6">Start organizing your eviction defense today.</p>
           <div className="flex flex-wrap gap-3 justify-center">
-            <Button asChild size="lg"><Link to="/case-analysis">Start Free Case Analysis <ArrowRight className="ml-2 h-4 w-4" /></Link></Button>
+            <Button asChild size="lg"><Link to="/fill/ca/ud-105">Fill the CA Answer (UD-105) <ArrowRight className="ml-2 h-4 w-4" /></Link></Button>
             <Button asChild variant="outline" size="lg"><Link to="/legal-help/eviction">Read Eviction Guide <ArrowRight className="ml-2 h-4 w-4" /></Link></Button>
           </div>
         </div>
@@ -80,8 +80,6 @@ const FreeEvictionDefenseTool = () => {
         <div className="grid sm:grid-cols-2 gap-3">
           {[
             { label: "California Eviction Process", href: "/legal-help/california-eviction-process" },
-            { label: "Texas Eviction Process", href: "/legal-help/texas-eviction-process" },
-            { label: "Florida Eviction Process", href: "/legal-help/florida-eviction-process" },
             { label: "New York Eviction Process", href: "/legal-help/new-york-eviction-process" },
             { label: "Tenant Rights Guide", href: "/legal-help/tenant-rights" },
             { label: "General Eviction Guide", href: "/legal-help/eviction" },

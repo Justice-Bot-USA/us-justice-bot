@@ -19,7 +19,7 @@ const CourtroomPrep = () => {
       <Helmet>
         <title>Courtroom Preparation Guide | Justice Bot USA — What to Expect in Court</title>
         <meta name="description" content="Free courtroom preparation guide for self-represented litigants. Learn court etiquette, what to bring, how to address a judge, and how to present your case." />
-        <link rel="canonical" href="https://us-justice-bot.lovable.app/courtroom-prep" />
+        <link rel="canonical" href="https://justicebot-usa.com/courtroom-prep" />
       </Helmet>
 
       <Header language={language} onLanguageChange={setLanguage} />
