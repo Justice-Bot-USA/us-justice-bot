@@ -65,7 +65,6 @@ const ROUTES: RouteEntry[] = [
   { path: "/injury-settlement-calculator",  priority: 0.8, changefreq: "monthly" },
   { path: "/personal-injury-calculator",    priority: 0.7, changefreq: "monthly" },
   { path: "/case-law-search",               priority: 0.8, changefreq: "weekly" },
-  { path: "/warrant-lookup",                priority: 0.8, changefreq: "weekly" },
   { path: "/sex-offender-registry",         priority: 0.7, changefreq: "weekly" },
   { path: "/court-records",                 priority: 0.8, changefreq: "weekly" },
   { path: "/foia-request-generator",        priority: 0.8, changefreq: "monthly" },
@@ -99,9 +98,8 @@ const ROUTES: RouteEntry[] = [
   { path: "/illinois-legal-help",           priority: 0.6, changefreq: "monthly" },
   { path: "/georgia-legal-help",            priority: 0.6, changefreq: "monthly" },
   { path: "/pennsylvania-legal-help",       priority: 0.6, changefreq: "monthly" },
-  // ─── State tool landing pages (150 URLs: warrant + court-forms + arrest-records × 50 states) ──
+  // ─── State tool landing pages (court-forms + arrest-records × 50 states) ──
   ...ALL_STATE_SLUGS.flatMap((slug) => [
-    { path: `/${slug}-warrant-lookup`,   priority: stateToolPriority(slug), changefreq: "weekly" },
     { path: `/${slug}-court-forms`,      priority: stateToolPriority(slug), changefreq: "weekly" },
     { path: `/${slug}-arrest-records`,   priority: stateToolPriority(slug), changefreq: "monthly" },
   ]),
