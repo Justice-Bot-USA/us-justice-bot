@@ -42,7 +42,6 @@ const CriminalDefenseHelp = () => (
     relatedPages={[
       { label: "What to Do After Arrest", href: "/legal-help/what-to-do-after-arrest" },
       { label: "Defense Evidence Guide", href: "/legal-help/defense-evidence" },
-      { label: "Warrant Lookup", href: "/warrant-lookup" },
       { label: "Court Records Search", href: "/court-records" },
       { label: "Legal Glossary: Arraignment", href: "/legal-glossary#arraignment" },
       { label: "Legal Glossary: Bail", href: "/legal-glossary#bail" },

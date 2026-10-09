@@ -594,13 +594,6 @@ export default function CourtRecordsLookup() {
         <Card className="mt-8">
           <CardContent className="pt-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <Link to="/warrant-lookup">
-                <Button variant="outline" className="w-full h-auto py-4 flex flex-col items-center gap-2">
-                  <FileText className="h-6 w-6" />
-                  <span className="font-medium">Warrant Lookup</span>
-                  <span className="text-xs text-muted-foreground">Check for active warrants</span>
-                </Button>
-              </Link>
               <Link to="/usa-forms">
                 <Button variant="outline" className="w-full h-auto py-4 flex flex-col items-center gap-2">
                   <Scale className="h-6 w-6" />

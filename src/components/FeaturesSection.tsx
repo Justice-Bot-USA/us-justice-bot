@@ -118,7 +118,7 @@ const FeaturesSection = () => {
 
         {/* CTA Row */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10">
-          <Button size="lg" onClick={() => navigate("/warrant-lookup")} className="font-bold">
+          <Button size="lg" onClick={() => navigate("/start")} className="font-bold">
             Start Free
           </Button>
           <Button size="lg" variant="outline" onClick={() => navigate("/pricing")} className="font-bold">

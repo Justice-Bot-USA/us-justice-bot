@@ -103,7 +103,6 @@ const LEGAL_CATEGORIES = [
     keywords: ["DUI", "expungement", "record sealing", "bail", "criminal record"],
     relatedTools: [
       { label: "Criminal Defense Guide", href: "/criminal-defense-guide" },
-      { label: "Warrant Lookup", href: "/warrant-lookup" },
     ],
     href: "/legal-areas/criminal-defense",
   },
@@ -348,8 +347,7 @@ export default function LegalAreasHub() {
               {[
                 { label: "AI Case Analysis", href: "/case-analysis" },
                 { label: "Forms Library", href: "/forms-library" },
-                { label: "Warrant Lookup", href: "/warrant-lookup" },
-                { label: "Court Records", href: "/court-records" },
+                          { label: "Court Records", href: "/court-records" },
                 { label: "FOIA Generator", href: "/foia-request-generator" },
                 { label: "Injury Calculator", href: "/injury-settlement-calculator" },
                 { label: "Case Law Search", href: "/case-law-search" },

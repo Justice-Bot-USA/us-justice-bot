@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { Navigate, useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { getFunnelByRoute, US_STATE_NAMES, LEGAL_AREA_NAMES } from '@/lib/funnels';
 import { LegalCategory } from '@/lib/funnels/types';
@@ -13,7 +13,6 @@ import { Button } from '@/components/ui/button';
 import { AlertTriangle, ArrowLeft, Home } from 'lucide-react';
 import { parseStateToolSlug } from '@/lib/stateToolSeo';
 import StateToolLandingPage from '@/pages/StateToolLandingPage';
-import StateWarrantLookup from '@/pages/StateWarrantLookup';
 
 // ---------------------------------------------------------------------------
 // Helpers: generate unique structured data per state × legal-area combination
@@ -205,8 +204,9 @@ const StateFunnelPage: React.FC = () => {
 
   // Render state-tool landing page if matched
   if (stateToolMatch) {
+    // Warrant lookup was removed; old state warrant URLs go to the criminal defense guide.
     if (stateToolMatch.toolType === 'warrant-lookup') {
-      return <StateWarrantLookup />;
+      return <Navigate to="/criminal-defense-guide" replace />;
     }
     return <StateToolLandingPage />;
   }

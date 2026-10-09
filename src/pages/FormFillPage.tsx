@@ -216,7 +216,7 @@ function FormFiller({ form }: { form: FillableForm }) {
               )}
               {!unlocked && (
                 <p className="text-xs text-muted-foreground">
-                  One plan, {PLAN.priceLabel}: every form, guide, and records request, unlimited. Cancel anytime.
+                  One plan, {PLAN.priceLabel}: every form, guide, and records request, unlimited. Cancel anytime. Court filing fees are separate and set by the court.
                 </p>
               )}
               <a href={form.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-primary inline-flex items-center gap-1">

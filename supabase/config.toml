@@ -80,9 +80,6 @@ port = 54323
 [functions.sync-us-forms]
 verify_jwt = true
 
-[functions.warrant-lookup]
-verify_jwt = false
-
 [functions.sex-offender-search]
 verify_jwt = false
 

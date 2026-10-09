@@ -8,8 +8,6 @@ const FreeToolsBar = () => {
           <span className="text-muted-foreground font-medium">Free tools:</span>
           <Link to="/sex-offender-registry" className="text-primary hover:underline">Sex Offender Lookup</Link>
           <span className="text-muted-foreground">•</span>
-          <Link to="/warrant-lookup" className="text-primary hover:underline">Warrant Lookup</Link>
-          <span className="text-muted-foreground">•</span>
           <Link to="/usa-forms" className="text-primary hover:underline">Court Form Finder</Link>
         </div>
         <span className="text-muted-foreground italic hidden sm:inline">Not legal advice. Self-help + preparation tools.</span>
