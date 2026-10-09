@@ -33,6 +33,7 @@ const LegalAreaPage = lazy(() => import("./pages/LegalAreaPage"));
 const FormsLibrary = lazy(() => import("./pages/FormsLibrary"));
 const UsaForms = lazy(() => import("./pages/UsaForms"));
 const NewYorkLegalCenter = lazy(() => import("./pages/NewYorkLegalCenter"));
+const CaliforniaLegalCenter = lazy(() => import("./pages/CaliforniaLegalCenter"));
 const CriminalDefenseGuide = lazy(() => import("./pages/CriminalDefenseGuide"));
 const CaseLawSearch = lazy(() => import("./pages/CaseLawSearch"));
 const BookOfDocuments = lazy(() => import("./pages/BookOfDocuments"));
@@ -124,6 +125,8 @@ export default function App() {
               <Route path="/usa-forms" element={<UsaForms />} />
               <Route path="/ny/legal-center" element={<NewYorkLegalCenter />} />
               <Route path="/new-york/legal-center" element={<NewYorkLegalCenter />} />
+              <Route path="/ca/legal-center" element={<CaliforniaLegalCenter />} />
+              <Route path="/california/legal-center" element={<CaliforniaLegalCenter />} />
               <Route path="/criminal-defense-guide" element={<CriminalDefenseGuide />} />
               <Route path="/case-law-search" element={<CaseLawSearch />} />
               <Route path="/book-of-documents" element={<BookOfDocuments />} />
