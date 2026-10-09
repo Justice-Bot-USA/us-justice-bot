@@ -70,7 +70,7 @@ const StateSelector = ({ language, onStateSelect, selectedState }: StateSelector
       title: "Select Your State",
       subtitle: "Laws vary by state. Please select your state for accurate legal guidance.",
       placeholder: "Choose your state...",
-      coverage: "All 50 States + DC Coverage"
+      coverage: "Live in California & New York · Other states coming soon"
     },
     es: {
       title: "Seleccione Su Estado",

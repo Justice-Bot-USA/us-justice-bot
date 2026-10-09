@@ -29,7 +29,7 @@ export const StatesBanner = () => {
           >
             <Flag className="h-8 w-8 text-primary" />
             <Badge variant="default" className="text-lg px-4 py-2 bg-primary">
-              🇺🇸 Now Serving All 50 States!
+              🇺🇸 Now live in California & New York · Other 48 states coming soon
             </Badge>
             <Flag className="h-8 w-8 text-primary" />
           </motion.div>

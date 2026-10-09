@@ -287,7 +287,7 @@ const CriminalDefenseGuide = () => {
               </div>
               <div>
                 <h1 className="text-3xl md:text-4xl font-bold">Criminal Defense Guide</h1>
-                <p className="text-muted-foreground">State-by-state sentencing, bail, and defense strategies for all 50 states</p>
+                <p className="text-muted-foreground">Sentencing, bail, and defense information, with state detail for California, New York, Texas and Florida</p>
               </div>
             </div>
 

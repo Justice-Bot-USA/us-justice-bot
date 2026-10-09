@@ -171,7 +171,7 @@ const structuredData = {
   "@type": "CollectionPage",
   name: "Legal Areas — JusticeBot USA",
   description:
-    "Browse all 10 legal practice areas. Get AI-powered legal guidance, state-specific court forms, and step-by-step help for any civil legal issue in all 50 states.",
+    "Browse all 10 legal practice areas. Get AI-powered legal guidance, state-specific court forms, and step-by-step help for civil legal issues. Live in California and New York; other states coming soon.",
   url: "https://justicebot-usa.com/legal-areas",
   publisher: {
     "@type": "Organization",
@@ -196,7 +196,7 @@ export default function LegalAreasHub() {
         <title>All Legal Areas — Free US Legal Help | JusticeBot USA</title>
         <meta
           name="description"
-          content="Browse 10 legal practice areas: immigration, family law, employment, housing, civil rights, criminal defense, small claims, workers comp, consumer protection, and human rights. Get free AI-powered legal guidance for all 50 states."
+          content="Browse 10 legal practice areas: immigration, family law, employment, housing, civil rights, criminal defense, small claims, workers comp, consumer protection, and human rights. Live in California and New York; other states coming soon."
         />
         <meta
           name="keywords"
@@ -207,7 +207,7 @@ export default function LegalAreasHub() {
         <meta property="og:title" content="All Legal Areas — JusticeBot USA" />
         <meta
           property="og:description"
-          content="Free AI-powered legal guidance for 10 practice areas in all 50 states."
+          content="Legal information for 10 practice areas. Live in California and New York; other states coming soon."
         />
         <meta property="og:url" content="https://justicebot-usa.com/legal-areas" />
         <meta property="og:type" content="website" />
@@ -240,7 +240,7 @@ export default function LegalAreasHub() {
               Find the Right Legal Area
             </h1>
             <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-              AI-powered legal guidance for every civil legal issue across all 50 states. Select
+              Legal information for civil legal issues, live in California and New York with the other 48 states coming soon. Select
               your practice area below to access state-specific forms, deadlines, and step-by-step
               case analysis.
             </p>
@@ -324,7 +324,7 @@ export default function LegalAreasHub() {
 
                           {/* CTA row */}
                           <div className="flex items-center justify-between pt-1">
-                            <span className="text-xs text-muted-foreground">All 50 states</span>
+                            <span className="text-xs text-muted-foreground">CA & NY live · more coming</span>
                             <span className="text-xs font-medium text-primary flex items-center gap-1 group-hover:gap-2 transition-all">
                               Get Help <ArrowRight className="w-3 h-3" />
                             </span>

@@ -32,7 +32,7 @@ const ClosingCTA = lazy(() => import("@/components/ClosingCTA"));
 
 const justiceSystems = [
   { icon: Home, title: "Eviction & Housing", desc: "Tenant defenses, eviction responses, repair complaints — state-specific procedures", href: "/legal-help/eviction" },
-  { icon: Users, title: "Family Court", desc: "Divorce, custody, child support, protective orders across all 50 states", href: "/legal-help/child-custody" },
+  { icon: Users, title: "Family Court", desc: "Divorce, custody, child support, protective orders — full guides for California and New York", href: "/legal-help/child-custody" },
   { icon: ShieldAlert, title: "Civil Rights & Discrimination", desc: "EEOC complaints, housing discrimination, workplace civil rights filings", href: "/legal-help/discrimination-law" },
   { icon: Scale, title: "Small Claims Court", desc: "File or defend small-dollar claims — state limits, forms, evidence prep", href: "/legal-help/small-claims-court" },
   { icon: Gavel, title: "Criminal Court Process", desc: "Understand arraignment, plea, trial, sentencing — procedural information only", href: "/legal-help/criminal-court-process" },
@@ -42,7 +42,7 @@ const justiceSystems = [
 
 const howItWorksSteps = [
   { icon: ClipboardList, title: "Guided Triage", desc: "Structured questions to understand your situation and map it to the correct venue." },
-  { icon: Search, title: "Official Form Identification", desc: "Direct links to current federal and state court forms for all 50 states." },
+  { icon: Search, title: "Official Form Identification", desc: "Direct links to current federal court forms, and verified California and New York state forms. Other states coming soon." },
   { icon: CheckCircle, title: "Filing Readiness Checks", desc: "Identify required documents and common filing errors before you submit." },
   { icon: MapPin, title: "Procedural Walkthrough", desc: "Understand next steps before attending court or filing with an agency." },
 ];
@@ -167,7 +167,7 @@ const Index = () => {
         url="https://justicebot-usa.com"
       />
       <EnhancedSEO
-        title="Justice Bot USA | AI legal guidance for all 50 states"
+        title="Justice Bot USA | Legal information and court forms for California and New York"
         description="Legal information, not legal advice. Informational civic-guidance platform for self-represented individuals. Understand legal processes, prepare documents, request records. Not legal advice."
         keywords="Justice Bot USA, legal guidance, FOIA request generator, public records request, legal information, court forms, civic guidance, document preparation"
         canonicalUrl="https://justicebot-usa.com/"
@@ -393,7 +393,7 @@ const Index = () => {
               <p>
                 {BRAND} organizes these processes into clear, step-by-step pathways — connecting self-represented
                 individuals with the correct federal and state forms, filing requirements, and procedural timelines for
-                courts and agencies across all 50 states.
+                courts and agencies, live today in California and New York with the other 48 states coming soon.
               </p>
             </div>
 

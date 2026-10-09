@@ -148,7 +148,7 @@ const Pricing = () => {
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold mb-4">Prepare Your Official Filing — No Lawyer Required</h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Access official court forms, plain-language guidance, and step-by-step filing instructions for all 50 states.
+            Official court forms, plain-language guidance, and step-by-step filing instructions. Live in California and New York; the other 48 states are coming soon.
           </p>
           {isAdmin && (
             <Badge className="mt-4" variant="secondary">
