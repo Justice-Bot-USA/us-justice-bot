@@ -66,7 +66,7 @@ export default function FormsLibrary() {
     const areaName = (id: string) => legalAreaCategories.find((c) => c.id === id)?.name ?? id;
     const sources: [string, CourtForm[]][] = [...Object.entries(stateData.forms), ['federal', federalCourtForms]];
     const seen = new Set<string>();
-    const results: { form: CourtForm; area: string }[] = [];
+    const results: { form: CourtForm; area: string; federal: boolean }[] = [];
     for (const [id, forms] of sources) {
       const area = areaName(id);
       for (const form of forms) {
@@ -74,12 +74,14 @@ export default function FormsLibrary() {
         const key = `${form.formNumber}|${form.name}`;
         if (haystack.includes(query) && !seen.has(key)) {
           seen.add(key);
-          results.push({ form, area });
+          results.push({ form, area, federal: id === 'federal' });
         }
       }
     }
     return results;
   }, [stateData, searchQuery]);
+  const stateName = stateInfo?.name || selectedState;
+  const hasFederalResults = !!searchResults?.some((r) => r.federal);
 
   const hasDetailedData = selectedCategory === 'federal' || ['CA', 'TX', 'NY', 'FL', 'IL'].includes(selectedState);
   const isFederalCategory = selectedCategory === 'federal';
@@ -155,7 +157,8 @@ export default function FormsLibrary() {
           </CardContent>
         </Card>
 
-        {/* State/Federal Info Banner */}
+        {/* State/Federal Info Banner (hidden while searching: results can mix state and federal courts) */}
+        {!searchResults && (
         <Card className="mb-8 border-primary/20 bg-primary/5">
           <CardContent className="pt-6">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -237,15 +240,24 @@ export default function FormsLibrary() {
             )}
           </CardContent>
         </Card>
+        )}
 
         {searchResults ? (
           <div className="mb-8">
             <div className="flex items-center justify-between gap-4 mb-4 flex-wrap">
               <h2 className="text-lg font-semibold">
-                {searchResults.length} form{searchResults.length !== 1 ? 's' : ''} matching "{searchQuery.trim()}" in {stateInfo?.name || selectedState}
+                {searchResults.length} form{searchResults.length !== 1 ? 's' : ''} matching "{searchQuery.trim()}" in {stateName} courts{hasFederalResults ? ' and federal court' : ''}
               </h2>
               <Button variant="outline" size="sm" onClick={() => setSearchQuery('')}>Clear search</Button>
             </div>
+            {hasFederalResults && (
+              <div className="mb-4 p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+                <p className="text-sm text-blue-800 dark:text-blue-200">
+                  Results marked <strong>Federal Court</strong> are for U.S. District Courts, not {stateName} state courts.
+                  Some district courts also have local forms; check your court's website.
+                </p>
+              </div>
+            )}
             {searchResults.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {searchResults.map(({ form, area }, index) => (
@@ -258,7 +270,7 @@ export default function FormsLibrary() {
                 <FileText className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
                 <h3 className="text-lg font-semibold mb-2">No Forms Found</h3>
                 <p className="text-muted-foreground">
-                  Nothing matches "{searchQuery.trim()}" in {stateInfo?.name || selectedState}. Try a simpler word, like "divorce", "rent", or "fee waiver".
+                  Nothing matches "{searchQuery.trim()}" in {stateName}. Try a simpler word, like "divorce", "rent", or "fee waiver".
                 </p>
               </Card>
             )}
