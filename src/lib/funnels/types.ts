@@ -6,10 +6,10 @@ export type Country = 'US' | 'CA';
 export type FunnelStep = 
   | 'triage'
   | 'evidence'
-  | 'results'      // Combined merit + pathway + forms teaser (FREE)
+  | 'results'      // Plain-language summary of the user's situation (FREE)
   | 'paywall'      // Payment gate
-  | 'merit_score'  // Legacy - kept for backwards compat
-  | 'form_recommendation'
+  | 'merit_score'  // Legacy step id - no longer used by any funnel
+  | 'form_recommendation' // Legacy step id - no longer used by any funnel
   | 'generate'
   | 'next_steps'
   | 'payment';     // Legacy alias
@@ -90,17 +90,14 @@ export interface FunnelState {
     legalArea?: string;
     urgency?: string;
     evidence?: string[];
-    meritScore?: number;
-    recommendedForms?: string[];
     selectedChannel?: string;
     // Related cases fields
     hasExistingCase?: string;
     relatedCases?: RelatedCaseData[];
     consistencyAnswers?: ConsistencyCheckAnswerData[];
-    // Analysis results
+    // Plain-language summary (no score, estimate, strategy or form picks)
     caseId?: string;
-    legalPathway?: Array<{ step?: number; action?: string; timeline?: string }>;
-    requiredForms?: Array<{ formName?: string; formNumber?: string; purpose?: string }>;
+    summary?: string;
   };
 }
 

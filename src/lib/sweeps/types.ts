@@ -54,17 +54,14 @@ export interface EvidenceItem {
     isSigned: boolean;
     isScreenshot: boolean;
     hasNotarization: boolean;
-    notes: string;
   };
-  relevanceScore: number;
   indexedAt: string;
 }
 
+// Lists the user's own uploads only. No relevance ratings or "missing evidence".
 export interface EvidenceIndex {
   items: EvidenceItem[];
   totalDocuments: number;
-  strongestEvidence: string[];
-  gapsIdentified: string[];
   indexedAt: string;
 }
 
@@ -98,11 +95,6 @@ export interface Venue {
   courtWebsite?: string;
   eFilingUrl?: string;
   localRulesUrl?: string;
-  filingFees?: {
-    amount: number;
-    description: string;
-    waiverAvailable: boolean;
-  };
   status: 'confirmed' | 'uncertain' | 'needs_verification';
   notes: string;
   resolvedAt: string;
@@ -121,17 +113,10 @@ export interface TimelineEvent {
     quote?: string;
   };
   importance: 'critical' | 'high' | 'medium' | 'low';
-  legalSignificance?: string;
 }
 
 export interface Timeline {
   events: TimelineEvent[];
-  statuteOfLimitationsDeadlines: Array<{
-    claimType: string;
-    deadline: string;
-    daysRemaining: number;
-    status: 'expired' | 'critical' | 'approaching' | 'safe';
-  }>;
   upcomingDeadlines: Array<{
     deadline: string;
     description: string;
@@ -140,19 +125,15 @@ export interface Timeline {
   builtAt: string;
 }
 
-// Sweep 5 - Authority/Precedent
+// Sweep 5 - Authority (general background sources, not applied to the user's facts)
 export interface AuthorityResult {
   id: string;
   caseName: string;
   citation: string;
   court: string;
   year: number;
-  relevanceScore: number;
   holdings: string[];
-  outcome: 'favorable' | 'unfavorable' | 'mixed' | 'neutral';
-  remediesAwarded?: string[];
   keyQuotes?: string[];
-  howItApplies: string;
 }
 
 export interface AuthoritySweep {
@@ -169,79 +150,23 @@ export interface AuthoritySweep {
     agency: string;
     relevance: string;
   }>;
-  favorablePrecedentCount: number;
-  unfavorablePrecedentCount: number;
   notes: string;
   sweptAt: string;
   source: 'live_search' | 'cached_library' | 'fallback';
 }
 
-// Sweep 6 - Analysis Report
+// Sweep 6 - Plain-language summary
+// Founder decision (Oct 2026): no merit score, success rate, money or time
+// estimate, strategy, or choosing/ordering of forms. Only what the user told
+// us, the general legal area, general information and official links.
 export interface AnalysisReport {
-  meritScore: number;
-  meritScoreJustification: string;
-  estimatedSuccessRate: number;
-  
-  strongestClaims: Array<{
-    claim: string;
-    evidenceReferences: string[]; // doc_ids
-    legalBasis: string;
-    precedentSupport: string[];
-    strength: 'strong' | 'moderate' | 'weak';
+  summary: string;
+  legalArea: string;
+  generalInfo: string[];
+  officialSources: Array<{
+    name: string;
+    url: string;
   }>;
-  
-  weakestPoints: Array<{
-    issue: string;
-    impact: string;
-    mitigation?: string;
-    missingProof?: string[];
-  }>;
-  
-  likelyRemedies: Array<{
-    remedy: string;
-    likelihood: number;
-    estimatedValue?: number;
-    conditions?: string;
-  }>;
-  
-  riskWarnings: Array<{
-    risk: string;
-    severity: 'critical' | 'high' | 'medium' | 'low';
-    deadline?: string;
-    mitigation?: string;
-  }>;
-  
-  nextSteps: Array<{
-    step: number;
-    action: string;
-    deadline?: string;
-    priority: 'immediate' | 'soon' | 'when_ready';
-    details?: string;
-  }>;
-  
-  settlementRange?: {
-    min: number;
-    max: number;
-    likely: number;
-    basis: string;
-  };
-  
-  timeToResolution: {
-    minMonths: number;
-    maxMonths: number;
-    factors: string[];
-  };
-  
-  requiredForms: Array<{
-    formName: string;
-    formNumber: string;
-    purpose: string;
-    filingOrder: number;
-    url?: string;
-    fee?: number;
-    deadline?: string;
-  }>;
-  
   analyzedAt: string;
 }
 
@@ -305,8 +230,8 @@ export const SWEEP_DISPLAY_NAMES: Record<SweepName, string> = {
   classification: 'Issue Classification',
   venue: 'Jurisdiction & Venue',
   timeline: 'Timeline Building',
-  authority: 'Legal Precedent Search',
-  analysis: 'Final Analysis'
+  authority: 'General Legal Sources',
+  analysis: 'Plain-Language Summary'
 };
 
 // Helper to create empty case profile

@@ -54,15 +54,14 @@ export const trackTriageStarted = (legalArea: string, jurisdiction: string, coun
 };
 
 // 2️⃣ triage_completed - Fired when triage/assessment is complete
-export const trackTriageCompleted = (meritScore: number, legalArea: string, jurisdiction: string, country: 'US' | 'CA' = 'US') => {
+export const trackTriageCompleted = (legalArea: string, jurisdiction: string, country: 'US' | 'CA' = 'US') => {
   if (typeof window !== 'undefined' && window.gtag) {
     window.gtag('event', 'triage_completed', {
-      merit_score: meritScore,
       legal_area: legalArea,
       jurisdiction,
       country,
     });
-    console.log('[GA4] triage_completed:', { meritScore, legalArea, jurisdiction, country });
+    console.log('[GA4] triage_completed:', { legalArea, jurisdiction, country });
   }
 };
 
@@ -109,24 +108,6 @@ export const trackCountrySelected = (country: 'US' | 'CA') => {
       country,
     });
     console.log('[GA4] country_selected:', { country });
-  }
-};
-
-// 7️⃣ merit_score_viewed - Fired when user views their merit score results (per brief)
-export const trackMeritScoreViewed = (
-  meritScore: number,
-  legalArea: string,
-  jurisdiction: string,
-  country: 'US' | 'CA' = 'US'
-) => {
-  if (typeof window !== 'undefined' && window.gtag) {
-    window.gtag('event', 'merit_score_viewed', {
-      merit_score: meritScore,
-      legal_area: legalArea,
-      jurisdiction,
-      country,
-    });
-    console.log('[GA4] merit_score_viewed:', { meritScore, legalArea, jurisdiction, country });
   }
 };
 
@@ -349,8 +330,8 @@ export const analytics = {
     trackTriageStarted(legalArea, jurisdiction, getDetectedCountry());
   },
 
-  triageCompleted: (meritScore: number, legalArea: string, jurisdiction: string) => {
-    trackTriageCompleted(meritScore, legalArea, jurisdiction, getDetectedCountry());
+  triageCompleted: (legalArea: string, jurisdiction: string) => {
+    trackTriageCompleted(legalArea, jurisdiction, getDetectedCountry());
   },
 
   evidenceUploaded: (fileType: string, fileCount: number = 1) => {
@@ -367,10 +348,6 @@ export const analytics = {
 
   countrySelected: (country: 'US' | 'CA') => {
     trackCountrySelected(country);
-  },
-
-  meritScoreViewed: (meritScore: number, legalArea: string, jurisdiction: string) => {
-    trackMeritScoreViewed(meritScore, legalArea, jurisdiction, getDetectedCountry());
   },
 
   firstVisit: () => {
@@ -405,13 +382,13 @@ export const analytics = {
     });
   },
 
-  caseAnalysisCompleted: (meritScore: number, legalArea?: string, jurisdiction?: string) => {
+  caseAnalysisCompleted: (legalArea?: string, jurisdiction?: string) => {
     // Fire both legacy and new event for transition
-    trackTriageCompleted(meritScore, legalArea || '', jurisdiction || '', getDetectedCountry());
+    trackTriageCompleted(legalArea || '', jurisdiction || '', getDetectedCountry());
     trackEvent({
       action: 'case_analysis_completed',
       category: 'Case Analysis',
-      value: meritScore,
+      label: `${legalArea || ''} - ${jurisdiction || ''}`,
     });
   },
 

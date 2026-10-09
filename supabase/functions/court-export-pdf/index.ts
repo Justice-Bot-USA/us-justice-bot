@@ -90,7 +90,7 @@ serve(async (req) => {
     };
 
     const contentString = JSON.stringify(reportContent);
-    const documentHash = `VP-${generateHash(contentString)}`;
+    const documentHash = `JB-${generateHash(contentString)}`;
 
     // Log export (immutable audit)
     await supabase.from("court_export_logs").insert({

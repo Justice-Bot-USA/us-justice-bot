@@ -16,11 +16,15 @@ const StartHero = ({ language, onPrepareForm }: StartHeroProps) => {
     navigate('/start');
   };
 
+  // Scroll to the boundaries section when the page has one; otherwise open the
+  // disclaimer page, which sets out what the platform does and does not do.
   const handleBoundaries = () => {
     const section = document.getElementById('boundaries-section');
     if (section) {
       section.scrollIntoView({ behavior: 'smooth' });
+      return;
     }
+    navigate('/disclaimer');
   };
 
   return (
@@ -48,7 +52,7 @@ const StartHero = ({ language, onPrepareForm }: StartHeroProps) => {
           
           {/* Supporting copy */}
           <p className="text-lg md:text-xl text-white/90 mb-10 max-w-2xl mx-auto drop-shadow">
-            Justice Bot USA is an AI-powered civic-guidance platform. We help you understand legal processes, prepare documents, and request public records — supporting self-represented individuals. We are <strong>not</strong> a law firm and do <strong>not</strong> provide legal advice.
+            Justice Bot USA is an AI-powered civic-guidance platform for people representing themselves. We explain court processes in plain language and give you official court forms with filling instructions, so you can complete and file them yourself. Live in California and New York; other states coming soon. We are <strong>not</strong> a law firm and do <strong>not</strong> provide legal advice.
           </p>
 
           {/* CTAs */}

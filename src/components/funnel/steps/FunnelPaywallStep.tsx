@@ -15,9 +15,9 @@ import {
   ArrowRight,
   Loader2
 } from 'lucide-react';
-import { FunnelConfig, FunnelState, US_STATE_NAMES, LEGAL_AREA_NAMES } from '@/lib/funnels';
+import { FunnelConfig, FunnelState, US_STATE_NAMES, LEGAL_AREA_NAMES, isStateEnabled } from '@/lib/funnels';
 import { useAuth } from '@/hooks/useAuth';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { trackAddToCart, getDetectedCountry } from '@/hooks/useAnalytics';
 import { toast } from 'sonner';
 import { usePaywallAccess } from '@/hooks/usePaywallAccess';
@@ -34,11 +34,11 @@ interface FunnelPaywallStepProps {
 }
 
 const WHAT_YOU_GET = [
-  { icon: FileText, label: 'Your legal pathway, step by step', description: 'From filing to resolution' },
-  { icon: Download, label: 'Form guides for every form on your list', description: 'Purpose, fees, deadlines, and the official form link' },
+  { icon: FileText, label: 'How the process generally works', description: 'General information with links to official sources' },
+  { icon: Download, label: 'Guides to forms commonly used in this area', description: 'Purpose, fees, deadlines, and the official form link' },
   { icon: Sparkles, label: 'Official court forms filled from your answers', description: 'California and New York court forms, ready to review and sign' },
-  { icon: Shield, label: 'Filing checklists', description: 'What to file, where, and how' },
-  { icon: Clock, label: 'Unlimited use', description: 'Every legal area and state, one monthly plan' },
+  { icon: Shield, label: 'General filing checklists', description: 'How filing generally works, and where to get help' },
+  { icon: Clock, label: 'Unlimited use', description: 'All forms and filling instructions in California and New York, one monthly plan' },
 ];
 
 export const FunnelPaywallStep: React.FC<FunnelPaywallStepProps> = ({
@@ -48,15 +48,20 @@ export const FunnelPaywallStep: React.FC<FunnelPaywallStepProps> = ({
   setIsProcessing,
 }) => {
   const { user } = useAuth();
-  const { hasAccess } = usePaywallAccess();
+  const { hasAccess, loading: accessLoading } = usePaywallAccess();
   const navigate = useNavigate();
   const [isUnlocking, setIsUnlocking] = useState(false);
 
   const stateName = US_STATE_NAMES[config.jurisdiction];
   const legalAreaName = LEGAL_AREA_NAMES[config.legalArea];
-  const formCount = state.data.requiredForms?.length || config.forms.length;
+  const formCount = config.forms.length;
+  // The plan is only sold in California and New York. Other states are coming soon.
+  const launched = isStateEnabled(config.jurisdiction);
 
   const handleUnlock = async () => {
+    // Wait for the access check so a current subscriber is never sent to checkout.
+    if (!launched || accessLoading) return;
+
     if (!user) {
       toast.error('Please sign in to continue');
       navigate(signInPath());
@@ -87,6 +92,25 @@ export const FunnelPaywallStep: React.FC<FunnelPaywallStepProps> = ({
     }
   };
 
+  if (!launched) {
+    return (
+      <div className="text-center space-y-4 py-6">
+        <h3 className="text-2xl font-bold">{stateName || 'This state'} is coming soon</h3>
+        <p className="text-muted-foreground">
+          Justice Bot USA is live in California and New York. There is no plan to buy for {stateName || 'this state'} yet.
+        </p>
+        <div className="flex flex-wrap gap-3 justify-center">
+          <Button asChild>
+            <Link to="/ca/legal-center">California legal center</Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link to="/ny/legal-center">New York legal center</Link>
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -94,9 +118,11 @@ export const FunnelPaywallStep: React.FC<FunnelPaywallStepProps> = ({
         <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
           <Unlock className="h-8 w-8 text-primary" />
         </div>
-        <h3 className="text-2xl font-bold mb-2">Unlock Your Full Case Package</h3>
+        <h3 className="text-2xl font-bold mb-2">Unlock Forms and Guides</h3>
         <p className="text-muted-foreground">
-          Get everything you need to file your {legalAreaName.toLowerCase()} case in {stateName}
+          {formCount > 0
+            ? <>Forms and filling instructions for {legalAreaName.toLowerCase()} matters in {stateName}, all included in the monthly plan</>
+            : <>Plain-language information for {legalAreaName.toLowerCase()} matters in {stateName}, included in the monthly plan</>}
         </p>
       </div>
 
@@ -106,11 +132,13 @@ export const FunnelPaywallStep: React.FC<FunnelPaywallStepProps> = ({
           <div className="flex items-center justify-between">
             <div>
               <p className="font-medium">{state.data.caseTitle || `${legalAreaName} Case`}</p>
-              <p className="text-sm text-muted-foreground">{stateName} • Merit Score: {state.data.meritScore}</p>
+              <p className="text-sm text-muted-foreground">{stateName} • {legalAreaName}</p>
             </div>
-            <Badge variant="secondary">
-              {formCount} Forms Ready
-            </Badge>
+            {formCount > 0 && (
+              <Badge variant="secondary">
+                {formCount} common forms
+              </Badge>
+            )}
           </div>
         </CardContent>
       </Card>
@@ -144,14 +172,18 @@ export const FunnelPaywallStep: React.FC<FunnelPaywallStepProps> = ({
       </Card>
 
       {/* Forms Preview */}
+      {formCount > 0 && (
       <Card>
         <CardHeader className="pb-3">
           <CardTitle className="text-lg flex items-center gap-2">
             <FileText className="h-5 w-5 text-primary" />
-            Your {formCount} Forms
+            Common {stateName} forms for {legalAreaName.toLowerCase()} matters
           </CardTitle>
         </CardHeader>
         <CardContent>
+          <p className="text-xs text-muted-foreground mb-3">
+            Which forms apply depends on your situation. Confirm with the court self-help center.
+          </p>
           <div className="grid grid-cols-2 gap-2">
             {config.forms.slice(0, 6).map((form, idx) => (
               <div key={idx} className="flex items-center gap-2 p-2 bg-muted/50 rounded text-sm">
@@ -162,11 +194,12 @@ export const FunnelPaywallStep: React.FC<FunnelPaywallStepProps> = ({
           </div>
           {config.forms.length > 6 && (
             <p className="text-xs text-muted-foreground mt-2 text-center">
-              + {config.forms.length - 6} more forms included
+              + {config.forms.length - 6} more form guides included
             </p>
           )}
         </CardContent>
       </Card>
+      )}
 
       {/* Pricing */}
       <Card className="border-primary bg-gradient-to-r from-primary/5 to-primary/10">
@@ -176,20 +209,20 @@ export const FunnelPaywallStep: React.FC<FunnelPaywallStepProps> = ({
             <span className="text-muted-foreground ml-2">/month, unlimited</span>
           </div>
           <p className="text-sm text-muted-foreground mb-6">
-            We'll help you prepare the correct official form and show you exactly how to file it.
-            No legal advice. No lawyer fees.
+            We explain common official forms and how filing generally works, and fill in the forms you choose from your answers.
+            You check, sign and file them yourself. No legal advice. Our content has not yet been reviewed by a licensed attorney.
           </p>
           
           <Button 
             size="lg" 
             className="w-full"
             onClick={handleUnlock}
-            disabled={isUnlocking}
+            disabled={isUnlocking || accessLoading}
           >
-            {isUnlocking ? (
+            {isUnlocking || accessLoading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Processing...
+                {accessLoading ? 'Checking your plan...' : 'Processing...'}
               </>
             ) : (
               <>
@@ -202,11 +235,7 @@ export const FunnelPaywallStep: React.FC<FunnelPaywallStepProps> = ({
           <div className="mt-4 flex items-center justify-center gap-4 text-xs text-muted-foreground">
             <span className="flex items-center gap-1">
               <Shield className="h-3 w-3" />
-              Secure Payment
-            </span>
-            <span className="flex items-center gap-1">
-              <CheckCircle2 className="h-3 w-3" />
-              Instant Access
+              Payment handled by Stripe
             </span>
           </div>
         </CardContent>

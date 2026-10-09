@@ -12,17 +12,16 @@ const PublicRecordsRequest = () => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const benefits = [
-    { icon: FileSearch, title: "50-State Coverage", desc: "Statutory citations for all 50 states and DC" },
+    { icon: FileSearch, title: "State Law Citations", desc: "Cites your state's public records law" },
     { icon: Shield, title: "Legally Safe Language", desc: "We never claim to access government databases" },
     { icon: Clock, title: "Ready in Minutes", desc: "Generate a properly worded letter instantly" },
-    { icon: CheckCircle2, title: "FOIA.gov Integration", desc: "Real agency contacts pulled from FOIA.gov API" },
   ];
 
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
         title="Public Records Request Generator | Justice Bot USA"
-        description="Generate a properly worded FOIA or state public-records request letter with correct statutory citations. Free preview. All 50 states. Powered by Justice Bot USA."
+        description="Write a state public records request letter that cites your state's public records law. Free with an account. Powered by Justice Bot USA."
         keywords="FOIA request generator, public records request, freedom of information, court records request, arrest records, police records"
         url="https://justicebot-usa.com/foia-request-generator"
       />
@@ -41,8 +40,8 @@ const PublicRecordsRequest = () => {
               Request Official Records — the Right Way
             </h1>
             <p className="text-xl text-primary-foreground/85 max-w-2xl mx-auto mb-8">
-              Generate a properly worded FOIA or state public-records request letter with correct statutory citations, 
-              for any agency in all 50 states. Free preview. PDF export available.
+              Write a state public records request letter that cites your state's public records law.
+              You add your contact details and the agency's address, then send it yourself.
             </p>
             <Button
               size="lg"
@@ -54,7 +53,7 @@ const PublicRecordsRequest = () => {
               Generate My Request Letter
             </Button>
             <p className="text-sm text-primary-foreground/60 mt-4">
-              Free to generate · No login required for preview · PDF export included in the $25/month plan
+              Free with an account · PDF download included in the $25/month plan · Agencies may charge their own copy fees
             </p>
           </div>
         </section>

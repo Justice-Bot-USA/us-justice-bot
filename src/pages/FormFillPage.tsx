@@ -216,7 +216,7 @@ function FormFiller({ form }: { form: FillableForm }) {
               )}
               {!unlocked && (
                 <p className="text-xs text-muted-foreground">
-                  One plan, {PLAN.priceLabel}: every form, guide, and records request, unlimited. Cancel anytime. Court filing fees are separate and set by the court.
+                  One plan, {PLAN.priceLabel}: all forms and filling instructions included. Cancel any time by contacting support. Court filing fees are separate and set by the court.
                 </p>
               )}
               <a href={form.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-primary inline-flex items-center gap-1">
@@ -238,8 +238,9 @@ function FormFiller({ form }: { form: FillableForm }) {
 
           <Alert>
             <AlertDescription className="text-xs">
-              Legal information and document preparation at your direction, not legal advice. You decide what goes on
-              the form and you are responsible for checking it before you sign and file.
+              Legal information and a tool for filling official forms with your own answers, not legal advice. We do not
+              choose forms for you or file anything. You decide what goes on the form and you are responsible for
+              checking it before you sign and file.
             </AlertDescription>
           </Alert>
         </div>

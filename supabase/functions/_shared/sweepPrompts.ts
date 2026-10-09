@@ -1,8 +1,18 @@
 // Shared prompts for sweep edge functions
 
-export const SWEEP_SYSTEM_PROMPT = `You are an expert US legal analyst with comprehensive knowledge of all 50 state court systems, federal courts, criminal and civil procedure, and legal precedents. You provide structured, accurate legal analysis.
+export const SWEEP_SYSTEM_PROMPT = `You organize what a person in the United States has told us about their legal situation, and give general, plain-language legal information. You are not a lawyer and you do not give legal advice.
+
+Never give a score, rating, probability, chance of success or likely outcome; never estimate money (settlement, damages, fees, costs) or how long anything will take; never suggest a strategy, claim, defense or argument; never choose, recommend or order court forms for the person.
 
 CRITICAL: Always respond with valid JSON only. No markdown, no explanation outside the JSON structure.`;
+
+// Shared list of things no sweep may produce (founder decision, Oct 2026).
+const NO_ADVICE_RULES = `YOU MUST NOT:
+- Give any score, rating, grade, percentage, probability, chance of success, likely outcome, or say whether the person has a good or strong case.
+- Estimate any amount of money (settlement, damages, award, fees, costs) or how long anything will take.
+- Suggest a strategy, argument, claim, defense, motion, remedy to seek, or what the person should do in their case.
+- Choose, recommend, list as required, or put in order any court forms for this person.
+- Apply case law or statutes to these facts.`;
 
 export function getIntakePrompt(userStory: string, documentTexts: string[]): string {
   const docsContext = documentTexts.length > 0 
@@ -31,7 +41,7 @@ export function getEvidenceIndexPrompt(documents: Array<{id: string, filename: s
     `[Document: ${d.filename} (${d.fileType}), ID: ${d.id}]\n${d.text || 'No text extracted'}`
   ).join('\n\n---\n\n');
 
-  return `Analyze these uploaded documents and create an evidence index.
+  return `List these uploaded documents and the facts each one contains.
 
 DOCUMENTS:
 ${docsText}
@@ -47,14 +57,13 @@ For each document, return JSON with this structure:
       "extractedText": "key excerpts from document",
       "entities": [{"type": "name|address|case_number|date|amount|phone|email", "value": "extracted value", "context": "surrounding context"}],
       "keyDates": [{"date": "YYYY-MM-DD", "description": "what the date represents"}],
-      "credibility": {"isOfficial": boolean, "isSigned": boolean, "isScreenshot": boolean, "hasNotarization": boolean, "notes": "credibility assessment"},
-      "relevanceScore": 0.0-1.0
+      "credibility": {"isOfficial": boolean, "isSigned": boolean, "isScreenshot": boolean, "hasNotarization": boolean}
     }
   ],
-  "totalDocuments": number,
-  "strongestEvidence": ["doc IDs of most important evidence"],
-  "gapsIdentified": ["what evidence is missing that would strengthen the case"]
-}`;
+  "totalDocuments": number
+}
+
+Describe only what is in each document. Do not rate documents, rank them, or say what other evidence the person should get.`;
 }
 
 export function getClassificationPrompt(intake: string, evidenceText: string): string {
@@ -79,7 +88,7 @@ Return JSON with this structure:
 }
 
 export function getVenuePrompt(intake: string, classification: string, state: string, county?: string): string {
-  return `Determine the correct venue for this case.
+  return `Give general information about which courts usually hear this kind of matter in ${state}.
 
 INTAKE:
 ${intake}
@@ -92,16 +101,17 @@ KNOWN LOCATION: ${state}${county ? `, ${county} County` : ''}
 Return JSON with this structure:
 {
   "jurisdiction": {"country": "US", "state": "${state}", "county": "${county || 'to be determined'}", "city": "if relevant"},
-  "venueType": "specific venue type",
-  "courtName": "full official court name",
-  "courtAddress": "if known",
-  "courtWebsite": "official court website URL",
-  "eFilingUrl": "e-filing portal URL if available",
-  "localRulesUrl": "local rules URL",
-  "filingFees": {"amount": number, "description": "fee description", "waiverAvailable": boolean},
-  "status": "confirmed|uncertain|needs_verification",
-  "notes": "important venue-specific information"
-}`;
+  "venueType": "the kind of court that usually hears this kind of matter (general information)",
+  "courtName": "",
+  "courtAddress": "",
+  "courtWebsite": "official ${state} court self-help website URL",
+  "eFilingUrl": "",
+  "localRulesUrl": "",
+  "status": "needs_verification",
+  "notes": "general information; the person should confirm with the court clerk or self-help center which court applies to them"
+}
+
+Do not decide which court this person must file in. Leave a field empty rather than guess.`;
 }
 
 export function getTimelinePrompt(intake: string, evidenceIndex: string): string {
@@ -123,19 +133,17 @@ Return JSON with this structure:
       "eventType": "notice_served|repair_request|payment|threat|inspection|hearing|filing|incident|communication|other",
       "description": "what happened",
       "source": {"type": "document|user_statement", "docId": "if from document", "quote": "relevant quote"},
-      "importance": "critical|high|medium|low",
-      "legalSignificance": "why this matters legally"
+      "importance": "critical|high|medium|low"
     }
   ],
-  "statuteOfLimitationsDeadlines": [
-    {"claimType": "type of claim", "deadline": "YYYY-MM-DD", "daysRemaining": number, "status": "expired|critical|approaching|safe"}
-  ],
-  "upcomingDeadlines": [{"deadline": "YYYY-MM-DD", "description": "what's due", "source": "how we know"}]
-}`;
+  "upcomingDeadlines": [{"deadline": "YYYY-MM-DD", "description": "a date the person or one of their documents mentions", "source": "how we know"}]
+}
+
+Use only dates and events the person or their documents gave. Do not work out legal deadlines or limitation periods.`;
 }
 
 export function getAuthorityPrompt(classification: string, venue: string, timeline: string, state: string): string {
-  return `Search for relevant legal authorities for this case in ${state}.
+  return `List general ${state} legal sources for this area of law, as background reading. Do not apply them to the person's facts.
 
 CLASSIFICATION:
 ${classification}
@@ -146,7 +154,7 @@ ${venue}
 TIMELINE SUMMARY:
 ${timeline}
 
-Find and return relevant case law, statutes, and regulations. Return JSON:
+Return JSON:
 {
   "searchQueries": ["queries used to find relevant law"],
   "results": [
@@ -156,59 +164,69 @@ Find and return relevant case law, statutes, and regulations. Return JSON:
       "citation": "proper Bluebook citation",
       "court": "${state} court name",
       "year": YYYY,
-      "relevanceScore": 0.0-1.0,
-      "holdings": ["key holdings"],
-      "outcome": "favorable|unfavorable|mixed|neutral",
-      "remediesAwarded": ["if applicable"],
-      "keyQuotes": ["relevant quotes"],
-      "howItApplies": "how this precedent applies to current case"
+      "holdings": ["key holdings, stated generally"],
+      "keyQuotes": ["relevant quotes"]
     }
   ],
-  "statutes": [{"citation": "full citation", "title": "statute name", "relevance": "how it applies", "fullText": "if brief"}],
-  "regulations": [{"citation": "regulation cite", "agency": "agency name", "relevance": "how it applies"}],
-  "favorablePrecedentCount": number,
-  "unfavorablePrecedentCount": number,
-  "notes": "overall assessment of legal landscape",
+  "statutes": [{"citation": "full citation", "title": "statute name", "relevance": "what the statute covers, in general terms", "fullText": "if brief"}],
+  "regulations": [{"citation": "regulation cite", "agency": "agency name", "relevance": "what the regulation covers, in general terms"}],
+  "notes": "general description of this area of ${state} law",
   "source": "live_search|cached_library|fallback"
-}`;
+}
+
+Only include sources you are confident are real. Do not label any source favorable or unfavorable to the person.
+
+${NO_ADVICE_RULES}`;
 }
 
 export function getAnalysisPrompt(caseProfile: string): string {
-  return `Generate the final comprehensive analysis report based on all gathered data.
+  return `Write a neutral, plain-language summary of this person's situation from the gathered data.
 
 COMPLETE CASE PROFILE:
 ${caseProfile}
 
-Return the final analysis as JSON:
+Return JSON:
 {
-  "meritScore": 0-100,
-  "meritScoreJustification": "detailed explanation referencing specific evidence and precedents",
-  "estimatedSuccessRate": 0-100,
-  "strongestClaims": [
-    {
-      "claim": "the claim",
-      "evidenceReferences": ["doc IDs supporting this"],
-      "legalBasis": "statutory/case law basis",
-      "precedentSupport": ["case citations"],
-      "strength": "strong|moderate|weak"
-    }
-  ],
-  "weakestPoints": [
-    {"issue": "the weakness", "impact": "how it hurts the case", "mitigation": "how to address", "missingProof": ["what's needed"]}
-  ],
-  "likelyRemedies": [
-    {"remedy": "type of remedy", "likelihood": 0-100, "estimatedValue": number if applicable, "conditions": "if any"}
-  ],
-  "riskWarnings": [
-    {"risk": "the risk", "severity": "critical|high|medium|low", "deadline": "if time-sensitive", "mitigation": "how to mitigate"}
-  ],
-  "nextSteps": [
-    {"step": 1, "action": "what to do", "deadline": "if any", "priority": "immediate|soon|when_ready", "details": "more info"}
-  ],
-  "settlementRange": {"min": number, "max": number, "likely": number, "basis": "how calculated"},
-  "timeToResolution": {"minMonths": number, "maxMonths": number, "factors": ["factors affecting timeline"]},
-  "requiredForms": [
-    {"formName": "form name", "formNumber": "form number", "purpose": "why needed", "filingOrder": number, "url": "where to get", "fee": number, "deadline": "if any"}
-  ]
-}`;
+  "summary": "2-4 short sentences, in the second person, restating only the facts the person and their documents gave. No judgment of those facts.",
+  "legalArea": "the general area of law (a short label such as 'Housing / eviction' or 'Family law')",
+  "generalInfo": ["3-6 short points of general information about how matters in this area usually work in the person's state, as a court self-help center would explain it to anyone. Include that free legal aid may be available and that the person can talk to a lawyer."],
+  "officialSources": [{"name": "official court self-help page, state code site, state agency or recognized legal aid organization", "url": "https://..."}]
+}
+
+Only include a URL you are confident is correct.
+
+${NO_ADVICE_RULES}`;
+}
+
+export interface PlainSummary {
+  summary: string;
+  legalArea: string;
+  generalInfo: string[];
+  officialSources: Array<{ name: string; url: string }>;
+  analyzedAt: string;
+}
+
+/**
+ * Keep only the plain-language fields of an analysis-sweep result. A score,
+ * estimate, strategy or form list returned by the model is dropped here, so it
+ * is never stored or sent to the browser.
+ */
+export function pickPlainSummary(raw: unknown): PlainSummary {
+  const r = (raw && typeof raw === 'object' ? raw : {}) as Record<string, unknown>;
+  const sources = Array.isArray(r.officialSources) ? r.officialSources : [];
+  return {
+    summary: typeof r.summary === 'string' ? r.summary : '',
+    legalArea: typeof r.legalArea === 'string' ? r.legalArea : '',
+    generalInfo: Array.isArray(r.generalInfo)
+      ? r.generalInfo.filter((item): item is string => typeof item === 'string' && item.trim() !== '')
+      : [],
+    officialSources: sources
+      .filter((src): src is { name: string; url: string } =>
+        !!src && typeof src === 'object' &&
+        typeof (src as { name?: unknown }).name === 'string' &&
+        typeof (src as { url?: unknown }).url === 'string' &&
+        /^https?:\/\//.test((src as { url: string }).url))
+      .map((src) => ({ name: src.name, url: src.url })),
+    analyzedAt: new Date().toISOString(),
+  };
 }

@@ -43,16 +43,11 @@ interface CaseData {
   legal_area: string;
   state: string;
   county: string | null;
-  merit_score: number;
   case_description: string | null;
-  filing_options: any;
-  required_forms: any;
-  next_steps: any;
-  evidence_to_gather: any;
 }
 
 const JOURNEY_STEPS = [
-  { id: 1, name: 'Results', icon: Scale },
+  { id: 1, name: 'Summary', icon: Scale },
   { id: 2, name: 'Evidence', icon: Upload },
   { id: 3, name: 'Documents', icon: FileText },
   { id: 4, name: 'Filing', icon: MapPin },
@@ -276,16 +271,16 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
                   <div className="mx-auto p-3 bg-primary/10 rounded-full w-fit mb-4">
                     <Sparkles className="h-8 w-8 text-primary" />
                   </div>
-                  <CardTitle className="text-2xl">Based on Your Situation, You May Qualify</CardTitle>
+                  <CardTitle className="text-2xl">A Summary of Your Situation</CardTitle>
                   <CardDescription className="text-lg">
-                    Our AI has analyzed your case and identified a potential legal path forward
+                    What you told us, and where to find official help in your state
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   {/* Case Summary */}
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="p-4 bg-muted rounded-lg text-center">
-                      <p className="text-sm text-muted-foreground">Case Type</p>
+                      <p className="text-sm text-muted-foreground">Legal Area</p>
                       <p className="font-semibold capitalize">{caseData.legal_area.replace('-', ' ')}</p>
                     </div>
                     <div className="p-4 bg-muted rounded-lg text-center">
@@ -293,48 +288,27 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
                       <p className="font-semibold">{caseData.county ? `${caseData.county}, ` : ''}{caseData.state}</p>
                     </div>
                     <div className="p-4 bg-muted rounded-lg text-center">
-                      <p className="text-sm text-muted-foreground">Court Type</p>
+                      <p className="text-sm text-muted-foreground">Courts that usually hear these matters</p>
                       <p className="font-semibold">{courtInfo.courtType}</p>
                     </div>
-                    <div className="p-4 bg-muted rounded-lg text-center">
-                      <p className="text-sm text-muted-foreground">Merit Score</p>
-                      <p className={`font-bold text-2xl ${
-                        caseData.merit_score >= 70 ? 'text-green-600' :
-                        caseData.merit_score >= 50 ? 'text-yellow-600' : 'text-red-600'
-                      }`}>
-                        {caseData.merit_score}
-                      </p>
-                    </div>
                   </div>
+
+                  {/* What you told us */}
+                  {caseData.case_description && (
+                    <div className="p-4 border rounded-lg">
+                      <p className="font-medium mb-2">What you told us</p>
+                      <p className="text-sm text-muted-foreground whitespace-pre-wrap">{caseData.case_description}</p>
+                    </div>
+                  )}
 
                   <StateNextSteps state={caseData.state} area={caseData.legal_area} detail={caseData.case_title} />
 
                   {/* Related Cases Display */}
                   {caseId && <RelatedCasesDisplay caseId={caseId} />}
 
-                  {/* Merit Score Display */}
-                  <Card className={`border-2 ${
-                    caseData.merit_score >= 70 ? 'border-green-500 bg-green-50 dark:bg-green-950' :
-                    caseData.merit_score >= 50 ? 'border-yellow-500 bg-yellow-50 dark:bg-yellow-950' :
-                    'border-orange-500 bg-orange-50 dark:bg-orange-950'
-                  }`}>
-                    <CardContent className="p-6">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="font-medium mb-1">Case Strength Assessment</p>
-                          <p className="text-sm text-muted-foreground">
-                            {caseData.merit_score >= 70 ? 'Your case shows strong potential for success.' :
-                             caseData.merit_score >= 50 ? 'Your case has moderate strength. Evidence will help.' :
-                             'Your case needs strengthening. Let\'s gather evidence.'}
-                          </p>
-                        </div>
-                        <Scale className={`h-12 w-12 ${
-                          caseData.merit_score >= 70 ? 'text-green-600' :
-                          caseData.merit_score >= 50 ? 'text-yellow-600' : 'text-orange-600'
-                        }`} />
-                      </div>
-                    </CardContent>
-                  </Card>
+                  <p className="text-sm text-muted-foreground">
+                    This is general legal information, not legal advice, and not a prediction of how your matter will turn out. Talk to a lawyer or a free legal aid organization about your situation.
+                  </p>
 
                   {/* Procedural Guidance — contextual to case type */}
                   <ProceduralGuidancePanel
@@ -373,7 +347,7 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
                   </div>
                   <CardTitle className="text-2xl">Upload Your Evidence</CardTitle>
                   <CardDescription className="text-lg">
-                    Strong evidence significantly improves your case outcome
+                    Keep your documents together in one place
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
@@ -384,8 +358,8 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
                       Why Evidence Matters
                     </h4>
                     <p className="text-sm text-blue-800 dark:text-blue-200">
-                      Courts require documented proof to support your claims. Photos, contracts, receipts, 
-                      and written communications can make the difference between winning and losing your case.
+                      Courts generally ask people to back up what they say with documents. Keeping your photos, contracts, receipts
+                      and written messages organized makes them easier to find when you talk to a lawyer, legal aid or the court.
                     </p>
                   </div>
 
@@ -491,7 +465,7 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
                   </div>
                   <CardTitle className="text-2xl">Your Book of Documents</CardTitle>
                   <CardDescription className="text-lg">
-                    Organized, numbered, and court-ready
+                    Your uploaded documents, organized and numbered
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
@@ -499,11 +473,12 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
                   <div className="p-4 bg-yellow-50 dark:bg-yellow-950 border border-yellow-200 dark:border-yellow-800 rounded-lg">
                     <h4 className="font-semibold text-yellow-900 dark:text-yellow-100 mb-2 flex items-center gap-2">
                       <AlertCircle className="h-5 w-5" />
-                      Courts Reject Disorganized Filings
+                      Check Your Court's Rules
                     </h4>
                     <p className="text-sm text-yellow-800 dark:text-yellow-200">
-                      Your Book of Documents will be professionally organized with numbered exhibits, 
-                      a table of contents, and proper formatting that courts expect.
+                      Your Book of Documents puts the files you uploaded into one PDF with numbered exhibits and a
+                      table of contents. Courts have their own rules for labeling and filing exhibits, so check
+                      your court's rules or self-help center before you file.
                     </p>
                   </div>
 
@@ -512,10 +487,10 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
                     <h4 className="font-semibold">What You'll Get:</h4>
                     <div className="grid gap-3">
                       {[
-                        { icon: FileText, text: 'Court-ready PDF with all documents' },
+                        { icon: FileText, text: 'One PDF with all your uploaded documents' },
                         { icon: ClipboardCheck, text: 'Numbered exhibits with table of contents' },
-                        { icon: MapPin, text: 'State/county-specific filing instructions' },
-                        { icon: Building2, text: 'Correct courthouse details' },
+                        { icon: MapPin, text: 'General filing information for your state' },
+                        { icon: Building2, text: 'How to find your court\'s self-help center' },
                         { icon: Mail, text: 'Service requirements explained' },
                       ].map((item, i) => (
                         <div key={i} className="flex items-center gap-3 p-3 bg-muted rounded-lg">
@@ -569,14 +544,14 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
                       ) : (
                         <>
                           <Unlock className="mr-2 h-5 w-5" />
-                          Unlock Book of Documents - $7.99
+                          Unlock Book of Documents — {PLAN.priceLabel}
                         </>
                       )}
                     </Button>
                   )}
 
                   <p className="text-center text-sm text-muted-foreground">
-                    Secure payment via PayPal • Instant access
+                    Secure checkout via Stripe • Cancel any time by contacting support
                   </p>
                 </CardContent>
               </Card>
@@ -597,9 +572,9 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
                   <div className="mx-auto p-3 bg-primary/10 rounded-full w-fit mb-4">
                     <MapPin className="h-8 w-8 text-primary" />
                   </div>
-                  <CardTitle className="text-2xl">Where & How to File</CardTitle>
+                  <CardTitle className="text-2xl">How Filing Generally Works</CardTitle>
                   <CardDescription className="text-lg">
-                    Jurisdiction-specific filing instructions for {courtInfo.jurisdiction}
+                    General filing information for {courtInfo.jurisdiction}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
@@ -609,8 +584,12 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
                       <div className="flex items-start gap-4">
                         <Building2 className="h-8 w-8 text-primary flex-shrink-0 mt-1" />
                         <div>
+                          <p className="text-sm text-muted-foreground">Courts that usually hear these matters</p>
                           <h4 className="font-semibold text-lg">{courtInfo.courtType}</h4>
                           <p className="text-muted-foreground">{courtInfo.jurisdiction}</p>
+                          <p className="text-sm text-muted-foreground mt-2">
+                            Check with the court clerk or self-help center which court applies to you.
+                          </p>
                           <div className="mt-4 space-y-2">
                             <p className="text-sm">
                               <span className="font-medium">Filing Methods:</span>
@@ -690,10 +669,10 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
                     <CheckCircle2 className="h-10 w-10 text-white" />
                   </div>
                   <CardTitle className="text-2xl text-green-800 dark:text-green-100">
-                    You're Ready to File
+                    Your Checklist Is Complete
                   </CardTitle>
                   <CardDescription className="text-lg text-green-700 dark:text-green-200">
-                    Your case is prepared for {courtInfo.courtType}
+                    Before you file, confirm with the court self-help center which court and forms apply to you
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
@@ -701,10 +680,10 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
                   <div className="bg-white dark:bg-background rounded-lg p-6 space-y-4">
                     <h4 className="font-semibold text-center mb-4">Completion Checklist</h4>
                     {[
-                      { label: 'Case analyzed by AI', done: true },
+                      { label: 'Situation summarized', done: true },
                       { label: 'Evidence gathered', done: uploadedFilesCount > 0 },
                       { label: 'Documents organized', done: hasAccess || isAdmin },
-                      { label: 'Courthouse identified', done: true },
+                      { label: 'Courts that usually hear these matters listed', done: true },
                       { label: 'Filing steps explained', done: true },
                     ].map((item, i) => (
                       <div key={i} className="flex items-center gap-3">
@@ -721,10 +700,10 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
                   {/* Reassurance Message */}
                   <div className="text-center p-4 bg-white dark:bg-background rounded-lg">
                     <p className="text-lg font-medium text-green-800 dark:text-green-100">
-                      "You're prepared to file correctly."
+                      Keep a copy of everything you file.
                     </p>
                     <p className="text-sm text-muted-foreground mt-2">
-                      Courts appreciate organized, complete filings. You're ahead of most self-represented litigants.
+                      If you have questions about your situation, talk to a lawyer or a free legal aid organization.
                     </p>
                   </div>
 

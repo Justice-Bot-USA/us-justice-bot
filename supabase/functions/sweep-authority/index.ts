@@ -89,8 +89,7 @@ Deno.serve(async (req: Request) => {
     
     console.log("Sweep 5 complete:", { 
       resultsCount: authority.results?.length || 0,
-      favorable: authority.favorablePrecedentCount,
-      unfavorable: authority.unfavorablePrecedentCount
+      statutesCount: authority.statutes?.length || 0
     });
 
     // Mark sweep as done

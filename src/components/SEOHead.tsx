@@ -11,9 +11,9 @@ interface SEOHeadProps {
 }
 
 export const SEOHead: React.FC<SEOHeadProps> = ({
-  title = "Justice Bot USA - Fight ICE | Immigration Defense & Legal Help",
-  description = "Fight ICE. Know your rights. Justice Bot USA provides AI-powered immigration defense, asylum help, deportation defense, and affordable legal guidance for all 50 US states. A Justice Bot USA Platform.",
-  keywords = "fight ICE, ICE defense, immigration lawyer alternative, deportation defense, asylum application, know your rights ICE, DACA renewal, U-visa, VAWA, sanctuary city, affordable legal assistance, human rights, workers compensation, workers rights, family law, small claims court, employment law, housing rights, civil rights, legal AI",
+  title = "Justice Bot USA | Legal Information & Court Form Help",
+  description = "Know your rights. Justice Bot USA provides AI-powered legal information and help filling official court forms. Live in California and New York; other states coming soon. Not a law firm; not legal advice.",
+  keywords = "legal information, court forms, California court forms, New York court forms, self-represented, know your rights, immigration information, family law, small claims court, eviction, employment law, housing rights, civil rights, workers compensation",
   image = "https://justicebot-usa.com/icon-512.png",
   url = "https://justicebot-usa.com",
   type = "website"

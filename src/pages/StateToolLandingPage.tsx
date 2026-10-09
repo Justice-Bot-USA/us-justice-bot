@@ -10,11 +10,12 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import {
-  Search, FileText, ArrowRight, Shield, Scale, ExternalLink,
+  FileText, ArrowRight, Scale, ExternalLink,
   AlertTriangle, MapPin, CheckCircle2, BookOpen, Lock, Info,
 } from 'lucide-react';
 import FOIARequestGenerator from '@/components/FOIARequestGenerator';
-import { stateAbbreviations } from '@/lib/states';
+import { StateComingSoon } from '@/components/funnel/StateComingSoon';
+import { PLAN } from '@/lib/pricing';
 
 export default function StateToolLandingPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -26,6 +27,7 @@ export default function StateToolLandingPage() {
   if (!match) return null; // StateFunnelPage will handle or 404
 
   const seo = getStateToolSeo(match);
+  const { launched } = seo;
   const { stateName, stateCode, toolType } = match;
   const isWarrant = toolType === 'warrant-lookup';
   const isArrestRecords = toolType === 'arrest-records';
@@ -44,6 +46,7 @@ export default function StateToolLandingPage() {
       />
       <Helmet>
         <link rel="canonical" href={seo.canonical} />
+        {!launched && <meta name="robots" content="noindex, follow" />}
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
@@ -53,7 +56,7 @@ export default function StateToolLandingPage() {
             "url": seo.canonical,
             "provider": {
               "@type": "Organization",
-              "name": "Justice Bot USA — Justice Bot USA",
+              "name": "Justice Bot USA",
               "url": "https://justicebot-usa.com"
             },
             "about": {
@@ -82,13 +85,13 @@ export default function StateToolLandingPage() {
         <section className="bg-primary text-primary-foreground py-12 md:py-16">
           <div className="container mx-auto px-4 text-center">
             <Badge variant="secondary" className="mb-4">
-              <MapPin className="h-3 w-3 mr-1" /> {stateName} ({stateCode})
+              <MapPin className="h-3 w-3 mr-1" /> {stateName} ({stateCode}){!launched && ' · Coming soon'}
             </Badge>
             <h1 className="text-3xl md:text-5xl font-bold mb-4">{seo.h1}</h1>
             <p className="text-lg md:text-xl text-primary-foreground/80 max-w-2xl mx-auto mb-8">
               {seo.description}
             </p>
-            {isArrestRecords ? (
+            {!launched ? null : isArrestRecords ? (
               <Button
                 size="lg"
                 variant="secondary"
@@ -97,20 +100,16 @@ export default function StateToolLandingPage() {
               >
                 <FileText className="h-5 w-5 mr-2" /> Generate Request
               </Button>
-            ) : (
+            ) : seo.toolPath ? (
               <Button
                 size="lg"
                 variant="secondary"
                 onClick={() => navigate(seo.toolPath)}
                 className="text-lg px-8"
               >
-                {isWarrant ? (
-                  <><Search className="h-5 w-5 mr-2" /> Search {stateName} Warrants</>
-                ) : (
-                  <><FileText className="h-5 w-5 mr-2" /> Browse {stateName} Forms</>
-                )}
+                <FileText className="h-5 w-5 mr-2" /> Browse {stateName} Forms
               </Button>
-            )}
+            ) : null}
           </div>
         </section>
 
@@ -124,7 +123,7 @@ export default function StateToolLandingPage() {
                   Arrest records and related court documents may be available to the public under {stateName} public records law. If you need official paperwork for personal, legal, or informational reasons, you can request it directly from the appropriate agency.
                 </p>
                 <p className="text-sm text-muted-foreground mt-3">
-                  This page explains what you can request, how to request it, and how to prepare a proper public records request — without legal advice.
+                  This page explains what you can request and how requests generally work. It is legal information, not legal advice.
                 </p>
               </section>
 
@@ -185,7 +184,7 @@ export default function StateToolLandingPage() {
                   {[
                     { n: 1, title: 'Identify the correct agency', desc: `Determine which ${stateName} agency holds the records you need.` },
                     { n: 2, title: 'Submit a written public records request', desc: 'Use proper statutory language and identify the records clearly.' },
-                    { n: 3, title: 'Wait for response or clarification', desc: 'Agencies must respond within the timeframe prescribed by law.' },
+                    { n: 3, title: 'Wait for response or clarification', desc: 'Agencies generally must respond within the time the law allows.' },
                     { n: 4, title: 'Review or appeal if denied', desc: 'If denied, you may have the right to appeal or request redacted copies.' },
                   ].map(step => (
                     <Card key={step.n}>
@@ -217,33 +216,36 @@ export default function StateToolLandingPage() {
                 </AlertDescription>
               </Alert>
 
-              {/* Conversion CTA */}
-              <Card className="mb-12 border-primary/30 bg-primary/5 p-6 md:p-8 text-center">
-                <h2 className="text-xl font-bold mb-2">Prepare a Public Records Request in Minutes</h2>
-                <p className="text-muted-foreground mb-4 text-sm">
-                  Generate a properly worded request letter for {stateName}, including:
-                </p>
-                <ul className="text-sm text-muted-foreground mb-6 space-y-1">
-                  <li className="flex items-center justify-center gap-2">
-                    <CheckCircle2 className="h-3.5 w-3.5 text-primary" /> Correct statutory language
-                  </li>
-                  <li className="flex items-center justify-center gap-2">
-                    <CheckCircle2 className="h-3.5 w-3.5 text-primary" /> Agency contact details
-                  </li>
-                  <li className="flex items-center justify-center gap-2">
-                    <CheckCircle2 className="h-3.5 w-3.5 text-primary" /> Ready-to-send PDF
-                  </li>
-                </ul>
-                <Button size="lg" onClick={() => setShowFOIA(true)}>
-                  Generate Request <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-                <div className="flex items-center justify-center gap-4 mt-4 text-xs text-muted-foreground">
-                  <span className="flex items-center gap-1">
-                    <Lock className="h-3 w-3" />
-                    Free to write · PDF export with the $25/month plan
-                  </span>
+              {/* Request letter tool: California and New York only */}
+              {!launched ? (
+                <div className="mb-12">
+                  <StateComingSoon stateName={stateName} legalArea="criminal" />
                 </div>
-              </Card>
+              ) : (
+                <Card className="mb-12 border-primary/30 bg-primary/5 p-6 md:p-8 text-center">
+                  <h2 className="text-xl font-bold mb-2">Prepare a Public Records Request in Minutes</h2>
+                  <p className="text-muted-foreground mb-4 text-sm">
+                    Generate a properly worded request letter for {stateName}, including:
+                  </p>
+                  <ul className="text-sm text-muted-foreground mb-6 space-y-1">
+                    <li className="flex items-center justify-center gap-2">
+                      <CheckCircle2 className="h-3.5 w-3.5 text-primary" /> A citation to {stateName}'s public records law
+                    </li>
+                    <li className="flex items-center justify-center gap-2">
+                      <CheckCircle2 className="h-3.5 w-3.5 text-primary" /> A PDF you complete with your details and send yourself
+                    </li>
+                  </ul>
+                  <Button size="lg" onClick={() => setShowFOIA(true)}>
+                    Generate Request <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                  <div className="flex items-center justify-center gap-4 mt-4 text-xs text-muted-foreground">
+                    <span className="flex items-center gap-1">
+                      <Lock className="h-3 w-3" />
+                      Free to write · PDF export with the {PLAN.priceLabel} plan
+                    </span>
+                  </div>
+                </Card>
+              )}
 
               {/* Disclaimer */}
               <div className="mb-12 text-center border rounded-lg p-4 bg-muted/30">
@@ -254,26 +256,24 @@ export default function StateToolLandingPage() {
             </>
           )}
 
-          {/* Non-arrest-records content (warrant-lookup and court-forms) */}
-          {!isArrestRecords && (
+          {/* Court forms in a state that has not launched: coming soon, no forms promised */}
+          {!isArrestRecords && !launched && (
+            <section className="mb-12">
+              <StateComingSoon stateName={stateName} />
+            </section>
+          )}
+
+          {/* Court forms, launched states. (Warrant lookup was removed: StateFunnelPage redirects
+              those URLs before this page renders, and we never search law enforcement databases.) */}
+          {!isArrestRecords && !isWarrant && launched && (
             <section className="mb-12">
               <h2 className="text-2xl font-bold mb-6 text-center">
-                How {isWarrant ? 'Warrant Lookup' : 'Court Forms'} Works in {stateName}
+                How Court Forms Work in {stateName}
               </h2>
               <div className="grid md:grid-cols-3 gap-6">
-                {isWarrant ? (
-                  <>
-                    <StepCard n={1} icon={<Search className="h-6 w-6" />} title="Enter Details" desc={`Type a name and optionally a county in ${stateName} to search public warrant records.`} />
-                    <StepCard n={2} icon={<Shield className="h-6 w-6" />} title="Review Results" desc={`We search official ${stateName} court and law enforcement databases for matching records.`} />
-                    <StepCard n={3} icon={<Scale className="h-6 w-6" />} title="Take Action" desc="Get links to official portals, understand your options, and prepare legal documents if needed." />
-                  </>
-                ) : (
-                  <>
-                    <StepCard n={1} icon={<BookOpen className="h-6 w-6" />} title="Browse Forms" desc={`Access the full ${stateName} court forms library organized by legal area.`} />
-                    <StepCard n={2} icon={<FileText className="h-6 w-6" />} title="Download Free" desc={`Download official ${stateCode} forms directly from our platform at no cost.`} />
-                    <StepCard n={3} icon={<CheckCircle2 className="h-6 w-6" />} title="File with Confidence" desc="Use our AI tools to help fill out forms correctly and understand filing requirements." />
-                  </>
-                )}
+                <StepCard n={1} icon={<BookOpen className="h-6 w-6" />} title="Browse Forms" desc={`Browse official ${stateName} court forms by legal area.`} />
+                <StepCard n={2} icon={<FileText className="h-6 w-6" />} title="Get the Official Form" desc={`Official ${stateName} court forms come from the ${stateName} courts. Filled forms and filling instructions are included in the ${PLAN.priceLabel} plan; fee waiver forms are free.`} />
+                <StepCard n={3} icon={<CheckCircle2 className="h-6 w-6" />} title="Check and File It Yourself" desc="Review the filled form, sign it and file it with the court. Legal information, not legal advice." />
               </div>
             </section>
           )}
@@ -283,10 +283,8 @@ export default function StateToolLandingPage() {
             <Alert className="mb-12 border-destructive/50 bg-destructive/10">
               <AlertTriangle className="h-4 w-4" />
               <AlertDescription>
-                This is legal information, not legal advice. {isWarrant
-                  ? `Always verify warrant information with official ${stateName} law enforcement or court sources.`
-                  : `Verify all forms are current with the ${stateName} court clerk before filing.`
-                } For complex legal matters, consult a licensed {stateName} attorney.
+                This is legal information, not legal advice. Verify that any form is current with the {stateName} court
+                clerk before filing. For complex legal matters, consult a licensed {stateName} attorney.
               </AlertDescription>
             </Alert>
           )}
@@ -313,30 +311,32 @@ export default function StateToolLandingPage() {
             <h2 className="text-2xl font-bold mb-6">More {stateName} Legal Resources</h2>
             <div className="grid sm:grid-cols-2 gap-4">
               {isArrestRecords && (
-                <LinkCard to={`/${stateSlug}-court-forms`} icon={<FileText />} title={`${stateName} Court Forms`} desc="Browse & download official forms" />
+                <LinkCard to={`/${stateSlug}-court-forms`} icon={<FileText />} title={`${stateName} Court Forms`} desc={launched ? 'Official forms with filling instructions' : 'Coming soon'} />
               )}
               {!isArrestRecords && (
-                <LinkCard to={`/${stateSlug}-arrest-records`} icon={<BookOpen />} title={`Request ${stateName} Arrest Records`} desc="Generate a public records request" />
+                <LinkCard to={`/${stateSlug}-arrest-records`} icon={<BookOpen />} title={`Request ${stateName} Arrest Records`} desc={launched ? 'Write a public records request' : 'General information'} />
               )}
-              <LinkCard to={`/states/${stateCode.toLowerCase()}`} icon={<MapPin />} title={`${stateName} Legal Help`} desc="All legal resources for your state" />
-              <LinkCard to="/case-analysis" icon={<Scale />} title="Free Case Analysis" desc="AI-powered legal case review" />
-              <LinkCard to="/court-records" icon={<ExternalLink />} title="Court Records Lookup" desc="Search case dockets nationwide" />
+              <LinkCard to={`/states/${stateCode.toLowerCase()}`} icon={<MapPin />} title={`${stateName} Legal Help`} desc={launched ? 'All legal resources for your state' : 'Coming soon'} />
+              {launched && (
+                <LinkCard to="/case-analysis" icon={<Scale />} title="Case Analysis" desc="A plain-language summary of your situation" />
+              )}
+              <LinkCard to="/court-records" icon={<ExternalLink />} title="Court Records Lookup" desc="Links to official court record portals" />
             </div>
           </section>
 
-          {/* Bottom CTA */}
-          {!isArrestRecords && (
+          {/* Bottom CTA (launched states only) */}
+          {!isArrestRecords && launched && seo.toolPath && (
             <Card className="border-primary/30 bg-primary/5 text-center p-8">
               <h2 className="text-xl font-bold mb-2">Ready to take action?</h2>
               <p className="text-muted-foreground mb-4">
-                Use our free {isWarrant ? 'warrant search' : 'forms library'} or get a full AI-powered case analysis.
+                Browse official court forms or get a plain-language summary of your situation.
               </p>
               <div className="flex flex-wrap gap-3 justify-center">
                 <Button onClick={() => navigate(seo.toolPath)}>
-                  {isWarrant ? 'Search Warrants' : 'Browse Forms'} <ArrowRight className="ml-2 h-4 w-4" />
+                  Browse Forms <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
                 <Button variant="outline" onClick={() => navigate('/case-analysis')}>
-                  Free Case Analysis
+                  Case Analysis
                 </Button>
               </div>
             </Card>
@@ -346,13 +346,15 @@ export default function StateToolLandingPage() {
         <Footer />
       </div>
 
-      {/* FOIA Request Generator Dialog */}
-      <FOIARequestGenerator
-        open={showFOIA}
-        onOpenChange={setShowFOIA}
-        defaultState={stateAbbrLower}
-        defaultName=""
-      />
+      {/* FOIA Request Generator Dialog (California and New York only) */}
+      {launched && (
+        <FOIARequestGenerator
+          open={showFOIA}
+          onOpenChange={setShowFOIA}
+          defaultState={stateAbbrLower}
+          defaultName=""
+        />
+      )}
     </>
   );
 }

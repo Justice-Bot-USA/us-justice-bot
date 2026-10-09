@@ -104,7 +104,7 @@ export const FunnelTriageStep: React.FC<FunnelTriageStepProps> = ({
       <div className="text-center mb-6">
         <h3 className="text-xl font-semibold mb-2">Tell Us About Your {legalAreaName} Case</h3>
         <p className="text-muted-foreground">
-          We'll analyze your situation under {stateName} law and recommend the best path forward
+          We'll summarize your situation in plain language and point you to official {stateName} resources
         </p>
       </div>
 
@@ -173,7 +173,7 @@ export const FunnelTriageStep: React.FC<FunnelTriageStepProps> = ({
 • What outcome you're seeking
 • Any deadlines or court dates
 
-The more detail you provide, the better our AI can analyze your case.`}
+The more detail you give, the more accurate your summary will be.`}
           value={state.data.caseDescription || ''}
           onChange={(e) => updateData({ caseDescription: e.target.value })}
           rows={8}

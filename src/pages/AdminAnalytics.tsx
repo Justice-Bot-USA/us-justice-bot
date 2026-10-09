@@ -5,7 +5,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Users, FileText, Activity, TrendingUp, DollarSign, Briefcase, ShieldCheck } from "lucide-react";
+import { ArrowLeft, Users, FileText, Activity, DollarSign, Briefcase, ShieldCheck } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid,
@@ -19,7 +19,6 @@ interface AdminStats {
   totalFiles: number;
   totalPayments: number;
   totalRevenue: number;
-  avgMerit: number;
   funnel: { step: string; count: number }[];
   casesByMonth: { month: string; cases: number }[];
   usersByMonth: { month: string; users: number }[];
@@ -62,7 +61,7 @@ const AdminAnalytics = () => {
       try {
         const [profilesRes, casesRes, sweepsRes, filesRes, paymentsRes, funnelRes] = await Promise.all([
           supabase.from("profiles").select("created_at", { count: "exact" }),
-          supabase.from("case_merit_scores").select("id,user_id,legal_area,state,merit_score,created_at,status"),
+          supabase.from("case_merit_scores").select("id,user_id,legal_area,state,created_at,status"),
           supabase.from("case_sweeps").select("id", { count: "exact", head: true }),
           supabase.from("case_files").select("id", { count: "exact", head: true }),
           supabase.from("payments").select("id,status,created_at"),
@@ -94,10 +93,6 @@ const AdminAnalytics = () => {
 
         const completedPayments = payments.filter((p: any) => p.status === "completed" || p.status === "succeeded" || p.status === "paid");
 
-        const avgMerit = cases.length > 0
-          ? cases.reduce((s: number, c: any) => s + Number(c.merit_score || 0), 0) / cases.length
-          : 0;
-
         setStats({
           totalUsers: profilesRes.count ?? profiles.length,
           totalCases: cases.length,
@@ -105,7 +100,6 @@ const AdminAnalytics = () => {
           totalFiles: filesRes.count ?? 0,
           totalPayments: completedPayments.length,
           totalRevenue: 0, // Stripe amounts not stored on payments table; tracked in Stripe metadata
-          avgMerit,
           funnel: [
             { step: "Visitors (funnel events)", count: funnelRows.length },
             { step: "Signups", count: profiles.length },
@@ -170,13 +164,12 @@ const AdminAnalytics = () => {
           <div className="py-20 text-center text-muted-foreground">Loading analytics…</div>
         ) : (
           <>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
               <KPI icon={<Users className="w-4 h-4" />} label="Users" value={stats.totalUsers} />
               <KPI icon={<Briefcase className="w-4 h-4" />} label="Cases" value={stats.totalCases} />
               <KPI icon={<Activity className="w-4 h-4" />} label="Sweeps" value={stats.totalSweeps} />
               <KPI icon={<FileText className="w-4 h-4" />} label="Files" value={stats.totalFiles} />
               <KPI icon={<DollarSign className="w-4 h-4" />} label="Payments" value={stats.totalPayments} />
-              <KPI icon={<TrendingUp className="w-4 h-4" />} label="Avg merit" value={`${stats.avgMerit.toFixed(1)}`} />
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">

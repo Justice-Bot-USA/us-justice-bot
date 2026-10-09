@@ -54,7 +54,6 @@ export function ExportAllCasesButton({ cases }: ExportAllCasesButtonProps) {
           tocY = 30;
         }
         doc.text(`${idx + 1}. ${c.case_title.slice(0, 60)}${c.case_title.length > 60 ? '...' : ''}`, margin, tocY);
-        doc.text(`${c.merit_score}%`, pageWidth - margin - 20, tocY);
         tocY += 8;
       });
 
@@ -85,8 +84,6 @@ export function ExportAllCasesButton({ cases }: ExportAllCasesButtonProps) {
         doc.text(`Legal Area: ${caseData.legal_area}`, margin, yPos);
         yPos += 6;
         doc.text(`Status: ${caseData.status?.replace('_', ' ').toUpperCase() || 'PENDING'}`, margin, yPos);
-        yPos += 6;
-        doc.text(`Merit Score: ${caseData.merit_score}%`, margin, yPos);
         yPos += 6;
         doc.text(`Created: ${format(new Date(caseData.created_at), 'MMM d, yyyy')}`, margin, yPos);
         yPos += 15;

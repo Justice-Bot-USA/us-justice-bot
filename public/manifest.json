@@ -1,7 +1,7 @@
 {
   "name": "Justice Bot USA",
   "short_name": "Justice Bot USA",
-  "description": "Legal information, not legal advice. Free AI-powered legal guidance for all Americans.",
+  "description": "Legal information, not legal advice. Plain-language legal information and official court form help, live in California and New York; other states coming soon.",
   "start_url": "/",
   "display": "browser",
   "background_color": "#1e40af",

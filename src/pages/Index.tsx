@@ -22,6 +22,7 @@ import { SEOHead } from "@/components/SEOHead";
 import EnhancedSEO from "@/components/EnhancedSEO";
 import LocalBusinessSchema from "@/components/LocalBusinessSchema";
 import { Button } from "@/components/ui/button";
+import { PLAN } from "@/lib/pricing";
 
 // Lazy load everything below the fold
 const Header = lazy(() => import("@/components/Header"));
@@ -32,7 +33,7 @@ const ClosingCTA = lazy(() => import("@/components/ClosingCTA"));
 
 const justiceSystems = [
   { icon: Home, title: "Eviction & Housing", desc: "Tenant defenses, eviction responses, repair complaints — state-specific procedures", href: "/legal-help/eviction" },
-  { icon: Users, title: "Family Court", desc: "Divorce, custody, child support, protective orders — full guides for California and New York", href: "/legal-help/child-custody" },
+  { icon: Users, title: "Family Court", desc: "Divorce, custody, child support, protective orders — information and official forms for California and New York", href: "/legal-help/child-custody" },
   { icon: ShieldAlert, title: "Civil Rights & Discrimination", desc: "EEOC complaints, housing discrimination, workplace civil rights filings", href: "/legal-help/discrimination-law" },
   { icon: Scale, title: "Small Claims Court", desc: "File or defend small-dollar claims — state limits, forms, evidence prep", href: "/legal-help/small-claims-court" },
   { icon: Gavel, title: "Criminal Court Process", desc: "Understand arraignment, plea, trial, sentencing — procedural information only", href: "/legal-help/criminal-court-process" },
@@ -41,18 +42,19 @@ const justiceSystems = [
 ];
 
 const howItWorksSteps = [
-  { icon: ClipboardList, title: "Guided Triage", desc: "Structured questions to understand your situation and map it to the correct venue." },
-  { icon: Search, title: "Official Form Identification", desc: "Direct links to current federal court forms, and verified California and New York state forms. Other states coming soon." },
-  { icon: CheckCircle, title: "Filing Readiness Checks", desc: "Identify required documents and common filing errors before you submit." },
+  { icon: ClipboardList, title: "Guided Questions", desc: "Plain-language questions about your situation, then general information about how this kind of matter usually works." },
+  { icon: Search, title: "Official Forms", desc: "Direct links to official federal court forms and to California and New York court forms. Other states coming soon." },
+  { icon: CheckCircle, title: "Filling Instructions", desc: "Fill in California and New York forms with your own answers, with plain-language instructions and a list of what you still need to do yourself." },
   { icon: MapPin, title: "Procedural Walkthrough", desc: "Understand next steps before attending court or filing with an agency." },
 ];
 
 const safeguards = [
-  "Uses official federal and state court forms only",
-  "Incorporates current state filing rules and deadlines",
-  "Flags missing required documents",
+  "Links to official forms published by courts and government agencies",
+  "Summarizes general California and New York filing steps; always confirm deadlines with the court",
+  "Marks the required questions on each form you fill in",
   "Distinguishes legal information from legal advice",
   "Encourages consultation with licensed attorneys where appropriate",
+  "Tells you plainly that our content has not yet been reviewed by a licensed attorney",
 ];
 
 const audienceGroups = [
@@ -61,39 +63,19 @@ const audienceGroups = [
     title: "Individuals & Families",
     items: [
       "Understand your legal options in plain language",
-      "Organize evidence and build your case",
-      "Prepare documents and follow procedural steps",
-      "Track deadlines and filing requirements",
+      "Organize your documents and evidence",
+      "Fill in official California and New York forms with your own answers",
+      "Learn the general filing steps and where to confirm deadlines",
     ],
   },
   {
     icon: Handshake,
-    title: "Legal Aid & Advocacy Organizations",
+    title: "Advocates & Community Workers",
     items: [
-      "Help clients arrive prepared and organized",
-      "Review structured evidence packages",
-      "Track case progress across programs",
-      "Generate reports and structured summaries",
-    ],
-  },
-  {
-    icon: Scale,
-    title: "Attorneys & Law Firms",
-    items: [
-      "Receive structured, organized case summaries",
-      "Access evidence packages prepared by clients",
-      "Reference procedural guidance and official forms",
-      "Reduce intake time with pre-organized files",
-    ],
-  },
-  {
-    icon: Shield,
-    title: "Community Support Workers",
-    items: [
-      "Guide clients through legal preparation workflows",
-      "Help with housing, family, and civil rights issues",
-      "Use structured triage to identify next steps",
-      "Connect clients to the right courts and agencies",
+      "Share free plain-language guides with the people you help",
+      "Point people to official California and New York forms",
+      "Help people organize their documents before a court date",
+      "Encourage people to get legal advice where they need it",
     ],
   },
 ];
@@ -128,9 +110,9 @@ const Index = () => {
       description: "AI-powered informational guidance engine for understanding legal processes, records, and next steps.",
       offers: {
         "@type": "Offer",
-        price: "0",
+        price: String(PLAN.price),
         priceCurrency: "USD",
-        description: "Free informational guidance; unlimited document preparation for $25/month"
+        description: `One plan, ${PLAN.priceLabel}, with every form and filling instruction included. Court and agency fees are separate.`
       }
     }
   };
@@ -142,7 +124,7 @@ const Index = () => {
     },
     {
       question: "Does this platform access government databases?",
-      answer: "No. Justice Bot USA does not connect to, query, or access any government or law-enforcement databases. All analysis is based on information you provide.",
+      answer: "No. Justice Bot USA does not connect to, query, or access any government or law-enforcement databases. Our summaries are based only on information you provide.",
     },
     {
       question: "Is this legal advice?",
@@ -150,11 +132,11 @@ const Index = () => {
     },
     {
       question: "What does it cost?",
-      answer: "Informational guidance is free. One plan, $25/month, gives unlimited filled court forms (California now), form guides, and records request letters. Cancel anytime.",
+      answer: `Our general guides are free to read. One plan, ${PLAN.priceLabel}, includes every form and filling instruction for California and New York; fee waiver forms are free. Courts and agencies may charge their own fees, such as filing fees. Cancel any time by contacting support.`,
     },
     {
       question: "Can I use this for FOIA or public records requests?",
-      answer: "Yes. Justice Bot USA includes a guided FOIA and public-records request generator to help you prepare lawful, user-initiated requests.",
+      answer: "Yes. Justice Bot USA has a guided tool that puts your own answers into a FOIA or public-records request letter, which you review and send yourself.",
     },
   ];
 
@@ -162,14 +144,14 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <SEOHead 
         title="Justice Bot USA | Navigate the U.S. Legal System"
-        description="Justice Bot USA is an AI-powered civic-guidance platform. Understand legal processes, prepare documents, request public records. For self-represented individuals. Not legal advice."
+        description="Justice Bot USA is an AI-powered civic-guidance platform. Understand legal processes, fill in official court forms with your own answers, and request public records. Live in California and New York. Not legal advice."
         keywords="Justice Bot USA, legal guidance, public records request, FOIA generator, self-represented individuals, legal information, court filing help, civic guidance"
         url="https://justicebot-usa.com"
       />
       <EnhancedSEO
         title="Justice Bot USA | Legal information and court forms for California and New York"
-        description="Legal information, not legal advice. Informational civic-guidance platform for self-represented individuals. Understand legal processes, prepare documents, request records. Not legal advice."
-        keywords="Justice Bot USA, legal guidance, FOIA request generator, public records request, legal information, court forms, civic guidance, document preparation"
+        description="Legal information, not legal advice. Informational civic-guidance platform for self-represented individuals in California and New York. Understand legal processes, fill in official court forms, request records."
+        keywords="Justice Bot USA, legal guidance, FOIA request generator, public records request, legal information, court forms, civic guidance, California court forms, New York court forms"
         canonicalUrl="https://justicebot-usa.com/"
         structuredData={structuredData}
         faqData={faqData}
@@ -266,7 +248,7 @@ const Index = () => {
               Who {BRAND} Supports
             </h2>
             <p className="text-center text-muted-foreground mb-10 max-w-2xl mx-auto">
-              Built for everyone navigating the U.S. justice system — from individuals to institutions.
+              Built for people handling their own court and agency matters in California and New York, and the advocates who help them.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {audienceGroups.map(({ icon: Icon, title, items }) => (
@@ -308,7 +290,7 @@ const Index = () => {
               </p>
               <p>{BRAND} was created to close that gap.</p>
               <p>
-                This platform provides structured legal information, official court form identification, and procedural
+                This platform provides structured legal information, official court forms, and procedural
                 clarity — so individuals can better understand their rights and responsibilities within the justice
                 system.
               </p>
@@ -316,6 +298,7 @@ const Index = () => {
                 <p className="text-foreground font-semibold text-sm">We are not a law firm.</p>
                 <p className="text-foreground font-semibold text-sm">We do not provide legal advice.</p>
                 <p className="text-foreground font-semibold text-sm">We do not replace lawyers.</p>
+                <p className="text-foreground font-semibold text-sm">We do not choose forms or strategy for you, and we do not file or serve anything.</p>
               </div>
               <p>We exist to make legal processes more understandable and less intimidating.</p>
               <p className="text-foreground font-medium italic">
@@ -338,7 +321,7 @@ const Index = () => {
             <Handshake className="w-10 h-10 text-primary mx-auto mb-4" aria-hidden="true" />
             <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-4">Partner With Us</h2>
             <p className="text-muted-foreground leading-relaxed mb-6">
-              {BRAND} works alongside legal aid clinics, law schools, access-to-justice initiatives, and community
+              {BRAND} wants to work with legal aid clinics, law schools, access-to-justice initiatives, and community
               justice programs to extend procedural clarity to those who need it most.
             </p>
             <p className="text-sm text-muted-foreground mb-8">
@@ -382,18 +365,18 @@ const Index = () => {
             <div className="prose prose-sm sm:prose-base text-muted-foreground max-w-none leading-relaxed space-y-4">
               <p>
                 Whether you're responding to an eviction notice, preparing a small claims complaint, filing for custody,
-                or submitting an EEOC discrimination charge, understanding the correct procedures can be the difference
-                between a successful filing and a dismissed case.
+                or submitting an EEOC discrimination charge, understanding the correct procedures matters, because courts can
+                reject or dismiss filings that miss procedural requirements.
               </p>
               <p>
-                For family matters, navigating divorce petitions, custody affidavits, and financial disclosures requires
-                careful attention to your state's Family Court rules. Motions to modify existing orders and preparing
-                for hearings demand precise documentation and procedural awareness.
+                For family matters, divorce petitions, custody papers, and financial disclosures each come with their own
+                forms and court rules. Asking to change an existing order and preparing for a hearing take careful
+                documentation and procedural awareness.
               </p>
               <p>
-                {BRAND} organizes these processes into clear, step-by-step pathways — connecting self-represented
-                individuals with the correct federal and state forms, filing requirements, and procedural timelines for
-                courts and agencies, live today in California and New York with the other 48 states coming soon.
+                {BRAND} organizes these processes into clear, step-by-step pathways — pointing self-represented
+                individuals to official federal and state forms, general filing steps, and procedural timelines from
+                official court and agency sources, live today in California and New York with the other 48 states coming soon.
               </p>
             </div>
 

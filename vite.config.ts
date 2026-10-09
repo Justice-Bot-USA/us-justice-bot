@@ -1,8 +1,8 @@
-import { defineConfig } from "vite";
+import { defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
-import { writeFileSync } from "fs";
+import { existsSync, writeFileSync } from "fs";
 
 // ─── Inline sitemap plugin ────────────────────────────────────────────────────
 // Route config lives in src/lib/sitemapRoutes.ts — the single source of truth.
@@ -11,37 +11,11 @@ import { writeFileSync } from "fs";
 
 const BASE_URL = "https://justicebot-usa.com";
 
-// Replicate route data inline (vite.config runs in Node, can't import TS src)
-const TIER1_SLUGS = ["florida", "texas", "california", "new-york", "arizona"];
-const TIER2_SLUGS = ["georgia", "ohio", "pennsylvania", "illinois", "north-carolina"];
-const TIER3_SLUGS = ["new-jersey", "washington", "colorado", "michigan", "virginia"];
-
-const ALL_STATE_SLUGS = [
-  "alabama", "alaska", "arizona", "arkansas", "california", "colorado",
-  "connecticut", "delaware", "florida", "georgia", "hawaii", "idaho",
-  "illinois", "indiana", "iowa", "kansas", "kentucky", "louisiana",
-  "maine", "maryland", "massachusetts", "michigan", "minnesota", "mississippi",
-  "missouri", "montana", "nebraska", "nevada", "new-hampshire", "new-jersey",
-  "new-mexico", "new-york", "north-carolina", "north-dakota", "ohio",
-  "oklahoma", "oregon", "pennsylvania", "rhode-island", "south-carolina",
-  "south-dakota", "tennessee", "texas", "utah", "vermont", "virginia",
-  "washington", "west-virginia", "wisconsin", "wyoming",
-];
-
-const STATE_CODES = [
-  "al","ak","az","ar","ca","co","ct","de","fl","ga",
-  "hi","id","il","in","ia","ks","ky","la","me","md",
-  "ma","mi","mn","ms","mo","mt","ne","nv","nh","nj",
-  "nm","ny","nc","nd","oh","ok","or","pa","ri","sc",
-  "sd","tn","tx","ut","vt","va","wa","wv","wi","wy",
-];
-
-function stateToolPriority(slug: string): number {
-  if (TIER1_SLUGS.includes(slug)) return 0.9;
-  if (TIER2_SLUGS.includes(slug)) return 0.8;
-  if (TIER3_SLUGS.includes(slug)) return 0.7;
-  return 0.6;
-}
+// Replicate route data inline (keep in sync with src/lib/sitemapRoutes.ts).
+// Live only in California and New York; the other 48 states are "coming soon"
+// and stay out of the sitemap until they launch.
+const LIVE_STATE_SLUGS = ["california", "new-york"];
+const LIVE_STATE_CODES = ["ca", "ny"];
 
 interface RouteEntry {
   path: string;
@@ -61,11 +35,9 @@ const ROUTES: RouteEntry[] = [
   { path: "/start",                         priority: 0.8, changefreq: "weekly" },
   { path: "/courses",                       priority: 0.8, changefreq: "weekly" },
   { path: "/justice-bot",                   priority: 0.8, changefreq: "monthly" },
+  { path: "/ca/legal-center",               priority: 0.9, changefreq: "weekly" },
+  { path: "/ny/legal-center",               priority: 0.9, changefreq: "weekly" },
   // ─── Tools ──────────────────────────────────────────────────────────────────
-  { path: "/injury-settlement-calculator",  priority: 0.8, changefreq: "monthly" },
-  { path: "/personal-injury-calculator",    priority: 0.7, changefreq: "monthly" },
-  { path: "/case-law-search",               priority: 0.8, changefreq: "weekly" },
-  { path: "/sex-offender-registry",         priority: 0.7, changefreq: "weekly" },
   { path: "/court-records",                 priority: 0.8, changefreq: "weekly" },
   { path: "/foia-request-generator",        priority: 0.8, changefreq: "monthly" },
   { path: "/public-records-request",        priority: 0.7, changefreq: "monthly" },
@@ -84,24 +56,18 @@ const ROUTES: RouteEntry[] = [
   { path: "/legal-areas/consumer-rights",   priority: 0.7, changefreq: "monthly" },
   { path: "/legal-areas/human-rights",      priority: 0.7, changefreq: "monthly" },
   // ─── State landing pages ────────────────────────────────────────────────────
-  ...STATE_CODES.map((code) => ({
+  ...LIVE_STATE_CODES.map((code) => ({
     path: `/states/${code}`,
     priority: 0.6,
     changefreq: "monthly",
   })),
   // ─── State funnels ──────────────────────────────────────────────────────────
   { path: "/california-legal-help",         priority: 0.7, changefreq: "monthly" },
-  { path: "/texas-legal-help",              priority: 0.7, changefreq: "monthly" },
   { path: "/new-york-legal-help",           priority: 0.7, changefreq: "monthly" },
-  { path: "/florida-legal-help",            priority: 0.7, changefreq: "monthly" },
-  { path: "/ohio-cps-help",                 priority: 0.6, changefreq: "monthly" },
-  { path: "/illinois-legal-help",           priority: 0.6, changefreq: "monthly" },
-  { path: "/georgia-legal-help",            priority: 0.6, changefreq: "monthly" },
-  { path: "/pennsylvania-legal-help",       priority: 0.6, changefreq: "monthly" },
-  // ─── State tool landing pages (court-forms + arrest-records × 50 states) ──
-  ...ALL_STATE_SLUGS.flatMap((slug) => [
-    { path: `/${slug}-court-forms`,      priority: stateToolPriority(slug), changefreq: "weekly" },
-    { path: `/${slug}-arrest-records`,   priority: stateToolPriority(slug), changefreq: "monthly" },
+  // ─── State tool landing pages (court-forms + arrest-records, CA and NY) ────
+  ...LIVE_STATE_SLUGS.flatMap((slug) => [
+    { path: `/${slug}-court-forms`,      priority: 0.9, changefreq: "weekly" },
+    { path: `/${slug}-arrest-records`,   priority: 0.9, changefreq: "monthly" },
   ]),
   // ─── Info ───────────────────────────────────────────────────────────────────
   { path: "/support",                       priority: 0.6, changefreq: "monthly" },
@@ -132,14 +98,24 @@ function buildSitemap(buildDate: string): string {
   ].join("\n");
 }
 
-function sitemapPlugin() {
+function sitemapPlugin(): Plugin {
+  let outDir: string | null = null;
   return {
     name: "vite-plugin-sitemap",
+    apply: "build",
+    configResolved(config) {
+      outDir = path.resolve(config.root, config.build.outDir);
+    },
     closeBundle() {
       const buildDate = new Date().toISOString().split("T")[0];
       const xml = buildSitemap(buildDate);
-      const outPath = path.resolve(__dirname, "public/sitemap.xml");
-      writeFileSync(outPath, xml, "utf-8");
+      writeFileSync(path.resolve(__dirname, "public/sitemap.xml"), xml, "utf-8");
+      // Vite copies public/ into the build output before closeBundle runs, so
+      // also write the fresh sitemap into the output; otherwise the deployed
+      // sitemap is the one left over from the previous build.
+      if (outDir && existsSync(outDir)) {
+        writeFileSync(path.join(outDir, "sitemap.xml"), xml, "utf-8");
+      }
       console.log(`\n✅ sitemap.xml — ${ROUTES.length} URLs (lastmod: ${buildDate})\n`);
     },
   };

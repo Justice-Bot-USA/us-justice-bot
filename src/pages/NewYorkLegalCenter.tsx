@@ -58,7 +58,7 @@ export default function NewYorkLegalCenter() {
     <div className="flex flex-col min-h-screen bg-background">
       <Helmet>
         <title>New York Legal Center — Forms, Procedures & Filing | Justice Bot USA</title>
-        <meta name="description" content="Comprehensive New York legal resources across 8 areas: criminal, family, divorce, CPS, immigration, workplace, civil, and human rights — with official forms and filing procedures sourced from NY Courts and state agencies." />
+        <meta name="description" content="New York legal information across 8 areas: criminal, family, divorce, CPS, immigration, workplace, civil, and human rights — with official forms and filing procedures sourced from NY Courts and state agencies." />
         <link rel="canonical" href="https://justicebot-usa.com/ny/legal-center" />
       </Helmet>
       <Header language="en" onLanguageChange={() => {}} />
@@ -276,7 +276,7 @@ export default function NewYorkLegalCenter() {
             <CardContent className="p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div>
                 <h3 className="font-semibold">Need help organizing your NY case?</h3>
-                <p className="text-sm text-muted-foreground">Run a guided triage and merit analysis with your facts and uploaded evidence.</p>
+                <p className="text-sm text-muted-foreground">Get a plain-language summary of your situation, built from what you tell us and your uploaded documents.</p>
               </div>
               <Button asChild>
                 <Link to="/start">Start your case</Link>

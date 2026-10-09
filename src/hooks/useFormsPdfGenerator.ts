@@ -18,7 +18,6 @@ interface CaseContext {
   state: string;
   county?: string;
   legalArea: string;
-  meritScore?: number;
   filingDeadline?: string;
 }
 
@@ -218,11 +217,6 @@ function generateSingleFormPdf(
       doc.text(caseLines, margin, yPos);
       yPos += caseLines.length * 5 + 5;
     }
-    
-    if (context.meritScore) {
-      doc.text(`Case Merit Score: ${context.meritScore}%`, margin, yPos);
-      yPos += 10;
-    }
   }
 
   // Instructions Section
@@ -318,21 +312,26 @@ function generateFormsPackagePdf(
     const titleLines = doc.splitTextToSize(context.caseTitle, contentWidth);
     doc.text(titleLines, margin, yPos);
     yPos += titleLines.length * 5 + 10;
-    
-    if (context.meritScore) {
-      doc.text(`Merit Score: ${context.meritScore}%`, margin, yPos);
-      yPos += 15;
-    }
   }
 
   // Forms List
   doc.setFontSize(14);
   doc.setTextColor(0);
   doc.setFont('helvetica', 'bold');
-  doc.text('Required Forms Checklist', margin, yPos);
-  yPos += 12;
+  const formsHeading = doc.splitTextToSize(`Common ${stateName} forms for this type of matter`, contentWidth);
+  doc.text(formsHeading, margin, yPos);
+  yPos += formsHeading.length * 6 + 2;
+  doc.setFontSize(9);
+  doc.setTextColor(100);
+  doc.setFont('helvetica', 'italic');
+  const formsNote = doc.splitTextToSize(
+    'General information, not a list chosen for you. Confirm with the court or its self-help center which forms apply to your situation.',
+    contentWidth
+  );
+  doc.text(formsNote, margin, yPos);
+  yPos += formsNote.length * 4 + 8;
 
-  forms.forEach((form, idx) => {
+  forms.forEach((form) => {
     if (yPos > pageHeight - 40) {
       doc.addPage();
       yPos = 25;
@@ -345,7 +344,7 @@ function generateFormsPackagePdf(
     doc.setFontSize(10);
     doc.setTextColor(0);
     doc.setFont('helvetica', 'bold');
-    doc.text(`${idx + 1}. ${form.formNumber} - ${form.name}`, margin + 12, yPos);
+    doc.text(`${form.formNumber} - ${form.name}`, margin + 12, yPos);
     yPos += 6;
 
     doc.setFontSize(9);

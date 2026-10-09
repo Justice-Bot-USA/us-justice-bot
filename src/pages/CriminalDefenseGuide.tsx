@@ -171,76 +171,66 @@ const stateData: Record<string, {
   }
 };
 
-// Common defense strategies
+// Defenses the law recognizes (general information; no outcome ratings)
 const defenseStrategies = [
   {
     name: "Lack of Evidence / Reasonable Doubt",
-    description: "The prosecution must prove every element beyond a reasonable doubt. Challenging the sufficiency of evidence is the most common defense.",
+    description: "The prosecution must prove every element beyond a reasonable doubt. A defendant can challenge whether the evidence meets that standard.",
     applicableTo: ["All criminal charges"],
-    effectiveness: "High - Fundamental constitutional protection",
     icon: Scale
   },
   {
     name: "Fourth Amendment Violations",
-    description: "Evidence obtained through illegal searches or seizures can be suppressed. Motion to suppress can result in case dismissal.",
+    description: "Evidence obtained through illegal searches or seizures can be excluded by the court. This is raised through a motion to suppress.",
     applicableTo: ["Drug cases", "Weapons charges", "DUI", "Any case with searches"],
-    effectiveness: "Very High when applicable",
     icon: Shield
   },
   {
     name: "Self-Defense / Defense of Others",
     description: "The defendant used reasonable force to protect themselves or others from imminent harm. Stand Your Ground laws vary by state.",
     applicableTo: ["Assault", "Battery", "Homicide", "Weapons charges"],
-    effectiveness: "High when facts support it",
     icon: Users
   },
   {
     name: "Alibi Defense",
     description: "The defendant was somewhere else when the crime occurred and could not have committed it.",
     applicableTo: ["All charges requiring presence at scene"],
-    effectiveness: "Very High with credible witnesses/evidence",
     icon: MapPin
   },
   {
     name: "Miranda Violations",
     description: "Statements made without proper Miranda warnings during custodial interrogation may be inadmissible.",
     applicableTo: ["Any case involving confessions or statements"],
-    effectiveness: "High - Can suppress key evidence",
     icon: AlertCircle
   },
   {
     name: "Entrapment",
     description: "Government agents induced the defendant to commit a crime they would not have otherwise committed.",
     applicableTo: ["Drug sales", "Sting operations", "Solicitation"],
-    effectiveness: "Moderate - Hard to prove",
     icon: AlertTriangle
   },
   {
     name: "Mistaken Identity",
     description: "The defendant was wrongly identified as the perpetrator. Cross-racial identification is particularly unreliable.",
     applicableTo: ["Robbery", "Assault", "Any witness identification case"],
-    effectiveness: "High when applicable",
     icon: Users
   },
   {
     name: "Intoxication Defense",
     description: "Voluntary intoxication may negate specific intent crimes. Involuntary intoxication can be a complete defense.",
     applicableTo: ["Specific intent crimes only"],
-    effectiveness: "Limited for voluntary; High for involuntary",
     icon: AlertCircle
   },
   {
     name: "Insanity / Mental Incapacity",
     description: "The defendant lacked the mental capacity to understand the nature of their actions or that they were wrong.",
     applicableTo: ["All charges"],
-    effectiveness: "Rarely successful but important option",
     icon: Info
   },
   {
     name: "Duress / Coercion",
     description: "The defendant committed the crime under threat of immediate harm to themselves or others.",
     applicableTo: ["Most crimes (not murder in most states)"],
-    effectiveness: "Moderate when facts support it",
     icon: Shield
   }
 ];
@@ -557,6 +547,17 @@ const CriminalDefenseGuide = () => {
 
               {/* Defenses Tab */}
               <TabsContent value="defenses" className="space-y-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Shield className="h-5 w-5 text-primary" />
+                      Defenses the law recognizes (general information)
+                    </CardTitle>
+                    <CardDescription>
+                      Whether any defense applies depends on the facts and on your state's law. Only your lawyer or public defender can advise you on your case.
+                    </CardDescription>
+                  </CardHeader>
+                </Card>
                 <div className="grid gap-4 md:grid-cols-2">
                   {defenseStrategies.map((defense, idx) => (
                     <Card key={idx}>
@@ -575,12 +576,6 @@ const CriminalDefenseGuide = () => {
                               <Badge key={i} variant="secondary" className="text-xs">{crime}</Badge>
                             ))}
                           </div>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <span className="text-xs font-medium">Effectiveness:</span>
-                          <Badge variant={defense.effectiveness.includes("High") ? "default" : "outline"}>
-                            {defense.effectiveness}
-                          </Badge>
                         </div>
                       </CardContent>
                     </Card>

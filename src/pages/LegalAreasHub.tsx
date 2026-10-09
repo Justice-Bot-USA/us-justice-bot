@@ -60,7 +60,6 @@ const LEGAL_CATEGORIES = [
     badge: { label: "Popular", variant: "default" as const },
     keywords: ["wrongful termination", "wage theft", "discrimination", "harassment", "FMLA"],
     relatedTools: [
-      { label: "Personal Injury Calculator", href: "/injury-settlement-calculator" },
       { label: "Case Analysis", href: "/case-analysis" },
     ],
     href: "/legal-areas/employment",
@@ -129,7 +128,6 @@ const LEGAL_CATEGORIES = [
     badge: null,
     keywords: ["workers comp", "work injury", "occupational disease", "disability benefits"],
     relatedTools: [
-      { label: "Personal Injury Calculator", href: "/injury-settlement-calculator" },
       { label: "Case Analysis", href: "/case-analysis" },
     ],
     href: "/legal-areas/workers-comp",
@@ -143,7 +141,6 @@ const LEGAL_CATEGORIES = [
     badge: { label: "Popular", variant: "default" as const },
     keywords: ["consumer fraud", "debt collection", "predatory lending", "warranty", "FCRA"],
     relatedTools: [
-      { label: "Case Law Search", href: "/case-law-search" },
       { label: "Case Analysis", href: "/case-analysis" },
     ],
     href: "/legal-areas/consumer-rights",
@@ -349,8 +346,6 @@ export default function LegalAreasHub() {
                 { label: "Forms Library", href: "/forms-library" },
                           { label: "Court Records", href: "/court-records" },
                 { label: "FOIA Generator", href: "/foia-request-generator" },
-                { label: "Injury Calculator", href: "/injury-settlement-calculator" },
-                { label: "Case Law Search", href: "/case-law-search" },
                 { label: "Criminal Defense Guide", href: "/criminal-defense-guide" },
               ].map((link) => (
                 <Link

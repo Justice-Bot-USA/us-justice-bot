@@ -7,7 +7,7 @@ import { SEOHead } from "@/components/SEOHead";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { BadgeCheck, AlertTriangle, Loader2, Hash, GraduationCap, Calendar, Clock } from "lucide-react";
+import { FileText, AlertTriangle, Loader2, Hash, GraduationCap, Calendar, Clock } from "lucide-react";
 
 type CertRecord = {
   course_title: string;
@@ -24,18 +24,22 @@ export default function CertificateVerify() {
   const [cert, setCert] = useState<CertRecord | null>(null);
   const [status, setStatus] = useState<"loading" | "found" | "not_found">("loading");
 
+  // Reference IDs are shown as JB-XXXXXXXXXXXX (VP- before October 2026); the lookup uses only the hash part.
+  // Only hex/alphanumeric hash characters, so a URL like /verify/% cannot act as a wildcard.
+  const hashPrefix = (id ?? "").replace(/^(vp|jb)-/i, "").replace(/[^a-z0-9]/gi, "");
+
   useEffect(() => {
-    if (!id) {
+    if (hashPrefix.length < 8) {
       setStatus("not_found");
       return;
     }
 
     (async () => {
-      // Match by the first 12 chars of the hash (the VP- prefix is stripped in the URL)
+      // Match by the first 12 chars of the hash
       const { data, error } = await supabase
         .from("course_certificates")
         .select("course_title, provider_name, hours_completed, completion_date, certificate_hash, audit_timestamp, verification_link")
-        .ilike("certificate_hash", `${id.toLowerCase()}%`)
+        .ilike("certificate_hash", `${hashPrefix.toLowerCase()}%`)
         .limit(1)
         .maybeSingle();
 
@@ -46,13 +50,13 @@ export default function CertificateVerify() {
         setStatus("found");
       }
     })();
-  }, [id]);
+  }, [hashPrefix]);
 
   return (
     <>
       <SEOHead
-        title="Certificate Verification | Justice Bot USA"
-        description="Independently verify a Justice Bot USA course completion certificate using its unique VP- verification ID."
+        title="Certificate Record Lookup | Justice Bot USA"
+        description="Look up a course certificate record that a Justice Bot USA user entered, using its reference ID. Records are self-reported and not verified with course providers."
       />
       <Header language="en" onLanguageChange={() => {}} />
 
@@ -64,7 +68,7 @@ export default function CertificateVerify() {
             <GraduationCap className="w-8 h-8 text-primary" />
             <div>
               <p className="text-xs text-muted-foreground uppercase tracking-widest font-medium">Justice Bot USA</p>
-              <h1 className="text-2xl font-bold">Certificate Verification</h1>
+              <h1 className="text-2xl font-bold">Certificate Record Lookup</h1>
             </div>
           </div>
 
@@ -72,7 +76,7 @@ export default function CertificateVerify() {
             <Card>
               <CardContent className="py-16 flex flex-col items-center gap-4">
                 <Loader2 className="w-10 h-10 text-muted-foreground animate-spin" />
-                <p className="text-muted-foreground">Looking up verification ID…</p>
+                <p className="text-muted-foreground">Looking up reference ID…</p>
               </CardContent>
             </Card>
           )}
@@ -81,10 +85,10 @@ export default function CertificateVerify() {
             <Card className="border-destructive/40">
               <CardContent className="py-16 flex flex-col items-center gap-4 text-center">
                 <AlertTriangle className="w-12 h-12 text-destructive" />
-                <h2 className="text-xl font-semibold">Certificate Not Found</h2>
+                <h2 className="text-xl font-semibold">Record Not Found</h2>
                 <p className="text-muted-foreground max-w-sm">
-                  No certificate matches the ID <strong className="font-mono">VP-{id?.toUpperCase()}</strong>.
-                  It may have been entered incorrectly, or was not issued by Justice Bot USA.
+                  No record matches the ID <strong className="font-mono">{id?.toUpperCase()}</strong>.
+                  It may have been entered incorrectly, or the record was not created on Justice Bot USA.
                 </p>
                 <Button asChild variant="outline">
                   <Link to="/courses">Go to Course Hub</Link>
@@ -97,14 +101,14 @@ export default function CertificateVerify() {
             <div className="space-y-6">
               {/* Status banner */}
               <div className="flex items-center gap-3 p-4 rounded-lg bg-primary/10 border border-primary/30">
-                <BadgeCheck className="w-8 h-8 text-primary shrink-0" />
+                <FileText className="w-8 h-8 text-primary shrink-0" />
                 <div>
-                  <p className="font-semibold text-primary">Certificate Verified</p>
+                  <p className="font-semibold text-primary">Record found</p>
                   <p className="text-sm text-muted-foreground">
-                    This record was created and cryptographically sealed by Justice Bot USA.
+                    This record was entered by the certificate holder on Justice Bot USA. Justice Bot USA has not checked it with the course provider.
                   </p>
                 </div>
-                <Badge className="ml-auto shrink-0" variant="default">Authentic</Badge>
+                <Badge className="ml-auto shrink-0" variant="outline">Self-reported</Badge>
               </div>
 
               {/* Certificate details */}
@@ -142,19 +146,20 @@ export default function CertificateVerify() {
                   <div className="mt-4 p-3 rounded-md bg-muted border border-border space-y-2">
                     <div className="flex items-center gap-2 text-xs text-muted-foreground">
                       <Hash className="w-3.5 h-3.5" />
-                      <span className="uppercase tracking-wider font-medium">Integrity Hash (SHA-256)</span>
+                      <span className="uppercase tracking-wider font-medium">Record Hash (SHA-256)</span>
                     </div>
                     <code className="block text-xs font-mono break-all text-foreground">
                       {cert.certificate_hash}
                     </code>
                     <p className="text-xs text-muted-foreground">
-                      Verification ID: <strong className="font-mono text-foreground">VP-{cert.certificate_hash.substring(0, 12).toUpperCase()}</strong>
+                      Reference ID: <strong className="font-mono text-foreground">JB-{cert.certificate_hash.substring(0, 12).toUpperCase()}</strong>
+                      {" "}(IDs issued before October 2026 start with VP-)
                     </p>
                   </div>
 
                   {/* Audit timestamp */}
                   <p className="text-xs text-muted-foreground pt-2">
-                    Sealed by Justice Bot USA on{" "}
+                    Added to Justice Bot USA on{" "}
                     <strong>{new Date(cert.audit_timestamp).toUTCString()}</strong>
                   </p>
                 </CardContent>
@@ -164,9 +169,9 @@ export default function CertificateVerify() {
               <Card className="bg-muted/50">
                 <CardContent className="py-4">
                   <p className="text-xs text-muted-foreground leading-relaxed">
-                    <strong>Disclaimer:</strong> Justice Bot USA verifies that this record was created on our platform and has not been modified.
-                    We do not independently verify that the underlying course was completed or meets your jurisdiction's requirements.
-                    Always confirm acceptance with your attorney or case worker.
+                    <strong>Disclaimer:</strong> This page shows a record the certificate holder entered on Justice Bot USA.
+                    We do not check that the course was completed, that the details are correct, or that the course meets your court's requirements.
+                    Ask the course provider for proof of completion, and confirm acceptance with the court, your attorney, or your case worker.
                   </p>
                 </CardContent>
               </Card>

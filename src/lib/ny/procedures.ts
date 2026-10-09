@@ -51,7 +51,7 @@ export const NY_PROCEDURES: Record<NyCategoryKey, FilingProcedure> = {
   family: {
     category: 'family',
     title: 'Family — Custody, Visitation, Support, Orders of Protection',
-    venue: 'NY Family Court in the county where the child resides.',
+    venue: 'NY Family Court, usually in the county where the child lives or where either party lives. Support petitions: the county where either party lives (FCA §421). Family offense (order of protection) petitions: the county where the incident happened or where either party lives, including a shelter (FCA §818).',
     fees: 'Free. Family Court does not charge filing fees.',
     deadlines: [
       'Family Offense (Order of Protection): emergency relief available same-day.',
@@ -161,17 +161,17 @@ export const NY_PROCEDURES: Record<NyCategoryKey, FilingProcedure> = {
     category: 'civil',
     title: 'Civil — Small Claims, Housing, Consumer, Article 78',
     venue: 'Civil Court (NYC), City/Town/Village Court (outside NYC), Housing Court, or Supreme Court.',
-    fees: 'Small claims $15–$20; Housing Court $45; Supreme Court Index Number $210; Article 78 $210 + $95 RJI.',
+    fees: 'Small claims $15–$20 in NYC and City Courts, $10–$15 in Town and Village Courts; Housing Court $45; Supreme Court Index Number $210; Article 78 $210 + $95 RJI.',
     eFilingUrl: NYSCEF,
     deadlines: [
       'Small claims default judgment: ask the court to vacate it within 1 year after you were served with a copy of the judgment, for an excusable default (CPLR 5015(a)(1)); no time limit if the summons was never properly served.',
       'Housing, nonpayment case: answer within 10 days of being served, in person at the clerk or in writing (RPAPL 732).',
       'Housing, holdover case: answer on the first court date, or 3 days before it if the notice of petition demands that (RPAPL 743).',
       'Article 78: 4 months from final agency action.',
-      'Breach of contract: 6 years; consumer fraud: 3 years.',
+      'Breach of contract: generally 6 years, but a lawsuit against a consumer over a consumer credit debt (such as a credit card or personal loan) must be started within 3 years (CPLR 214-i). Once that time runs out, a later payment does not restart it. Consumer fraud: 3 years.',
     ],
     steps: [
-      { title: 'Pick the right court', detail: 'Under $10k NYC / $5k outside NYC = Small Claims. NYC Civil Court hears claims up to $50,000 (CCA §202). Outside NYC, City Courts hear up to $15,000 (UCCA §202) and County Courts up to $25,000 (Judiciary Law §190). Larger claims go to Supreme Court.' },
+      { title: 'Pick the right court', detail: 'Small Claims limits: $10,000 in NYC Civil Court, $5,000 in City Courts (and District Courts in Nassau and Suffolk), $3,000 in Town and Village Courts. NYC Civil Court hears claims up to $50,000 (CCA §202). Outside NYC, City Courts hear up to $15,000 (UCCA §202) and County Courts up to $25,000 (Judiciary Law §190). Larger claims go to Supreme Court.' },
       { title: 'Draft the claim or petition', detail: 'Plain English statement of facts and dollar amount sought, or for housing the RPAPL ground for relief.' },
       { title: 'Pay the filing fee or apply for poor person relief', detail: 'Fee waivers granted on financial affidavit (CPLR 1101).' },
       { title: 'Serve the defendant', detail: 'Small claims served by the clerk via mail; Supreme Court requires personal service via CPLR 308.' },

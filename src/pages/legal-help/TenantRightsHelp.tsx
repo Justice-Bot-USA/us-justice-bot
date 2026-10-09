@@ -4,7 +4,7 @@ const TenantRightsHelp = () => (
   <LegalHelpLayout
     title="Tenant Rights in the United States: What Every Renter Should Know"
     metaTitle="Tenant Rights Guide | Know Your Rights as a Renter | Justice Bot USA"
-    metaDescription="Complete guide to tenant rights in the US. Learn about habitability, security deposits, privacy rights, discrimination protections, and what to do when your landlord violates the law."
+    metaDescription="Guide to common tenant rights in the US: habitability, security deposits, privacy, discrimination protections, and what to do when your landlord violates the law. Live in California and New York; other states coming soon."
     keywords="tenant rights, renter rights, landlord tenant law, habitability, security deposit, lease agreement, landlord responsibilities, right to privacy, fair housing"
     canonicalPath="/legal-help/tenant-rights"
     breadcrumbLabel="Tenant Rights"
@@ -35,9 +35,9 @@ const TenantRightsHelp = () => (
       "Not knowing your state's specific tenant protection laws",
     ]}
     ctas={[
-      { label: "Analyze Your Housing Issue", href: "/case-analysis" },
-      { label: "Generate a Repair Request", href: "/ai-tools/use" },
-      { label: "Find Housing Forms", href: "/forms-library" },
+      { label: "Get a Plain-Language Summary", href: "/case-analysis" },
+      { label: "California Housing Steps & Forms", href: "/ca/legal-center?area=civil" },
+      { label: "New York Housing Steps & Forms", href: "/ny/legal-center?area=civil" },
     ]}
     relatedPages={[
       { label: "How to Fight an Eviction", href: "/legal-help/eviction" },

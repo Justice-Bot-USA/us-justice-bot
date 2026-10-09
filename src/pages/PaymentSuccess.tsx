@@ -222,7 +222,7 @@ const PaymentSuccess: React.FC = () => {
       
       setGeneratedForms(forms);
       setHasGenerated(true);
-      toast.success(`Generated ${forms.length} court forms`);
+      toast.success(`Created ${forms.length} form guides`);
     } catch (err) {
       console.error('Form generation error:', err);
       toast.error('Failed to generate forms. Please try again.');
@@ -250,7 +250,7 @@ const PaymentSuccess: React.FC = () => {
     const filename = `Court-Forms-Package-${funnelConfig.jurisdiction}-${funnelConfig.legalArea}.pdf`;
     downloadPdf(blob, filename);
     trackUSExportCompleted('pdf', generatedForms.length);
-    toast.success('Downloaded complete forms package');
+    toast.success('Downloaded form guides package');
   };
 
   const stateName = funnelConfig ? US_STATE_NAMES[funnelConfig.jurisdiction] : '';
@@ -326,10 +326,10 @@ const PaymentSuccess: React.FC = () => {
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               {verificationResult?.type === 'subscription' 
-                ? 'Your subscription is now active. You have unlimited access to all features.'
+                ? 'Your subscription is now active. All forms and filling instructions are included.'
                 : isFoiaPurchase
                   ? 'Your public records request is ready for download.'
-                  : 'Your case package is now unlocked. Download your forms and start filing today.'}
+                  : 'Your case package is now unlocked. Download your form guides, then get the official forms from your court.'}
             </p>
           </div>
 
@@ -527,7 +527,7 @@ const PaymentSuccess: React.FC = () => {
                 <CardHeader className="pb-3">
                   <CardTitle className="flex items-center gap-2">
                     <FileText className="h-5 w-5 text-primary" />
-                    {hasGenerated ? 'Your Generated Forms' : 'Forms Available for Your Case'}
+                    {hasGenerated ? 'Your Form Guides' : 'Form Guides Available'}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -552,7 +552,7 @@ const PaymentSuccess: React.FC = () => {
                         ))}
                         {availableForms.length > 6 && (
                           <p className="text-sm text-muted-foreground text-center">
-                            + {availableForms.length - 6} more forms available
+                            + {availableForms.length - 6} more form guides available
                           </p>
                         )}
                       </div>
@@ -566,12 +566,12 @@ const PaymentSuccess: React.FC = () => {
                         {isGenerating ? (
                           <>
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            Generating Forms...
+                            Creating Form Guides...
                           </>
                         ) : (
                           <>
                             <Sparkles className="mr-2 h-4 w-4" />
-                            Generate Court Forms Package
+                            Create My Form Guides
                           </>
                         )}
                       </Button>
@@ -609,7 +609,7 @@ const PaymentSuccess: React.FC = () => {
                           onClick={handleDownloadAllForms}
                         >
                           <Package className="mr-2 h-4 w-4" />
-                          Download All Forms (Package)
+                          Download All Form Guides (Package)
                         </Button>
                         <Button 
                           size="lg" 
@@ -641,11 +641,11 @@ const PaymentSuccess: React.FC = () => {
                         {hasGenerated ? <CheckCircle2 className="h-4 w-4" /> : '1'}
                       </span>
                       <div>
-                        <p className="font-medium">Generate Your Forms</p>
+                        <p className="font-medium">Get Your Form Guides</p>
                         <p className="text-sm text-muted-foreground">
                           {hasGenerated 
-                            ? 'Forms generated! Download them individually or as a package.'
-                            : 'Click the button above to generate your court forms.'}
+                            ? 'Form guides ready. Download them individually or as a package.'
+                            : 'Click the button above to create your form guides.'}
                         </p>
                       </div>
                     </li>
@@ -688,7 +688,7 @@ const PaymentSuccess: React.FC = () => {
                   <div className="flex-1">
                     <h3 className="text-lg font-bold mb-1">Save time next time</h3>
                     <p className="text-sm text-muted-foreground mb-4">
-                      Unlimited exports, saved cases, and priority form updates — all for one monthly price.
+                      Unlimited exports and saved cases, with every form and filling instruction included, for one monthly price.
                     </p>
                     <div className="flex flex-wrap gap-3 mb-5">
                       <span className="inline-flex items-center gap-1.5 text-sm">
@@ -696,9 +696,6 @@ const PaymentSuccess: React.FC = () => {
                       </span>
                       <span className="inline-flex items-center gap-1.5 text-sm">
                         <Save className="h-4 w-4 text-primary" /> Saved cases
-                      </span>
-                      <span className="inline-flex items-center gap-1.5 text-sm">
-                        <Sparkles className="h-4 w-4 text-primary" /> Priority updates
                       </span>
                     </div>
                     <Button
@@ -721,7 +718,7 @@ const PaymentSuccess: React.FC = () => {
                       {PLAN.cta}
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
-                    <p className="text-xs text-muted-foreground mt-2">Cancel anytime. No commitment.</p>
+                    <p className="text-xs text-muted-foreground mt-2">No long-term commitment. Cancel any time by contacting support.</p>
                   </div>
                 </div>
               </CardContent>
@@ -732,7 +729,7 @@ const PaymentSuccess: React.FC = () => {
           <div className="text-center">
             <div className="inline-flex items-center gap-2 text-sm text-muted-foreground">
               <Shield className="h-4 w-4" />
-              <span>30-day money-back guarantee if you're not satisfied</span>
+              <span>Refunds available within 30 days of purchase if you're not satisfied</span>
             </div>
           </div>
         </main>

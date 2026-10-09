@@ -1,8 +1,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Scale, MapPin, Target } from 'lucide-react';
+import { Scale, MapPin } from 'lucide-react';
 import { JourneyProgress } from './JourneyProgress';
 import { JourneyStep } from './JourneyStep';
 import { DeadlineTracker } from './DeadlineTracker';
@@ -55,26 +54,16 @@ export function JourneyWizard({ journeyId }: JourneyWizardProps) {
       {caseData && (
         <Card className="bg-gradient-to-r from-primary/5 to-primary/10 border-primary/20">
           <CardHeader className="pb-3">
-            <div className="flex items-start justify-between">
-              <div>
-                <CardTitle className="text-xl">{caseData.case_title}</CardTitle>
-                <div className="flex items-center gap-4 mt-2 text-sm text-muted-foreground">
-                  <span className="flex items-center gap-1">
-                    <Scale className="h-4 w-4" />
-                    {caseData.legal_area}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <MapPin className="h-4 w-4" />
-                    {caseData.county ? `${caseData.county}, ` : ''}{caseData.state}
-                  </span>
-                </div>
-              </div>
-              <div className="text-right">
-                <Badge variant="outline" className="text-lg px-3 py-1">
-                  <Target className="h-4 w-4 mr-1" />
-                  {caseData.merit_score}% Merit
-                </Badge>
-              </div>
+            <CardTitle className="text-xl">{caseData.case_title}</CardTitle>
+            <div className="flex items-center gap-4 mt-2 text-sm text-muted-foreground">
+              <span className="flex items-center gap-1">
+                <Scale className="h-4 w-4" />
+                {caseData.legal_area}
+              </span>
+              <span className="flex items-center gap-1">
+                <MapPin className="h-4 w-4" />
+                {caseData.county ? `${caseData.county}, ` : ''}{caseData.state}
+              </span>
             </div>
           </CardHeader>
         </Card>

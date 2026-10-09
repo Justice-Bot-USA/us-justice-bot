@@ -12,11 +12,11 @@ import {
 } from './types';
 
 // Default steps - NEW CONTINUOUS FLOW
-// triage → evidence → results (merit+pathway+forms teaser FREE) → paywall → generate → next_steps
+// triage → evidence → results (plain-language summary, FREE) → paywall → generate → next_steps
 const STANDARD_STEPS: FunnelStep[] = [
   'triage',
   'evidence',
-  'results',      // Shows merit score, pathway teaser, form names (FREE)
+  'results',      // Plain-language summary + state legal center links (FREE)
   'paywall',      // Payment gate
   'generate',
   'next_steps'
@@ -32,14 +32,13 @@ const PAID_STEPS: FunnelStep[] = [
   'next_steps'
 ];
 
-// All 50 states + DC enabled
-export const ENABLED_STATES = [
-  'AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'DC', 'FL',
-  'GA', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME',
-  'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH',
-  'NJ', 'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI',
-  'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY'
-] as const;
+// Launched states: the only states where the funnel, the plan and the forms are live.
+// The other 48 states and DC are coming soon; their funnel pages show a "coming soon" page
+// with no paywall or checkout.
+export const ENABLED_STATES = ['CA', 'NY'] as const;
+
+// Every state with a funnel page (so old links resolve to an honest "coming soon" page).
+const ALL_STATES = Object.keys(US_STATE_NAMES);
 
 // All legal areas we support
 const ALL_LEGAL_AREAS: LegalCategory[] = [
@@ -1192,14 +1191,14 @@ const generateSEO = (state: string, legalArea: LegalCategory): FunnelConfig['seo
   
   const seoTemplates: Record<LegalCategory, { title: string; description: string; keywords: string[]; h1: string }> = {
     'family': {
-      title: `${stateName} Divorce & Family Law Self-Help | Free ${stateName} Forms`,
-      description: `Navigate ${stateName} family court without an attorney. Get divorce forms, custody help, and step-by-step guidance for ${stateName} family law matters.`,
+      title: `${stateName} Divorce & Family Law Self-Help | ${stateName} Court Forms`,
+      description: `Handle a ${stateName} divorce, custody or support case without an attorney. Find the official forms and step-by-step guidance for ${stateName} family law matters.`,
       keywords: [`${stateName} divorce`, `${stateName} family law`, `${stateName} custody`, `${stateName} divorce forms`, 'pro se divorce'],
       h1: `${stateName} Family Law Self-Help Center`,
     },
     'small-claims': {
       title: `${stateName} Small Claims Court Guide | File Without a Lawyer`,
-      description: `Sue in ${stateName} small claims court without an attorney. Learn the process, filing fees, limits, and get the right forms for your case.`,
+      description: `Sue in ${stateName} small claims court without an attorney. Learn how the process generally works and find the official court forms.`,
       keywords: [`${stateName} small claims`, `${stateName} small claims forms`, `${stateName} sue`, 'small claims limit'],
       h1: `${stateName} Small Claims Court Help`,
     },
@@ -1216,15 +1215,15 @@ const generateSEO = (state: string, legalArea: LegalCategory): FunnelConfig['seo
       h1: `${stateName} Housing & Tenant Rights Help`,
     },
     'criminal': {
-      title: `${stateName} Criminal Defense Self-Help | Expungement & Record Sealing`,
-      description: `Understand your rights in ${stateName} criminal court. Get help with expungement, record sealing, and criminal defense resources.`,
+      title: `${stateName} Criminal Defense Self-Help | Record Clearing & Sealing`,
+      description: `Understand your rights in ${stateName} criminal court. Find information on record clearing, record sealing, and criminal defense resources.`,
       keywords: [`${stateName} expungement`, `${stateName} criminal defense`, `${stateName} record sealing`, 'criminal record'],
       h1: `${stateName} Criminal Defense Resources`,
     },
     'cps': {
-      title: `${stateName} CPS Defense | Child Welfare & Dependency Court Help`,
-      description: `Navigate ${stateName} CPS investigations and dependency court. Get resources for parents facing child welfare proceedings.`,
-      keywords: [`${stateName} CPS`, `${stateName} child welfare`, `${stateName} dependency court`, 'CPS investigation'],
+      title: `${stateName} CPS Defense | Child Welfare Court Help`,
+      description: `Navigate ${stateName} child protective investigations and child welfare court cases. Get resources for parents facing child welfare proceedings.`,
+      keywords: [`${stateName} CPS`, `${stateName} child welfare`, `${stateName} child welfare court`, 'CPS investigation'],
       h1: `${stateName} CPS & Child Welfare Help`,
     },
     'workers-rights': {
@@ -1240,8 +1239,8 @@ const generateSEO = (state: string, legalArea: LegalCategory): FunnelConfig['seo
       h1: `${stateName} Civil Rights Self-Help`,
     },
     'agency-complaints': {
-      title: `${stateName} Agency Complaints | File Against Doctors, Police, Lawyers`,
-      description: `File complaints against professionals in ${stateName}. Get help with medical board, bar association, and police complaints.`,
+      title: `${stateName} Agency Complaints | Complaints About Doctors, Lawyers & Other Professionals`,
+      description: `Find out where to file a complaint about a doctor, lawyer, or other licensed professional in ${stateName}, and what to include.`,
       keywords: [`${stateName} medical board complaint`, `${stateName} bar complaint`, `${stateName} police complaint`, 'professional misconduct'],
       h1: `${stateName} Professional Complaints Help`,
     },
@@ -1274,11 +1273,17 @@ const generateSEO = (state: string, legalArea: LegalCategory): FunnelConfig['seo
   return seoTemplates[legalArea];
 };
 
-// Generate all funnels for enabled states
+// Check if a state has launched (California and New York)
+export const isStateEnabled = (state: string): boolean => {
+  return ENABLED_STATES.includes(state.toUpperCase() as typeof ENABLED_STATES[number]);
+};
+
+// Generate funnels for every state. Only launched states (ENABLED_STATES) are enabled;
+// the rest exist so their URLs show a "coming soon" page instead of a dead link.
 export const generateUSFunnels = (): FunnelConfig[] => {
   const funnels: FunnelConfig[] = [];
 
-  for (const state of ENABLED_STATES) {
+  for (const state of ALL_STATES) {
     for (const legalArea of ALL_LEGAL_AREAS) {
       const funnelId = generateFunnelId('US', state, legalArea);
       const entryPoint = `/${generateSlug(state, legalArea)}`;
@@ -1293,7 +1298,7 @@ export const generateUSFunnels = (): FunnelConfig[] => {
         forms: STATE_FORMS[state]?.[legalArea] || [],
         courts: STATE_COURTS[state]?.[legalArea] || [],
         upsell: legalArea === 'criminal' ? 'one_time' : 'subscription',
-        enabled: true,
+        enabled: isStateEnabled(state),
         seo: generateSEO(state, legalArea),
       });
     }
@@ -1315,19 +1320,14 @@ export const getFunnelByRoute = (route: string): FunnelConfig | undefined => {
   return US_FUNNELS.find(f => f.entryPoint === route);
 };
 
-// Get all funnels for a state
+// Get all enabled funnels for a state (empty for states that have not launched)
 export const getFunnelsForState = (state: string): FunnelConfig[] => {
-  return US_FUNNELS.filter(f => f.jurisdiction === state);
+  return US_FUNNELS.filter(f => f.enabled && f.jurisdiction === state);
 };
 
-// Get all funnels for a legal area
+// Get all enabled funnels for a legal area
 export const getFunnelsForLegalArea = (legalArea: LegalCategory): FunnelConfig[] => {
-  return US_FUNNELS.filter(f => f.legalArea === legalArea);
-};
-
-// Check if a state is enabled
-export const isStateEnabled = (state: string): boolean => {
-  return ENABLED_STATES.includes(state as typeof ENABLED_STATES[number]);
+  return US_FUNNELS.filter(f => f.enabled && f.legalArea === legalArea);
 };
 
 // Get all enabled entry routes

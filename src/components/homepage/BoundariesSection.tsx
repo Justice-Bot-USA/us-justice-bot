@@ -1,23 +1,24 @@
 import { CheckCircle2, XCircle } from "lucide-react";
 
 const does = [
-  "Provide informational guidance on legal and civic processes",
-  "Help prepare lawful documents and requests",
-  "Explain procedures, timelines, and available options",
-  "Support self-represented individuals with educational resources",
+  "Provide general legal information about court and agency processes",
+  "Link to official court forms, with plain-language filling instructions, so you can complete them yourself",
+  "Explain court procedures and general timelines in plain language",
+  "Cover California and New York today; the other 48 states are coming soon",
 ];
 
 const doesNot = [
-  "Check or confirm active warrants",
-  "Access sealed, private, or law-enforcement records",
-  "Monitor or surveil individuals",
   "Provide legal advice or legal representation",
-  "Replace a lawyer or court proceeding",
+  "Choose forms or a legal strategy for you",
+  "Prepare, file, or serve documents for you",
+  "Check warrants or access law-enforcement databases or sealed records",
+  "Monitor or surveil individuals",
+  "Replace a lawyer or a court",
 ];
 
 const BoundariesSection = () => {
   return (
-    <section className="py-20 px-4 bg-background">
+    <section id="boundaries-section" className="py-20 px-4 bg-background scroll-mt-4">
       <div className="max-w-4xl mx-auto text-center">
         <h2 className="text-3xl md:text-4xl font-bold mb-4">
           Clear Boundaries & Expectations

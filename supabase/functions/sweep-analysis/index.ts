@@ -2,12 +2,12 @@ import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { corsHeaders, handleCors, requireUser } from "../_shared/auth.ts";
 import { successResponse, errorResponse, handleError } from "../_shared/errors.ts";
 import { createAdminClient } from "../_shared/db.ts";
-import { SWEEP_SYSTEM_PROMPT, getAnalysisPrompt } from "../_shared/sweepPrompts.ts";
+import { SWEEP_SYSTEM_PROMPT, getAnalysisPrompt, pickPlainSummary } from "../_shared/sweepPrompts.ts";
 import { startSweep, completeSweep, failSweep, updateSweepProgress } from "../_shared/sweepDb.ts";
 
 const SWEEP_NAME = 'analysis';
 
-// Sweep 6: Final Analysis Report
+// Sweep 6: Plain-language summary (no score, estimate, strategy or form picks)
 Deno.serve(async (req: Request) => {
   const corsResponse = handleCors(req);
   if (corsResponse) return corsResponse;
@@ -17,7 +17,7 @@ Deno.serve(async (req: Request) => {
 
     const { caseProfile, saveToDb, caseId } = await req.json();
     
-    console.log("Running Sweep 6: Final Analysis Report");
+    console.log("Running Sweep 6: Plain-language summary");
 
     // Ownership check: ensure caseId belongs to authenticated user
     if (caseId) {
@@ -115,31 +115,21 @@ Deno.serve(async (req: Request) => {
       content = content.replace(/```\n?/g, '');
     }
     
-    const analysisReport = JSON.parse(content.trim());
-    analysisReport.analyzedAt = new Date().toISOString();
+    const analysisReport = pickPlainSummary(JSON.parse(content.trim()));
     
-    console.log("Sweep 6 complete:", { 
-      meritScore: analysisReport.meritScore,
-      successRate: analysisReport.estimatedSuccessRate
+    console.log("Sweep 6 complete:", {
+      generalInfoCount: analysisReport.generalInfo.length,
+      sourceCount: analysisReport.officialSources.length
     });
 
-    // Update the case_merit_scores record if we have a caseId
+    // Update the case record if we have a caseId. Only status and legal area are
+    // written; the summary lives in the sweep output (case_sweeps).
     if (caseId && userId) {
       const supabase = createAdminClient();
       
       await supabase
         .from('case_merit_scores')
         .update({
-          merit_score: analysisReport.meritScore || 50,
-          estimated_success_rate: analysisReport.estimatedSuccessRate,
-          strength_factors: analysisReport.strongestClaims,
-          weakness_factors: analysisReport.weakestPoints,
-          legal_pathway: analysisReport.nextSteps,
-          required_forms: analysisReport.requiredForms,
-          next_steps: analysisReport.nextSteps,
-          settlement_range_min: analysisReport.settlementRange?.min,
-          settlement_range_max: analysisReport.settlementRange?.max,
-          time_to_resolution_months: analysisReport.timeToResolution?.maxMonths,
           status: 'pending', // Ready for user action
           legal_area: profileToAnalyze?.classification?.primaryCategory || 'other',
         })

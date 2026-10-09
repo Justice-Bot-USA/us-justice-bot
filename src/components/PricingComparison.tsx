@@ -10,13 +10,12 @@ const plans = [
     name: PLAN.name,
     price: `$${PLAN.price}`,
     period: "/month",
-    description: "One plan. Unlimited use. Cancel anytime.",
+    description: "One plan. All forms and filling instructions included. Cancel any time by contacting support.",
     popular: true,
     buttonText: PLAN.cta,
     features: [
-      { text: "Official California and New York court forms filled from your answers", included: true },
-      { text: "Unlimited form guides and filing checklists", included: true },
-      { text: "Unlimited public records request letters", included: true },
+      { text: "Fill in official California and New York court forms with your own answers", included: true },
+      { text: "Plain-language filling instructions included", included: true },
       { text: "Saved cases and re-downloads", included: true },
     ],
   },
@@ -30,7 +29,7 @@ export const PricingComparison = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Prepare Your Official Filing — No Lawyer Required
+            Fill In Your Own Court Forms — Step-by-Step Instructions
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Free tools stay free. One monthly plan unlocks everything else.
@@ -47,13 +46,6 @@ export const PricingComparison = () => {
                   : "border-border"
               }`}
             >
-              {plan.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <span className="bg-primary text-primary-foreground text-xs font-semibold px-3 py-1 rounded-full">
-                    Most Popular
-                  </span>
-                </div>
-              )}
               <CardHeader className="text-center pb-4">
                 <CardTitle className="text-xl">{plan.name}</CardTitle>
                 <div className="mt-2">

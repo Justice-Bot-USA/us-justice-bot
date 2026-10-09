@@ -37,14 +37,12 @@ export const coreRoutes: SitemapRoute[] = [
   { path: "/start",                         priority: 0.8, changefreq: "weekly" },
   { path: "/courses",                       priority: 0.8, changefreq: "weekly" },
   { path: "/justice-bot",                   priority: 0.8, changefreq: "monthly" },
+  { path: "/ca/legal-center",               priority: 0.9, changefreq: "weekly" },
+  { path: "/ny/legal-center",               priority: 0.9, changefreq: "weekly" },
 ];
 
 // ─── Tool / lookup pages ───────────────────────────────────────────────────────
 export const toolRoutes: SitemapRoute[] = [
-  { path: "/injury-settlement-calculator",  priority: 0.8, changefreq: "monthly" },
-  { path: "/personal-injury-calculator",    priority: 0.7, changefreq: "monthly" },
-  { path: "/case-law-search",               priority: 0.8, changefreq: "weekly" },
-  { path: "/sex-offender-registry",         priority: 0.7, changefreq: "weekly" },
   { path: "/court-records",                 priority: 0.8, changefreq: "weekly" },
   { path: "/foia-request-generator",        priority: 0.8, changefreq: "monthly" },
   { path: "/public-records-request",        priority: 0.7, changefreq: "monthly" },
@@ -69,13 +67,9 @@ export const legalAreaRoutes: SitemapRoute[] = [
 ];
 
 // ─── State landing pages ───────────────────────────────────────────────────────
-const STATE_CODES = [
-  "al","ak","az","ar","ca","co","ct","de","fl","ga",
-  "hi","id","il","in","ia","ks","ky","la","me","md",
-  "ma","mi","mn","ms","mo","mt","ne","nv","nh","nj",
-  "nm","ny","nc","nd","oh","ok","or","pa","ri","sc",
-  "sd","tn","tx","ut","vt","va","wa","wv","wi","wy",
-];
+// Live only in California and New York. The other 48 states are "coming soon"
+// and stay out of the sitemap until they launch.
+const STATE_CODES = ["ca", "ny"];
 
 export const stateRoutes: SitemapRoute[] = STATE_CODES.map((code) => ({
   path: `/states/${code}`,
@@ -86,53 +80,23 @@ export const stateRoutes: SitemapRoute[] = STATE_CODES.map((code) => ({
 // ─── State funnel slugs ────────────────────────────────────────────────────────
 export const funnelRoutes: SitemapRoute[] = [
   { path: "/california-legal-help",          priority: 0.7, changefreq: "monthly" },
-  { path: "/texas-legal-help",               priority: 0.7, changefreq: "monthly" },
   { path: "/new-york-legal-help",            priority: 0.7, changefreq: "monthly" },
-  { path: "/florida-legal-help",             priority: 0.7, changefreq: "monthly" },
-  { path: "/ohio-cps-help",                  priority: 0.6, changefreq: "monthly" },
-  { path: "/illinois-legal-help",            priority: 0.6, changefreq: "monthly" },
-  { path: "/georgia-legal-help",             priority: 0.6, changefreq: "monthly" },
-  { path: "/pennsylvania-legal-help",        priority: 0.6, changefreq: "monthly" },
 ];
 
 // ─── State tool landing pages ─────────────────────────────────────────────────
-// Tier 1 (highest ROI): FL, TX, CA, NY, AZ → priority 0.9
-// Tier 2: GA, OH, PA, IL, NC              → priority 0.8
-// Tier 3: NJ, WA, CO, MI, VA             → priority 0.7
-// All others                              → priority 0.6
+// California and New York only (the live states).
 
-const TIER1_SLUGS = ["florida", "texas", "california", "new-york", "arizona"];
-const TIER2_SLUGS = ["georgia", "ohio", "pennsylvania", "illinois", "north-carolina"];
-const TIER3_SLUGS = ["new-jersey", "washington", "colorado", "michigan", "virginia"];
+const LIVE_STATE_SLUGS = ["california", "new-york"];
 
-const ALL_STATE_SLUGS = [
-  "alabama", "alaska", "arizona", "arkansas", "california", "colorado",
-  "connecticut", "delaware", "florida", "georgia", "hawaii", "idaho",
-  "illinois", "indiana", "iowa", "kansas", "kentucky", "louisiana",
-  "maine", "maryland", "massachusetts", "michigan", "minnesota", "mississippi",
-  "missouri", "montana", "nebraska", "nevada", "new-hampshire", "new-jersey",
-  "new-mexico", "new-york", "north-carolina", "north-dakota", "ohio",
-  "oklahoma", "oregon", "pennsylvania", "rhode-island", "south-carolina",
-  "south-dakota", "tennessee", "texas", "utah", "vermont", "virginia",
-  "washington", "west-virginia", "wisconsin", "wyoming",
-];
-
-function stateToolPriority(stateSlug: string): number {
-  if (TIER1_SLUGS.includes(stateSlug)) return 0.9;
-  if (TIER2_SLUGS.includes(stateSlug)) return 0.8;
-  if (TIER3_SLUGS.includes(stateSlug)) return 0.7;
-  return 0.6;
-}
-
-export const stateToolRoutes: SitemapRoute[] = ALL_STATE_SLUGS.flatMap((slug) => [
+export const stateToolRoutes: SitemapRoute[] = LIVE_STATE_SLUGS.flatMap((slug) => [
   {
     path: `/${slug}-court-forms`,
-    priority: stateToolPriority(slug),
+    priority: 0.9,
     changefreq: "weekly" as const,
   },
   {
     path: `/${slug}-arrest-records`,
-    priority: stateToolPriority(slug),
+    priority: 0.9,
     changefreq: "monthly" as const,
   },
 ]);
@@ -183,15 +147,11 @@ export const legalHelpRoutes: SitemapRoute[] = [
   { path: "/legal-help/tribal-court",                   priority: 0.7, changefreq: "monthly" },
   { path: "/legal-help/tribal-jurisdiction",            priority: 0.7, changefreq: "monthly" },
   { path: "/legal-help/tribal-jurisdiction-check",      priority: 0.8, changefreq: "monthly" },
-  // State-specific legal help pages
+  // State-specific legal help pages (California and New York only; other states are coming soon)
   { path: "/legal-help/california-eviction-process",    priority: 0.9, changefreq: "monthly" },
-  { path: "/legal-help/texas-eviction-process",         priority: 0.9, changefreq: "monthly" },
-  { path: "/legal-help/florida-eviction-process",       priority: 0.9, changefreq: "monthly" },
   { path: "/legal-help/new-york-eviction-process",      priority: 0.9, changefreq: "monthly" },
   { path: "/legal-help/california-child-custody",       priority: 0.9, changefreq: "monthly" },
-  { path: "/legal-help/florida-child-custody",          priority: 0.9, changefreq: "monthly" },
   { path: "/legal-help/california-workplace-discrimination", priority: 0.8, changefreq: "monthly" },
-  { path: "/legal-help/texas-small-claims-court",       priority: 0.9, changefreq: "monthly" },
   { path: "/legal-help/new-york-small-claims-court",    priority: 0.9, changefreq: "monthly" },
 ];
 

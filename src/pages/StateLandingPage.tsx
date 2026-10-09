@@ -28,6 +28,10 @@ import {
   isStateEnabled,
   LegalCategory 
 } from '@/lib/funnels';
+import { StateComingSoon } from '@/components/funnel/StateComingSoon';
+import { stateRouteFor } from '@/lib/stateRouting';
+
+const BASE_URL = 'https://justicebot-usa.com';
 
 const LEGAL_AREA_ICONS: Record<LegalCategory, React.ReactNode> = {
   'family': <Heart className="h-6 w-6" />,
@@ -54,25 +58,58 @@ const StateLandingPage: React.FC = () => {
   const stateName = US_STATE_NAMES[stateUpper];
   const funnels = getFunnelsForState(stateUpper);
 
-  if (!stateName || !isStateEnabled(stateUpper)) {
+  // Unknown state code: say so plainly.
+  if (!stateName) {
     return (
       <div className="min-h-screen bg-background">
+        <Helmet>
+          <title>Page Not Found | Justice Bot USA</title>
+          <meta name="robots" content="noindex" />
+        </Helmet>
         <Header language={language} onLanguageChange={setLanguage} />
         <main className="container mx-auto px-4 py-12 text-center">
           <Scale className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
-          <h1 className="text-3xl font-bold mb-4">Coming Soon</h1>
+          <h1 className="text-3xl font-bold mb-4">Page Not Found</h1>
           <p className="text-muted-foreground mb-6">
-            We're expanding to all 50 states. Check back soon for {stateCode?.toUpperCase()} legal help.
+            We couldn't find this page. Justice Bot USA is live in California and New York; other states are coming soon.
           </p>
-          <Button onClick={() => navigate('/')}>Return Home</Button>
+          <div className="flex flex-wrap gap-3 justify-center">
+            <Button asChild>
+              <Link to="/ca/legal-center">California legal center</Link>
+            </Button>
+            <Button asChild variant="outline">
+              <Link to="/ny/legal-center">New York legal center</Link>
+            </Button>
+          </div>
         </main>
         <Footer />
       </div>
     );
   }
 
-  const title = `${stateName} Legal Self-Help | Free Court Forms & AI Guidance`;
-  const description = `Navigate ${stateName} courts without an attorney. Get free legal forms, AI-powered case analysis, and step-by-step guidance for family law, small claims, housing, employment, and more.`;
+  // The 48 states (and DC) that have not launched: coming soon, nothing to sign up for or buy.
+  if (!isStateEnabled(stateUpper)) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Helmet>
+          <title>{`${stateName} Legal Help: Coming Soon | Justice Bot USA`}</title>
+          <meta name="description" content={`Justice Bot USA is live in California and New York. ${stateName} is coming soon.`} />
+          <meta name="robots" content="noindex, follow" />
+        </Helmet>
+        <Header language={language} onLanguageChange={setLanguage} />
+        <main className="container mx-auto px-4 py-12">
+          <StateComingSoon stateName={stateName} headingLevel="h1" />
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  const centerPath = stateRouteFor(stateUpper)?.centerPath;
+  const otherLaunched = stateUpper === 'CA' ? 'NY' : 'CA';
+
+  const title = `${stateName} Legal Self-Help | Court Forms & AI Guidance`;
+  const description = `Legal information for self-represented people in ${stateName} courts: official court forms with filling instructions, a plain-language summary of your situation, and step-by-step guidance. Not legal advice.`;
 
   return (
     <>
@@ -81,7 +118,7 @@ const StateLandingPage: React.FC = () => {
         <meta name="description" content={description} />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
-        <link rel="canonical" href={`https://usjusticebot.com/states/${stateCode?.toLowerCase()}`} />
+        <link rel="canonical" href={`${BASE_URL}/states/${stateCode?.toLowerCase()}`} />
       </Helmet>
 
       <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
@@ -98,18 +135,25 @@ const StateLandingPage: React.FC = () => {
               {stateName} Legal Self-Help Center
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Free AI-powered tools to help you navigate {stateName} courts. 
-              Get the right forms, understand your rights, and file with confidence.
+              AI-powered tools to help you navigate {stateName} courts. Find the official forms, learn your rights,
+              and prepare to file on your own. Legal information, not legal advice.
             </p>
+            {centerPath && (
+              <Button asChild size="lg" className="mt-6">
+                <Link to={centerPath}>
+                  Open the {stateName} legal center <ArrowRight className="h-4 w-4 ml-1" />
+                </Link>
+              </Button>
+            )}
           </div>
 
           {/* What We Offer */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 max-w-4xl mx-auto">
             {[
-              { label: 'AI Case Analysis', icon: <Scale className="h-5 w-5" /> },
-              { label: 'Court Forms', icon: <ClipboardList className="h-5 w-5" /> },
-              { label: 'Step-by-Step Guides', icon: <CheckCircle2 className="h-5 w-5" /> },
-              { label: 'Document Generation', icon: <Briefcase className="h-5 w-5" /> },
+              { label: 'Plain-Language Summary', icon: <Scale className="h-5 w-5" /> },
+              { label: 'Official Court Forms', icon: <ClipboardList className="h-5 w-5" /> },
+              { label: 'Filling Instructions', icon: <CheckCircle2 className="h-5 w-5" /> },
+              { label: 'Forms Filled From Your Answers', icon: <Briefcase className="h-5 w-5" /> },
             ].map((item) => (
               <Card key={item.label} className="text-center">
                 <CardContent className="p-4">
@@ -139,7 +183,6 @@ const StateLandingPage: React.FC = () => {
                     <div className="p-2 rounded-lg bg-primary/10 text-primary">
                       {LEGAL_AREA_ICONS[funnel.legalArea]}
                     </div>
-                    <Badge variant="secondary">Free</Badge>
                   </div>
                   <CardTitle className="text-lg mt-3">
                     {LEGAL_AREA_NAMES[funnel.legalArea]}
@@ -151,7 +194,7 @@ const StateLandingPage: React.FC = () => {
                 <CardContent>
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-muted-foreground">
-                      {funnel.forms.length} forms available
+                      {funnel.forms.length > 0 ? `${funnel.forms.length} common forms` : 'General information'}
                     </span>
                     <Button variant="ghost" size="sm" className="group-hover:translate-x-1 transition-transform">
                       Start <ArrowRight className="h-4 w-4 ml-1" />
@@ -166,18 +209,15 @@ const StateLandingPage: React.FC = () => {
           <div className="mt-16 text-center">
             <h3 className="text-xl font-semibold mb-4">Not in {stateName}?</h3>
             <p className="text-muted-foreground mb-6">
-              California and New York have full legal centers with fillable court forms. Other states have general information pages for now.
+              Justice Bot USA is live in California and New York. Other states are coming soon.
             </p>
             <div className="flex flex-wrap gap-3 justify-center">
-              {['CA', 'TX', 'NY', 'FL'].filter(s => s !== stateUpper).map((state) => (
-                <Button 
-                  key={state}
-                  variant="outline"
-                  onClick={() => navigate(`/states/${state.toLowerCase()}`)}
-                >
-                  {US_STATE_NAMES[state]}
-                </Button>
-              ))}
+              <Button 
+                variant="outline"
+                onClick={() => navigate(`/states/${otherLaunched.toLowerCase()}`)}
+              >
+                {US_STATE_NAMES[otherLaunched]}
+              </Button>
             </div>
           </div>
         </main>

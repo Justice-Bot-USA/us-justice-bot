@@ -48,9 +48,6 @@ verify_jwt = false
 [functions.settlement-calculator]
 verify_jwt = false
 
-[functions.case-law-search]
-verify_jwt = false
-
 [functions.sweep-worker]
 verify_jwt = false
 
@@ -79,9 +76,6 @@ port = 54323
 
 [functions.sync-us-forms]
 verify_jwt = true
-
-[functions.sex-offender-search]
-verify_jwt = false
 
 [functions.foia-request-generator]
 verify_jwt = false

@@ -15,26 +15,26 @@ const stateData: Record<string, Record<string, {
     eviction: {
       title: "California Eviction Process: How to Fight an Eviction in CA",
       metaTitle: "California Eviction Process | How to Fight Eviction in CA | Justice Bot USA",
-      metaDescription: "Step-by-step guide to the California eviction process. Learn your tenant rights under CA law, how to respond to a 3-day or 30/60-day notice, and prepare your defense.",
+      metaDescription: "Step-by-step guide to the California eviction process. Learn your tenant rights under CA law, how to respond to a 3-day or 30/60-day notice, and the 10-court-day deadline to file an Answer.",
       keywords: "california eviction process, CA tenant rights, fight eviction california, 3-day notice california, unlawful detainer CA",
       canonicalPath: "/legal-help/california-eviction-process",
       breadcrumbLabel: "California Eviction",
-      quickAnswer: "In California, landlords must follow strict unlawful detainer procedures. You typically get 5 days to respond to the court summons after a notice period expires. California has strong tenant protections including just-cause eviction requirements in many cities.",
+      quickAnswer: "In California, a landlord must file a court case (an unlawful detainer) to evict you. If you are served with a Summons and Complaint, you generally have 10 court days to file a written Answer; Saturdays, Sundays and court holidays don't count (Code of Civil Procedure §1167, since January 1, 2025). Many tenants are also protected by state just-cause rules (AB 1482), and some cities have their own rules.",
       steps: [
         { title: "Identify the Notice Type", description: "California uses 3-Day Pay or Quit, 3-Day Cure or Quit, 30-Day (tenancy <1 year), or 60-Day (tenancy >1 year) notices. AB 1482 requires just cause for most tenancies over 12 months." },
         { title: "Check for Defects in the Notice", description: "CA courts are strict about notice requirements. The notice must state the correct amount owed, be properly served, and comply with local rent control ordinances if applicable." },
-        { title: "File Your Answer Within 5 Days", description: "After an Unlawful Detainer complaint is served, you have only 5 calendar days to file a written Answer (form UD-105). Missing this deadline results in a default judgment." },
+        { title: "File Your Answer Within 10 Court Days", description: "After the Summons and Complaint are served, you generally have 10 court days to file a written Answer (form UD-105). Saturdays, Sundays and court holidays don't count (CCP §1167). If the papers were left with someone else or posted and mailed, service finishes later, which moves the deadline; ask your court's self-help center to count it. If you miss the deadline, the landlord can ask for a default judgment." },
         { title: "Raise Affirmative Defenses", description: "Common CA defenses: breach of warranty of habitability (Civil Code §1941-1942.5), retaliatory eviction (CC §1942.5), discrimination, improper notice, and rent control violations." },
-        { title: "Request a Jury Trial", description: "You have the right to a jury trial in an unlawful detainer case. Check the box on the Answer form. This can add time for preparation." },
-        { title: "Attend the Hearing", description: "Bring organized evidence. CA courts often schedule unlawful detainer trials within 20 days. Many courts offer free mediation." },
+        { title: "Ask for a Jury Trial if You Want One", description: "You can ask for a jury trial, for example on the Request to Set Case for Trial (form UD-150). A $150 jury deposit is due 5 days before trial (CCP §631)." },
+        { title: "Go to Trial Prepared", description: "The trial must be set no later than 20 days after someone asks the court to set it (CCP §1170.5). Bring organized evidence, witnesses and copies. Ask your court's self-help center about free tenant legal help." },
       ],
       evidenceItems: ["Lease agreement", "All notices received", "Rent payment receipts or bank statements", "Photos/videos of property conditions", "Written repair requests (especially for habitability claims)", "Communication records with landlord", "Local rent control ordinance documentation", "Witness statements"],
-      commonMistakes: ["Missing the 5-day Answer deadline", "Not raising habitability defenses when conditions are poor", "Ignoring local rent control protections", "Not requesting a jury trial when beneficial", "Withholding rent without following CA escrow procedures"],
-      ctas: [{ label: "Prepare Your CA Eviction Defense", href: "/case-analysis" }, { label: "Generate CA Court Documents", href: "/forms-library" }, { label: "Build Evidence Timeline", href: "/ai-tools/use" }],
+      commonMistakes: ["Missing the 10-court-day Answer deadline", "Not raising habitability defenses when conditions are poor", "Ignoring local rent control protections", "Not requesting a jury trial when beneficial", "Withholding rent or using repair-and-deduct (Civil Code §1942) without checking the rules first"],
+      ctas: [{ label: "Get a Plain-Language Summary", href: "/case-analysis" }, { label: "California Eviction Steps & Forms", href: "/ca/legal-center?area=civil" }, { label: "Fill California Court Forms", href: "/fill/ca" }],
       relatedPages: [{ label: "General Eviction Guide", href: "/legal-help/eviction" }, { label: "Tenant Rights", href: "/legal-help/tenant-rights" }, { label: "California Legal Help", href: "/california-legal-help" }],
       faqItems: [
-        { question: "How long does a California eviction take?", answer: "From initial notice to court hearing, a California unlawful detainer typically takes 30-45 days. If you request a jury trial, it may take longer." },
-        { question: "Does California require just cause for eviction?", answer: "Yes, under AB 1482 (the Tenant Protection Act), most tenancies over 12 months require just cause for eviction. Many cities have additional rent control ordinances." },
+        { question: "How long does a California eviction take?", answer: "It depends on how and when you were served, whether you file an Answer, and what happens in the case. After you are served you generally have 10 court days to file an Answer (CCP §1167). Once someone asks the court to set a trial, the trial must be set no later than 20 days after that request (CCP §1170.5)." },
+        { question: "Does California require just cause for eviction?", answer: "Often. Under AB 1482 (the Tenant Protection Act), once a tenant has lived in a unit for 12 months, many landlords need a just cause to end the tenancy. Some housing is exempt, and many cities have additional rules." },
         { question: "Can my landlord raise rent to force me out in CA?", answer: "AB 1482 caps annual rent increases at 5% plus local CPI (max 10%) for covered units. Some cities have stricter caps." },
       ],
     },
@@ -47,19 +47,19 @@ const stateData: Record<string, Record<string, {
       breadcrumbLabel: "California Child Custody",
       quickAnswer: "California courts decide custody based on the 'best interest of the child' standard (Family Code §3011). Both parents start with equal rights. Courts consider health/safety, nature of contact with each parent, history of abuse, and substance abuse.",
       steps: [
-        { title: "Understand Custody Types", description: "California distinguishes legal custody (decision-making) from physical custody (where the child lives). Both can be sole or joint. Joint legal custody is the default starting point." },
-        { title: "File the Right Forms", description: "Use FL-300 (Request for Order) for custody motions. Include FL-311 (Child Custody Information) and FL-105 (Declaration Under UCCJEA). File in the county where the child has lived for the past 6 months." },
-        { title: "Attend Mandatory Mediation", description: "California requires mediation before a custody hearing (Family Code §3170). In some counties (like LA), the mediator makes a recommendation to the judge if parents don't agree." },
+        { title: "Understand Custody Types", description: "California distinguishes legal custody (decision-making) from physical custody (where the child lives). Both can be sole or joint; the judge decides based on the child's best interest." },
+        { title: "File the Right Forms", description: "If there is already a family case about the child in California (like a divorce or parentage case), ask for custody orders in that case with FL-300 (Request for Order), plus FL-311 and FL-105 (Declaration Under UCCJEA). If there is no case yet, ask your court's self-help center which case to start and where to file." },
+        { title: "Attend Mandatory Mediation", description: "When custody or visitation is contested, the court sends the parents to mediation (Family Code §3170). In some counties, the mediator makes a recommendation to the judge if parents don't agree." },
         { title: "Prepare Your Evidence", description: "Document your involvement in the child's life: school records, medical appointments, daily routines, communication logs, and any safety concerns about the other parent." },
         { title: "Understand the Best Interest Factors", description: "CA courts consider: child's health/safety, nature of contact with each parent, history of abuse or substance use, child's preference (if age-appropriate), and stability." },
         { title: "Attend the Hearing", description: "Present your case clearly. Focus on what's best for the child, not attacks on the other parent. Bring organized evidence and any witnesses." },
       ],
       evidenceItems: ["School records showing involvement", "Medical/dental appointment records", "Daily schedule and parenting plan proposal", "Communication logs with co-parent", "Photos/videos of home environment", "Character reference letters", "Any documented safety concerns", "Child's activity records (sports, classes)"],
       commonMistakes: ["Badmouthing the other parent in court", "Not attending mandatory mediation", "Filing in the wrong county", "Failing to follow existing court orders", "Not documenting your parenting involvement"],
-      ctas: [{ label: "Prepare Custody Case", href: "/case-analysis" }, { label: "Generate CA Family Court Forms", href: "/forms-library" }, { label: "Build Parenting Timeline", href: "/ai-tools/use" }],
-      relatedPages: [{ label: "General Custody Guide", href: "/legal-help/child-custody" }, { label: "Divorce Process", href: "/legal-help/divorce-process" }, { label: "CA Custody Hub", href: "/ca/family-law/custody-visitation" }],
+      ctas: [{ label: "Get a Plain-Language Summary", href: "/case-analysis" }, { label: "California Family Steps & Forms", href: "/ca/legal-center?area=family" }, { label: "Build Parenting Timeline", href: "/ai-tools/use" }],
+      relatedPages: [{ label: "General Custody Guide", href: "/legal-help/child-custody" }, { label: "Divorce Process", href: "/legal-help/divorce-process" }, { label: "California Family Law Center", href: "/ca/legal-center?area=family" }],
       faqItems: [
-        { question: "At what age can a child choose which parent to live with in CA?", answer: "There's no specific age. Courts may consider a child's preference if the child is 'of sufficient age and capacity to form an intelligent preference' (typically around 14+)." },
+        { question: "At what age can a child choose which parent to live with in CA?", answer: "There's no age at which a child decides. The judge must consider the wishes of a child old enough to form an intelligent preference. A child 14 or older who wants to speak to the court must be allowed to, unless the judge finds that is not in the child's best interest (Family Code §3042)." },
         { question: "Is California a 50/50 custody state?", answer: "Not automatically. While courts favor frequent and continuing contact with both parents, the custody split depends on the best interest analysis. Joint legal custody is common; physical custody varies." },
       ],
     },
@@ -74,14 +74,14 @@ const stateData: Record<string, Record<string, {
       steps: [
         { title: "Identify Protected Categories", description: "FEHA protects against discrimination based on race, religion, color, national origin, ancestry, physical/mental disability, medical condition, genetic information, marital status, sex, gender, gender identity, gender expression, age (40+), sexual orientation, and military/veteran status." },
         { title: "Document the Discrimination", description: "Keep detailed records: dates, witnesses, emails, texts, and any written complaints you've made. Note any changes in your work conditions after reporting." },
-        { title: "File an Internal Complaint", description: "Report discrimination to your HR department or supervisor. Keep copies of everything. This creates a paper trail and may be required before external filing." },
+        { title: "Consider an Internal Complaint", description: "You can report discrimination to your HR department or supervisor. Keep copies of everything; this creates a paper trail." },
         { title: "File with the CRD", description: "File a complaint with the California Civil Rights Department (CRD) online, by mail, or by phone. You have 3 years from the last discriminatory act. The CRD will investigate." },
         { title: "Get a Right-to-Sue Notice", description: "You can request an immediate right-to-sue notice from the CRD if you want to skip the investigation and file a lawsuit directly." },
         { title: "Consider Filing a Lawsuit", description: "After receiving a right-to-sue notice, you have 1 year to file a civil lawsuit in Superior Court. FEHA allows recovery of damages, attorney's fees, and injunctive relief." },
       ],
       evidenceItems: ["Written complaints to HR/management", "Emails, texts, or messages showing discrimination", "Performance reviews (before and after complaints)", "Witness contact information", "Pay stubs showing wage disparities", "Company policies or handbook", "Medical records if health impacted", "Notes with dates and details of incidents"],
-      commonMistakes: ["Waiting too long to document incidents", "Not filing within the 3-year deadline", "Quitting before exhausting internal remedies", "Not keeping copies of complaints", "Discussing the case widely at work"],
-      ctas: [{ label: "Analyze Your Discrimination Case", href: "/case-analysis" }, { label: "Generate Complaint Documents", href: "/forms-library" }, { label: "Build Evidence Timeline", href: "/ai-tools/use" }],
+      commonMistakes: ["Waiting too long to document incidents", "Not filing within the 3-year deadline", "Not keeping copies of performance reviews and pay records", "Not keeping copies of complaints", "Discussing the case widely at work"],
+      ctas: [{ label: "Get a Plain-Language Summary", href: "/case-analysis" }, { label: "California Civil Rights Complaint Steps", href: "/ca/legal-center?area=human-rights" }, { label: "Build Evidence Timeline", href: "/ai-tools/use" }],
       relatedPages: [{ label: "Civil Rights Guide", href: "/legal-help/discrimination-law" }, { label: "Housing Discrimination", href: "/legal-help/housing-discrimination" }, { label: "Workers' Compensation", href: "/legal-help/workers-compensation" }],
       faqItems: [
         { question: "How long do I have to file a discrimination complaint in CA?", answer: "You have 3 years from the last discriminatory act to file with the CRD. After receiving a right-to-sue notice, you have 1 year to file a lawsuit." },
@@ -89,162 +89,68 @@ const stateData: Record<string, Record<string, {
       ],
     },
   },
-  texas: {
-    eviction: {
-      title: "Texas Eviction Process: How to Fight an Eviction in TX",
-      metaTitle: "Texas Eviction Process | How to Fight Eviction in TX | Justice Bot USA",
-      metaDescription: "Step-by-step guide to the Texas eviction process. Learn about notice requirements, Justice Court procedures, and tenant rights under Texas Property Code.",
-      keywords: "texas eviction process, TX tenant rights, fight eviction texas, eviction notice texas, justice court eviction TX",
-      canonicalPath: "/legal-help/texas-eviction-process",
-      breadcrumbLabel: "Texas Eviction",
-      quickAnswer: "In Texas, evictions are handled in Justice Court. Landlords must give written notice to vacate (usually 3 days unless the lease says otherwise). After filing, you'll receive a citation and have until 10:00 AM on the Monday after 10 days to file an Answer.",
-      steps: [
-        { title: "Review the Notice to Vacate", description: "Texas Property Code §24.005 requires a written notice to vacate, typically 3 days for nonpayment unless the lease specifies a different period. Check if the notice was properly delivered." },
-        { title: "File an Answer", description: "After the landlord files an eviction suit, you must file a written Answer by 10:00 AM on the first Monday after 10 days from service. Filing an Answer is critical to avoiding default judgment." },
-        { title: "Attend the Trial", description: "Justice Court trials are typically scheduled 10-21 days after filing. Texas eviction trials are relatively quick. You can represent yourself. Bring all evidence." },
-        { title: "Know Your Defenses", description: "Texas defenses include: landlord failed to maintain property (Property Code §92.052), improper notice, retaliatory eviction (Property Code §92.331), and discrimination." },
-        { title: "Appeal if Necessary", description: "If you lose, you can appeal to County Court within 5 days. You may need to post an appeal bond or pay rent into the court registry during the appeal." },
-        { title: "Understand Lockout Rules", description: "Texas allows landlords to change locks for nonpayment ONLY if the lease allows it and specific conditions are met (Property Code §92.0081). Illegal lockouts can be challenged." },
-      ],
-      evidenceItems: ["Lease agreement", "Notice to vacate", "Rent payment records", "Photos of property conditions", "Repair requests and landlord responses", "Communication with landlord", "Witness statements"],
-      commonMistakes: ["Not filing an Answer by the Monday 10 AM deadline", "Not appearing at the trial", "Missing the 5-day appeal window", "Not knowing about the appeal bond requirement", "Ignoring the notice to vacate"],
-      ctas: [{ label: "Prepare TX Eviction Defense", href: "/case-analysis" }, { label: "Generate TX Court Documents", href: "/forms-library" }],
-      relatedPages: [{ label: "General Eviction Guide", href: "/legal-help/eviction" }, { label: "Tenant Rights", href: "/legal-help/tenant-rights" }, { label: "Texas Legal Help", href: "/texas-legal-help" }],
-      faqItems: [
-        { question: "How fast can I be evicted in Texas?", answer: "The fastest a Texas eviction can proceed is about 3 weeks from notice: 3-day notice + filing + 10-day citation period + trial. Appeals can add weeks." },
-        { question: "Can a Texas landlord lock me out?", answer: "Only under very specific conditions for nonpayment, if the lease allows it. The landlord must leave a notice on the door with a 24-hour phone number to get a key." },
-      ],
-    },
-    "small-claims": {
-      title: "Texas Small Claims Court: How to File or Defend in Justice Court",
-      metaTitle: "Texas Small Claims Court | Justice Court Guide | Justice Bot USA",
-      metaDescription: "Guide to filing or defending a small claims case in Texas Justice Court. Learn filing limits, procedures, and how to prepare for your hearing.",
-      keywords: "texas small claims court, justice court texas, small claims limit texas, file small claims TX",
-      canonicalPath: "/legal-help/texas-small-claims-court",
-      breadcrumbLabel: "Texas Small Claims",
-      quickAnswer: "Texas small claims cases are heard in Justice Court. The maximum amount you can sue for is $20,000. Filing fees are typically $54-$100+. Cases are usually resolved within 30-60 days.",
-      steps: [
-        { title: "Determine if Justice Court Is Right", description: "Justice Court handles claims up to $20,000, evictions, and repair-and-deduct cases. For amounts over $20,000, you need County Court." },
-        { title: "File Your Petition", description: "File a small claims petition at the Justice Court in the precinct where the defendant lives or where the issue occurred. Include the amount owed and a brief explanation." },
-        { title: "Serve the Defendant", description: "The court will issue a citation. Service can be by constable, sheriff, or authorized process server. The defendant has until 10 AM on the Monday after 10 days to respond." },
-        { title: "Prepare Your Evidence", description: "Organize contracts, receipts, photos, text messages, and any other documentation. Texas Justice Courts are informal but evidence matters." },
-        { title: "Attend the Hearing", description: "Present your case clearly and concisely. Bring original documents plus copies for the judge and opposing party." },
-        { title: "Collect Your Judgment", description: "If you win, you may need to take additional steps to collect. Texas allows abstract of judgment liens, bank levies, and wage garnishment." },
-      ],
-      evidenceItems: ["Contracts or agreements", "Invoices and receipts", "Photos or videos", "Text messages and emails", "Witness contact information", "Repair estimates", "Bank statements"],
-      commonMistakes: ["Filing in the wrong precinct", "Not serving the defendant properly", "Not bringing enough copies of evidence", "Suing for more than $20,000", "Not following up on judgment collection"],
-      ctas: [{ label: "Prepare Small Claims Case", href: "/case-analysis" }, { label: "Generate Court Documents", href: "/forms-library" }],
-      relatedPages: [{ label: "General Small Claims Guide", href: "/legal-help/small-claims-court" }, { label: "Texas Legal Help", href: "/texas-legal-help" }],
-      faqItems: [
-        { question: "What is the small claims limit in Texas?", answer: "The maximum amount for Texas Justice Court (small claims) is $20,000 as of 2024." },
-        { question: "Do I need a lawyer for Texas small claims court?", answer: "No, Justice Court is designed for self-representation. However, both sides can have attorneys." },
-      ],
-    },
-  },
-  florida: {
-    eviction: {
-      title: "Florida Eviction Process: How to Fight an Eviction in FL",
-      metaTitle: "Florida Eviction Process | How to Fight Eviction in FL | Justice Bot USA",
-      metaDescription: "Step-by-step guide to the Florida eviction process. Learn about 3-day and 15-day notices, filing deadlines, and tenant defenses under Florida Statute 83.",
-      keywords: "florida eviction process, FL tenant rights, fight eviction florida, 3-day notice florida, florida statute 83",
-      canonicalPath: "/legal-help/florida-eviction-process",
-      breadcrumbLabel: "Florida Eviction",
-      quickAnswer: "Florida landlords must follow Florida Statute Chapter 83 (Residential Landlord and Tenant Act). For nonpayment, a 3-day notice is required. You have 5 days to file an Answer after being served. Florida courts move quickly on evictions.",
-      steps: [
-        { title: "Review the Notice", description: "Florida uses 3-Day Notice (nonpayment), 7-Day Notice (lease violation with cure option), and 15-Day Notice (month-to-month termination). Verify the notice complies with §83.56." },
-        { title: "File Your Answer Within 5 Days", description: "After being served with the eviction complaint, you have only 5 business days to file a written Answer. In Florida, you must also deposit rent into the court registry." },
-        { title: "Deposit Rent into Court Registry", description: "Florida requires tenants to deposit accrued rent into the court registry when filing an Answer (§83.60). Failure to do this can result in a default judgment." },
-        { title: "Raise Your Defenses", description: "Florida defenses include: improper notice, landlord's failure to maintain (§83.51), retaliatory eviction (§83.64), and discrimination. Material noncompliance by landlord is a strong defense." },
-        { title: "Attend the Hearing", description: "Florida eviction hearings are typically scheduled quickly. Bring organized evidence, especially proof of payment and property condition documentation." },
-        { title: "Know Your Post-Judgment Rights", description: "If you lose, the judge issues a Final Judgment. You typically have 24 hours before a Writ of Possession is issued. Appeal within 30 days." },
-      ],
-      evidenceItems: ["Lease agreement", "All notices received", "Rent payment receipts", "Bank statements showing payments", "Photos of property conditions", "Repair requests", "Communication with landlord", "Any code violation reports"],
-      commonMistakes: ["Not depositing rent into the court registry", "Missing the 5-day Answer deadline", "Not documenting property conditions", "Ignoring the notice entirely", "Not seeking legal aid (Florida has many free tenant resources)"],
-      ctas: [{ label: "Prepare FL Eviction Defense", href: "/case-analysis" }, { label: "Generate FL Court Documents", href: "/forms-library" }],
-      relatedPages: [{ label: "General Eviction Guide", href: "/legal-help/eviction" }, { label: "Tenant Rights", href: "/legal-help/tenant-rights" }, { label: "Florida Legal Help", href: "/florida-legal-help" }],
-      faqItems: [
-        { question: "Do I have to pay rent into court during a Florida eviction?", answer: "Yes. Florida Statute §83.60 requires you to deposit rent into the court registry when filing your Answer, or show good cause for not doing so." },
-        { question: "How fast can I be evicted in Florida?", answer: "Florida evictions can proceed quickly — as fast as 2-3 weeks from notice to judgment if you don't respond." },
-      ],
-    },
-    "child-custody": {
-      title: "Florida Child Custody (Time-Sharing): How FL Courts Decide Parenting Plans",
-      metaTitle: "Florida Child Custody | Time-Sharing & Parenting Plans | Justice Bot USA",
-      metaDescription: "Understand Florida child custody laws. Learn about time-sharing plans, parental responsibility, and how Florida courts determine the best interest of the child.",
-      keywords: "florida child custody, FL time-sharing, parenting plan florida, best interest of child FL, custody florida",
-      canonicalPath: "/legal-help/florida-child-custody",
-      breadcrumbLabel: "Florida Child Custody",
-      quickAnswer: "Florida doesn't use the term 'custody' — instead it uses 'time-sharing' and 'parental responsibility.' Both parents are presumed to share equal parental responsibility. The court evaluates 20 specific factors under FL Statute §61.13.",
-      steps: [
-        { title: "Understand Florida's Terminology", description: "Florida uses 'parental responsibility' (decision-making) and 'time-sharing' (parenting schedule) instead of 'custody' and 'visitation.' This shift reflects the state's preference for shared parenting." },
-        { title: "Develop a Parenting Plan", description: "Florida requires a Parenting Plan (§61.13(2)(b)) that details daily tasks, time-sharing schedule, health care, school, and how parents will communicate and make decisions." },
-        { title: "File the Required Forms", description: "Use the Family Law forms from the Florida Courts website. Include a Parenting Plan proposal, UCCJEA Affidavit, and financial affidavit." },
-        { title: "Attend Mediation", description: "Florida requires mediation before trial in most family law cases. A certified mediator will help you try to reach agreement on time-sharing." },
-        { title: "Know the Best Interest Factors", description: "FL §61.13(3) lists 20 factors including: each parent's capacity, willingness to support the child's relationship with the other parent, evidence of domestic violence, and the child's preference." },
-        { title: "Attend the Final Hearing", description: "If mediation fails, present your case at a final hearing. Focus on the statutory factors and your proposed Parenting Plan." },
-      ],
-      evidenceItems: ["Proposed Parenting Plan", "Financial affidavit", "Child's school records", "Medical/dental records", "Communication logs with co-parent", "Daily routine documentation", "Home environment photos", "Activity and involvement records"],
-      commonMistakes: ["Using 'custody' language in court filings", "Not submitting a detailed Parenting Plan", "Failing to attend mediation", "Not completing the required parenting course", "Ignoring the 20 statutory factors"],
-      ctas: [{ label: "Prepare FL Custody Case", href: "/case-analysis" }, { label: "Generate FL Family Forms", href: "/forms-library" }],
-      relatedPages: [{ label: "General Custody Guide", href: "/legal-help/child-custody" }, { label: "Divorce Process", href: "/legal-help/divorce-process" }, { label: "Florida Legal Help", href: "/florida-legal-help" }],
-      faqItems: [
-        { question: "Does Florida prefer 50/50 time-sharing?", answer: "Florida law creates a presumption that equal time-sharing is in the child's best interest (as of 2023 SB 1416), but the court can deviate based on the statutory factors." },
-        { question: "At what age can a child choose which parent in Florida?", answer: "There's no specific age. The court may consider the child's preference as one of the 20 factors, particularly for older, more mature children." },
-      ],
-    },
-  },
   "new-york": {
     eviction: {
       title: "New York Eviction Process: How to Fight an Eviction in NY",
       metaTitle: "New York Eviction Process | How to Fight Eviction in NY | Justice Bot USA",
-      metaDescription: "Step-by-step guide to the New York eviction process. Learn about ERAP, good cause eviction, tenant protections, and how to defend an eviction in Housing Court.",
+      metaDescription: "Step-by-step guide to the New York eviction process. Learn about answer deadlines, Good Cause Eviction, tenant protections, and how to defend an eviction in Housing Court.",
       keywords: "new york eviction process, NY tenant rights, fight eviction new york, housing court NY, good cause eviction NY",
       canonicalPath: "/legal-help/new-york-eviction-process",
       breadcrumbLabel: "New York Eviction",
-      quickAnswer: "New York has strong tenant protections. Eviction cases are heard in Housing Court (NYC) or local courts. Landlords must provide proper notice and cannot evict without a court order. Recent 'good cause' eviction protections (2024) add additional safeguards for many tenants.",
+      quickAnswer: "New York landlords cannot evict you without a court case. Eviction cases are heard in Housing Court (NYC) or local courts. In a nonpayment case in NYC Housing Court, you answer within 10 days of being served (RPAPL 732); in a holdover case, you answer on the first court date. The Good Cause Eviction Law (2024) protects many tenants in New York City and in cities, towns and villages that opt in; some housing is exempt.",
       steps: [
         { title: "Review the Notice", description: "NY notices vary: 14-day demand for rent, 30/60/90-day termination notice (depending on tenancy length), or cure notice for lease violations. NYC rent-stabilized tenants have additional protections." },
-        { title: "File Your Answer", description: "After being served with a petition, you must appear in court on the return date (typically 10-17 days). In NYC Housing Court, you can file an Answer on the court date." },
-        { title: "Know Your Protections", description: "NY protections include: rent stabilization (NYC/some suburbs), good cause eviction (2024 statewide), warranty of habitability (RPL §235-b), and anti-retaliation protections." },
-        { title: "Request Adjournments if Needed", description: "NY courts generally grant at least one adjournment. Use this time to consult with a free legal services organization — NYC guarantees free legal counsel for low-income tenants in eviction cases." },
+        { title: "Answer on Time", description: "Nonpayment case in NYC Housing Court (and courts whose rules adopt RPAPL 732): answer within 10 days of being served, in person at the clerk or in writing. In other courts, you answer on the court date shown on your papers. Holdover case: answer on the first court date, or 3 days before it if the notice of petition demands that (RPAPL 743). If you do not answer or appear, the landlord can ask for a default judgment." },
+        { title: "Know Your Protections", description: "NY protections include: rent stabilization (NYC/some suburbs), Good Cause Eviction (Real Property Law Article 6-A: New York City and localities that opt in, with exemptions such as many small landlords), warranty of habitability (RPL §235-b), and anti-retaliation protections." },
+        { title: "Adjournments and Free Help", description: "The first time either side asks, the court must adjourn the trial for at least 14 days; later requests are up to the judge (RPAPL 745). In NYC, eligible tenants can get a free lawyer through the Right to Counsel program; Housing Court Answers ((212) 962-4795) can explain the process and refer you." },
         { title: "Raise Defenses", description: "Common NY defenses: breach of warranty of habitability, retaliatory eviction, improper service, landlord harassment, rent overcharge (stabilized units), and failure to provide proper notice." },
         { title: "Negotiate a Stipulation", description: "Many NY eviction cases settle with a stipulation (agreement). This might include a payment plan, time to move, or conditions the landlord must meet." },
       ],
       evidenceItems: ["Lease agreement", "Rent receipts or bank records", "HPD violation history (NYC)", "Photos of apartment conditions", "311 complaints filed", "Communication with landlord", "Rent stabilization records (if applicable)", "Income documentation (for assistance programs)"],
-      commonMistakes: ["Not appearing on the court return date", "Not knowing about free legal representation programs", "Not checking rent stabilization status", "Ignoring HPD violations as defense evidence", "Not applying for rental assistance programs"],
-      ctas: [{ label: "Prepare NY Eviction Defense", href: "/case-analysis" }, { label: "Generate NY Court Documents", href: "/forms-library" }],
+      commonMistakes: ["Missing the answer deadline in a nonpayment case (10 days in NYC Housing Court)", "Not appearing on the court date", "Not knowing about free legal representation programs", "Not checking rent stabilization or Good Cause Eviction coverage", "Ignoring HPD violations as defense evidence"],
+      ctas: [{ label: "Get a Plain-Language Summary", href: "/case-analysis" }, { label: "New York Housing Steps & Forms", href: "/ny/legal-center?area=civil" }, { label: "Fill New York Court Forms", href: "/fill/ny" }],
       relatedPages: [{ label: "General Eviction Guide", href: "/legal-help/eviction" }, { label: "Tenant Rights", href: "/legal-help/tenant-rights" }, { label: "New York Legal Help", href: "/new-york-legal-help" }],
       faqItems: [
         { question: "Does NYC provide free lawyers for eviction cases?", answer: "Yes, NYC's Right to Counsel program provides free legal representation for tenants in eviction cases who meet income eligibility requirements." },
-        { question: "What is 'good cause' eviction in NY?", answer: "New York's 2024 good cause eviction law protects most tenants from eviction without a legitimate reason and limits rent increases to prevent 'economic eviction.'" },
+        { question: "What is 'good cause' eviction in NY?", answer: "New York's Good Cause Eviction Law (Real Property Law Article 6-A, in effect since April 20, 2024) means a covered tenant can be evicted or not renewed only for a reason the law allows, and it limits rent increases above a set standard. It applies in New York City and in cities, towns and villages outside NYC that adopt it. Some housing is exempt, such as many units owned by small landlords." },
+        { question: "Can I still apply to New York's Emergency Rental Assistance Program (ERAP)?", answer: "No. The state ERAP program closed in November 2025. Ask your local social services office or a tenant legal services group about other help." },
       ],
     },
     "small-claims": {
       title: "New York Small Claims Court: How to File or Defend in NY",
       metaTitle: "New York Small Claims Court Guide | File or Defend | Justice Bot USA",
-      metaDescription: "Guide to New York Small Claims Court. Learn the $10,000 limit, filing process, night court options, and how to prepare for your hearing.",
+      metaDescription: "Guide to New York Small Claims Court. Learn the limits ($10,000 in NYC, $5,000 in City and District Courts, $3,000 in Town and Village Courts), filing fees, and how to prepare for your hearing.",
       keywords: "new york small claims court, NY small claims limit, file small claims new york, NYC small claims",
       canonicalPath: "/legal-help/new-york-small-claims-court",
       breadcrumbLabel: "NY Small Claims",
-      quickAnswer: "New York Small Claims Court handles cases up to $10,000 ($5,000 in town/village courts). NYC offers evening Small Claims Court sessions. Filing fees are $15-$20. No lawyers needed.",
+      quickAnswer: "New York Small Claims Court handles money claims up to $10,000 in New York City, $5,000 in City Courts (and District Courts in Nassau and Suffolk), and $3,000 in Town and Village Courts. Filing fees are $10 to $20 depending on the court and the amount. You do not need a lawyer.",
       steps: [
-        { title: "Determine the Right Court", description: "File in the court where the defendant lives or works, or where the problem occurred. NYC has Small Claims Courts in each borough. Outside NYC, file in City, Town, or Village Court." },
-        { title: "File Your Claim", description: "File in person or online (NYC). Pay the filing fee ($15 for claims under $1,000, $20 for $1,000+). Provide the defendant's correct name and address." },
-        { title: "Serve the Defendant", description: "In NYC, the court sends notice by certified mail. Outside NYC, the clerk will arrange service. The defendant must receive proper notice." },
+        { title: "Determine the Right Court", description: "File in the court for the place where the defendant lives, works, or has a business office. A tenant can also sue the landlord where the rented property is. NYC has a Small Claims Court in each borough. Outside NYC, file in City, District, Town, or Village Court." },
+        { title: "File Your Claim", description: "File with the small claims clerk and give the defendant's correct name and address. Fees: NYC and City Courts $15 for claims of $1,000 or less and $20 for larger claims; Town and Village Courts $10 and $15. You can ask to have fees waived if you cannot afford them." },
+        { title: "Notice to the Defendant", description: "You do not serve the papers yourself. The clerk mails the notice of claim to the defendant by first-class mail and certified mail." },
         { title: "Prepare Your Evidence", description: "Organize all documentation: contracts, receipts, photos, estimates. NY Small Claims Court is informal — judges actively question both sides." },
-        { title: "Attend the Hearing", description: "NYC offers night court (6 PM). Tell your story clearly, show your evidence. The judge may try to mediate first. Decisions are usually mailed within a few days." },
-        { title: "Collect Your Judgment", description: "If you win, the defendant has 30 days to pay. If they don't, you can use enforcement measures: income execution, bank restraint, or property lien." },
+        { title: "Attend the Hearing", description: "Tell your story clearly and show your evidence. If both sides agree, the case may be heard by an arbitrator instead of a judge. Bring copies for the court and the other side." },
+        { title: "Collect Your Judgment", description: "If you win and the other side does not pay, ask the small claims clerk how to enforce the judgment, for example through an income execution or a bank restraint." },
       ],
       evidenceItems: ["Contracts or written agreements", "Receipts and invoices", "Photos or videos", "Estimates for repairs", "Text messages and emails", "Witness information", "Any prior demand letters sent"],
-      commonMistakes: ["Filing in the wrong court location", "Not having the defendant's correct legal name", "Not bringing organized evidence", "Suing for more than $10,000", "Not following up on judgment collection"],
-      ctas: [{ label: "Prepare Small Claims Case", href: "/case-analysis" }, { label: "Generate Court Documents", href: "/forms-library" }],
+      commonMistakes: ["Filing in the wrong court location", "Not having the defendant's correct legal name", "Not bringing organized evidence", "Suing for more than the court's limit ($10,000 NYC, $5,000 City Court, $3,000 Town or Village Court)", "Not following up on judgment collection"],
+      ctas: [{ label: "Get a Plain-Language Summary", href: "/case-analysis" }, { label: "New York Small Claims Steps & Forms", href: "/ny/legal-center?area=civil" }, { label: "Fill New York Court Forms", href: "/fill/ny" }],
       relatedPages: [{ label: "General Small Claims Guide", href: "/legal-help/small-claims-court" }, { label: "New York Legal Help", href: "/new-york-legal-help" }],
       faqItems: [
-        { question: "What is the small claims limit in New York?", answer: "The limit is $10,000 in NYC and City Courts, and $5,000 in Town and Village Courts." },
-        { question: "Can I file small claims at night in NYC?", answer: "Yes, NYC Small Claims Courts offer evening sessions starting at 6 PM." },
+        { question: "What is the small claims limit in New York?", answer: "$10,000 in New York City Civil Court, $5,000 in City Courts outside NYC (and District Courts in Nassau and Suffolk), and $3,000 in Town and Village Courts." },
+        { question: "Can a business sue in NYC small claims?", answer: "In NYC, a corporation, partnership or association sues in the Commercial Claims part, for up to $10,000, and can start no more than five claims a month." },
       ],
     },
   },
+};
+
+// Texas and Florida are not live on Justice Bot USA yet. Their old pages are kept as
+// "coming soon" pages so existing links still land somewhere honest.
+const comingSoonPages: Record<string, { stateName: string; topic: string; topicLabel: string; helpSite: string }> = {
+  "texas-eviction-process": { stateName: "Texas", topic: "eviction", topicLabel: "Eviction", helpSite: "TexasLawHelp.org" },
+  "texas-small-claims-court": { stateName: "Texas", topic: "small claims", topicLabel: "Small Claims", helpSite: "TexasLawHelp.org" },
+  "florida-eviction-process": { stateName: "Florida", topic: "eviction", topicLabel: "Eviction", helpSite: "FloridaLawHelp.org" },
+  "florida-child-custody": { stateName: "Florida", topic: "child custody", topicLabel: "Child Custody", helpSite: "FloridaLawHelp.org" },
 };
 
 const StateLegalHelp = () => {
@@ -254,13 +160,9 @@ const StateLegalHelp = () => {
   // Map URL slugs to state/topic keys
   const slugMap: Record<string, { state: string; topic: string }> = {
     "california-eviction-process": { state: "california", topic: "eviction" },
-    "texas-eviction-process": { state: "texas", topic: "eviction" },
-    "florida-eviction-process": { state: "florida", topic: "eviction" },
     "new-york-eviction-process": { state: "new-york", topic: "eviction" },
     "california-child-custody": { state: "california", topic: "child-custody" },
-    "florida-child-custody": { state: "florida", topic: "child-custody" },
     "california-workplace-discrimination": { state: "california", topic: "discrimination" },
-    "texas-small-claims-court": { state: "texas", topic: "small-claims" },
     "new-york-small-claims-court": { state: "new-york", topic: "small-claims" },
   };
   const mapped = slugMap[pathSegment];
@@ -269,7 +171,32 @@ const StateLegalHelp = () => {
   
   const stateContent = stateData[state];
   const pageContent = stateContent?.[topic];
-  
+
+  const comingSoon = comingSoonPages[pathSegment];
+  if (!pageContent && comingSoon) {
+    const { stateName, topic: topicName, topicLabel, helpSite } = comingSoon;
+    return (
+      <LegalHelpLayout
+        title={`${stateName} ${topicLabel} Guide: Coming Soon`}
+        metaTitle={`${stateName} ${topicLabel} Guide (Coming Soon) | Justice Bot USA`}
+        metaDescription={`Justice Bot USA is live in California and New York. ${stateName} is coming soon.`}
+        keywords={`${stateName.toLowerCase()} ${topicName}, legal help`}
+        canonicalPath={`/legal-help/${pathSegment}`}
+        breadcrumbLabel={`${stateName} ${topicLabel}`}
+        quickAnswer={`Justice Bot USA is live in California and New York. ${stateName} is coming soon, so we don't have a ${stateName} ${topicName} guide yet. For ${stateName} rules, deadlines and forms, check your local court's self-help resources or ${helpSite}.`}
+        steps={[
+          { title: "Read every paper you received", description: "Court papers and notices list deadlines and court dates. Deadlines in court cases can be very short." },
+          { title: "Contact the court or a self-help center", description: `The clerk or a self-help center can explain the procedure and the forms ${stateName} courts use. Court staff cannot give legal advice.` },
+          { title: "Look for free legal help", description: `Legal aid organizations may be able to help if you qualify. ${helpSite} lists resources.` },
+        ]}
+        evidenceItems={["Every notice and court paper you received", "Any written agreement or lease", "Payment records", "Photos, messages and other records about the problem"]}
+        commonMistakes={["Ignoring court papers", "Missing a court date or filing deadline", "Assuming another state's rules apply in your state"]}
+        ctas={[{ label: "Browse Legal Help Library", href: "/legal-help" }]}
+        relatedPages={[{ label: "Legal Help Index", href: "/legal-help" }, { label: "California Legal Help", href: "/california-legal-help" }, { label: "New York Legal Help", href: "/new-york-legal-help" }]}
+      />
+    );
+  }
+
   if (!pageContent) {
     return (
       <LegalHelpLayout
@@ -277,7 +204,7 @@ const StateLegalHelp = () => {
         metaTitle="Legal Help | Justice Bot USA"
         metaDescription="Find legal help guides for your state."
         keywords="legal help"
-        canonicalPath={`/legal-help/${state}-${topic}`}
+        canonicalPath="/legal-help"
         breadcrumbLabel="Not Found"
         quickAnswer="This state-specific legal help page is coming soon. Check our general legal help guides in the meantime."
         steps={[]}

@@ -171,9 +171,9 @@ export default function CourtRecordsLookup() {
     <div className="min-h-screen bg-background">
       <SEOHead
         title="Court Records Lookup - Find Case Filings & Dockets | Justice Bot USA"
-        description="Search court records, dockets, and case filings across all 50 states and federal courts. Free access to public court record portals."
+        description="Links to official public court record portals for each state and the federal courts (PACER). Court systems may charge their own search or copy fees."
         keywords="court records, docket search, case filings, court hearings, PACER, state court records"
-        url="https://us-justice-bot.lovable.app/court-records"
+        url="https://justicebot-usa.com/court-records"
       />
 
       {/* Header */}

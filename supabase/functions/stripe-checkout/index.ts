@@ -79,68 +79,6 @@ async function handleCreateSubscription(
   return successResponse({ url: session.url, sessionId: session.id });
 }
 
-async function handleCreateOneTimePayment(
-  stripe: Stripe,
-  data: { userId: string; email: string; formType?: string; caseId?: string },
-  origin: string
-) {
-  // Route FOIA requests to dedicated FOIA price
-  const isFoia = data.formType === "foia_records_request";
-  const priceId = isFoia ? PRICE_IDS.foia_single : PRICE_IDS.per_form;
-
-  const session = await createCheckoutSession(stripe, {
-    priceId,
-    mode: "payment",
-    userId: data.userId,
-    email: data.email,
-    successUrl: `${origin}/payment-success?payment=success&session_id={CHECKOUT_SESSION_ID}`,
-    cancelUrl: `${origin}/pricing?payment=cancelled`,
-    metadata: {
-      access_type: isFoia ? "foia_single" : "single_form",
-      product_type: isFoia ? "foia_single" : "single_form",
-      country: "US",
-      form_type: data.formType || "general",
-      case_id: data.caseId || "",
-      source: isFoia ? "foia_generator" : "pricing_page",
-      app: "veritas_path",
-    },
-  });
-
-  console.log("One-time payment checkout session created:", session.id, "foia:", isFoia);
-  return successResponse({ url: session.url, sessionId: session.id });
-}
-
-async function handleCreateBundlePayment(
-  stripe: Stripe,
-  data: { userId: string; email: string; caseId?: string; bundleType?: string },
-  origin: string
-) {
-  // Route FOIA bundle to dedicated price
-  const isFoiaBundle = data.bundleType === "foia_bundle";
-  const priceId = isFoiaBundle ? PRICE_IDS.foia_bundle : PRICE_IDS.bundle;
-
-  const session = await createCheckoutSession(stripe, {
-    priceId,
-    mode: "payment",
-    userId: data.userId,
-    email: data.email,
-    successUrl: `${origin}/payment-success?payment=success&session_id={CHECKOUT_SESSION_ID}`,
-    cancelUrl: `${origin}/pricing?payment=cancelled`,
-    metadata: {
-      access_type: isFoiaBundle ? "foia_bundle" : "bundle",
-      product_type: isFoiaBundle ? "foia_bundle" : "bundle",
-      country: "US",
-      case_id: data.caseId || "",
-      bundle_type: data.bundleType || "case_prep",
-      source: isFoiaBundle ? "foia_generator" : "pricing_page",
-      app: "veritas_path",
-    },
-  });
-
-  console.log("Bundle payment checkout session created:", session.id, "foia:", isFoiaBundle);
-  return successResponse({ url: session.url, sessionId: session.id });
-}
-
 async function handleVerifySession(
   stripe: Stripe,
   data: { sessionId: string; userId: string }
@@ -221,15 +159,16 @@ serve(async (req: Request) => {
 
     const { userId, email } = await requireUser(req);
     const { action, ...data } = await req.json();
-    const origin = req.headers.get("origin") || "https://us-justice-bot.lovable.app";
+    const origin = req.headers.get("origin") || "https://justicebot-usa.com";
 
     switch (action) {
       case "create_subscription":
         return await handleCreateSubscription(stripe, { ...data, userId, email }, origin);
+      // The $25/month plan is the only thing we sell. Older one-time prices are no longer
+      // offered; sessions already paid for them still verify below.
       case "create_one_time_payment":
-        return await handleCreateOneTimePayment(stripe, { ...data, userId, email }, origin);
       case "create_bundle_payment":
-        return await handleCreateBundlePayment(stripe, { ...data, userId, email }, origin);
+        return errorResponse("BAD_REQUEST", "One-time purchases are no longer offered. All forms and filling instructions are included in the monthly plan.");
       case "verify_session":
         return await handleVerifySession(stripe, { ...data, userId });
       default:

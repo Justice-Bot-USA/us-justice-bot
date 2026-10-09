@@ -411,7 +411,7 @@ export default function UsaForms() {
               Need Help With Your Forms?
             </CardTitle>
             <CardDescription>
-              Our AI tools can help you find the right forms and fill them out correctly.
+              Our tools link to official forms, explain what each one is for, and help you fill in the forms you choose.
             </CardDescription>
           </CardHeader>
           <CardContent>
