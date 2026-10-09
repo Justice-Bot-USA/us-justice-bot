@@ -16,8 +16,6 @@ const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 const AdminDashboardSimple = lazy(() => import("./pages/AdminDashboardSimple"));
 const AdminSetup = lazy(() => import("./pages/AdminSetup"));
 const AdminAnalytics = lazy(() => import("./pages/AdminAnalytics"));
-const AttorneyDirectory = lazy(() => import("./pages/AttorneyDirectory"));
-const AttorneyPortal = lazy(() => import("./pages/AttorneyPortal"));
 const Support = lazy(() => import("./pages/Support"));
 const CaseAnalysis = lazy(() => import("./pages/CaseAnalysis"));
 const Pricing = lazy(() => import("./pages/Pricing"));
@@ -106,8 +104,9 @@ export default function App() {
               <Route path="/admin" element={<AdminDashboardSimple />} />
               <Route path="/admin-setup" element={<AdminSetup />} />
               <Route path="/admin/analytics" element={<AdminAnalytics />} />
-              <Route path="/attorneys" element={<AttorneyDirectory />} />
-              <Route path="/firm" element={<AttorneyPortal />} />
+              {/* Attorney directory and referrals stay offline until the board approves Lawyer Coordination and the referral-fee questions are resolved. */}
+              <Route path="/attorneys" element={<Navigate to="/" replace />} />
+              <Route path="/firm" element={<Navigate to="/" replace />} />
               <Route path="/support" element={<Support />} />
               <Route path="/case-analysis" element={<CaseAnalysis />} />
               <Route path="/pricing" element={<Pricing />} />
