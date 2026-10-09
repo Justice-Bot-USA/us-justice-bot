@@ -75,8 +75,9 @@ const ACCEPTANCE_LABEL_STYLES: Record<string, { bg: string; icon: typeof Shield 
 
 const STATE_REGISTRY = {
   CA: {
-    label: "CA Judicial Council",
-    url: "https://www.courts.ca.gov/documents/ParentingClassProviders.pdf",
+    // No statewide list exists; each county court publishes its own approved providers.
+    label: "CA Courts — find your county court's list",
+    url: "https://www.courts.ca.gov/find-my-court.htm",
     flag: "🏛",
   },
   TX: {

@@ -58,7 +58,7 @@ const Header = ({ language, onLanguageChange }: HeaderProps) => {
           {/* Desktop nav */}
           <div className="hidden lg:flex items-center gap-4">
             <Badge variant="secondary" className="bg-secondary shrink-0">
-              🇺🇸 All 50 States
+              🇺🇸 Live in CA & NY
             </Badge>
 
             <ThemeToggle />

@@ -35,7 +35,7 @@ const SelfHelpHub = () => {
     },
     {
       icon: FileText, title: "Find Court Forms",
-      description: "Browse official court forms for all 50 states. Understand what each form is for and where to file it.",
+      description: "Browse official court forms, verified for California and New York. Understand what each form is for and where to file it.",
       link: "/usa-forms", linkText: "US Forms Catalog",
     },
     {
@@ -143,7 +143,7 @@ const SelfHelpHub = () => {
               Understand your case, find your court, organize your evidence, and prepare with confidence.
             </p>
             <Badge variant="secondary" className="text-sm px-4 py-1">
-              All 50 States • Public Information Only • Not Legal Advice
+              Live in CA & NY • Public Information Only • Not Legal Advice
             </Badge>
           </div>
         </section>

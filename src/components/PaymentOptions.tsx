@@ -101,7 +101,7 @@ export const PaymentOptions: React.FC<PaymentOptionsProps> = ({ onPaymentSuccess
             </li>
             <li className="flex items-center gap-3">
               <Check className="h-5 w-5 text-green-500 flex-shrink-0" />
-              <span>All 50 states coverage</span>
+              <span>California & New York (more states coming soon)</span>
             </li>
             <li className="flex items-center gap-3">
               <Check className="h-5 w-5 text-green-500 flex-shrink-0" />

@@ -18,10 +18,10 @@ export const cpsFormsByState: Record<string, CourtForm[]> = {
     { formNumber: "Permanency Objection", name: "Objection to Permanency Plan", description: "Challenge placement decisions", url: "https://texaslawhelp.org/form/cps", category: "Placement" },
   ],
   "NY": [
-    { formNumber: "Family Court 1034", name: "Answer to Neglect/Abuse Petition", description: "Respond to ACS/CPS allegations", url: "https://www.nycourts.gov/courthelp/family/cps.shtml", category: "CPS Defense", feeAmount: "Free" },
-    { formNumber: "Family Court Motion", name: "Motion to Dismiss Neglect Petition", description: "Request case dismissal", url: "https://www.nycourts.gov/courthelp/family/cps.shtml", category: "CPS Defense" },
-    { formNumber: "Visitation Petition", name: "Petition for Visitation", description: "Request visitation with children in care", url: "https://www.nycourts.gov/courthelp/family/visitation.shtml", category: "Visitation" },
-    { formNumber: "Relative Placement", name: "Application for Relative Placement", description: "Request kinship placement", url: "https://www.nycourts.gov/courthelp/family/cps.shtml", category: "Placement" },
+    { formNumber: "Family Court 1034", name: "Answer to Neglect/Abuse Petition", description: "Respond to ACS/CPS allegations", url: "https://www.nycourts.gov/new-york-city-family-court/child-protective-proceedings", category: "CPS Defense", feeAmount: "Free" },
+    { formNumber: "Family Court Motion", name: "Motion to Dismiss Neglect Petition", description: "Request case dismissal", url: "https://www.nycourts.gov/new-york-city-family-court/child-protective-proceedings", category: "CPS Defense" },
+    { formNumber: "Visitation Petition", name: "Petition for Visitation", description: "Request visitation with children in care", url: "https://www.nycourts.gov/help/family-issues-divorce/visitation", category: "Visitation" },
+    { formNumber: "Relative Placement", name: "Application for Relative Placement", description: "Request kinship placement", url: "https://www.nycourts.gov/new-york-city-family-court/child-protective-proceedings", category: "Placement" },
   ],
   "FL": [
     { formNumber: "12.980(k)", name: "Answer to Dependency Petition", description: "Respond to DCF case", url: "https://www.flcourts.gov/content/download/403317", category: "CPS Defense", feeAmount: "Free" },

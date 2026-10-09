@@ -110,7 +110,7 @@ export default function FormsLibrary() {
             <FileText className="h-10 w-10" />
             <div>
               <h1 className="text-3xl font-bold">Court Forms Library</h1>
-              <p className="text-primary-foreground/80">Official court forms for all 50 states</p>
+              <p className="text-primary-foreground/80">Official court forms · verified for California and New York, other states coming soon</p>
             </div>
           </div>
         </div>

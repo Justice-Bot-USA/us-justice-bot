@@ -44,7 +44,7 @@ const LegalAreaPage = () => {
     <div className="min-h-screen bg-background">
       <SEOHead
         title={`${areaData.title} Help by State — Justice Bot USA`}
-        description={`Free state-specific guidance for ${areaData.title.toLowerCase()} cases: forms, deadlines, fees, and key laws for all 50 states. Powered by Justice Bot USA.`}
+        description={`Free state-specific guidance for ${areaData.title.toLowerCase()} cases: forms, deadlines, fees, and key laws. Full guides for California and New York; other states coming soon.`}
         keywords={`${areaData.title.toLowerCase()}, ${areaData.keywords.join(", ")}, legal help by state, self-help legal`}
       />
       <Header language={language} onLanguageChange={setLanguage} />

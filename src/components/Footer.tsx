@@ -16,7 +16,7 @@ const Footer = () => {
               <span className="text-xl font-bold">Justice Bot USA</span>
             </Link>
             <p className="text-sm opacity-80 mb-4">
-              Legal information, not legal advice. AI-powered legal guidance for all 50 states.
+              Legal information, not legal advice. Live in California and New York; the other 48 states are coming soon.
             </p>
             <p className="text-xs opacity-60">
               Not a law firm. Information, not legal advice.

@@ -23,7 +23,7 @@ const tools = [
   {
     icon: FileText,
     name: "100+ Official Forms",
-    description: "Pre-filled with AI for all 50 states - family, housing, employment & more",
+    description: "Official forms filled from your answers: California and New York today, more states coming soon",
   },
   {
     icon: Shield,

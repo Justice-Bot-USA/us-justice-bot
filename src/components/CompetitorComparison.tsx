@@ -10,7 +10,7 @@ const competitors = [
       { text: "24/7 availability", us: true, them: false },
       { text: "Affordable pricing", us: true, them: false },
       { text: "Instant access", us: true, them: false },
-      { text: "All 50 states", us: true, them: false },
+      { text: "California & New York (48 more states coming soon)", us: true, them: false },
       { text: "Court representation", us: false, them: true },
     ],
   },

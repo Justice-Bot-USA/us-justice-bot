@@ -75,7 +75,7 @@ export const LeadCaptureModal = ({
         <div className="space-y-4">
           <p className="text-muted-foreground">
             Download our comprehensive guide covering your rights in 15+ legal
-            situations across all 50 states.
+            situations, starting with California and New York.
           </p>
           <form onSubmit={handleSubmit} className="space-y-4">
             <Input

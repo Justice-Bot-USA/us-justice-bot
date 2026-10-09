@@ -92,7 +92,7 @@ const FeatureGrid = () => {
               </p>
               <div className="flex flex-wrap justify-center gap-2">
                 <Badge variant="secondary">Mobile-optimized for use anywhere</Badge>
-                <Badge variant="secondary">All 50 states covered</Badge>
+                <Badge variant="secondary">Live in CA & NY · 48 states coming soon</Badge>
                 <Badge variant="secondary">English & Spanish</Badge>
                 <Badge variant="secondary">Affordable pricing</Badge>
               </div>
