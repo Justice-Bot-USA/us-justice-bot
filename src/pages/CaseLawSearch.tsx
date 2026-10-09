@@ -60,7 +60,6 @@ interface CasePrecedent {
   court: string;
   relevance: string;
   keyHolding: string;
-  applicability: string;
   jurisdiction: string;
 }
 
@@ -69,7 +68,6 @@ interface SearchResults {
   legalPrinciples: string[];
   relevantStatutes: string[];
   searchSummary: string;
-  recommendedStrategy: string;
 }
 
 const CaseLawSearch = () => {
@@ -176,7 +174,7 @@ const CaseLawSearch = () => {
             <h1 className="text-3xl md:text-4xl font-bold">Case Law Search</h1>
           </div>
           <p className="text-primary-foreground/80 text-lg">
-            Find relevant legal precedents, citations, and case law for your situation
+            Find published decisions, citations, and case law by state and topic (general information)
           </p>
         </div>
       </div>
@@ -192,7 +190,7 @@ const CaseLawSearch = () => {
                   Search Parameters
                 </CardTitle>
                 <CardDescription>
-                  Provide details about your case to find relevant precedents
+                  Choose a state and describe a legal topic
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -236,7 +234,7 @@ const CaseLawSearch = () => {
                 <div className="space-y-2">
                   <Label>Case Description</Label>
                   <Textarea
-                    placeholder="Describe your case, the facts, key issues, and what you're trying to prove or defend against..."
+                    placeholder="Describe the legal topic you want to read about (for example: security deposit returns, wrongful termination, custody modification)..."
                     value={caseDescription}
                     onChange={(e) => setCaseDescription(e.target.value)}
                     className="min-h-[150px]"
@@ -307,8 +305,8 @@ const CaseLawSearch = () => {
                 <Scale className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
                 <h3 className="text-xl font-semibold mb-2">Search for Case Law</h3>
                 <p className="text-muted-foreground">
-                  Enter your case details to find relevant legal precedents, court decisions, 
-                  and citations that may support your case.
+                  Enter a topic to find published court decisions and citations in that area of law,
+                  as general background reading.
                 </p>
               </Card>
             )}
@@ -318,7 +316,7 @@ const CaseLawSearch = () => {
                 <Loader2 className="h-16 w-16 mx-auto text-primary mb-4 animate-spin" />
                 <h3 className="text-xl font-semibold mb-2">Searching Legal Databases...</h3>
                 <p className="text-muted-foreground">
-                  Analyzing your case and finding relevant precedents from {state} courts...
+                  Finding published decisions from {state} courts in this area of law...
                 </p>
               </Card>
             )}
@@ -368,12 +366,8 @@ const CaseLawSearch = () => {
                               <p className="text-sm text-muted-foreground">{precedent.keyHolding}</p>
                             </div>
                             <div>
-                              <h4 className="font-medium text-sm mb-1">Relevance to Your Case</h4>
+                              <h4 className="font-medium text-sm mb-1">What the Case Addresses</h4>
                               <p className="text-sm text-muted-foreground">{precedent.relevance}</p>
-                            </div>
-                            <div>
-                              <h4 className="font-medium text-sm mb-1">How to Apply</h4>
-                              <p className="text-sm text-muted-foreground">{precedent.applicability}</p>
                             </div>
                             <div className="flex items-center gap-2 pt-2">
                               <Badge>{precedent.jurisdiction}</Badge>
@@ -426,21 +420,6 @@ const CaseLawSearch = () => {
                           </li>
                         ))}
                       </ul>
-                    </CardContent>
-                  </Card>
-                )}
-
-                {/* Strategy Recommendation */}
-                {results.recommendedStrategy && (
-                  <Card className="border-primary">
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2 text-primary">
-                        <Gavel className="h-5 w-5" />
-                        Recommended Legal Strategy
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-muted-foreground">{results.recommendedStrategy}</p>
                     </CardContent>
                   </Card>
                 )}

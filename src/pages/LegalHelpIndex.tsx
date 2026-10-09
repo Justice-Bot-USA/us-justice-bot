@@ -184,7 +184,7 @@ const LegalHelpIndex = () => {
           </Link>
           <Link to="/case-analysis" className="p-4 rounded-lg border hover:bg-accent/50 transition-colors text-center">
             <h3 className="font-semibold text-foreground mb-1">🔍 Case Analysis</h3>
-            <p className="text-xs text-muted-foreground">AI-powered case merit evaluation</p>
+            <p className="text-xs text-muted-foreground">Plain-language summary of your situation</p>
           </Link>
         </div>
 

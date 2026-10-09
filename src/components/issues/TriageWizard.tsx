@@ -87,7 +87,10 @@ export function TriageWizard({ flowSchema, onComplete }: TriageWizardProps) {
 
           {result.recommended_forms.length > 0 && (
             <div>
-              <h4 className="text-sm font-semibold mb-2">Recommended Forms</h4>
+              <h4 className="text-sm font-semibold mb-1">Forms commonly used for this kind of matter</h4>
+              <p className="text-xs text-muted-foreground mb-2">
+                General information, not a choice of forms for you. Check with the court self-help center which apply to you.
+              </p>
               <ul className="space-y-1">
                 {result.recommended_forms.map(f => (
                   <li key={f} className="text-sm flex items-center gap-2">

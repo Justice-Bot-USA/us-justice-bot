@@ -34,10 +34,10 @@ const STEP_ORDER: FunnelStep[] = ['triage', 'evidence', 'results', 'paywall', 'm
 const STEP_LABELS: Record<FunnelStep, string> = {
   triage: 'Triage',
   evidence: 'Evidence',
-  results: 'Results',
+  results: 'Summary',
   paywall: 'Paywall',
-  merit_score: 'Merit Score',
-  form_recommendation: 'Forms',
+  merit_score: 'Merit Score (retired)',
+  form_recommendation: 'Forms (retired)',
   payment: 'Payment',
   generate: 'Generate',
   next_steps: 'Next Steps',

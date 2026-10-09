@@ -20,14 +20,15 @@ Deno.serve(async (req: Request) => {
 
     console.log("Analyzing document with AI:", { documentType, analysisType, textLength: documentText.length });
 
-    const systemPrompt = `You are an expert legal document analyzer. Your job is to analyze legal documents and provide clear, actionable insights.
+    const systemPrompt = `You explain legal documents in plain language. You describe what a document says; you do not give legal advice.
 
 For each document, you should:
 1. Identify the type of document (contract, agreement, letter, etc.)
 2. Extract key terms, dates, and obligations
-3. Identify potential risks or red flags
-4. Provide a plain English summary
-5. List any action items or deadlines
+3. Provide a plain English summary
+4. List the dates and deadlines the document itself states
+
+Do not tell the reader what to do, how to respond, what to negotiate, or whether the document is good or bad for them.
 
 IMPORTANT: Always emphasize that this is educational analysis only, not legal advice. Recommend consulting with a qualified attorney for specific legal matters.`;
 
@@ -51,13 +52,9 @@ Provide your analysis in the following JSON format:
   "obligations": [
     {"party": "Who", "obligation": "Must do what", "deadline": "By when"}
   ],
-  "risks": [
-    {"risk": "Description of risk", "severity": "high/medium/low", "mitigation": "How to address"}
-  ],
   "actionItems": [
-    {"action": "What needs to be done", "priority": "high/medium/low", "deadline": "When"}
+    {"action": "Something the document itself says must be done", "priority": "high/medium/low", "deadline": "When, as stated in the document"}
   ],
-  "recommendations": ["List of recommendations for the reader"],
   "legalDisclaimer": "Standard disclaimer about this being educational analysis only"
 }`;
 
@@ -72,10 +69,13 @@ Provide your analysis in the following JSON format:
     const analysis = parseAIJson(aiResponse.content, {
       summary: aiResponse.content,
       keyTerms: [],
-      risks: [],
       actionItems: [],
       legalDisclaimer: "This is educational analysis only, not legal advice. Please consult with a qualified attorney."
     });
+
+    // Never pass on risk mitigations or recommendations, even if the model returns them.
+    delete (analysis as Record<string, unknown>).risks;
+    delete (analysis as Record<string, unknown>).recommendations;
 
     console.log("Document analysis completed successfully");
 

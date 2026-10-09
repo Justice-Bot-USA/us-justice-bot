@@ -29,7 +29,6 @@ Allow: /foia-request-generator
 Allow: /public-records-request
 Allow: /warrant-lookup
 Allow: /court-records
-Allow: /injury-settlement-calculator
 Allow: /verify/
 
 # Crawl delay for politeness

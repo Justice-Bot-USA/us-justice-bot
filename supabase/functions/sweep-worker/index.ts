@@ -10,7 +10,8 @@ import {
   getVenuePrompt,
   getTimelinePrompt,
   getAuthorityPrompt,
-  getAnalysisPrompt
+  getAnalysisPrompt,
+  pickPlainSummary
 } from "../_shared/sweepPrompts.ts";
 
 // Sweep order - runs sequentially
@@ -226,8 +227,6 @@ async function runSweep(
         result = {
           items: [],
           totalDocuments: 0,
-          strongestEvidence: [],
-          gapsIdentified: ['No documents uploaded yet'],
           indexedAt: new Date().toISOString(),
         };
         break;
@@ -296,18 +295,12 @@ async function runSweep(
           authoritySweep: outputs['authority'],
         };
         const prompt = getAnalysisPrompt(JSON.stringify(caseProfile));
-        result = await callAI(prompt);
-        (result as Record<string, unknown>).analyzedAt = new Date().toISOString();
+        // Plain-language summary only; no score, estimate, strategy or form list.
+        result = pickPlainSummary(await callAI(prompt));
         
-        // Update merit score in case_merit_scores
-        const analysisResult = result as { meritScore?: number; estimatedSuccessRate?: number; strongestClaims?: unknown[]; weakestPoints?: unknown[] };
         await client
           .from('case_merit_scores')
           .update({
-            merit_score: analysisResult.meritScore || 0,
-            estimated_success_rate: analysisResult.estimatedSuccessRate || 0,
-            strength_factors: analysisResult.strongestClaims || [],
-            weakness_factors: analysisResult.weakestPoints || [],
             status: 'completed',
             updated_at: new Date().toISOString(),
           })

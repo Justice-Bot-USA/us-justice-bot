@@ -30,7 +30,7 @@ const stateData: Record<string, Record<string, {
       ],
       evidenceItems: ["Lease agreement", "All notices received", "Rent payment receipts or bank statements", "Photos/videos of property conditions", "Written repair requests (especially for habitability claims)", "Communication records with landlord", "Local rent control ordinance documentation", "Witness statements"],
       commonMistakes: ["Missing the 5-day Answer deadline", "Not raising habitability defenses when conditions are poor", "Ignoring local rent control protections", "Not requesting a jury trial when beneficial", "Withholding rent without following CA escrow procedures"],
-      ctas: [{ label: "Prepare Your CA Eviction Defense", href: "/case-analysis" }, { label: "Generate CA Court Documents", href: "/forms-library" }, { label: "Build Evidence Timeline", href: "/ai-tools/use" }],
+      ctas: [{ label: "Get a Plain-Language Summary", href: "/case-analysis" }, { label: "Generate CA Court Documents", href: "/forms-library" }, { label: "Build Evidence Timeline", href: "/ai-tools/use" }],
       relatedPages: [{ label: "General Eviction Guide", href: "/legal-help/eviction" }, { label: "Tenant Rights", href: "/legal-help/tenant-rights" }, { label: "California Legal Help", href: "/california-legal-help" }],
       faqItems: [
         { question: "How long does a California eviction take?", answer: "From initial notice to court hearing, a California unlawful detainer typically takes 30-45 days. If you request a jury trial, it may take longer." },

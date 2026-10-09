@@ -32,47 +32,27 @@ const demoSteps = [
       type: "input",
       label: "What's your legal issue?",
       placeholder: "My landlord hasn't returned my $2,400 security deposit after 45 days...",
-      response: "I understand you're dealing with a security deposit dispute. Let me ask a few questions to guide you to the right solution."
+      response: "I understand you're dealing with a security deposit dispute. Let me ask a few questions so I can summarize your situation."
     }
   },
   {
     id: 2,
-    title: "AI Analysis & Triage",
-    description: "Our AI analyzes your case and determines the best legal pathway for your situation.",
+    title: "Plain-Language Summary",
+    description: "We restate what you told us, name the general area of law, and link you to official resources for your state.",
     icon: Scale,
     color: "bg-purple-500",
     demo: {
       type: "analysis",
       results: [
-        { label: "Case Type", value: "Landlord-Tenant Dispute" },
-        { label: "Jurisdiction", value: "Small Claims Court" },
-        { label: "Estimated Filing Fee", value: "$30-$75" },
-        { label: "Time to Resolution", value: "30-60 days" }
+        { label: "Legal Area", value: "Landlord-Tenant" },
+        { label: "Courts that usually hear this", value: "Small Claims Court" },
+        { label: "Official resources", value: "Your state's court self-help center" },
+        { label: "Reminder", value: "Talk to a lawyer or free legal aid" }
       ]
     }
   },
   {
     id: 3,
-    title: "Get Your Merit Score",
-    description: "Receive an AI-powered assessment of your case strength with real precedent analysis.",
-    icon: Sparkles,
-    color: "bg-green-500",
-    demo: {
-      type: "merit",
-      score: 78,
-      strengths: [
-        "Clear documentation of deposit amount",
-        "45 days exceeds most state return limits",
-        "Written communication as evidence"
-      ],
-      improvements: [
-        "Gather move-out inspection report",
-        "Document property condition with photos"
-      ]
-    }
-  },
-  {
-    id: 4,
     title: "Upload Evidence",
     description: "Organize your documents and evidence. Our AI extracts key facts automatically.",
     icon: Upload,
@@ -87,7 +67,7 @@ const demoSteps = [
     }
   },
   {
-    id: 5,
+    id: 4,
     title: "Generate Your Forms",
     description: "Get customized legal forms pre-filled with your information, ready to file.",
     icon: ClipboardCheck,
@@ -173,42 +153,6 @@ const DemoJourney = () => {
                 <p className="font-semibold">{result.value}</p>
               </motion.div>
             ))}
-          </div>
-        );
-
-      case "merit":
-        return (
-          <div className="space-y-6">
-            <div className="text-center">
-              <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-green-100 dark:bg-green-900/30 mb-4">
-                <span className="text-3xl font-bold text-green-600">{demo.score}</span>
-              </div>
-              <p className="text-sm text-muted-foreground">Merit Score (1-100)</p>
-            </div>
-            <div className="grid md:grid-cols-2 gap-4">
-              <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                <p className="font-medium text-green-700 dark:text-green-400 mb-2">Strengths</p>
-                <ul className="text-sm space-y-1">
-                  {demo.strengths.map((s, i) => (
-                    <li key={i} className="flex items-start gap-2">
-                      <CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5" />
-                      {s}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="p-4 bg-amber-50 dark:bg-amber-900/20 rounded-lg">
-                <p className="font-medium text-amber-700 dark:text-amber-400 mb-2">To Improve</p>
-                <ul className="text-sm space-y-1">
-                  {demo.improvements.map((imp, i) => (
-                    <li key={i} className="flex items-start gap-2">
-                      <ArrowRight className="h-4 w-4 text-amber-500 mt-0.5" />
-                      {imp}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
           </div>
         );
 

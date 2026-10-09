@@ -36,7 +36,7 @@ const CivilRightsHelp = () => (
       "Failing to exhaust administrative remedies before suing",
     ]}
     ctas={[
-      { label: "Check If Your Case Qualifies", href: "/case-analysis" },
+      { label: "Get a Plain-Language Summary", href: "/case-analysis" },
       { label: "Generate Complaint Draft", href: "/ai-tools/use" },
       { label: "Build Your Timeline", href: "/ai-tools/use" },
     ]}

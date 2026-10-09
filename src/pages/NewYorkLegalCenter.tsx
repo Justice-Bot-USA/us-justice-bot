@@ -276,7 +276,7 @@ export default function NewYorkLegalCenter() {
             <CardContent className="p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div>
                 <h3 className="font-semibold">Need help organizing your NY case?</h3>
-                <p className="text-sm text-muted-foreground">Run a guided triage and merit analysis with your facts and uploaded evidence.</p>
+                <p className="text-sm text-muted-foreground">Get a plain-language summary of your situation, built from what you tell us and your uploaded documents.</p>
               </div>
               <Button asChild>
                 <Link to="/start">Start your case</Link>

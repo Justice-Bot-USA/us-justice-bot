@@ -99,7 +99,7 @@ const StateLandingPage: React.FC = () => {
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Free AI-powered tools to help you navigate {stateName} courts. 
-              Get the right forms, understand your rights, and file with confidence.
+              Find official forms, understand your rights, and learn how filing generally works.
             </p>
           </div>
 

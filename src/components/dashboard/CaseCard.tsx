@@ -28,7 +28,6 @@ import {
   Archive, 
   RotateCcw,
   ExternalLink,
-  TrendingUp,
   Calendar
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -65,12 +64,6 @@ export function CaseCard({
   const [isExpanded, setIsExpanded] = useState(false);
   const navigate = useNavigate();
 
-  const getMeritScoreColor = (score: number) => {
-    if (score >= 70) return 'text-green-600';
-    if (score >= 40) return 'text-amber-600';
-    return 'text-red-600';
-  };
-
   return (
     <Card className="overflow-hidden transition-all duration-200 hover:shadow-md">
       <Collapsible open={isExpanded} onOpenChange={setIsExpanded}>
@@ -94,10 +87,6 @@ export function CaseCard({
                 <span className="flex items-center gap-1">
                   <Scale className="h-3.5 w-3.5" />
                   {caseData.legal_area}
-                </span>
-                <span className={`flex items-center gap-1 font-medium ${getMeritScoreColor(caseData.merit_score)}`}>
-                  <TrendingUp className="h-3.5 w-3.5" />
-                  {caseData.merit_score}% Merit
                 </span>
               </div>
             </div>

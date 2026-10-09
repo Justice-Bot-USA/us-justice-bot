@@ -25,7 +25,6 @@ const CaseDashboard = lazy(() => import("./pages/CaseDashboard"));
 const UserAnalytics = lazy(() => import("./pages/UserAnalytics"));
 const AITools = lazy(() => import("./pages/AITools"));
 const AIToolsInteractive = lazy(() => import("./pages/AIToolsInteractive"));
-const PersonalInjuryCalculator = lazy(() => import("./pages/PersonalInjuryCalculator"));
 const LegalAreasHub = lazy(() => import("./pages/LegalAreasHub"));
 const LegalAreaPage = lazy(() => import("./pages/LegalAreaPage"));
 const FormsLibrary = lazy(() => import("./pages/FormsLibrary"));
@@ -116,8 +115,9 @@ export default function App() {
               <Route path="/dashboard/analytics" element={<UserAnalytics />} />
               <Route path="/ai-tools" element={<AITools />} />
               <Route path="/ai-tools/use" element={<AIToolsInteractive />} />
-              <Route path="/injury-settlement-calculator" element={<PersonalInjuryCalculator />} />
-              <Route path="/personal-injury-calculator" element={<PersonalInjuryCalculator />} />
+              {/* Settlement calculator retired (no settlement estimates); old links go to the legal areas hub */}
+              <Route path="/injury-settlement-calculator" element={<Navigate to="/legal-areas" replace />} />
+              <Route path="/personal-injury-calculator" element={<Navigate to="/legal-areas" replace />} />
               <Route path="/legal-areas" element={<LegalAreasHub />} />
               <Route path="/legal-areas/:areaId" element={<LegalAreaPage />} />
               <Route path="/forms-library" element={<FormsLibrary />} />

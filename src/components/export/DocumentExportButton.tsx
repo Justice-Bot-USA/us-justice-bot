@@ -10,7 +10,6 @@ import {
 import { 
   Download, 
   FileText, 
-  ClipboardList, 
   Scale, 
   Printer,
   Loader2,
@@ -19,7 +18,6 @@ import {
 import { toast } from 'sonner';
 import { 
   generateCaseSummaryPDF, 
-  generateFormsChecklistPDF, 
   generateCourtReadyPDF,
   downloadPDF 
 } from '@/lib/pdfGenerator';
@@ -40,7 +38,7 @@ export function DocumentExportButton({
 }: DocumentExportButtonProps) {
   const [exporting, setExporting] = useState(false);
   const [consentModalOpen, setConsentModalOpen] = useState(false);
-  const [pendingExportType, setPendingExportType] = useState<'summary' | 'forms' | 'court-ready' | null>(null);
+  const [pendingExportType, setPendingExportType] = useState<'summary' | 'court-ready' | null>(null);
 
   const sanitizeFilename = (title: string) => {
     return title
@@ -50,12 +48,10 @@ export function DocumentExportButton({
       .slice(0, 50);
   };
 
-  const getDocumentTypeLabel = (type: 'summary' | 'forms' | 'court-ready') => {
+  const getDocumentTypeLabel = (type: 'summary' | 'court-ready') => {
     switch (type) {
       case 'summary':
         return 'Case Summary';
-      case 'forms':
-        return 'Forms Checklist';
       case 'court-ready':
         return 'Court-Ready Document';
       default:
@@ -63,7 +59,7 @@ export function DocumentExportButton({
     }
   };
 
-  const handleExportRequest = (type: 'summary' | 'forms' | 'court-ready') => {
+  const handleExportRequest = (type: 'summary' | 'court-ready') => {
     setPendingExportType(type);
     setConsentModalOpen(true);
   };
@@ -83,12 +79,6 @@ export function DocumentExportButton({
           const doc = generateCaseSummaryPDF(caseData as any);
           downloadPDF(doc, `${filename}-summary.pdf`);
           toast.success('Case summary downloaded');
-          break;
-        }
-        case 'forms': {
-          const doc = generateFormsChecklistPDF(caseData as any);
-          downloadPDF(doc, `${filename}-forms-checklist.pdf`);
-          toast.success('Forms checklist downloaded');
           break;
         }
         case 'court-ready': {
@@ -147,10 +137,6 @@ export function DocumentExportButton({
           <DropdownMenuItem onClick={() => handleExportRequest('summary')}>
             <FileText className="h-4 w-4 mr-2" />
             Case Summary PDF
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handleExportRequest('forms')}>
-            <ClipboardList className="h-4 w-4 mr-2" />
-            Forms Checklist PDF
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => handleExportRequest('court-ready')}>
             <Scale className="h-4 w-4 mr-2" />

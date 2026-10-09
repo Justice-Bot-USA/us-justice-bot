@@ -34,10 +34,10 @@ interface FunnelPaywallStepProps {
 }
 
 const WHAT_YOU_GET = [
-  { icon: FileText, label: 'Your legal pathway, step by step', description: 'From filing to resolution' },
-  { icon: Download, label: 'Form guides for every form on your list', description: 'Purpose, fees, deadlines, and the official form link' },
+  { icon: FileText, label: 'How the process generally works', description: 'General information with links to official sources' },
+  { icon: Download, label: 'Guides to forms commonly used in this area', description: 'Purpose, fees, deadlines, and the official form link' },
   { icon: Sparkles, label: 'Official court forms filled from your answers', description: 'California and New York court forms, ready to review and sign' },
-  { icon: Shield, label: 'Filing checklists', description: 'What to file, where, and how' },
+  { icon: Shield, label: 'General filing checklists', description: 'How filing generally works, and where to get help' },
   { icon: Clock, label: 'Unlimited use', description: 'Every legal area and state, one monthly plan' },
 ];
 
@@ -54,7 +54,7 @@ export const FunnelPaywallStep: React.FC<FunnelPaywallStepProps> = ({
 
   const stateName = US_STATE_NAMES[config.jurisdiction];
   const legalAreaName = LEGAL_AREA_NAMES[config.legalArea];
-  const formCount = state.data.requiredForms?.length || config.forms.length;
+  const formCount = config.forms.length;
 
   const handleUnlock = async () => {
     if (!user) {
@@ -94,9 +94,9 @@ export const FunnelPaywallStep: React.FC<FunnelPaywallStepProps> = ({
         <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
           <Unlock className="h-8 w-8 text-primary" />
         </div>
-        <h3 className="text-2xl font-bold mb-2">Unlock Your Full Case Package</h3>
+        <h3 className="text-2xl font-bold mb-2">Unlock Forms and Guides</h3>
         <p className="text-muted-foreground">
-          Get everything you need to file your {legalAreaName.toLowerCase()} case in {stateName}
+          General information, form guides and official links for {legalAreaName.toLowerCase()} matters in {stateName}
         </p>
       </div>
 
@@ -106,10 +106,10 @@ export const FunnelPaywallStep: React.FC<FunnelPaywallStepProps> = ({
           <div className="flex items-center justify-between">
             <div>
               <p className="font-medium">{state.data.caseTitle || `${legalAreaName} Case`}</p>
-              <p className="text-sm text-muted-foreground">{stateName} • Merit Score: {state.data.meritScore}</p>
+              <p className="text-sm text-muted-foreground">{stateName} • {legalAreaName}</p>
             </div>
             <Badge variant="secondary">
-              {formCount} Forms Ready
+              {formCount} common forms
             </Badge>
           </div>
         </CardContent>
@@ -148,10 +148,13 @@ export const FunnelPaywallStep: React.FC<FunnelPaywallStepProps> = ({
         <CardHeader className="pb-3">
           <CardTitle className="text-lg flex items-center gap-2">
             <FileText className="h-5 w-5 text-primary" />
-            Your {formCount} Forms
+            Common {stateName} forms for {legalAreaName.toLowerCase()} matters
           </CardTitle>
         </CardHeader>
         <CardContent>
+          <p className="text-xs text-muted-foreground mb-3">
+            Which forms apply depends on your situation. Confirm with the court self-help center.
+          </p>
           <div className="grid grid-cols-2 gap-2">
             {config.forms.slice(0, 6).map((form, idx) => (
               <div key={idx} className="flex items-center gap-2 p-2 bg-muted/50 rounded text-sm">
@@ -162,7 +165,7 @@ export const FunnelPaywallStep: React.FC<FunnelPaywallStepProps> = ({
           </div>
           {config.forms.length > 6 && (
             <p className="text-xs text-muted-foreground mt-2 text-center">
-              + {config.forms.length - 6} more forms included
+              + {config.forms.length - 6} more form guides included
             </p>
           )}
         </CardContent>
@@ -176,7 +179,7 @@ export const FunnelPaywallStep: React.FC<FunnelPaywallStepProps> = ({
             <span className="text-muted-foreground ml-2">/month, unlimited</span>
           </div>
           <p className="text-sm text-muted-foreground mb-6">
-            We'll help you prepare the correct official form and show you exactly how to file it.
+            We explain common official forms and how filing generally works, and fill in the forms you choose from your answers.
             No legal advice. No lawyer fees.
           </p>
           

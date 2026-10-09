@@ -12,11 +12,11 @@ import {
 } from './types';
 
 // Default steps - NEW CONTINUOUS FLOW
-// triage → evidence → results (merit+pathway+forms teaser FREE) → paywall → generate → next_steps
+// triage → evidence → results (plain-language summary, FREE) → paywall → generate → next_steps
 const STANDARD_STEPS: FunnelStep[] = [
   'triage',
   'evidence',
-  'results',      // Shows merit score, pathway teaser, form names (FREE)
+  'results',      // Plain-language summary + state legal center links (FREE)
   'paywall',      // Payment gate
   'generate',
   'next_steps'

@@ -31,32 +31,16 @@ US Justice Bot is a comprehensive legal assistance platform that provides afford
 - Status and priority management
 - Automatic notifications
 
-### 3. **Case Merit Analysis**
-- **AI-powered scoring**: Analyze case strength based on multiple factors
-- **Evidence evaluation**: Upload and analyze supporting documents
-- **State & county law integration**: Jurisdiction-specific legal analysis
-- **Strength/weakness identification**: Detailed breakdown of case factors
-- **Settlement estimates**: Projected settlement ranges based on case merit
-- **Time estimates**: Expected time to resolution
-- **Relevant law citations**: Automatic identification of applicable laws
+### 3. **Plain-Language Case Summary**
+- **Summary of what you told us**: A neutral restatement of the user's own facts
+- **General legal area**: A short label such as "Housing / eviction" or "Family law"
+- **General information**: How matters in this area usually work in the user's state, with links to official sources
+- **State legal centers**: The next step is always the CA or NY legal center (`StateNextSteps`), plus a reminder to talk to a lawyer or free legal aid
+- **Your documents**: Lists of the user's own uploads only
 
 **Access**: `/case-analysis` (All authenticated users)
 
-**Scoring Algorithm**:
-- Base score: 50/100
-- Strengths: +5 points each (max +30)
-- Weaknesses: -4 points each (max -25)
-- Evidence: +2 points per document (max +20)
-- Final score: 0-100 range
-
-**Analysis Includes**:
-- Merit score (0-100)
-- Estimated success rate (%)
-- Settlement range ($min - $max)
-- Time to resolution (months)
-- Complexity score (1-10)
-- Relevant statutes and regulations
-- County-specific ordinances
+**Not provided (founder decision, October 2026)**: no merit score, success rate or win probability, no settlement or dollar estimate, no time-to-resolution estimate, no defence or legal strategy, and no choosing or ordering of court forms for the user. Choosing forms and strategy is off-limits even for a registered California legal document assistant (Bus. & Prof. Code 6400(g), 6411(e)) and falls under New York Judiciary Law 495(1)(e); invented scores and estimates are also untrue claims. The settlement calculator is retired; its routes redirect to `/legal-areas`. Old values in `case_merit_scores` (merit_score, settlement range and so on) are kept in the database but no longer produced, shown or exported.
 
 ### 4. **Legal Sweeps & Research**
 - **Automated legal research**: AI-powered sweeping of reputable legal sites
@@ -121,7 +105,7 @@ US Justice Bot is a comprehensive legal assistance platform that provides afford
 2. **user_roles** - Role assignments (admin/moderator/user)
 3. **support_tickets** - Support ticket records
 4. **support_messages** - Ticket conversation messages
-5. **case_merit_scores** - Case analysis results
+5. **case_merit_scores** - Case records (table name kept; score and estimate columns are no longer written)
 6. **legal_sweeps** - Scheduled legal research sweeps
 7. **legal_sweep_results** - Discovered legal documents
 8. **case_files** - Uploaded evidence and documents
@@ -153,7 +137,7 @@ US Justice Bot is a comprehensive legal assistance platform that provides afford
 ## API Endpoints (Edge Functions)
 
 ### 1. `analyze-case-merit`
-**Purpose**: Analyze case merit based on description and evidence
+**Purpose**: Plain-language summary of the user's situation (name kept for compatibility). Returns `{ success, summary, legalCategory, generalInfo, officialSources, isGuest, caseId }`; no score, estimate, strategy or form list
 **Auth**: Required
 **Input**:
 ```json
@@ -218,7 +202,7 @@ US Justice Bot is a comprehensive legal assistance platform that provides afford
 - Close and resolve tickets
 
 ### Case Analysis Oversight
-- View all case merit analyses
+- View all case summaries
 - Monitor scoring accuracy
 - Review legal citations
 - Audit case recommendations
@@ -244,7 +228,7 @@ US Justice Bot is a comprehensive legal assistance platform that provides afford
 2. **Select your state** and legal area of concern
 3. **Chat with the AI** legal assistant for general guidance
 4. **Upload evidence** to support your case
-5. **Request case analysis** for merit scoring
+5. **Request a plain-language summary** of your situation
 6. **Create support tickets** for specific questions
 7. **Subscribe** for premium features
 

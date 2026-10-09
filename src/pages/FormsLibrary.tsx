@@ -324,7 +324,7 @@ export default function FormsLibrary() {
               Need Help With Your Forms?
             </CardTitle>
             <CardDescription>
-              Our AI-powered tools can help you understand which forms you need and how to fill them out correctly.
+              Our tools explain what common forms are for and help you fill in the forms you choose. Your court's self-help center can tell you which forms apply to you.
             </CardDescription>
           </CardHeader>
           <CardContent>

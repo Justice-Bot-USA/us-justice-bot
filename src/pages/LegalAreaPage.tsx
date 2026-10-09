@@ -116,7 +116,7 @@ const LegalAreaPage = () => {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <FileText className="w-5 h-5 text-primary" />
-                  Required Forms in {US_STATES.find(s => s.value === selectedState)?.label}
+                  Common Forms in {US_STATES.find(s => s.value === selectedState)?.label}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -237,9 +237,9 @@ const LegalAreaPage = () => {
         {/* CTA Section */}
         <Card className="bg-primary text-primary-foreground mb-8">
           <CardContent className="py-8 text-center">
-            <h2 className="text-2xl font-bold mb-4">Ready to Analyze Your {areaData.title} Case?</h2>
+            <h2 className="text-2xl font-bold mb-4">Want a Summary of Your {areaData.title} Situation?</h2>
             <p className="mb-6 opacity-90">
-              Get AI-powered legal analysis, find the right forms, and understand your options.
+              Get a plain-language summary of your situation, find official forms, and learn how the process generally works.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Button 

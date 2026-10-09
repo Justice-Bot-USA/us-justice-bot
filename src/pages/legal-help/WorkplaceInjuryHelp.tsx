@@ -38,12 +38,10 @@ const WorkplaceInjuryHelp = () => (
     ctas={[
       { label: "Prepare Your Workers' Comp Case", href: "/case-analysis" },
       { label: "Generate Claim Documents", href: "/forms-library" },
-      { label: "Settlement Calculator", href: "/injury-settlement-calculator" },
     ]}
     relatedPages={[
       { label: "Workplace Injury Claim", href: "/legal-help/workplace-injury-claim" },
       { label: "Workers' Comp Denied", href: "/legal-help/workers-comp-denied" },
-      { label: "Personal Injury Calculator", href: "/injury-settlement-calculator" },
       { label: "Legal Glossary: Damages", href: "/legal-glossary#damages" },
       { label: "Legal Glossary: Statute of Limitations", href: "/legal-glossary#statute-of-limitations" },
     ]}

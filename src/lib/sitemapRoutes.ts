@@ -41,8 +41,6 @@ export const coreRoutes: SitemapRoute[] = [
 
 // ─── Tool / lookup pages ───────────────────────────────────────────────────────
 export const toolRoutes: SitemapRoute[] = [
-  { path: "/injury-settlement-calculator",  priority: 0.8, changefreq: "monthly" },
-  { path: "/personal-injury-calculator",    priority: 0.7, changefreq: "monthly" },
   { path: "/case-law-search",               priority: 0.8, changefreq: "weekly" },
   { path: "/sex-offender-registry",         priority: 0.7, changefreq: "weekly" },
   { path: "/court-records",                 priority: 0.8, changefreq: "weekly" },

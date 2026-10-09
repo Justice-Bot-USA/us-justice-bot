@@ -14,9 +14,16 @@ import {
   FileCheck
 } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
-import { SweepProgress } from '@/hooks/useSweepPipeline';
 import { SweepName, SWEEP_DISPLAY_NAMES } from '@/lib/sweeps/types';
 import { cn } from '@/lib/utils';
+
+export interface SweepProgress {
+  currentSweep: SweepName | null;
+  completedSweeps: SweepName[];
+  failedSweeps: SweepName[];
+  isRunning: boolean;
+  progress: number; // 0-100
+}
 
 interface SweepProgressDisplayProps {
   progress: SweepProgress;

@@ -35,10 +35,8 @@ import { toast } from 'sonner';
 // Step Components
 import { FunnelTriageStep } from './steps/FunnelTriageStep';
 import { FunnelEvidenceStep } from './steps/FunnelEvidenceStep';
-import { FunnelMeritStep } from './steps/FunnelMeritStep';
 import { FunnelResultsStep } from './steps/FunnelResultsStep';
 import { FunnelPaywallStep } from './steps/FunnelPaywallStep';
-import { FunnelFormsStep } from './steps/FunnelFormsStep';
 import { FunnelGenerateStep } from './steps/FunnelGenerateStep';
 import { FunnelNextStepsStep } from './steps/FunnelNextStepsStep';
 
@@ -63,10 +61,10 @@ const STEP_ICONS: Record<FunnelStep, React.ReactNode> = {
 const STEP_LABELS: Record<FunnelStep, string> = {
   triage: 'Describe Your Case',
   evidence: 'Upload Evidence',
-  results: 'Your Results',
+  results: 'Your Summary',
   paywall: 'Unlock Access',
-  merit_score: 'Case Analysis',
-  form_recommendation: 'Recommended Forms',
+  merit_score: 'Summary',
+  form_recommendation: 'Common Forms',
   generate: 'Generate Documents',
   next_steps: 'Next Steps',
   payment: 'Unlock Full Access',
@@ -164,10 +162,6 @@ export const FunnelEngine: React.FC<FunnelEngineProps> = ({
       case 'paywall':
       case 'payment':
         return <FunnelPaywallStep {...stepProps} />;
-      case 'merit_score':
-        return <FunnelMeritStep {...stepProps} />;
-      case 'form_recommendation':
-        return <FunnelFormsStep {...stepProps} />;
       case 'generate':
         return <FunnelGenerateStep {...stepProps} />;
       case 'next_steps':

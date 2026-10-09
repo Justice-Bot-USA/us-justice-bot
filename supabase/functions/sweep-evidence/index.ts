@@ -29,8 +29,6 @@ Deno.serve(async (req: Request) => {
       const emptyResult = {
         items: [],
         totalDocuments: 0,
-        strongestEvidence: [],
-        gapsIdentified: ['No documents uploaded - consider adding supporting evidence'],
         indexedAt: new Date().toISOString()
       };
 

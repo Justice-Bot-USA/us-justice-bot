@@ -22,7 +22,7 @@ const BASE_URL = 'https://justicebot-usa.com';
 
 /** State-specific FAQ items that Google can surface as rich results */
 const buildFAQSchema = (stateName: string, legalArea: LegalCategory, areaName: string, forms: string[]) => {
-  const formList = forms.length > 0 ? forms.slice(0, 3).join(', ') : 'the required court forms';
+  const formList = forms.length > 0 ? forms.slice(0, 3).join(', ') : "the court's official forms";
 
   const questions: Record<LegalCategory, Array<{ q: string; a: string }>> = {
     'family': [
@@ -41,13 +41,13 @@ const buildFAQSchema = (stateName: string, legalArea: LegalCategory, areaName: s
       { q: `How long do I have to file a wage theft complaint in ${stateName}?`, a: `${stateName} generally allows 2–3 years for wage claims. Use ${formList} to start your complaint with the state Labor Department.` },
     ],
     'housing': [
-      { q: `How do I fight an eviction in ${stateName}?`, a: `You have the right to answer the eviction complaint. File ${formList} in ${stateName} court within the notice period (usually 5–10 days). Our platform generates your Answer automatically.` },
+      { q: `How do I fight an eviction in ${stateName}?`, a: `You have the right to answer the eviction complaint. File ${formList} in ${stateName} court within the notice period (usually 5–10 days). Our guides explain the Answer form and how to file it.` },
       { q: `What notice must a landlord give before evicting a tenant in ${stateName}?`, a: `${stateName} law requires written notice—typically 3, 5, or 30 days depending on the reason. An illegal eviction can be challenged using ${formList}.` },
       { q: `Can I withhold rent for repairs in ${stateName}?`, a: `${stateName} has repair-and-deduct or rent-withholding remedies for habitability violations. Our guides explain the exact steps and required notices.` },
     ],
     'criminal': [
       { q: `How do I get my record expunged in ${stateName}?`, a: `File ${formList} in the court where you were convicted or arrested. Eligibility depends on the offense type, sentence, and waiting period under ${stateName} law.` },
-      { q: `Can I get a criminal record sealed in ${stateName}?`, a: `${stateName} offers record sealing for certain offenses. Once sealed, the record is hidden from most background checks. Our AI analyzes your eligibility instantly.` },
+      { q: `Can I get a criminal record sealed in ${stateName}?`, a: `${stateName} offers record sealing for certain offenses. Once sealed, the record is hidden from most background checks. Eligibility depends on your record and ${stateName} law; the court self-help center or a legal aid office can help you check it.` },
       { q: `What is the difference between expungement and sealing in ${stateName}?`, a: `Expungement destroys the record; sealing hides it from public view but law enforcement can still access it. Our platform explains ${stateName}'s specific rules.` },
     ],
     'cps': [
@@ -67,13 +67,13 @@ const buildFAQSchema = (stateName: string, legalArea: LegalCategory, areaName: s
     ],
     'agency-complaints': [
       { q: `How do I file a complaint against a doctor in ${stateName}?`, a: `Submit a complaint to the ${stateName} Medical Board using ${formList}. Include all relevant medical records and a detailed description of the misconduct.` },
-      { q: `How do I file a complaint against a lawyer in ${stateName}?`, a: `Contact the ${stateName} State Bar and submit a formal grievance. Our platform provides the correct forms and submission instructions.` },
+      { q: `How do I file a complaint against a lawyer in ${stateName}?`, a: `Contact the ${stateName} State Bar and submit a formal grievance. Our platform links to the official complaint form and general submission information.` },
       { q: `How long does a professional complaint take in ${stateName}?`, a: `${stateName} agency investigations typically take 3–12 months. You will receive written updates and may be asked for additional information.` },
     ],
     'personal-injury': [
       { q: `What is the statute of limitations for personal injury in ${stateName}?`, a: `${stateName} generally allows 2–3 years to file a personal injury lawsuit. Missing this deadline means losing your right to compensation.` },
-      { q: `Do I need a lawyer for a personal injury claim in ${stateName}?`, a: `Not always. Our platform helps you calculate settlement value, document your injury, and negotiate with insurance companies in ${stateName}.` },
-      { q: `How much is my personal injury case worth in ${stateName}?`, a: `Compensation depends on medical costs, lost wages, pain and suffering, and ${stateName}'s comparative fault rules. Use our free settlement calculator for an estimate.` },
+      { q: `Do I need a lawyer for a personal injury claim in ${stateName}?`, a: `Not always, but injury claims can be complex and many personal injury lawyers offer free consultations. Our platform helps you organize your documents and find official ${stateName} resources.` },
+      { q: `How much is my personal injury case worth in ${stateName}?`, a: `Justice Bot does not estimate what a claim is worth. Compensation depends on the facts and on ${stateName} law, such as its comparative fault rules. A lawyer or legal aid office can advise you about your situation.` },
     ],
     'immigration': [
       { q: `What immigration help is available in ${stateName}?`, a: `${stateName} has legal aid organizations, sanctuary city policies (in some areas), and state-funded programs. Our platform connects you with resources and key forms.` },
@@ -116,19 +116,19 @@ const buildHowToSchema = (stateName: string, areaName: string, forms: string[]) 
       '@type': 'HowToStep',
       position: 1,
       name: 'Describe Your Situation',
-      text: 'Answer a few questions about your legal issue so our AI can analyze your case and identify the correct legal pathway.',
+      text: 'Answer a few questions about your legal issue so we can summarize your situation in plain language.',
     },
     {
       '@type': 'HowToStep',
       position: 2,
       name: 'Upload Evidence',
-      text: `Attach any documents, photos, or records related to your ${areaName} matter. Our system securely stores and analyzes them.`,
+      text: `Attach any documents, photos, or records related to your ${areaName} matter. Our system stores them securely and includes them in your summary.`,
     },
     {
       '@type': 'HowToStep',
       position: 3,
-      name: 'Review Your Case Analysis',
-      text: `Get an AI-powered merit score, legal pathway, and list of required ${stateName} court forms${forms.length > 0 ? ` (${forms.slice(0, 2).join(', ')})` : ''}.`,
+      name: 'Review Your Summary',
+      text: `Get a plain-language summary of your situation and links to official ${stateName} resources${forms.length > 0 ? `, plus general information about forms commonly used in this area (such as ${forms.slice(0, 2).join(', ')})` : ''}.`,
     },
     {
       '@type': 'HowToStep',
@@ -139,8 +139,8 @@ const buildHowToSchema = (stateName: string, areaName: string, forms: string[]) 
     {
       '@type': 'HowToStep',
       position: 5,
-      name: 'Follow Your Action Plan',
-      text: `Receive deadline reminders, next-step guidance, and filing instructions specific to ${stateName}'s court system.`,
+      name: 'Get General Filing Information',
+      text: `Receive general filing information and links to ${stateName}'s court self-help resources. Talk to a lawyer or free legal aid about your own situation.`,
     },
   ],
   totalTime: 'PT30M',
@@ -311,7 +311,7 @@ const StateFunnelPage: React.FC = () => {
             <h1 className="text-3xl md:text-4xl font-bold mb-4">{seo.h1}</h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Free self-help tools for {legalAreaName.toLowerCase()} in {stateName}. 
-              Get the right forms, understand your rights, and navigate the legal process.
+              Find official forms, understand your rights, and learn how the legal process generally works.
             </p>
           </div>
 
@@ -330,14 +330,14 @@ const StateFunnelPage: React.FC = () => {
             <div className="prose prose-gray dark:prose-invert max-w-none">
               <p>
                 {stateName} has specific laws and procedures for {legalAreaName.toLowerCase()} matters. 
-                Our AI-powered platform helps you understand your rights, find the correct court forms, 
-                and navigate the legal process step by step.
+                Our platform gives you general information about your rights, links to the official court forms,
+                and explains how the legal process generally works.
               </p>
               <h3>What You'll Get</h3>
               <ul>
-                <li>AI-powered case analysis specific to {stateName} law</li>
-                <li>Recommended court forms for your situation</li>
-                <li>Step-by-step guidance through the filing process</li>
+                <li>A plain-language summary of your situation</li>
+                <li>General information about forms commonly used for {legalAreaName.toLowerCase()} matters in {stateName}</li>
+                <li>General guidance on how the filing process works</li>
                 <li>Document generation with your case details pre-filled</li>
                 <li>Next steps and court filing instructions</li>
               </ul>

@@ -52,12 +52,6 @@ interface CaseMeritData {
   legal_area: string;
   state: string;
   county: string | null;
-  merit_score: number;
-  legal_pathway: unknown;
-  required_forms: unknown;
-  evidence_to_gather: unknown;
-  filing_options: unknown;
-  next_steps: unknown;
 }
 
 export function useLegalJourney(journeyId?: string) {
@@ -94,7 +88,7 @@ export function useLegalJourney(journeyId?: string) {
       if (journeyData.case_merit_id) {
         const { data: meritData, error: meritError } = await supabase
           .from('case_merit_scores')
-          .select('id, case_title, legal_area, state, county, merit_score, legal_pathway, required_forms, evidence_to_gather, filing_options, next_steps')
+          .select('id, case_title, legal_area, state, county')
           .eq('id', journeyData.case_merit_id)
           .single();
 
@@ -137,131 +131,6 @@ export function useLegalJourney(journeyId?: string) {
   useEffect(() => {
     fetchJourney();
   }, [fetchJourney]);
-
-  // Create a new journey from case analysis
-  const createJourneyFromCase = async (caseMeritId: string): Promise<string | null> => {
-    if (!user) {
-      toast({ title: 'Please sign in', variant: 'destructive' });
-      return null;
-    }
-
-    try {
-      // Fetch case data to generate steps
-      const { data: caseData, error: caseError } = await supabase
-        .from('case_merit_scores')
-        .select('*')
-        .eq('id', caseMeritId)
-        .single();
-
-      if (caseError) throw caseError;
-
-      // Parse legal pathway and forms to generate steps
-      const legalPathway = Array.isArray(caseData.legal_pathway) ? caseData.legal_pathway : [];
-      const requiredForms = Array.isArray(caseData.required_forms) ? caseData.required_forms : [];
-      const evidenceToGather = Array.isArray(caseData.evidence_to_gather) ? caseData.evidence_to_gather : [];
-      
-      // Calculate total steps
-      const totalSteps = Math.max(1, legalPathway.length + requiredForms.length + evidenceToGather.length);
-
-      // Create the journey
-      const { data: newJourney, error: journeyError } = await supabase
-        .from('legal_journeys')
-        .insert({
-          user_id: user.id,
-          case_merit_id: caseMeritId,
-          total_steps: totalSteps,
-          status: 'in_progress'
-        })
-        .select()
-        .single();
-
-      if (journeyError) throw journeyError;
-
-      // Generate steps from case data
-      interface StepInsert {
-        journey_id: string;
-        step_number: number;
-        title: string;
-        description: string | null;
-        step_type: string;
-        status: string;
-        due_date: string | null;
-        completed_at: string | null;
-        metadata: Record<string, unknown>;
-      }
-      const stepsToInsert: StepInsert[] = [];
-      let stepNumber = 1;
-
-      // Add evidence gathering steps first
-      evidenceToGather.forEach((evidence: { item?: string; description?: string; deadline?: string }) => {
-        stepsToInsert.push({
-          journey_id: newJourney.id,
-          step_number: stepNumber++,
-          title: `Gather: ${evidence.item || 'Evidence'}`,
-          description: evidence.description || null,
-          step_type: 'evidence',
-          status: 'pending',
-          due_date: evidence.deadline || null,
-          completed_at: null,
-          metadata: { evidence }
-        });
-      });
-
-      // Add form steps
-      requiredForms.forEach((form: { formName?: string; formNumber?: string; purpose?: string; filingDeadline?: string }) => {
-        stepsToInsert.push({
-          journey_id: newJourney.id,
-          step_number: stepNumber++,
-          title: form.formName || form.formNumber || 'Complete Form',
-          description: form.purpose || null,
-          step_type: 'form',
-          status: 'pending',
-          due_date: form.filingDeadline || null,
-          completed_at: null,
-          metadata: { form }
-        });
-      });
-
-      // Add legal pathway steps
-      legalPathway.forEach((step: { step?: string; action?: string; timeline?: string; description?: string }) => {
-        const stepType = determineStepType(step.step || step.action || '');
-        stepsToInsert.push({
-          journey_id: newJourney.id,
-          step_number: stepNumber++,
-          title: step.step || step.action || 'Legal Step',
-          description: step.description || null,
-          step_type: stepType,
-          status: 'pending',
-          due_date: null,
-          completed_at: null,
-          metadata: { pathway: step }
-        });
-      });
-
-      // Insert all steps
-      if (stepsToInsert.length > 0) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const { error: stepsError } = await supabase
-          .from('journey_steps')
-          .insert(stepsToInsert as any);
-
-        if (stepsError) throw stepsError;
-
-        // Update journey with correct total steps
-        await supabase
-          .from('legal_journeys')
-          .update({ total_steps: stepsToInsert.length })
-          .eq('id', newJourney.id);
-      }
-
-      toast({ title: 'Legal journey created!', description: 'Your step-by-step guide is ready.' });
-      return newJourney.id;
-    } catch (err) {
-      console.error('Error creating journey:', err);
-      toast({ title: 'Failed to create journey', variant: 'destructive' });
-      return null;
-    }
-  };
 
   // Update step status
   const updateStepStatus = async (stepId: string, status: JourneyStep['status']) => {
@@ -371,21 +240,8 @@ export function useLegalJourney(journeyId?: string) {
     isLoading,
     error,
     refetch: fetchJourney,
-    createJourneyFromCase,
     updateStepStatus,
     toggleTask,
     addTask
   };
-}
-
-// Helper function to determine step type from text
-function determineStepType(text: string): JourneyStep['step_type'] {
-  const lower = text.toLowerCase();
-  if (lower.includes('form') || lower.includes('document') || lower.includes('paperwork')) return 'form';
-  if (lower.includes('evidence') || lower.includes('gather') || lower.includes('collect')) return 'evidence';
-  if (lower.includes('file') || lower.includes('submit') || lower.includes('send')) return 'filing';
-  if (lower.includes('court') || lower.includes('hearing') || lower.includes('appear') || lower.includes('trial')) return 'appearance';
-  if (lower.includes('deadline') || lower.includes('due')) return 'deadline';
-  if (lower.includes('review') || lower.includes('check')) return 'review';
-  return 'notification';
 }

@@ -4,7 +4,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { 
   FileSearch, 
-  Calculator, 
   MapPin, 
   FileText, 
   FolderOpen, 
@@ -18,24 +17,16 @@ const tools = [
   {
     icon: FileSearch,
     title: "Document Analyzer",
-    description: "AI-powered analysis of your legal documents, contracts, and case files. Get instant insights on key terms, potential issues, and recommended actions.",
-    features: ["Contract review", "Risk identification", "Key term extraction", "Plain English summaries"],
-    status: "Available",
-    link: "/ai-tools/use"
-  },
-  {
-    icon: Calculator,
-    title: "Settlement Calculator",
-    description: "Estimate potential settlement ranges based on your case type, jurisdiction, and comparable cases. Understand what your claim might be worth.",
-    features: ["Case value estimation", "Comparative analysis", "Factor weighting", "Range predictions"],
+    description: "Plain-language explanations of your legal documents, contracts, and case files: key terms, parties, dates, and the deadlines the document states.",
+    features: ["Key term extraction", "Parties and obligations", "Dates and stated deadlines", "Plain English summaries"],
     status: "Available",
     link: "/ai-tools/use"
   },
   {
     icon: MapPin,
     title: "Court Locator",
-    description: "Find the right court for your case based on your location, case type, and claim amount. Get addresses, contact info, and filing requirements.",
-    features: ["Jurisdiction finder", "Court contact info", "Filing requirements", "Hours & directions"],
+    description: "Find courts and court self-help centers near you, with addresses, contact info, and general filing information.",
+    features: ["Self-help centers", "Court contact info", "General filing information", "Hours & directions"],
     status: "Coming Soon",
     link: "#"
   },
@@ -90,7 +81,7 @@ const AITools = () => {
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             Powerful AI tools designed to help you navigate the legal system. 
-            Analyze documents, calculate settlements, find courts, and generate forms—all in one place.
+            Understand documents, organize your evidence, and fill in official forms—all in one place.
           </p>
         </div>
       </section>

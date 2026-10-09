@@ -49,7 +49,7 @@ const FAQ = () => {
         },
         {
           question: "Can Justice Bot USA help me file for divorce?",
-          answer: "Yes, we can help you understand the divorce process in your state, identify the forms you need, and assist with document preparation. However, for contested divorces, cases involving significant assets, or situations with domestic violence, we strongly recommend working with a family law attorney."
+          answer: "Yes, we can help you understand the divorce process in your state, find the official forms, and fill them in from your answers. However, for contested divorces, cases involving significant assets, or situations with domestic violence, we strongly recommend working with a family law attorney."
         },
         {
           question: "Do you help with criminal cases?",
@@ -57,7 +57,7 @@ const FAQ = () => {
         },
         {
           question: "Can you help me sue someone in small claims court?",
-          answer: "Yes! Small claims court is designed for self-represented parties, and our tools can help you understand the process, determine if your claim qualifies, identify the correct forms, calculate filing fees, and prepare your case presentation."
+          answer: "Yes! Small claims court is designed for self-represented parties, and our tools can help you understand the process, find the official forms and fee information for your court, and organize your documents."
         },
         {
           question: "What types of legal forms do you provide?",
@@ -71,11 +71,11 @@ const FAQ = () => {
       faqs: [
         {
           question: "How does the AI legal assistant work?",
-          answer: "Our AI legal assistant uses advanced language models trained on legal information to answer your questions, help you understand legal concepts, and guide you through processes. It analyzes your situation based on the information you provide and gives relevant guidance. Remember, AI responses are for informational purposes only."
+          answer: "Our AI legal assistant uses advanced language models trained on legal information to answer your questions, help you understand legal concepts, and guide you through processes. It gives general information based on what you tell it. Remember, AI responses are for informational purposes only."
         },
         {
-          question: "What is the Case Merit Analyzer?",
-          answer: "The Case Merit Analyzer is an AI tool that evaluates the strength of your potential legal case based on the facts you provide. It considers relevant laws, similar cases, and key factors to give you an estimated merit score. This helps you understand whether pursuing legal action might be worthwhile."
+          question: "Does Justice Bot rate my case or predict the outcome?",
+          answer: "No. We give you a plain-language summary of what you told us, general information about how this kind of matter usually works in your state, and links to official resources. We do not score cases, estimate success rates or settlements, choose forms for you, or suggest a strategy. Talk to a lawyer or a free legal aid organization about your situation."
         },
         {
           question: "How accurate is the AI?",
@@ -187,7 +187,7 @@ const FAQ = () => {
         },
         {
           question: "How do I know which forms I need?",
-          answer: "Our Smart Triage Wizard asks questions about your situation and recommends the appropriate forms. You can also use our AI assistant to get guidance on which forms are typically required for your type of case."
+          answer: "Which forms apply depends on your situation. We show the forms commonly used for your type of matter in your state and what each one is for. Your court's self-help center, a legal aid office or a lawyer can tell you which ones apply to you."
         },
         {
           question: "Can I edit forms after downloading?",
