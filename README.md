@@ -68,3 +68,9 @@ supabase/functions/        Edge functions (Stripe, PayPal, legal sweeps, search,
 - **Site:** Cloudflare Pages builds and publishes `main` to justicebot-usa.com (DNS on Cloudflare). Each pull request gets a preview build.
 - **Database and auth:** Supabase project `jhgkshjqgagxfllgvhco` (justicebot-usa), owned by the company's own Supabase organization.
 - **Edge functions:** deployed by hand from `supabase/functions/` (no automatic deploy since leaving Lovable). Redeploy a function after changing it or anything in `_shared/`.
+
+## License and trademarks
+
+Proprietary. © Justice Bot Technologies Inc. All rights reserved; no license is granted. See [LICENSE](LICENSE).
+
+"Justice Bot", "Justice Bot USA", "Quorex", "Quorex Solutions", and the related logos are trademarks of Justice Bot Technologies Inc. Quorex Solutions is the company's trade name. Open-source dependencies and official court forms keep their own terms (see LICENSE).

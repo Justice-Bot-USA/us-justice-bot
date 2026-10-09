@@ -78,9 +78,12 @@ const Footer = () => {
 
         {/* Bottom */}
         <div className="border-t border-primary-foreground/20 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-sm opacity-60">
-            © {currentYear} Justice Bot USA. All rights reserved.
-          </p>
+          <div className="text-sm opacity-60 space-y-1">
+            <p>© {currentYear} Justice Bot Technologies Inc. All rights reserved.</p>
+            <p className="text-xs">
+              Justice Bot, Justice Bot USA, and Quorex Solutions are trademarks of Justice Bot Technologies Inc.
+            </p>
+          </div>
           <div className="flex gap-6 text-sm opacity-60">
             <Link to="/privacy" className="hover:opacity-100 transition-opacity">Privacy Policy</Link>
             <Link to="/terms" className="hover:opacity-100 transition-opacity">Terms of Service</Link>
