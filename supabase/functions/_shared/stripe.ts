@@ -1,14 +1,15 @@
 import Stripe from "https://esm.sh/stripe@18.5.0";
 
 // USA Live Price IDs (source of truth for server-side checkout creation)
-// The single public plan is the monthly subscription. Its price comes from the
-// STRIPE_PRICE_MONTHLY secret (the $25/month price) and falls back to the legacy
-// $19.99/month price until that secret is set.
+// The single public plan is the monthly subscription: $25/month ("Justice Bot USA
+// Access", lookup key justicebot_usa_monthly_25). STRIPE_PRICE_MONTHLY can override it.
+// The legacy $19.99/month price (price_1T10c4Pr9cYwQq3CJqfwzpqo) stays active in Stripe
+// but is no longer offered.
 // Legacy one-time prices (kept so older links and pending checkouts still work):
 // Single Form $9.99, Bundle $49.99, FOIA Single $9.99, FOIA Bundle $29.99.
 export const PRICE_IDS = {
   per_form: "price_1SspQoPr9cYwQq3CUtFuCkxA",
-  monthly: Deno.env.get("STRIPE_PRICE_MONTHLY") || "price_1T10c4Pr9cYwQq3CJqfwzpqo",
+  monthly: Deno.env.get("STRIPE_PRICE_MONTHLY") || "price_1UOYQSPr9cYwQq3CbOAjTe6i",
   bundle: "price_1T10cbPr9cYwQq3CeyUUzrEM",
   foia_single: "price_1T14rWPr9cYwQq3C9Fak2Tbl",
   foia_bundle: "price_1T14rrPr9cYwQq3ChvtEOyuz",
@@ -21,6 +22,16 @@ export function getStripe(): Stripe {
   return new Stripe(secretKey, {
     apiVersion: "2025-08-27.basil",
   });
+}
+
+/**
+ * End of the current billing period, in Unix seconds. API 2025-03-31.basil and later moved
+ * current_period_end from the subscription to its items; older payloads (e.g. webhooks sent
+ * with an older endpoint version) still carry it on the subscription.
+ */
+export function subscriptionPeriodEnd(subscription: Stripe.Subscription): number {
+  const legacy = (subscription as unknown as { current_period_end?: number }).current_period_end;
+  return subscription.items?.data?.[0]?.current_period_end ?? legacy ?? Math.floor(Date.now() / 1000);
 }
 
 let validationPromise: Promise<void> | null = null;

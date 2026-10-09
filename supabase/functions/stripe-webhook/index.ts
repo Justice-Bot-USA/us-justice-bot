@@ -3,7 +3,7 @@ import Stripe from "https://esm.sh/stripe@18.5.0";
 import { corsHeaders } from "../_shared/auth.ts";
 import { createAdminClient } from "../_shared/db.ts";
 
-import { getStripe, validateStripePricesOnce } from "../_shared/stripe.ts";
+import { getStripe, subscriptionPeriodEnd, validateStripePricesOnce } from "../_shared/stripe.ts";
 
 const stripe = getStripe();
 const stripePriceValidation = validateStripePricesOnce(stripe);
@@ -101,7 +101,7 @@ serve(async (req: Request) => {
             console.log(`📅 Creating ${accessType} subscription: ${subscriptionId}`);
             
             const subscription = await stripe.subscriptions.retrieve(subscriptionId);
-            const endDate = new Date(subscription.current_period_end * 1000);
+            const endDate = new Date(subscriptionPeriodEnd(subscription) * 1000);
             const amount = (subscription.items.data[0]?.price.unit_amount ?? 0) / 100;
 
             const { error } = await supabase.from("subscriptions").insert({
@@ -145,7 +145,7 @@ serve(async (req: Request) => {
             .from("subscriptions")
             .update({
               status: subscription.status === "active" ? "active" : "cancelled",
-              end_date: new Date(subscription.current_period_end * 1000).toISOString(),
+              end_date: new Date(subscriptionPeriodEnd(subscription) * 1000).toISOString(),
               updated_at: new Date().toISOString(),
             })
             .eq("paypal_subscription_id", subscription.id); // reusing column for stripe ID

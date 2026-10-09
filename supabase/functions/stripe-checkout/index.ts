@@ -4,7 +4,7 @@ import { corsHeaders, handleCors, requireUser } from "../_shared/auth.ts";
 import { successResponse, errorResponse, handleError } from "../_shared/errors.ts";
 import { createAdminClient } from "../_shared/db.ts";
 
-import { getStripe, PRICE_IDS, validateStripePricesOnce } from "../_shared/stripe.ts";
+import { getStripe, PRICE_IDS, subscriptionPeriodEnd, validateStripePricesOnce } from "../_shared/stripe.ts";
 
 // Fail fast on cold start if Stripe prices are misconfigured
 const stripe = getStripe();
@@ -163,7 +163,7 @@ async function handleVerifySession(
   if (session.mode === "subscription") {
     const subscriptionId = session.subscription as string;
     const subscription = await stripe.subscriptions.retrieve(subscriptionId);
-    const endDate = new Date(subscription.current_period_end * 1000);
+    const endDate = new Date(subscriptionPeriodEnd(subscription) * 1000);
     
     const { error } = await supabase.from("subscriptions").insert({
       user_id: data.userId,
