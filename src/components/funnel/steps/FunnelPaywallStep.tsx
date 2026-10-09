@@ -21,7 +21,7 @@ import { useNavigate } from 'react-router-dom';
 import { trackAddToCart, getDetectedCountry } from '@/hooks/useAnalytics';
 import { toast } from 'sonner';
 import { usePaywallAccess } from '@/hooks/usePaywallAccess';
-import { PLAN, startSubscriptionCheckout } from '@/lib/pricing';
+import { PLAN, THIRD_PARTY_FEES_NOTE, startSubscriptionCheckout } from '@/lib/pricing';
 
 interface FunnelPaywallStepProps {
   config: FunnelConfig;
@@ -212,7 +212,10 @@ export const FunnelPaywallStep: React.FC<FunnelPaywallStepProps> = ({
         </CardContent>
       </Card>
 
-      <div className="text-center text-sm text-muted-foreground">Cancel anytime.</div>
+      <div className="text-center text-sm text-muted-foreground space-y-2">
+        <p>Cancel anytime.</p>
+        <p>{THIRD_PARTY_FEES_NOTE}</p>
+      </div>
     </div>
   );
 };

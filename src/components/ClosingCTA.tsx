@@ -19,10 +19,10 @@ const ClosingCTA = ({ onPrepareForm }: ClosingCTAProps) => {
         <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
           <Button
             size="lg"
-            onClick={() => navigate("/warrant-lookup")}
+            onClick={() => navigate("/start")}
             className="text-lg px-10 py-6 h-auto font-bold"
           >
-            Start Free Lookup
+            Tell Us What Happened
             <ArrowRight className="h-5 w-5 ml-2" />
           </Button>
           <Button

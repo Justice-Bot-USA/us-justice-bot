@@ -312,17 +312,11 @@ export default function StateToolLandingPage() {
           <section className="mb-12">
             <h2 className="text-2xl font-bold mb-6">More {stateName} Legal Resources</h2>
             <div className="grid sm:grid-cols-2 gap-4">
-              {!isWarrant && (
-                <LinkCard to={`/${stateSlug}-warrant-lookup`} icon={<Search />} title={`${stateName} Warrant Lookup`} desc="Search active warrants for free" />
-              )}
-              {isWarrant && (
+              {isArrestRecords && (
                 <LinkCard to={`/${stateSlug}-court-forms`} icon={<FileText />} title={`${stateName} Court Forms`} desc="Browse & download official forms" />
               )}
               {!isArrestRecords && (
                 <LinkCard to={`/${stateSlug}-arrest-records`} icon={<BookOpen />} title={`Request ${stateName} Arrest Records`} desc="Generate a public records request" />
-              )}
-              {isArrestRecords && (
-                <LinkCard to={`/${stateSlug}-warrant-lookup`} icon={<Search />} title={`${stateName} Warrant Lookup`} desc="Search public warrant records free" />
               )}
               <LinkCard to={`/states/${stateCode.toLowerCase()}`} icon={<MapPin />} title={`${stateName} Legal Help`} desc="All legal resources for your state" />
               <LinkCard to="/case-analysis" icon={<Scale />} title="Free Case Analysis" desc="AI-powered legal case review" />

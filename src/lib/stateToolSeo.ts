@@ -56,7 +56,7 @@ export function getStateToolSeo(match: StateToolMatch) {
         `${stateName} booking records`,
       ],
       canonical: `https://justicebot-usa.com/${slug}-arrest-records`,
-      toolPath: '/warrant-lookup',
+      toolPath: '/public-records-request',
       faqItems: [
         {
           q: `What arrest-related records can I request in ${stateName}?`,
@@ -77,37 +77,6 @@ export function getStateToolSeo(match: StateToolMatch) {
         {
           q: `How much does it cost to request arrest records in ${stateName}?`,
           a: `Agencies may charge reasonable fees for copying and processing. Writing the letter with our tool is free; the PDF export (with follow-up and appeal templates) is included in the $25/month plan. Submitting the request to the agency is free.`,
-        },
-      ],
-    };
-  }
-
-  if (toolType === 'warrant-lookup') {
-    return {
-      title: `${stateName} Warrant Lookup — Free Search | Justice Bot USA`,
-      description: `Search for active warrants in ${stateName} (${stateCode}). Free public records lookup with links to official ${stateName} court portals. Powered by Justice Bot USA.`,
-      h1: `${stateName} Warrant Lookup`,
-      keywords: [
-        `${stateName} warrant lookup`,
-        `${stateName} active warrants`,
-        `${stateCode} outstanding warrant search`,
-        `${stateName} warrant search free`,
-        `check warrants ${stateName}`,
-      ],
-      canonical: `https://justicebot-usa.com/${slug}-warrant-lookup`,
-      toolPath: '/warrant-lookup',
-      faqItems: [
-        {
-          q: `How do I check for warrants in ${stateName}?`,
-          a: `Use our free warrant lookup tool above to search ${stateName} public records. You can also visit official ${stateName} court portals linked in the results. Contact your local ${stateName} courthouse clerk for the most up-to-date information.`,
-        },
-        {
-          q: `Are ${stateName} warrant records public?`,
-          a: `Yes, most warrant records in ${stateName} are public information. However, sealed warrants or certain juvenile records may not appear in public searches. Official court or law enforcement databases have the most complete records.`,
-        },
-        {
-          q: `What should I do if I have a warrant in ${stateName}?`,
-          a: `If you discover you have an active warrant in ${stateName}, consult a licensed attorney immediately. You may be able to arrange a voluntary surrender or have the warrant recalled through proper legal channels.`,
         },
       ],
     };
@@ -150,7 +119,6 @@ export function getAllStateToolSlugs(): string[] {
   for (const state of states) {
     if (state === 'District of Columbia') continue;
     const slug = state.toLowerCase().replace(/\s+/g, '-');
-    slugs.push(`${slug}-warrant-lookup`);
     slugs.push(`${slug}-court-forms`);
     slugs.push(`${slug}-arrest-records`);
   }

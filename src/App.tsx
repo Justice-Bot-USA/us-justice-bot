@@ -1,6 +1,6 @@
 import { lazy, Suspense } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -44,7 +44,6 @@ const TermsOfService = lazy(() => import("./pages/TermsOfService"));
 const LegalDisclaimer = lazy(() => import("./pages/LegalDisclaimer"));
 const FAQ = lazy(() => import("./pages/FAQ"));
 const DemoJourney = lazy(() => import("./pages/DemoJourney"));
-const WarrantLookup = lazy(() => import("./pages/WarrantLookup"));
 const SexOffenderRegistry = lazy(() => import("./pages/SexOffenderRegistry"));
 const CourtRecordsLookup = lazy(() => import("./pages/CourtRecordsLookup"));
 const CourtListenerSearch = lazy(() => import("./pages/CourtListenerSearch"));
@@ -142,7 +141,7 @@ export default function App() {
               <Route path="/disclaimer" element={<LegalDisclaimer />} />
               <Route path="/faq" element={<FAQ />} />
               <Route path="/demo-journey" element={<DemoJourney />} />
-              <Route path="/warrant-lookup" element={<WarrantLookup />} />
+              <Route path="/warrant-lookup" element={<Navigate to="/criminal-defense-guide" replace />} />
               <Route path="/sex-offender-registry" element={<SexOffenderRegistry />} />
               <Route path="/court-records" element={<CourtRecordsLookup />} />
               <Route path="/courtlistener" element={<CourtListenerSearch />} />

@@ -9,7 +9,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { usePaywallAccess } from '@/hooks/usePaywallAccess';
 import { useToast } from '@/hooks/use-toast';
 import Header from '@/components/Header';
-import { PLAN } from '@/lib/pricing';
+import { PLAN, THIRD_PARTY_FEES_NOTE } from '@/lib/pricing';
 import { invokeAuthed } from '@/lib/supabaseInvoke';
 import { 
   trackPurchase, 
@@ -206,7 +206,8 @@ const Pricing = () => {
             <CreditCard className="w-4 h-4" />
             <span>Secure payments powered by Stripe</span>
           </div>
-          <p className="text-sm text-muted-foreground">Cancel anytime • No hidden fees</p>
+          <p className="text-sm text-muted-foreground">Cancel anytime.</p>
+          <p className="text-sm text-muted-foreground max-w-2xl mx-auto">{THIRD_PARTY_FEES_NOTE}</p>
         </div>
       </div>
     </div>

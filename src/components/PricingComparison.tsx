@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { trackUSPrepareClicked } from "@/hooks/useAnalytics";
-import { PLAN } from "@/lib/pricing";
+import { PLAN, THIRD_PARTY_FEES_NOTE } from "@/lib/pricing";
 
 const plans = [
   {
@@ -14,7 +14,7 @@ const plans = [
     popular: true,
     buttonText: PLAN.cta,
     features: [
-      { text: "Official court forms filled from your answers (California now)", included: true },
+      { text: "Official California and New York court forms filled from your answers", included: true },
       { text: "Unlimited form guides and filing checklists", included: true },
       { text: "Unlimited public records request letters", included: true },
       { text: "Saved cases and re-downloads", included: true },
@@ -97,6 +97,7 @@ export const PricingComparison = () => {
             </Card>
           ))}
         </div>
+        <p className="text-sm text-muted-foreground text-center max-w-2xl mx-auto mt-6">{THIRD_PARTY_FEES_NOTE}</p>
       </div>
     </section>
   );
