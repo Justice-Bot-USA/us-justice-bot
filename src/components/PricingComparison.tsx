@@ -16,7 +16,6 @@ const plans = [
     features: [
       { text: "Official California and New York court forms filled from your answers", included: true },
       { text: "Unlimited form guides and filing checklists", included: true },
-      { text: "Unlimited public records request letters", included: true },
       { text: "Saved cases and re-downloads", included: true },
     ],
   },

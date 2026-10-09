@@ -225,13 +225,10 @@ export default function StateToolLandingPage() {
                 </p>
                 <ul className="text-sm text-muted-foreground mb-6 space-y-1">
                   <li className="flex items-center justify-center gap-2">
-                    <CheckCircle2 className="h-3.5 w-3.5 text-primary" /> Correct statutory language
+                    <CheckCircle2 className="h-3.5 w-3.5 text-primary" /> A citation to {stateName}'s public records law
                   </li>
                   <li className="flex items-center justify-center gap-2">
-                    <CheckCircle2 className="h-3.5 w-3.5 text-primary" /> Agency contact details
-                  </li>
-                  <li className="flex items-center justify-center gap-2">
-                    <CheckCircle2 className="h-3.5 w-3.5 text-primary" /> Ready-to-send PDF
+                    <CheckCircle2 className="h-3.5 w-3.5 text-primary" /> A PDF you complete with your details and send yourself
                   </li>
                 </ul>
                 <Button size="lg" onClick={() => setShowFOIA(true)}>

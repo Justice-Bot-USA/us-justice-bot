@@ -176,7 +176,6 @@ const Pricing = () => {
                 {[
                   'Official California and New York court forms, filled from your answers',
                   'Unlimited form guides and filing checklists',
-                  'Unlimited public records (FOIA) request letters',
                   'Saved cases, document uploads, and re-downloads',
                   'State-verified guidance for California and New York',
                 ].map((item) => (

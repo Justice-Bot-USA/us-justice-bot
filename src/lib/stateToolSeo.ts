@@ -45,7 +45,7 @@ export function getStateToolSeo(match: StateToolMatch) {
   if (toolType === 'arrest-records') {
     return {
       title: `How to Request Arrest Records in ${stateName} | Justice Bot USA`,
-      description: `Request arrest reports, warrant returns, booking records, and court documents in ${stateName} (${stateCode}). Generate a properly worded public records request with correct statutory citations.`,
+      description: `Request arrest reports, warrant returns, booking records, and court documents in ${stateName} (${stateCode}). Write a public records request letter that cites ${stateName}'s public records law.`,
       h1: `How to Request Arrest Records in ${stateName}`,
       keywords: [
         `${stateName} arrest records request`,
@@ -76,7 +76,7 @@ export function getStateToolSeo(match: StateToolMatch) {
         },
         {
           q: `How much does it cost to request arrest records in ${stateName}?`,
-          a: `Agencies may charge reasonable fees for copying and processing. Writing the letter with our tool is free; the PDF export (with follow-up and appeal templates) is included in the $25/month plan. Submitting the request to the agency is free.`,
+          a: `Agencies may charge fees set by state law, usually for copies (in California, generally only the direct cost of duplication). Writing the letter with our tool is free with an account; the PDF download is included in the $25/month plan.`,
         },
       ],
     };

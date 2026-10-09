@@ -223,8 +223,8 @@ const FOIARequestGenerator: React.FC<FOIARequestGeneratorProps> = ({
             Public Records Request Generator
           </DialogTitle>
           <DialogDescription>
-            Generate a properly worded FOIA / public records request letter with
-            correct statutory citations and agency submission instructions.
+            Write a state public records request letter that cites your state's public
+            records law. Add your details and the agency's address before you send it.
           </DialogDescription>
         </DialogHeader>
 
@@ -403,7 +403,7 @@ const FOIARequestGenerator: React.FC<FOIARequestGeneratorProps> = ({
               ) : (
                 <>
                   <FileText className="mr-2 h-4 w-4" />
-                  Generate Request Letter (Free Preview)
+                  Generate Request Letter
                 </>
               )}
             </Button>
