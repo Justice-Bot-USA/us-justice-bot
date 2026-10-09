@@ -235,7 +235,7 @@ const ucsFw1: FillableForm = {
     { key: 'requestOther', label: 'If something else: describe it', type: 'text' },
     {
       key: 'alreadyFiled', label: 'Have you already filed a summons and complaint, petition, or order to show cause in this case?', type: 'yesno', required: true,
-      help: 'If yes, you must also serve this application with a Notice of Motion (UCS-FW2) and file an Affirmation of Service (UCS-FW3).',
+      help: 'If yes, you must also serve this application with a Notice of Motion (UCS-FW2) on the other parties and on the Corporation Counsel (if filed in NYC) or the County Attorney (if filed outside NYC), then file an Affirmation of Service (UCS-FW3).',
     },
     {
       key: 'facts', label: 'How will you explain the facts of your case?', type: 'select', required: true,
@@ -252,7 +252,7 @@ const ucsFw1: FillableForm = {
     'Check every amount. Item 7 of the form says you have no income or assets other than those listed.',
     'Page 3: fill in the day, month and year, then sign and print your name. You sign under penalty of perjury.',
     'If you have more than 2 vehicles or 4 dependents, add them on the form.',
-    'File it with the court clerk. If you already started the case, serve it with a Notice of Motion (UCS-FW2) and file an Affirmation of Service (UCS-FW3).',
+    'File it with the court clerk. If you already started the case, serve it with a Notice of Motion (UCS-FW2) on the other parties and on the Corporation Counsel (if filed in NYC) or the County Attorney (if filed outside NYC), then file an Affirmation of Service (UCS-FW3).',
     'The judge may ask for proof of income, such as pay stubs or bank statements.',
   ],
   fill: (a) => {
