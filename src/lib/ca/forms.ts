@@ -8,7 +8,7 @@ import type { CourtForm } from '@/lib/formsLibraryData';
 const JCC = (form: string) => `https://selfhelp.courts.ca.gov/jcc-form/${form}`;
 
 export const CA_CRIMINAL_FORMS: CourtForm[] = [
-  { formNumber: 'CR-180', name: 'Petition for Dismissal (PC §1203.4)', description: 'Ask the court to dismiss a conviction after probation is completed.', url: JCC('CR-180'), category: 'Record Clearing', feeAmount: 'No filing fee', feeWaiverAvailable: true },
+  { formNumber: 'CR-180', name: 'Petition for Dismissal (PC §1203.4)', description: 'Ask the court to dismiss a conviction after probation is completed.', url: JCC('CR-180'), category: 'Record Clearing', feeAmount: 'No filing fee', feeWaiverAvailable: false },
   { formNumber: 'CR-181', name: 'Order for Dismissal', description: 'Proposed order filed with CR-180 for the judge to sign.', url: JCC('CR-181'), category: 'Record Clearing', feeAmount: 'Free' },
   { formNumber: 'Clean Your Record', name: 'California Courts — Clean Your Record Guide', description: 'Dismissal, reduction, sealing, and automatic relief options explained by the courts.', url: 'https://selfhelp.courts.ca.gov/clean-your-record', category: 'Guides', feeAmount: 'Free' },
 ];

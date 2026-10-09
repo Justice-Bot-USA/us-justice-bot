@@ -32,7 +32,7 @@ export const CA_PROCEDURES: Record<CaCategoryKey, CaFilingProcedure> = {
       { title: 'Get your record', detail: 'Request your California criminal history from the DOJ so you know every case and its outcome.', ref: 'https://oag.ca.gov/fingerprints/record-review' },
       { title: 'Check eligibility', detail: 'Use the courts\' Clean Your Record guide to see whether dismissal, reduction, or another remedy applies.', ref: `${SELF_HELP}/clean-your-record` },
       { title: 'Fill out CR-180 and CR-181', detail: 'One petition per case. Attach any required proof of completed probation.' },
-      { title: 'File with the clerk', detail: 'File in the convicting court. Ask for a fee waiver if you cannot afford the fee.' },
+      { title: 'File with the clerk', detail: 'File in the convicting court. There is no filing fee.' },
       { title: 'Serve the prosecutor', detail: 'The prosecuting agency must receive notice; the court can tell you how.' },
       { title: 'Hearing (if set)', detail: 'Some courts decide on paper; others set a hearing.' },
       { title: 'Get the signed order', detail: 'Keep certified copies. Dismissal does not erase the record but changes how it can be used.' },
@@ -43,7 +43,7 @@ export const CA_PROCEDURES: Record<CaCategoryKey, CaFilingProcedure> = {
     category: 'family',
     title: 'Family — Custody, Support, and Domestic Violence Orders',
     venue: 'Superior Court (Family Division) in the county where the child lives.',
-    fees: 'Request for Order: $60, often waived for custody/support-only requests. DV restraining orders: free.',
+    fees: 'Request for Order (FL-300): $60, or $85 to change or enforce custody or visitation. No fee in domestic violence cases or for papers filed by the local child support agency.',
     deadlines: [
       'DV temporary orders: usually decided within 1 business day of filing.',
       'Opposing papers to a Request for Order are generally due 9 court days before the hearing.',
@@ -83,7 +83,7 @@ export const CA_PROCEDURES: Record<CaCategoryKey, CaFilingProcedure> = {
     category: 'cps',
     title: 'Juvenile Dependency (CPS) — Parents\' Rights',
     venue: 'Superior Court (Juvenile Division) in the county where the case was filed.',
-    fees: 'Free. If you cannot afford a lawyer, the court appoints one for you (WIC §317).',
+    fees: 'No filing fees. If you cannot afford a lawyer, the court must appoint one when your child is placed outside your home, that is recommended, or your child is an Indian child; otherwise it may appoint one (WIC §317). The county may later ask you to repay part of the lawyer\'s cost if a financial review finds you can pay (WIC §903.1).',
     deadlines: [
       'Detention hearing: generally within 1 court day after the petition is filed when a child is removed.',
       'JV-820 Notice of Intent to File Writ: very short deadline after a 366.26 hearing is set — ask your attorney immediately.',
@@ -128,7 +128,7 @@ export const CA_PROCEDURES: Record<CaCategoryKey, CaFilingProcedure> = {
     steps: [
       { title: 'Small claims: demand payment first', detail: 'Courts expect you to ask the other side to pay before filing.', ref: `${SELF_HELP}/small-claims-california` },
       { title: 'Small claims: file SC-100', detail: 'File in the right county and pay the fee or request a waiver.', ref: `${SELF_HELP}/small-claims/start-case/file` },
-      { title: 'Small claims: serve and file SC-104', detail: 'Service must be completed before the hearing by an adult who is not you.' },
+      { title: 'Small claims: serve and file SC-104', detail: 'An adult who is not you must serve the defendant at least 15 days before the court date, or 20 days if they live outside the county (substituted service needs 10 days more). File SC-104 proof of service at least 5 days before the hearing.', ref: `${SELF_HELP}/small-claims/start-case/serve` },
       { title: 'Eviction: answer on time', detail: 'If served with SUM-130 and UD-100, file UD-105 within 10 court days or you can lose by default. If the papers were left with someone else or posted and mailed, service finishes later, which moves the deadline; ask the self-help center to count it.', ref: `${SELF_HELP}/eviction-tenant` },
       { title: 'Eviction: find free help', detail: 'Many counties have free tenant legal help — check your court\'s self-help center.' },
       { title: 'Go to court prepared', detail: 'Bring evidence, witnesses, and copies of everything filed.' },
