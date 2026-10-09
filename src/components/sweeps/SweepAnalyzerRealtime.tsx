@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import StateNextSteps from '@/components/StateNextSteps';
 import { Link } from 'react-router-dom';
 import { signInPath } from '@/lib/signIn';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -227,6 +228,10 @@ export const SweepAnalyzerRealtime: React.FC<SweepAnalyzerRealtimeProps> = ({ on
             Start New Analysis
           </Button>
         </div>
+        <StateNextSteps
+          state={state}
+          area={[profile?.classification?.primaryCategory, ...(profile?.classification?.subIssues ?? [])].filter(Boolean).join(' ')}
+        />
         {profile && <CaseProfileDisplay profile={profile} />}
       </div>
     );

@@ -17,6 +17,7 @@ import {
   Handshake,
 } from "lucide-react";
 import StartHero from "@/components/StartHero";
+import StatePicker from "@/components/StatePicker";
 import { SEOHead } from "@/components/SEOHead";
 import EnhancedSEO from "@/components/EnhancedSEO";
 import LocalBusinessSchema from "@/components/LocalBusinessSchema";
@@ -183,6 +184,11 @@ const Index = () => {
       <main id="main-content" className="space-y-0">
         {/* 1. Hero */}
         <StartHero language={language} />
+
+        {/* 1b. Live states: straight into the California / New York legal centers */}
+        <div className="container mx-auto px-4 max-w-5xl py-12">
+          <StatePicker />
+        </div>
 
         {/* 2. Stats Bar */}
         <Suspense fallback={null}>

@@ -1,4 +1,5 @@
 import React from 'react';
+import StateNextSteps from '@/components/StateNextSteps';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -174,6 +175,8 @@ export const FunnelNextStepsStep: React.FC<FunnelNextStepsStepProps> = ({
           Here's what to do next with your {legalAreaName.toLowerCase()} case in {stateName}
         </p>
       </div>
+
+      <StateNextSteps state={config.jurisdiction} area={config.legalArea} />
 
       {/* Next Steps List */}
       <div className="space-y-3">

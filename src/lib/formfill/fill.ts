@@ -71,7 +71,25 @@ export async function fillPdf(form: FillableForm, answers: Answers, pdfBytes?: A
     } else missing.push(name);
   }
 
-  pdfForm.updateFieldAppearances(font);
+  const pages = doc.getPages();
+  for (const d of plan.draw ?? []) {
+    const page = pages[d.page];
+    if (!page || !d.text) continue;
+    const size = d.size ?? 10;
+    let text = d.text;
+    // Shrink to fit the blank when a width is given, down to 6pt, then truncate.
+    if (d.maxWidth) {
+      let s = size;
+      while (s > 6 && font.widthOfTextAtSize(text, s) > d.maxWidth) s -= 0.5;
+      while (text.length > 1 && font.widthOfTextAtSize(text, s) > d.maxWidth) text = text.slice(0, -1);
+      page.drawText(text, { x: d.x, y: d.y, size: s, font });
+    } else {
+      page.drawText(text, { x: d.x, y: d.y, size, font });
+    }
+    filled++;
+  }
+
+  if (pdfForm.getFields().length) pdfForm.updateFieldAppearances(font);
   doc.setTitle(`${form.formNumber} — ${form.title}`);
   doc.setProducer('Justice Bot USA');
   return { bytes: await doc.save(), filled, missing };

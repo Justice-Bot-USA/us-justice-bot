@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import StateNextSteps from '@/components/StateNextSteps';
 import { signInPath } from '@/lib/signIn';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -330,6 +331,8 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
                       </p>
                     </div>
                   </div>
+
+                  <StateNextSteps state={caseData.state} area={`${caseData.legal_area} ${caseData.case_title ?? ''}`} />
 
                   {/* Related Cases Display */}
                   {caseId && <RelatedCasesDisplay caseId={caseId} />}

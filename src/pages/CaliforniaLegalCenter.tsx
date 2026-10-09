@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { getFillableByFormNumber } from '@/lib/formfill';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -27,7 +27,12 @@ const CATEGORIES: { key: CaCategoryKey; label: string; icon: React.ReactNode; bl
 ];
 
 export default function CaliforniaLegalCenter() {
-  const [active, setActive] = useState<CaCategoryKey>('criminal');
+  // ?area=<tab> opens a specific legal area (links from a user's story results use this).
+  const [params] = useSearchParams();
+  const requested = params.get('area');
+  const [active, setActive] = useState<CaCategoryKey>(() =>
+    CATEGORIES.some((c) => c.key === requested) ? (requested as CaCategoryKey) : 'criminal',
+  );
   const [query, setQuery] = useState('');
 
   const forms = CA_FORMS_BY_CATEGORY[active];

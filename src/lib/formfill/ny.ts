@@ -7,6 +7,7 @@
 // Field names below were read from those files.
 import type { FillableForm, Question } from './types';
 import { compact } from './party';
+import { NY_DIVORCE_FORMS } from './nyDivorce';
 
 const upper = (v?: string) => v?.trim().toUpperCase();
 const money = (v?: string) => v?.replace(/[$\s]/g, '');
@@ -320,4 +321,4 @@ const ucsFw1: FillableForm = {
   },
 };
 
-export const NY_FILLABLE: FillableForm[] = [civSc50, ucsFw1];
+export const NY_FILLABLE: FillableForm[] = [civSc50, ucsFw1, ...NY_DIVORCE_FORMS];

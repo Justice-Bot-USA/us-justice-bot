@@ -95,7 +95,7 @@ const PrivacyPolicy = () => {
     <>
       <Helmet>
         <title>Privacy Policy | Justice Bot USA - Legal AI Assistant</title>
-        <meta name="description" content="Privacy Policy for Justice Bot USA. Learn how we collect, use, and protect your personal information across all 50 US states." />
+        <meta name="description" content="Privacy Policy for Justice Bot USA. Learn how we collect, use, and protect your personal information." />
         <meta name="robots" content="index, follow" />
         <link rel="canonical" href="https://justicebot-usa.com/privacy" />
       </Helmet>
@@ -111,7 +111,7 @@ const PrivacyPolicy = () => {
               <h1 className="text-4xl md:text-5xl font-bold">Privacy Policy</h1>
             </div>
             <p className="text-center text-lg opacity-90 max-w-2xl mx-auto">
-              Your privacy is important to us. This policy explains how Justice Bot USA collects, uses, and protects your information.
+              Your privacy is important to us. This policy explains how Justice Bot Technologies Inc., which operates Justice Bot USA ("we," "us"), collects, uses, and protects your information.
             </p>
             <p className="text-center text-sm opacity-70 mt-4">
               Last Updated: {lastUpdated}
@@ -283,7 +283,7 @@ const PrivacyPolicy = () => {
             If you have any questions about this Privacy Policy or wish to exercise your privacy rights, please contact us:
           </p>
           <div className="bg-muted/50 rounded-lg p-6">
-            <p className="font-medium">Justice Bot USA Privacy Team</p>
+            <p className="font-medium">Justice Bot Technologies Inc. (Justice Bot USA) — Privacy</p>
             <p className="text-muted-foreground">Email: privacy@justicebot-usa.com</p>
             <p className="text-muted-foreground">Response Time: Within 45 days as required by applicable state laws</p>
           </div>
