@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { NY_FORMS_BY_CATEGORY, type NyCategoryKey } from '@/lib/ny/forms';
 import { NY_PROCEDURES } from '@/lib/ny/procedures';
+import { NYC_HOUSING_HELP, NYC_NONPAYMENT_DEFENSES } from '@/lib/ny/housingDefenses';
 
 const CATEGORIES: { key: NyCategoryKey; label: string; icon: React.ReactNode; blurb: string }[] = [
   { key: 'criminal', label: 'Criminal', icon: <Shield className="h-4 w-4" />, blurb: 'Sealing, vacatur, post-conviction relief, and appeals.' },
@@ -203,6 +204,52 @@ export default function NewYorkLegalCenter() {
 
                     {filtered.length === 0 && (
                       <p className="text-center text-sm text-muted-foreground py-8">No forms match "{query}" in any area.</p>
+                    )}
+
+                    {!searching && c.key === 'civil' && (
+                    <Card id="nyc-housing-defenses">
+                      <CardHeader className="pb-2">
+                        <CardTitle className="text-base">NYC eviction for unpaid rent: common defenses</CardTitle>
+                        <p className="text-sm text-muted-foreground">
+                          When you answer a nonpayment case, the clerk records your defenses on the Answer in Person form.
+                          These are the ones listed on that form, explained in plain language.
+                        </p>
+                      </CardHeader>
+                      <CardContent className="space-y-4 text-sm">
+                        <div className="rounded-md border border-primary/30 bg-primary/5 p-3 space-y-1">
+                          <p>
+                            <strong>Free lawyer:</strong> {NYC_HOUSING_HELP.rightToCounsel}{' '}
+                            <a href={NYC_HOUSING_HELP.rightToCounselUrl} target="_blank" rel="noopener noreferrer" className="text-primary underline">Right to Counsel</a>
+                          </p>
+                          <p>
+                            <a href={NYC_HOUSING_HELP.hotlineUrl} target="_blank" rel="noopener noreferrer" className="text-primary underline">{NYC_HOUSING_HELP.hotline}</a>
+                          </p>
+                        </div>
+                        <ol className="space-y-3">
+                          {NYC_NONPAYMENT_DEFENSES.map((d) => (
+                            <li key={d.number} className="border-l-2 border-primary/40 pl-3">
+                              <div className="font-medium text-foreground">Defense #{d.number}: {d.title}</div>
+                              <p className="text-muted-foreground italic">{d.says}</p>
+                              <p className="text-muted-foreground mt-1">{d.detail}</p>
+                              {d.bring && <p className="text-muted-foreground mt-1"><strong className="text-foreground">Bring:</strong> {d.bring}</p>}
+                              {d.links && (
+                                <div className="flex flex-wrap gap-3 mt-1">
+                                  {d.links.map((l) => (
+                                    <a key={l.url} href={l.url} target="_blank" rel="noopener noreferrer" className="text-xs text-primary inline-flex items-center gap-1">
+                                      {l.label} <ExternalLink className="h-3 w-3" />
+                                    </a>
+                                  ))}
+                                </div>
+                              )}
+                            </li>
+                          ))}
+                        </ol>
+                        <p className="text-xs text-muted-foreground">
+                          Legal information, not legal advice. Raise every defense that applies when you first answer.{' '}
+                          <a href={NYC_HOUSING_HELP.officialUrl} target="_blank" rel="noopener noreferrer" className="text-primary underline">How to answer (NY Courts)</a>
+                        </p>
+                      </CardContent>
+                    </Card>
                     )}
 
                     {!searching && (
