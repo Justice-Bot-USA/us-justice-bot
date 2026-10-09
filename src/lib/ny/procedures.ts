@@ -80,7 +80,8 @@ export const NY_PROCEDURES: Record<NyCategoryKey, FilingProcedure> = {
     ],
     steps: [
       { title: 'Buy an Index Number', detail: 'County Clerk issues Index Number ($210); required to file anything.' },
-      { title: 'Prepare the uncontested packet', detail: 'UD-1 through UD-11, child support worksheet UD-7 if applicable, removal-of-barriers UD-8 where required.' },
+      { title: 'Prepare the uncontested packet', detail: 'Start with UD-1 (Summons with Notice) or UD-1a with UD-2 (Verified Complaint). The packet also includes UD-3 to UD-7, UD-9 to UD-14, the UD-8 income, maintenance and child support worksheets if needed, and the UD-4 barriers-to-remarriage statement in every case. You can fill UD-1 and UD-2 here.' },
+      { title: 'Or use the court\'s free DIY program', detail: 'NY Courts runs a free online program that asks questions and prepares the whole uncontested packet.', ref: 'https://www.nycourts.gov/help/diy-forms/uncontested-divorce-program' },
       { title: 'Serve the defendant', detail: 'Personal service required for divorce. Use a process server who is not a party.' },
       { title: 'Wait the answer period', detail: '20 or 30 days depending on service method.' },
       { title: 'File the calendaring papers', detail: 'Request for Judicial Intervention (RJI) and Note of Issue for uncontested calendar.' },

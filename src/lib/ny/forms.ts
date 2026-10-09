@@ -26,16 +26,23 @@ export const NY_FAMILY_FORMS: CourtForm[] = [
 ];
 
 export const NY_DIVORCE_FORMS: CourtForm[] = [
-  { formNumber: 'UD-1', name: 'Summons with Notice (Uncontested Divorce)', description: 'Start an uncontested divorce in Supreme Court.', url: 'https://www.nycourts.gov/divorce-resources/statewide-divorce-forms', category: 'Divorce', feeAmount: '$210 index fee', feeWaiverAvailable: true },
-  { formNumber: 'UD-2', name: 'Verified Complaint Action for Divorce', description: 'State the grounds and relief sought (DRL §170(7) no-fault).', url: 'https://www.nycourts.gov/divorce-resources/statewide-divorce-forms', category: 'Divorce' },
-  { formNumber: 'UD-3', name: 'Affidavit of Defendant', description: 'Defendant\'s waiver/appearance in uncontested action.', url: 'https://www.nycourts.gov/divorce-resources/statewide-divorce-forms', category: 'Divorce' },
-  { formNumber: 'UD-6', name: 'Affidavit of Plaintiff', description: 'Plaintiff\'s sworn statement supporting the judgment.', url: 'https://www.nycourts.gov/divorce-resources/statewide-divorce-forms', category: 'Divorce' },
-  { formNumber: 'UD-7', name: 'Child Support Worksheet (CSSA)', description: 'Calculate basic child support under DRL §240.', url: 'https://www.nycourts.gov/divorce-resources/statewide-divorce-forms', category: 'Support' },
-  { formNumber: 'UD-8', name: 'Sworn Statement of Removal of Barriers to Remarriage', description: 'Required where one party is from a religion with such barriers.', url: 'https://www.nycourts.gov/divorce-resources/statewide-divorce-forms', category: 'Divorce' },
-  { formNumber: 'UD-10', name: 'Findings of Fact and Conclusions of Law', description: 'Proposed findings for the court.', url: 'https://www.nycourts.gov/divorce-resources/statewide-divorce-forms', category: 'Divorce' },
-  { formNumber: 'UD-11', name: 'Judgment of Divorce', description: 'Proposed judgment for court signature.', url: 'https://www.nycourts.gov/divorce-resources/statewide-divorce-forms', category: 'Divorce', feeAmount: '$125 RJI' },
-  { formNumber: 'UCS-111', name: 'Notice of Entry', description: 'Notice that judgment has been entered.', url: 'https://www.nycourts.gov/divorce-resources/statewide-divorce-forms', category: 'Divorce' },
-  { formNumber: 'RJI', name: 'Request for Judicial Intervention', description: 'Activates the case in the court system.', url: 'https://www.nycourts.gov/forms', category: 'Case Management', feeAmount: '$95' },
+  // Form numbers and names from nycourts.gov "Uncontested Divorce Information and Forms" (checked 2026-10-09).
+  { formNumber: 'DIY Divorce', name: 'Free DIY Uncontested Divorce Program (NY Courts)', description: 'The court\'s free online program asks questions and prepares the whole uncontested divorce packet.', url: 'https://www.nycourts.gov/help/diy-forms/uncontested-divorce-program', category: 'Divorce', feeAmount: 'Free' },
+  { formNumber: 'UD-1', name: 'Summons with Notice', description: 'Starts an uncontested divorce in Supreme Court (or use UD-1a with UD-2).', url: 'https://www.nycourts.gov/forms/summons-notice', category: 'Divorce', feeAmount: '$210 index number', feeWaiverAvailable: true },
+  { formNumber: 'UD-1a', name: 'Summons (with Verified Complaint)', description: 'Starts the case together with the Verified Complaint (UD-2).', url: 'https://www.nycourts.gov/forms/summons', category: 'Divorce', feeAmount: '$210 index number', feeWaiverAvailable: true },
+  { formNumber: 'UD-2', name: 'Verified Complaint', description: 'Residency, marriage, children, health plans, grounds and relief.', url: 'https://www.nycourts.gov/forms/verified-complaint', category: 'Divorce' },
+  { formNumber: 'UD-3', name: 'Affirmation of Service', description: 'Proof the summons was delivered to your spouse.', url: 'https://www.nycourts.gov/forms/affirmation-service', category: 'Divorce' },
+  { formNumber: 'UD-4', name: 'Sworn Statement of Removal of Barriers to Remarriage (and UD-4a)', description: 'Required in every case, with proof of service.', url: 'https://www.nycourts.gov/forms/sworn-statement-removal-barriers-remarriage', category: 'Divorce' },
+  { formNumber: 'UD-5', name: 'Affirmation of Regularity', description: 'Tells the court whether your spouse was served, appeared, or defaulted.', url: 'https://www.nycourts.gov/forms/affirmation-affidavit-regularity', category: 'Divorce' },
+  { formNumber: 'UD-6', name: 'Sworn Affirmation of Plaintiff', description: 'Your sworn statement supporting the judgment. Required in every case.', url: 'https://www.nycourts.gov/forms/sworn-affirmation-plaintiff', category: 'Divorce' },
+  { formNumber: 'UD-7', name: 'Affirmation of Defendant', description: 'Your spouse agrees to the divorce and to the uncontested calendar (if they sign).', url: 'https://www.nycourts.gov/forms/affirmation-defendant', category: 'Divorce' },
+  { formNumber: 'UD-8(3)', name: 'Child Support Worksheet', description: 'Calculates child support; UD-8(1) annual income and UD-8(2) maintenance worksheets as needed.', url: 'https://www.nycourts.gov/forms/child-support-worksheet', category: 'Support' },
+  { formNumber: 'UD-9', name: 'Note of Issue', description: 'Places the case on the uncontested calendar.', url: 'https://www.nycourts.gov/forms/note-issue', category: 'Case Management', feeAmount: '$125 (uncontested matrimonial)' },
+  { formNumber: 'UD-10', name: 'Findings of Fact and Conclusions of Law', description: 'Proposed findings for the judge.', url: 'https://www.nycourts.gov/forms/findings-factconclusions-law', category: 'Divorce' },
+  { formNumber: 'UD-11', name: 'Judgment of Divorce', description: 'Proposed judgment for the judge to sign.', url: 'https://www.nycourts.gov/forms/judgment-divorce', category: 'Divorce' },
+  { formNumber: 'UD-13', name: 'Request for Judicial Intervention (RJI)', description: 'Activates the case. Add UCS-840M if there are children.', url: 'https://www.nycourts.gov/forms/request-judicial-intervention', category: 'Case Management', feeAmount: '$95' },
+  { formNumber: 'UD-14', name: 'Notice of Entry', description: 'Notice that the judgment has been entered.', url: 'https://www.nycourts.gov/forms/notice-entry', category: 'Divorce' },
+  { formNumber: 'UCS-111', name: 'Child Support Summary Form', description: 'Required in divorces with children.', url: 'https://www.nycourts.gov/forms/child-support-summary-form', category: 'Support' },
   { formNumber: 'Stmt of Net Worth', name: 'Statement of Net Worth', description: 'Sworn financial disclosure in contested matrimonial actions.', url: 'https://www.nycourts.gov/divorce-resources/statewide-divorce-forms', category: 'Financial' },
 ];
 

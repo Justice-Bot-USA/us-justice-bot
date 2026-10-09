@@ -25,6 +25,9 @@ export interface FillPlan {
   radio?: Record<string, number>;
   /** Dropdown name → option to select. */
   select?: Record<string, string>;
+  /** Text placed at fixed positions, for official forms published without fillable fields.
+   *  page is 0-based; x/y are PDF points from the bottom-left (y is the text baseline). */
+  draw?: { page: number; x: number; y: number; text: string; size?: number; maxWidth?: number }[];
 }
 
 export interface FillableForm {
