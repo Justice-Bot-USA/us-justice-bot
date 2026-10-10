@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { useAdminAccess } from '@/hooks/useAdminAccess';
+import { launchStateOf } from '@/lib/stateRouting';
 
 const CATEGORY_OPTIONS = [
   { value: 'all', label: 'All Categories' },
@@ -34,7 +35,11 @@ const STATE_CENTERS: Record<string, { name: string; center: string; fill?: strin
   'US-NY': { name: 'New York', center: '/ny/legal-center', fill: '/fill/ny' },
 };
 
-const LAUNCH_STATES = ['US-FED', 'US-CA', 'US-NY', 'US-TX', 'US-FL', 'US-IL', 'US-WA', 'US-MA', 'US-PA', 'US-GA', 'US-NJ'];
+// Live for the public: federal forms plus California and New York. Every other state is coming soon.
+const isLiveJurisdiction = (code: string) => code === 'US-FED' || !!launchStateOf(code);
+
+// Jurisdictions the admin-only sync job scrapes. This is a back-office list, not a launch list.
+const ADMIN_SYNC_JURISDICTIONS = ['US-FED', 'US-CA', 'US-NY', 'US-TX', 'US-FL', 'US-IL', 'US-WA', 'US-MA', 'US-PA', 'US-GA', 'US-NJ'];
 
 export default function UsaForms() {
   const [selectedJurisdiction, setSelectedJurisdiction] = useState('US-FED');
@@ -108,14 +113,15 @@ export default function UsaForms() {
   }, [forms, searchQuery]);
 
   const currentJurisdiction = jurisdictions?.find(j => j.code === selectedJurisdiction);
-  const isLaunchState = LAUNCH_STATES.includes(selectedJurisdiction);
+  const isLive = isLiveJurisdiction(selectedJurisdiction);
+  const isSyncJurisdiction = ADMIN_SYNC_JURISDICTIONS.includes(selectedJurisdiction);
 
   // Auto-sync: trigger sync on first load if no forms exist for the jurisdiction
   const autoSyncDone = useRef<Set<string>>(new Set());
   useEffect(() => {
     if (
       isAdmin &&
-      isLaunchState &&
+      isSyncJurisdiction &&
       forms !== undefined &&
       forms.length === 0 &&
       !autoSyncDone.current.has(selectedJurisdiction)
@@ -133,7 +139,7 @@ export default function UsaForms() {
         }
       })();
     }
-  }, [forms, selectedJurisdiction, isLaunchState, isAdmin, refetchForms]);
+  }, [forms, selectedJurisdiction, isSyncJurisdiction, isAdmin, refetchForms]);
 
   const stateCenter = STATE_CENTERS[selectedJurisdiction];
 
@@ -149,12 +155,12 @@ export default function UsaForms() {
     }
   };
 
-  // Sort jurisdictions: launch states first, then alphabetical
+  // Sort jurisdictions: live ones (federal, California, New York) first, then alphabetical
   const sortedJurisdictions = useMemo(() => {
     if (!jurisdictions) return [];
     return [...jurisdictions].sort((a, b) => {
-      const aLaunch = LAUNCH_STATES.includes(a.code);
-      const bLaunch = LAUNCH_STATES.includes(b.code);
+      const aLaunch = isLiveJurisdiction(a.code);
+      const bLaunch = isLiveJurisdiction(b.code);
       if (aLaunch && !bLaunch) return -1;
       if (!aLaunch && bLaunch) return 1;
       if (a.code === 'US-FED') return -1;
@@ -210,7 +216,7 @@ export default function UsaForms() {
                     <SelectContent className="max-h-[300px]">
                       {sortedJurisdictions.map((j) => (
                         <SelectItem key={j.code} value={j.code}>
-                          {j.name} {LAUNCH_STATES.includes(j.code) ? '✓' : ''}
+                          {j.name} {isLiveJurisdiction(j.code) ? '✓' : ''}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -283,11 +289,12 @@ export default function UsaForms() {
               </div>
             </div>
 
-            {!isLaunchState && (
+            {!isLive && (
               <div className="mt-4 p-3 bg-destructive/10 border border-destructive/20 rounded-lg">
                 <p className="text-sm text-destructive">
-                  <strong>Coming Soon:</strong> This jurisdiction is not yet in our launch phase.
-                  Currently syncing: Federal + CA, NY, TX, FL, IL, WA, MA, PA, GA, NJ.
+                  <strong>Coming soon:</strong> Justice Bot USA is live in California and New York.{' '}
+                  {currentJurisdiction?.name || 'This state'} is coming soon, so we don't offer form filling, filling
+                  instructions or a plan here yet. Any links shown go to official court websites.
                 </p>
               </div>
             )}
@@ -394,7 +401,7 @@ export default function UsaForms() {
                 </p>
               </>
             )}
-            {isAdmin && isLaunchState && (
+            {isAdmin && isSyncJurisdiction && (
               <Button variant="outline" className="mt-4" onClick={handleSync}>
                 <RefreshCw className="h-4 w-4 mr-2" />
                 Sync Now (admin)
@@ -411,7 +418,8 @@ export default function UsaForms() {
               Need Help With Your Forms?
             </CardTitle>
             <CardDescription>
-              Our tools link to official forms, explain what each one is for, and help you fill in the forms you choose.
+              Our tools link to official forms and explain what each one is for. In California and New York you can fill
+              in the official forms we support with your own answers.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -420,7 +428,7 @@ export default function UsaForms() {
                 <Button variant="outline" className="w-full h-auto py-4 flex flex-col items-center gap-2">
                   <FileText className="h-6 w-6" />
                   <span className="font-medium">Case Analysis</span>
-                  <span className="text-xs text-muted-foreground">Get form recommendations</span>
+                  <span className="text-xs text-muted-foreground">A plain-language summary of your situation</span>
                 </Button>
               </Link>
               <Link to="/forms-library">

@@ -4,7 +4,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { 
-  Lock, 
   Unlock, 
   CheckCircle2, 
   FileText, 
@@ -13,7 +12,8 @@ import {
   Shield,
   Clock,
   ArrowRight,
-  Loader2
+  Loader2,
+  ExternalLink
 } from 'lucide-react';
 import { FunnelConfig, FunnelState, US_STATE_NAMES, LEGAL_AREA_NAMES, isStateEnabled } from '@/lib/funnels';
 import { useAuth } from '@/hooks/useAuth';
@@ -22,6 +22,8 @@ import { trackAddToCart, getDetectedCountry } from '@/hooks/useAnalytics';
 import { toast } from 'sonner';
 import { usePaywallAccess } from '@/hooks/usePaywallAccess';
 import { PLAN, THIRD_PARTY_FEES_NOTE, startSubscriptionCheckout } from '@/lib/pricing';
+import { stateRouteFor } from '@/lib/stateRouting';
+import { getFormsForCase } from '@/hooks/useFormsPdfGenerator';
 
 interface FunnelPaywallStepProps {
   config: FunnelConfig;
@@ -35,11 +37,17 @@ interface FunnelPaywallStepProps {
 
 const WHAT_YOU_GET = [
   { icon: FileText, label: 'How the process generally works', description: 'General information with links to official sources' },
-  { icon: Download, label: 'Guides to forms commonly used in this area', description: 'Purpose, fees, deadlines, and the official form link' },
-  { icon: Sparkles, label: 'Official court forms filled from your answers', description: 'California and New York court forms, ready to review and sign' },
+  { icon: Download, label: 'Guides to forms commonly used in this area', description: 'What each form is for, court fees where we know them, and the official form link' },
+  { icon: Sparkles, label: 'Form filling where we support it', description: 'For the California and New York court forms we support, you enter your own answers and get the official form back to review, sign and file yourself' },
   { icon: Shield, label: 'General filing checklists', description: 'How filing generally works, and where to get help' },
-  { icon: Clock, label: 'Unlimited use', description: 'All forms and filling instructions in California and New York, one monthly plan' },
+  { icon: Clock, label: 'One monthly plan', description: 'All forms and filling instructions we offer for California and New York are included' },
 ];
+
+// Official court self-help sites for the launch states.
+const COURT_SELF_HELP: Record<string, { label: string; url: string }> = {
+  CA: { label: 'California Courts Self-Help Guide', url: 'https://selfhelp.courts.ca.gov' },
+  NY: { label: 'New York CourtHelp', url: 'https://www.nycourts.gov/courthelp/' },
+};
 
 export const FunnelPaywallStep: React.FC<FunnelPaywallStepProps> = ({
   config,
@@ -54,13 +62,15 @@ export const FunnelPaywallStep: React.FC<FunnelPaywallStepProps> = ({
 
   const stateName = US_STATE_NAMES[config.jurisdiction];
   const legalAreaName = LEGAL_AREA_NAMES[config.legalArea];
-  const formCount = config.forms.length;
+  // Only sell the plan in a funnel that has form guides to deliver on the next step.
+  const hasFormGuides =
+    config.forms.length > 0 && getFormsForCase(config.jurisdiction, config.legalArea).length > 0;
   // The plan is only sold in California and New York. Other states are coming soon.
   const launched = isStateEnabled(config.jurisdiction);
 
   const handleUnlock = async () => {
     // Wait for the access check so a current subscriber is never sent to checkout.
-    if (!launched || accessLoading) return;
+    if (!launched || !hasFormGuides || accessLoading) return;
 
     if (!user) {
       toast.error('Please sign in to continue');
@@ -111,6 +121,42 @@ export const FunnelPaywallStep: React.FC<FunnelPaywallStepProps> = ({
     );
   }
 
+  if (!hasFormGuides) {
+    const route = stateRouteFor(config.jurisdiction, config.legalArea);
+    const selfHelp = COURT_SELF_HELP[route?.state ?? ''];
+    return (
+      <Card>
+        <CardContent className="p-6 text-center space-y-4">
+          <FileText className="h-10 w-10 text-muted-foreground mx-auto" />
+          <h3 className="text-xl font-semibold">
+            No form guides for {legalAreaName.toLowerCase()} in {stateName} yet
+          </h3>
+          <p className="text-muted-foreground">
+            We don't have form guides for this area yet, so there is nothing to buy here. Our {stateName} legal
+            center has plain-language information with links to official sources, and the court's self-help site
+            has the official forms and instructions.
+          </p>
+          <div className="flex flex-wrap gap-3 justify-center">
+            {route && (
+              <Button asChild>
+                <Link to={route.centerPath}>{stateName} legal center</Link>
+              </Button>
+            )}
+            {selfHelp && (
+              <Button asChild variant="outline">
+                <a href={selfHelp.url} target="_blank" rel="noopener noreferrer">
+                  {selfHelp.label}
+                  <ExternalLink className="ml-2 h-4 w-4" />
+                </a>
+              </Button>
+            )}
+          </div>
+          <p className="text-xs text-muted-foreground">Legal information, not legal advice.</p>
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -120,9 +166,7 @@ export const FunnelPaywallStep: React.FC<FunnelPaywallStepProps> = ({
         </div>
         <h3 className="text-2xl font-bold mb-2">Unlock Forms and Guides</h3>
         <p className="text-muted-foreground">
-          {formCount > 0
-            ? <>Forms and filling instructions for {legalAreaName.toLowerCase()} matters in {stateName}, all included in the monthly plan</>
-            : <>Plain-language information for {legalAreaName.toLowerCase()} matters in {stateName}, included in the monthly plan</>}
+          Form guides and filling instructions for {legalAreaName.toLowerCase()} matters in {stateName}, all included in the monthly plan
         </p>
       </div>
 
@@ -134,11 +178,9 @@ export const FunnelPaywallStep: React.FC<FunnelPaywallStepProps> = ({
               <p className="font-medium">{state.data.caseTitle || `${legalAreaName} Case`}</p>
               <p className="text-sm text-muted-foreground">{stateName} • {legalAreaName}</p>
             </div>
-            {formCount > 0 && (
-              <Badge variant="secondary">
-                {formCount} common forms
-              </Badge>
-            )}
+            <Badge variant="secondary">
+              Common official forms
+            </Badge>
           </div>
         </CardContent>
       </Card>
@@ -172,7 +214,6 @@ export const FunnelPaywallStep: React.FC<FunnelPaywallStepProps> = ({
       </Card>
 
       {/* Forms Preview */}
-      {formCount > 0 && (
       <Card>
         <CardHeader className="pb-3">
           <CardTitle className="text-lg flex items-center gap-2">
@@ -194,12 +235,11 @@ export const FunnelPaywallStep: React.FC<FunnelPaywallStepProps> = ({
           </div>
           {config.forms.length > 6 && (
             <p className="text-xs text-muted-foreground mt-2 text-center">
-              + {config.forms.length - 6} more form guides included
+              Other common forms in this area are included too.
             </p>
           )}
         </CardContent>
       </Card>
-      )}
 
       {/* Pricing */}
       <Card className="border-primary bg-gradient-to-r from-primary/5 to-primary/10">
@@ -209,8 +249,9 @@ export const FunnelPaywallStep: React.FC<FunnelPaywallStepProps> = ({
             <span className="text-muted-foreground ml-2">/month, unlimited</span>
           </div>
           <p className="text-sm text-muted-foreground mb-6">
-            We explain common official forms and how filing generally works, and fill in the forms you choose from your answers.
-            You check, sign and file them yourself. No legal advice. Our content has not yet been reviewed by a licensed attorney.
+            Plain-language information about common official forms and how filing generally works. Where we support a form,
+            you fill it in with your own answers, then check, sign and file it yourself. Legal information, not legal advice.
+            Our content has not yet been reviewed by a licensed attorney.
           </p>
           
           <Button 

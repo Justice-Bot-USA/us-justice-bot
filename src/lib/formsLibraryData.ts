@@ -1,10 +1,11 @@
 import {
   CA_CRIMINAL_FORMS, CA_FAMILY_FORMS, CA_DIVORCE_FORMS, CA_CPS_FORMS,
-  CA_WORKPLACE_FORMS, CA_CIVIL_FORMS, CA_HUMAN_RIGHTS_FORMS,
+  CA_WORKPLACE_FORMS, CA_CIVIL_FORMS, CA_HUMAN_RIGHTS_FORMS, CA_PERSONAL_INJURY_FORMS,
 } from '@/lib/ca/forms';
 import {
   NY_CRIMINAL_FORMS, NY_FAMILY_FORMS, NY_DIVORCE_FORMS, NY_CPS_FORMS,
   NY_IMMIGRATION_FORMS, NY_WORKPLACE_FORMS, NY_CIVIL_FORMS, NY_HUMAN_RIGHTS_FORMS,
+  NY_PERSONAL_INJURY_FORMS,
 } from '@/lib/ny/forms';
 
 export interface CourtForm {
@@ -48,7 +49,8 @@ const uniqueForms = (...lists: CourtForm[][]): CourtForm[] => {
 
 const liveStateForms = (c: {
   criminal: CourtForm[]; family: CourtForm[]; divorce: CourtForm[]; cps: CourtForm[];
-  workplace: CourtForm[]; civil: CourtForm[]; humanRights: CourtForm[]; immigration?: CourtForm[];
+  workplace: CourtForm[]; civil: CourtForm[]; humanRights: CourtForm[]; personalInjury: CourtForm[];
+  immigration?: CourtForm[];
 }): Record<string, CourtForm[]> => ({
   family: uniqueForms(c.family, c.divorce),
   'small-claims': [...c.civil.filter(isSmallClaims), ...c.civil.filter(isFeeWaiver)],
@@ -58,6 +60,7 @@ const liveStateForms = (c: {
   employment: c.workplace,
   'workers-rights': c.workplace,
   'human-rights': c.humanRights,
+  'personal-injury': c.personalInjury,
   ...(c.immigration ? { immigration: c.immigration } : {}),
   general: c.civil.filter((f) => !isSmallClaims(f) && !isHousing(f)),
 });
@@ -71,6 +74,7 @@ export const stateFormsLibrary: Record<string, StateFormsData> = {
     forms: liveStateForms({
       criminal: CA_CRIMINAL_FORMS, family: CA_FAMILY_FORMS, divorce: CA_DIVORCE_FORMS, cps: CA_CPS_FORMS,
       workplace: CA_WORKPLACE_FORMS, civil: CA_CIVIL_FORMS, humanRights: CA_HUMAN_RIGHTS_FORMS,
+      personalInjury: CA_PERSONAL_INJURY_FORMS,
     }),
   },
 
@@ -82,7 +86,7 @@ export const stateFormsLibrary: Record<string, StateFormsData> = {
     forms: liveStateForms({
       criminal: NY_CRIMINAL_FORMS, family: NY_FAMILY_FORMS, divorce: NY_DIVORCE_FORMS, cps: NY_CPS_FORMS,
       workplace: NY_WORKPLACE_FORMS, civil: NY_CIVIL_FORMS, humanRights: NY_HUMAN_RIGHTS_FORMS,
-      immigration: NY_IMMIGRATION_FORMS,
+      personalInjury: NY_PERSONAL_INJURY_FORMS, immigration: NY_IMMIGRATION_FORMS,
     }),
   },
 

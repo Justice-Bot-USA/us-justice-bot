@@ -14,7 +14,7 @@ import { Download, ExternalLink, FileText, Loader2, Lock, ListChecks } from 'luc
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
 import { usePaywallAccess } from '@/hooks/usePaywallAccess';
-import { PLAN, startSubscriptionCheckout } from '@/lib/pricing';
+import { PLAN, THIRD_PARTY_FEES_NOTE, startSubscriptionCheckout } from '@/lib/pricing';
 import {
   PARTY_QUESTIONS, fillableForState, getFillableForm, isFreeForm,
   type Answers, type FillableForm, type Question,
@@ -216,7 +216,7 @@ function FormFiller({ form }: { form: FillableForm }) {
               )}
               {!unlocked && (
                 <p className="text-xs text-muted-foreground">
-                  One plan, {PLAN.priceLabel}: all forms and filling instructions included. Cancel any time by contacting support. Court filing fees are separate and set by the court.
+                  All forms and filling instructions included. Cancel any time by contacting support. {THIRD_PARTY_FEES_NOTE}
                 </p>
               )}
               <a href={form.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-primary inline-flex items-center gap-1">
@@ -240,7 +240,7 @@ function FormFiller({ form }: { form: FillableForm }) {
             <AlertDescription className="text-xs">
               Legal information and a tool for filling official forms with your own answers, not legal advice. We do not
               choose forms for you or file anything. You decide what goes on the form and you are responsible for
-              checking it before you sign and file.
+              checking it before you sign and file. Our content has not yet been reviewed by a licensed attorney.
             </AlertDescription>
           </Alert>
         </div>

@@ -177,6 +177,7 @@ const StateLegalHelp = () => {
     const { stateName, topic: topicName, topicLabel, helpSite } = comingSoon;
     return (
       <LegalHelpLayout
+        noindex
         title={`${stateName} ${topicLabel} Guide: Coming Soon`}
         metaTitle={`${stateName} ${topicLabel} Guide (Coming Soon) | Justice Bot USA`}
         metaDescription={`Justice Bot USA is live in California and New York. ${stateName} is coming soon.`}
@@ -200,6 +201,7 @@ const StateLegalHelp = () => {
   if (!pageContent) {
     return (
       <LegalHelpLayout
+        noindex
         title="Legal Help Page Not Found"
         metaTitle="Legal Help | Justice Bot USA"
         metaDescription="Find legal help guides for your state."

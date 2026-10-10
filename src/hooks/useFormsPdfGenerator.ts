@@ -34,7 +34,11 @@ const LEGAL_AREA_TO_CATEGORY: Record<string, string[]> = {
   'agency-complaints': ['agency-complaints', 'Police Accountability', 'Professional Complaints'],
 };
 
-function getFormsForCase(state: string, legalArea: string): CourtForm[] {
+/**
+ * Form guides for a funnel's state and legal area. Returns [] when we have no forms for that
+ * area, so callers show a "no form guides yet" state instead of forms from another area.
+ */
+export function getFormsForCase(state: string, legalArea: string): CourtForm[] {
   const stateData = getExpandedStateFormsData(state);
   const relevantCategories = LEGAL_AREA_TO_CATEGORY[legalArea] || [legalArea];
   
@@ -55,16 +59,71 @@ function getFormsForCase(state: string, legalArea: string): CourtForm[] {
     forms = stateData.forms[legalArea];
   }
 
-  // Fallback to first available category if still empty
-  if (forms.length === 0) {
-    const firstCategory = Object.keys(stateData.forms)[0];
-    if (firstCategory) {
-      forms = stateData.forms[firstCategory].slice(0, 5);
-    }
-  }
-
   // Limit to 8 most relevant forms
   return forms.slice(0, 8);
+}
+
+// Form categories (CourtForm.category, as used in src/lib/ca/forms.ts, src/lib/ny/forms.ts and
+// src/lib/forms/agencyComplaintsData.ts) for papers that do not go to a court clerk: crash reports
+// (DMV), no-fault applications (insurer), notices of claim and government claims (the public body),
+// and complaints or claims made to a government agency or licensing board.
+const NON_COURT_CATEGORIES = new Set([
+  // Personal injury
+  'Accident Report', 'No-Fault', 'Notice of Claim', 'Government Claim', 'DMV',
+  // Workplace and civil rights agencies
+  'Wage Claims', 'Retaliation', 'Workers Comp', 'Unemployment', 'Safety', 'Discrimination',
+  'Family Leave', 'NYC Workers', 'Fair Hearing',
+  // Agency and licensing-board complaints
+  'Agency Oversight', 'Medical Board', 'Licensing Board', 'Psychology Board', 'Therapy Licensing',
+  'State Licensing', 'General Licensing', 'Internal Affairs', 'Inspector General', 'Ombudsman',
+  'Independent Oversight', 'Judicial Conduct',
+]);
+
+// Official guides, help directories and fee or e-filing pages: information, not a form to file.
+const INFO_CATEGORIES = new Set([
+  'Guides', 'Legal Help', 'Official Help', 'Legal Aid', 'Fees', 'E-Filing', 'Wage Notices',
+]);
+
+const isNonCourtForm = (form: CourtForm) => NON_COURT_CATEGORIES.has(form.category);
+const isInfoEntry = (form: CourtForm) => INFO_CATEGORIES.has(form.category);
+
+/**
+ * True for a notice of claim whose link is the statute itself (e.g. GML 50-e): the law sets the
+ * required contents, but there is no official form.
+ */
+const isStatuteOnly = (form: CourtForm) =>
+  form.category === 'Notice of Claim' &&
+  !!form.url && /nysenate\.gov\/legislation\/laws|leginfo\.legislature\.ca\.gov/i.test(form.url);
+
+function instructionsFor(form: CourtForm): string[] {
+  if (isInfoEntry(form)) {
+    return [
+      '1. This is an official guide or help resource, not a form to file.',
+      '2. Open the link above to read it or to find help near you.',
+    ];
+  }
+  if (isStatuteOnly(form)) {
+    return [
+      '1. There is no official form. The law linked above sets what it must contain; "Purpose of this form" lists it.',
+      '2. Write it yourself with your own information, covering every required item.',
+      '3. This is not filed with a court. Serve it the way "Purpose of this form" describes, by the deadline, and keep proof.',
+      '4. Keep a copy of everything you send.',
+    ];
+  }
+  if (isNonCourtForm(form)) {
+    return [
+      '1. This is not filed with a court. Check "Purpose of this form" and the official link above for who receives it and any deadline.',
+      '2. Fill it in with your own answers.',
+      '3. Send or deliver it the way the official instructions describe, and keep proof.',
+      '4. Keep a copy of everything you send.',
+    ];
+  }
+  return [
+    '1. Download the official court form from the link above',
+    '2. Fill in all required fields carefully and legibly',
+    '3. Make copies for yourself and all parties before filing',
+    '4. File with the court clerk and pay any required fees',
+  ];
 }
 
 function generateSingleFormPdf(
@@ -94,7 +153,8 @@ function generateSingleFormPdf(
   doc.setFontSize(16);
   doc.setTextColor(37, 99, 235);
   doc.setFont('helvetica', 'bold');
-  doc.text(`Form ${form.formNumber}`, margin, yPos);
+  const statuteOnly = isStatuteOnly(form);
+  doc.text(statuteOnly || isInfoEntry(form) ? form.formNumber : `Form ${form.formNumber}`, margin, yPos);
   
   yPos += 10;
   
@@ -162,7 +222,16 @@ function generateSingleFormPdf(
   doc.setFontSize(12);
   doc.setTextColor(0);
   doc.setFont('helvetica', 'bold');
-  doc.text('WHERE TO OBTAIN OFFICIAL FORM', margin, yPos);
+  const nonCourt = isNonCourtForm(form);
+  doc.text(
+    statuteOnly
+      ? 'NO OFFICIAL FORM: THE LAW SETS THE REQUIRED CONTENTS'
+      : isInfoEntry(form)
+        ? 'OFFICIAL LINK'
+        : 'WHERE TO OBTAIN OFFICIAL FORM',
+    margin,
+    yPos,
+  );
   yPos += 8;
   
   doc.setFontSize(10);
@@ -176,7 +245,11 @@ function generateSingleFormPdf(
     doc.textWithLink(displayUrl, margin, yPos, { url: formUrl });
   } else {
     doc.setTextColor(60);
-    doc.text('Contact your local court clerk for this form', margin, yPos);
+    doc.text(
+      nonCourt ? 'Ask the office named in "Purpose of this form" for this form' : 'Contact your local court clerk for this form',
+      margin,
+      yPos,
+    );
   }
   yPos += 15;
 
@@ -219,12 +292,24 @@ function generateSingleFormPdf(
     }
   }
 
-  // Instructions Section
-  yPos = Math.max(yPos, pageHeight - 80);
+  // Instructions Section (box height fits the wrapped instruction lines)
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  const instructionLines = instructionsFor(form).map((instruction) =>
+    doc.splitTextToSize(instruction, contentWidth - 16) as string[],
+  );
+  const boxHeight = Math.max(40, 22 + instructionLines.flat().length * 5);
+  if (yPos + boxHeight > pageHeight - 25) {
+    // A long description pushed the box past the footer: put the instructions on a new page.
+    doc.addPage();
+    yPos = 25;
+  } else {
+    yPos = Math.max(yPos, pageHeight - 40 - boxHeight);
+  }
   
   doc.setDrawColor(245, 158, 11);
   doc.setFillColor(254, 252, 232);
-  doc.roundedRect(margin, yPos, contentWidth, 40, 3, 3, 'FD');
+  doc.roundedRect(margin, yPos, contentWidth, boxHeight, 3, 3, 'FD');
   
   yPos += 10;
   doc.setFontSize(10);
@@ -235,32 +320,29 @@ function generateSingleFormPdf(
   
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(9);
-  const instructions = [
-    '1. Download the official court form from the link above',
-    '2. Fill in all required fields carefully and legibly',
-    '3. Make copies for yourself and all parties before filing',
-    '4. File with the court clerk and pay any required fees'
-  ];
-  instructions.forEach(instruction => {
-    doc.text(instruction, margin + 8, yPos);
-    yPos += 5;
+  instructionLines.forEach((lines) => {
+    doc.text(lines, margin + 8, yPos);
+    yPos += lines.length * 5;
   });
 
-  // Footer with disclaimer
-  doc.setFontSize(8);
-  doc.setTextColor(150);
-  doc.text(
-    'Generated by Justice Bot USA | This is a reference document, not the official court form.',
-    pageWidth / 2,
-    pageHeight - 15,
-    { align: 'center' }
-  );
-  doc.text(
-    'Please obtain official forms from your court clerk or the links provided above.',
-    pageWidth / 2,
-    pageHeight - 10,
-    { align: 'center' }
-  );
+  // Footer with disclaimer, on every page
+  const footerLines = nonCourt || isInfoEntry(form)
+    ? [
+        'Generated by Justice Bot USA | This is a reference document, not the official form.',
+        'Please use the official link on page 1.',
+      ]
+    : [
+        'Generated by Justice Bot USA | This is a reference document, not the official court form.',
+        'Please obtain official forms from your court clerk or the links provided on page 1.',
+      ];
+  for (let i = 1; i <= doc.getNumberOfPages(); i++) {
+    doc.setPage(i);
+    doc.setFontSize(8);
+    doc.setTextColor(150);
+    doc.text('Legal information, not legal advice. Our content has not yet been reviewed by a licensed attorney.', pageWidth / 2, pageHeight - 20, { align: 'center' });
+    doc.text(footerLines[0], pageWidth / 2, pageHeight - 15, { align: 'center' });
+    doc.text(footerLines[1], pageWidth / 2, pageHeight - 10, { align: 'center' });
+  }
 
   return doc.output('blob');
 }
@@ -401,17 +483,23 @@ function generateFormsPackagePdf(
   doc.setTextColor(60);
 
   const tips = [
-    'Make at least 3 copies of every form before filing',
-    'Keep the original for yourself, file one with the court, serve one to opposing party',
+    'Ask the court clerk how many copies to bring when you file',
     'Ask the clerk about fee waiver eligibility if filing fees are a hardship',
     'Bring valid ID when filing in person',
     'Request a "filed-stamped" copy for your records',
     'Note all deadlines and calendar them immediately'
   ];
 
+  if (forms.some(isNonCourtForm)) {
+    tips.push(
+      'Some forms in this list (such as crash reports, no-fault applications, notices of claim, government claims and agency complaints) do not go to a court; each form guide says where it goes',
+    );
+  }
+
   tips.forEach((tip, idx) => {
-    doc.text(`${idx + 1}. ${tip}`, margin, yPos);
-    yPos += 6;
+    const tipLines = doc.splitTextToSize(`${idx + 1}. ${tip}`, contentWidth);
+    doc.text(tipLines, margin, yPos);
+    yPos += tipLines.length * 6;
   });
 
   // Footer on all pages
@@ -420,6 +508,7 @@ function generateFormsPackagePdf(
     doc.setPage(i);
     doc.setFontSize(8);
     doc.setTextColor(150);
+    doc.text('Legal information, not legal advice. Our content has not yet been reviewed by a licensed attorney.', pageWidth / 2, pageHeight - 15, { align: 'center' });
     doc.text(
       `Generated by Justice Bot USA | Page ${i} of ${pageCount}`,
       pageWidth / 2,

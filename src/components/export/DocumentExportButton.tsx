@@ -53,7 +53,7 @@ export function DocumentExportButton({
       case 'summary':
         return 'Case Summary';
       case 'court-ready':
-        return 'Court-Ready Document';
+        return 'Printable Case Document';
       default:
         return 'Document';
     }
@@ -83,8 +83,8 @@ export function DocumentExportButton({
         }
         case 'court-ready': {
           const doc = generateCourtReadyPDF(caseData as any);
-          downloadPDF(doc, `${filename}-court-ready.pdf`);
-          toast.success('Court-ready document downloaded');
+          downloadPDF(doc, `${filename}-printable.pdf`);
+          toast.success('Printable case document downloaded');
           break;
         }
       }
@@ -140,7 +140,7 @@ export function DocumentExportButton({
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => handleExportRequest('court-ready')}>
             <Scale className="h-4 w-4 mr-2" />
-            Court-Ready Document
+            Printable Case Document
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={handlePrint}>

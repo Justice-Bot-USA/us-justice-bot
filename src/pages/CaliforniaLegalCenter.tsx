@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useSearchParams } from 'react-router-dom';
 import { getFillableByFormNumber } from '@/lib/formfill';
@@ -10,7 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
-  Shield, Heart, Scale, Baby, Briefcase, Building2, HandHeart,
+  Shield, Heart, Scale, Baby, Briefcase, Building2, HandHeart, HeartPulse,
   Search, ExternalLink, FileText, ListChecks, MapPin, Clock, DollarSign,
 } from 'lucide-react';
 import { CA_FORMS_BY_CATEGORY, type CaCategoryKey } from "@/lib/ca/forms";
@@ -23,6 +23,7 @@ const CATEGORIES: { key: CaCategoryKey; label: string; icon: React.ReactNode; bl
   { key: 'cps', label: 'CPS / Dependency', icon: <Baby className="h-4 w-4" />, blurb: 'Parents\' rights in juvenile dependency court.' },
   { key: 'workplace', label: 'Workplace', icon: <Briefcase className="h-4 w-4" />, blurb: 'Wage claims, retaliation, workers\' comp, safety, unemployment.' },
   { key: 'civil', label: 'Civil', icon: <Building2 className="h-4 w-4" />, blurb: 'Small claims, eviction defense, harassment orders, fee waivers.' },
+  { key: 'personal-injury', label: 'Personal Injury', icon: <HeartPulse className="h-4 w-4" />, blurb: 'Deadlines, forms and filing steps after an injury (such as a car crash, fall, dog bite or defective product), claims against a government agency, and responding to an injury lawsuit.' },
   { key: 'human-rights', label: 'Civil Rights', icon: <HandHeart className="h-4 w-4" />, blurb: 'Discrimination complaints at CRD and the EEOC.' },
 ];
 
@@ -34,6 +35,10 @@ export default function CaliforniaLegalCenter() {
     CATEGORIES.some((c) => c.key === requested) ? (requested as CaCategoryKey) : 'criminal',
   );
   const [query, setQuery] = useState('');
+  // A new ?area= link while the page is already open switches the tab too.
+  useEffect(() => {
+    if (CATEGORIES.some((c) => c.key === requested)) setActive(requested as CaCategoryKey);
+  }, [requested]);
 
   const forms = CA_FORMS_BY_CATEGORY[active];
   const procedure = CA_PROCEDURES[active];
@@ -56,7 +61,7 @@ export default function CaliforniaLegalCenter() {
     <div className="flex flex-col min-h-screen bg-background">
       <Helmet>
         <title>California Legal Center — Forms, Procedures & Filing | Justice Bot USA</title>
-        <meta name="description" content="California legal information across 7 areas: criminal record clearing, family, divorce, dependency, workplace, civil, and civil rights — with official Judicial Council forms and filing procedures." />
+        <meta name="description" content="California legal information across 8 areas: criminal record clearing, family, divorce, dependency, workplace, civil, personal injury, and civil rights — with official Judicial Council forms and filing procedures." />
         <link rel="canonical" href="https://justicebot-usa.com/ca/legal-center" />
       </Helmet>
       <Header language="en" onLanguageChange={() => {}} />
@@ -70,10 +75,10 @@ export default function CaliforniaLegalCenter() {
             </div>
             <h1 className="text-3xl md:text-4xl font-bold mb-3">California Legal Center</h1>
             <p className="text-blue-100/80 max-w-2xl">
-              Seven legal areas, official Judicial Council forms, filing procedures, and venue guidance — built for California. Sourced from the California Courts Self-Help Guide, DIR, EDD, and the Civil Rights Department.
+              Eight legal areas, official Judicial Council forms, filing procedures, and venue guidance — built for California. Sourced from the California Courts Self-Help Guide, the California Legislature, DIR, EDD, the DMV, DGS, and the Civil Rights Department.
             </p>
             <p className="text-xs text-blue-200/60 mt-4 italic">
-              Legal information, not legal advice. We do not predict outcomes or recommend whether to sue.
+              Legal information, not legal advice. Our content has not yet been reviewed by a licensed attorney. We do not predict outcomes or recommend whether to sue.
             </p>
           </div>
         </section>
@@ -145,6 +150,22 @@ export default function CaliforniaLegalCenter() {
                         </ol>
                       </CardContent>
                     </Card>
+
+                    {procedure.notes && procedure.notes.length > 0 && (
+                      <Card>
+                        <CardHeader className="pb-2"><CardTitle className="text-base">Good to know</CardTitle></CardHeader>
+                        <CardContent>
+                          <ul className="list-disc pl-5 space-y-2 text-sm text-muted-foreground">
+                            {procedure.notes.map((n, i) => (
+                              <li key={i}>
+                                {n.text}
+                                {n.ref && <> <a href={n.ref} target="_blank" rel="noopener noreferrer" className="text-xs text-primary inline-flex items-center gap-1">Source <ExternalLink className="h-3 w-3" /></a></>}
+                              </li>
+                            ))}
+                          </ul>
+                        </CardContent>
+                      </Card>
+                    )}
                   </div>
                   )}
 

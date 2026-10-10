@@ -21,7 +21,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useState } from "react";
 
-// ─── Category data (mirrors legalAreaData keys & LegalSections entries) ───────
+// ─── Category data (mirrors legalAreaData keys) ──────────────────────────────
 const LEGAL_CATEGORIES = [
   {
     id: "immigration",
@@ -364,8 +364,8 @@ export default function LegalAreasHub() {
           <section className="mt-10 bg-primary rounded-2xl p-8 text-center text-primary-foreground">
             <h2 className="text-2xl font-bold mb-2">Not Sure Which Area Applies to You?</h2>
             <p className="opacity-90 mb-6 max-w-xl mx-auto">
-              Describe your situation and our AI will identify the right legal category, forms, and
-              next steps — in plain English.
+              Describe your situation and get a plain-language summary, the general legal area, and links
+              to official California and New York resources. Legal information, not legal advice.
             </p>
             <Button asChild size="lg" variant="secondary">
               <Link to="/case-analysis">Start Free Case Analysis</Link>

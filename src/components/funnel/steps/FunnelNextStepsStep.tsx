@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { 
   CheckCircle2, ArrowRight, Calendar, Building2, FileText, Phone,
-  ExternalLink, BookOpen, Scale, AlertCircle,
+  ExternalLink, BookOpen,
 } from 'lucide-react';
 import { FunnelConfig, FunnelState, US_STATE_NAMES, LEGAL_AREA_NAMES } from '@/lib/funnels';
 import { trackConversion } from '@/lib/funnels/analytics';
@@ -204,7 +204,6 @@ export const FunnelNextStepsStep: React.FC<FunnelNextStepsStepProps> = ({
   const nextSteps = getNextSteps(config);
   const stateName = US_STATE_NAMES[config.jurisdiction];
   const legalAreaName = LEGAL_AREA_NAMES[config.legalArea];
-  const complexityScore = Number((state.data as Record<string, unknown> | undefined)?.complexityScore ?? 0);
 
   React.useEffect(() => {
     trackConversion(config.id);
@@ -274,38 +273,6 @@ export const FunnelNextStepsStep: React.FC<FunnelNextStepsStepProps> = ({
           </Card>
         ))}
       </div>
-
-      {/* Attorney Referral CTA — shown for high-complexity cases */}
-      {complexityScore > 7 && (
-        <Card className="border-destructive/20 bg-destructive/5">
-          <CardContent className="p-5">
-            <div className="flex items-start gap-3">
-              <AlertCircle className="h-5 w-5 text-destructive mt-0.5 shrink-0" />
-              <div className="flex-1">
-                <h4 className="font-semibold mb-1">This Case May Benefit from Legal Counsel</h4>
-                <p className="text-sm text-muted-foreground mb-3">
-                  Based on the complexity of your situation, speaking with a licensed attorney is strongly recommended. 
-                  Free and low-cost options are available.
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <Button size="sm" variant="outline" asChild>
-                    <a href="https://www.lawhelp.org" target="_blank" rel="noopener noreferrer">
-                      <Scale className="h-3.5 w-3.5 mr-1" /> Legal Aid Finder
-                      <ExternalLink className="h-3 w-3 ml-1 opacity-60" />
-                    </a>
-                  </Button>
-                  <Button size="sm" variant="outline" asChild>
-                    <a href="https://www.avvo.com" target="_blank" rel="noopener noreferrer">
-                      <Phone className="h-3.5 w-3.5 mr-1" /> Find an Attorney
-                      <ExternalLink className="h-3 w-3 ml-1 opacity-60" />
-                    </a>
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      )}
 
       {/* Case Dashboard CTA */}
       <Card className="bg-primary/5 border-primary/20">

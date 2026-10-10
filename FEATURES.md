@@ -241,36 +241,10 @@ US Justice Bot is a comprehensive legal assistance platform that provides afford
 
 ## Pricing Model
 
-### Subscription Benefits
-- **Pay Per Form ($4.99/form)**:
-  - One-time payment for single form
-  - AI-powered case evaluation
-  - State-specific guidance
-  - Document generation
-
-- **Monthly Plan ($9.99/month)**:
-  - Unlimited AI chat sessions
-  - Unlimited form access
-  - Priority support
-  - All 50 states coverage
-  - Advanced case analysis
-  - Document storage
-   
-- **Annual Plan ($79/year)**:
-  - Everything in Monthly Plan
-  - 34% discount vs monthly
-  - Priority case reviews
-  - Extended document storage
-  - Dedicated support
-  - Just $6.58/month
-
-### Value Proposition
-- Professional legal assistance at **1/20th the cost of a lawyer**
-- $10 cheaper than competitors
-- 24/7 availability
-- No hourly billing
-- Transparent pricing
-- We care about your justice, not billable hours
+- One plan: Justice Bot USA Access, $25/month (`src/lib/pricing.ts`), sold for California and New York only; the other 48 states are coming soon.
+- All forms and filling instructions are included; fee waivers and our fee waiver forms are free.
+- Court and agency fees (filing, service, copies) are separate and are disclosed at checkout.
+- No per-form, bundle or annual prices. No PayPal.
 
 ## Technical Stack
 
@@ -291,7 +265,6 @@ US Justice Bot is a comprehensive legal assistance platform that provides afford
 - [ ] Email notifications
 - [ ] SMS reminders
 - [ ] Mobile app (iOS/Android)
-- [ ] Attorney matching service
 - [ ] Court date tracking
 - [ ] Legal document templates
 - [ ] Video consultations

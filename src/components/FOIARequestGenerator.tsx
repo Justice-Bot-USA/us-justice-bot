@@ -38,7 +38,7 @@ import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { invokeAuthed } from '@/lib/supabaseInvoke';
 import { usePaywallAccess } from '@/hooks/usePaywallAccess';
-import { PLAN, startSubscriptionCheckout } from '@/lib/pricing';
+import { PLAN, THIRD_PARTY_FEES_NOTE, startSubscriptionCheckout } from '@/lib/pricing';
 import { generateFoiaLetterPdf } from '@/lib/foiaPdf';
 import { launchStateOf } from '@/lib/stateRouting';
 
@@ -207,6 +207,7 @@ const FOIARequestGenerator: React.FC<FOIARequestGeneratorProps> = ({
 
     try {
       sessionStorage.setItem('pending_foia_letter', generatedLetter);
+      sessionStorage.setItem('pending_foia_state', selectedState);
       await startSubscriptionCheckout();
     } catch (err) {
       console.error('Checkout error:', err);
@@ -489,10 +490,14 @@ const FOIARequestGenerator: React.FC<FOIARequestGeneratorProps> = ({
                 Copy to Clipboard (Free)
               </Button>
               {hasAccess || planOffered ? (
-                <Button onClick={handleExportPDF} className="gap-2 w-full" size="lg">
-                  <Download className="h-4 w-4" />
-                  {hasAccess ? 'Download PDF (request + follow-up + appeal)' : `Export as PDF — ${PLAN.priceLabel}, unlimited`}
-                </Button>
+                <>
+                  <Button onClick={handleExportPDF} className="gap-2 w-full" size="lg">
+                    <Download className="h-4 w-4" />
+                    {hasAccess ? 'Download PDF (request + follow-up + appeal)' : `Export as PDF — ${PLAN.priceLabel}, unlimited`}
+                  </Button>
+                  {/* Agencies may charge their own copy or search fees, separate from our plan. */}
+                  <p className="text-xs text-muted-foreground text-center">{THIRD_PARTY_FEES_NOTE}</p>
+                </>
               ) : (
                 <p className="text-xs text-muted-foreground text-center">
                   Our monthly plan is only offered in California and New York, so there is nothing to buy for this state.

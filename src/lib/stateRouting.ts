@@ -15,7 +15,7 @@ export function launchStateOf(state?: string | null): LaunchState | null {
 }
 
 // Category keys used by CaliforniaLegalCenter / NewYorkLegalCenter tabs.
-const CA_AREAS = ['criminal', 'family', 'divorce', 'cps', 'workplace', 'civil', 'human-rights'] as const;
+const CA_AREAS = ['criminal', 'family', 'divorce', 'cps', 'workplace', 'civil', 'human-rights', 'personal-injury'] as const;
 const NY_AREAS = [...CA_AREAS, 'immigration'] as const;
 
 // Keyword → legal-center tab. Order matters: the first match the state has a tab for wins.
@@ -85,7 +85,18 @@ const AREA_RULES: [RegExp, string | null, LaunchState?][] = [
   // generic next steps. A coworker falls through to Workplace.
   [new RegExp(`civil harassment|${harassedBy('neighbou?r|stranger')}`), null, 'NY'],
   [/human.?rights|civil.?rights|harass|disab|police (?:misconduct|brutality)|excessive force/, 'human-rights'],
-  [/housing|evict|landlord|tenant|\brent(?:s|al|als|er|ers|ing|ed)?\b|small.?claims|consumer|debt|personal.?injury|\binjur(?:y|ies|ed)\b|defective|product liability|slip (?:and|&) fall|slip(?:ped|s)? (?:on|and fell)|trip (?:and|&) fall|insurance|neighbou?r|malpractice|contract dispute|breach of contract|agency|civil|bankrupt/, 'civil'],
+  // Injuries and accidents. Work injuries ("injured at work", "workplace injury") were matched
+  // by the Workplace rule above and debts by the debt rule, so they keep those tabs. Malpractice
+  // by a lawyer or accountant is not an injury case and falls through to Civil below.
+  [new RegExp([
+    String.raw`personal.?injur|\binjur(?:e|es|ed|ing|y|ies)\b|wrongful death`,
+    String.raw`\baccidents?\b|\b(?:car|auto|vehicle|motorcycle|bike|bicycle|truck|bus|traffic|pedestrian) (?:crash|collision|wreck)|\bhit by (?:a |an |the )?(?:car|truck|bus|vehicle|driver|motorcycle|bike|bicycle)\b`,
+    String.raw`slip (?:and|&) fall|slip(?:ped|s)? (?:on|and fell)|trip (?:and|&) fall|\btripped (?:on|over)\b|\btrip(?:ped|s)? and fell`,
+    String.raw`\bdog ?bites?\b|\bdog (?:bit|attack\w*)\b|\bbitten by (?:a |an |the |my |our |their |his |her )?(?:neighbou?r(?:['’]s)? )?dogs?\b`,
+    String.raw`defective products?|products? liability|premises liability`,
+    String.raw`medical negligence|^(?!.*\b(?:legal|attorney|lawyer|accounting|accountant) malpractice\b).*\bmalpractice`,
+  ].join('|')), 'personal-injury'],
+  [/housing|evict|landlord|tenant|\brent(?:s|al|als|er|ers|ing|ed)?\b|small.?claims|consumer|debt|defective|insurance|neighbou?r|malpractice|contract dispute|breach of contract|agency|civil|bankrupt/, 'civil'],
 ];
 
 // Categories users pick (case analyzer, funnels, legal-center tabs) map straight to a tab, so
@@ -100,7 +111,8 @@ const CATEGORY_TAB: Record<string, string | null> = {
   discrimination: 'human-rights', 'human-rights': 'human-rights',
   immigration: 'immigration',
   'small-claims': 'civil', 'housing-tenant': 'civil', 'eviction-defense': 'civil', housing: 'civil', 'contract-dispute': 'civil',
-  'consumer-protection': 'civil', 'debt-collection': 'civil', 'personal-injury': 'civil', 'medical-malpractice': 'civil',
+  'consumer-protection': 'civil', 'debt-collection': 'civil',
+  'personal-injury': 'personal-injury', 'medical-malpractice': 'personal-injury',
   bankruptcy: 'civil', 'agency-complaints': 'civil', civil: 'civil',
   'social-security': null, 'veterans-benefits': null,
 };

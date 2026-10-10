@@ -12,7 +12,7 @@ const whatItDoes = [
   "Understand legal and administrative processes in plain language",
   "Identify what records, documents, or procedures may exist",
   "Learn which agency or court handles a matter",
-  "Prepare lawful, user-initiated documents",
+  "Fill in official California and New York forms with your own answers",
   "Navigate systems as a self-represented individual",
 ];
 
@@ -29,7 +29,7 @@ const howItWorksSteps = [
   { num: "1", text: "You provide information voluntarily" },
   { num: "2", text: "Justice Bot USA analyzes your input only" },
   { num: "3", text: "It matches your situation to known public processes" },
-  { num: "4", text: "It explains options and prepares guidance or documents" },
+  { num: "4", text: "It gives plain-language information and lets you fill in official California and New York forms with your own answers" },
   { num: "5", text: "You decide what to do next" },
 ];
 

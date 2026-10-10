@@ -551,15 +551,14 @@ export const legalAreaData: Record<string, LegalAreaData> = {
   },
   "personal-injury": {
     title: "Personal Injury",
-    description: "Get help with accident claims, medical bills, and injury compensation. Navigate insurance claims and understand your rights.",
+    description: "Deadlines, official forms and filing steps after an injury, such as a car crash, fall or dog bite, including claims against government agencies and responding to an injury lawsuit. Legal information, not legal advice.",
     icon: Heart,
-    keywords: ["Car Accident", "Medical Malpractice", "Slip and Fall", "Wrongful Death", "Insurance Claims", "Settlement"],
-    badge: { text: "High Value", variant: "default" },
+    keywords: ["Car Accident", "Slip and Fall", "Dog Bite", "Wrongful Death", "Statute of Limitations", "Notice of Claim"],
     commonTopics: [
       "Car Accidents", "Truck Accidents", "Motorcycle Accidents",
       "Slip and Fall", "Medical Malpractice", "Product Liability",
       "Dog Bites", "Wrongful Death", "Workers Compensation",
-      "Insurance Claims", "Settlement Negotiation", "Pain and Suffering",
+      "Time Limits to Sue", "Claims Against Government Agencies", "Responding to an Injury Lawsuit",
     ],
     stateGuidance: {
       "TX": texasPersonalInjury,

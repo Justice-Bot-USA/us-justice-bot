@@ -101,7 +101,7 @@ export default function App() {
               <Route path="/admin" element={<AdminDashboardSimple />} />
               <Route path="/admin-setup" element={<AdminSetup />} />
               <Route path="/admin/analytics" element={<AdminAnalytics />} />
-              {/* Attorney directory and referrals stay offline until the board approves Lawyer Coordination and the referral-fee questions are resolved. */}
+              {/* Attorney directory and referral pages stay offline. */}
               <Route path="/attorneys" element={<Navigate to="/" replace />} />
               <Route path="/firm" element={<Navigate to="/" replace />} />
               <Route path="/support" element={<Support />} />

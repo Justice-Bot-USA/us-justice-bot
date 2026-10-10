@@ -17,7 +17,7 @@ import {
   Package,
   ExternalLink,
   Zap,
-  Infinity,
+  Infinity as InfinityIcon,
   Save
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
@@ -30,7 +30,8 @@ import { useFormsPdfGenerator } from '@/hooks/useFormsPdfGenerator';
 import type { CourtForm } from '@/lib/forms';
 import { invokeAuthed } from '@/lib/supabaseInvoke';
 import { generateFoiaLetterPdf } from '@/lib/foiaPdf';
-import { PLAN } from '@/lib/pricing';
+import { PLAN, THIRD_PARTY_FEES_NOTE, startSubscriptionCheckout } from '@/lib/pricing';
+import { launchStateOf } from '@/lib/stateRouting';
 import { format } from 'date-fns';
 
 interface VerificationResult {
@@ -73,6 +74,7 @@ const PaymentSuccess: React.FC = () => {
   // FOIA-specific state
   const [foiaLetter, setFoiaLetter] = useState<string | null>(null);
   const [foiaDownloaded, setFoiaDownloaded] = useState(false);
+  const [foiaState, setFoiaState] = useState<string | null>(null);
 
   const sessionId = searchParams.get('session_id');
   const paymentType = searchParams.get('payment') || searchParams.get('subscription');
@@ -106,6 +108,7 @@ const PaymentSuccess: React.FC = () => {
 
         if (storedFoiaLetter) {
           setFoiaLetter(storedFoiaLetter);
+          setFoiaState(sessionStorage.getItem('pending_foia_state'));
         }
 
         // Verify payment with Stripe
@@ -201,6 +204,7 @@ const PaymentSuccess: React.FC = () => {
     downloadPdf(blob, filename);
     setFoiaDownloaded(true);
     sessionStorage.removeItem('pending_foia_letter');
+    sessionStorage.removeItem('pending_foia_state');
     trackUSExportCompleted('pdf', isFoiaBundle ? 3 : 1);
     toast.success('PDF downloaded!');
   }, [foiaLetter, isFoiaBundle, downloadPdf]);
@@ -254,6 +258,9 @@ const PaymentSuccess: React.FC = () => {
   };
 
   const stateName = funnelConfig ? US_STATE_NAMES[funnelConfig.jurisdiction] : '';
+  // Sold only in California and New York: hide the upsell unless the state is known to be one of them.
+  const upsellState = funnelConfig?.jurisdiction || foiaState;
+  const upsellOffered = !!(upsellState && launchStateOf(upsellState));
   const legalAreaName = funnelConfig ? LEGAL_AREA_NAMES[funnelConfig.legalArea] : '';
 
   // Loading state
@@ -552,7 +559,7 @@ const PaymentSuccess: React.FC = () => {
                         ))}
                         {availableForms.length > 6 && (
                           <p className="text-sm text-muted-foreground text-center">
-                            + {availableForms.length - 6} more form guides available
+                            More form guides are available when you create them below.
                           </p>
                         )}
                       </div>
@@ -678,7 +685,7 @@ const PaymentSuccess: React.FC = () => {
           )}
 
           {/* Subscription Upsell — shown after export (both FOIA and court forms) */}
-          {(hasGenerated || foiaDownloaded) && verificationResult?.type !== 'subscription' && (
+          {(hasGenerated || foiaDownloaded) && verificationResult?.type !== 'subscription' && upsellOffered && (
             <Card className="max-w-2xl mx-auto mb-8 border-primary/30 bg-gradient-to-r from-primary/5 to-primary/10">
               <CardContent className="p-6">
                 <div className="flex items-start gap-4">
@@ -688,11 +695,12 @@ const PaymentSuccess: React.FC = () => {
                   <div className="flex-1">
                     <h3 className="text-lg font-bold mb-1">Save time next time</h3>
                     <p className="text-sm text-muted-foreground mb-4">
-                      Unlimited exports and saved cases, with every form and filling instruction included, for one monthly price.
+                      Unlimited exports and saved cases, with every form and filling instruction we offer for California and
+                      New York included, for {PLAN.priceLabel}.
                     </p>
                     <div className="flex flex-wrap gap-3 mb-5">
                       <span className="inline-flex items-center gap-1.5 text-sm">
-                        <Infinity className="h-4 w-4 text-primary" /> Unlimited exports
+                        <InfinityIcon className="h-4 w-4 text-primary" /> Unlimited exports
                       </span>
                       <span className="inline-flex items-center gap-1.5 text-sm">
                         <Save className="h-4 w-4 text-primary" /> Saved cases
@@ -704,11 +712,7 @@ const PaymentSuccess: React.FC = () => {
                       onClick={async () => {
                         trackUSSubscribeClicked('monthly', 'post_export_upsell');
                         try {
-                          const { data, error } = await invokeAuthed('stripe-checkout', {
-                            body: { action: 'create_subscription' },
-                          });
-                          if (error) throw error;
-                          if (data?.url) window.location.href = data.url;
+                          await startSubscriptionCheckout();
                         } catch (err) {
                           console.error('Subscription checkout error:', err);
                           toast.error('Failed to start checkout. Please try again.');
@@ -719,6 +723,7 @@ const PaymentSuccess: React.FC = () => {
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                     <p className="text-xs text-muted-foreground mt-2">No long-term commitment. Cancel any time by contacting support.</p>
+                    <p className="text-xs text-muted-foreground mt-2">{THIRD_PARTY_FEES_NOTE}</p>
                   </div>
                 </div>
               </CardContent>

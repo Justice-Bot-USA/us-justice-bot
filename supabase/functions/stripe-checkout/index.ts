@@ -71,7 +71,7 @@ async function handleCreateSubscription(
       product_type: "subscription",
       country: "US",
       source: "pricing_page",
-      app: "veritas_path",
+      app: "justice_bot_usa",
     },
   });
 

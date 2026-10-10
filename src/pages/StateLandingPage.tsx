@@ -153,7 +153,7 @@ const StateLandingPage: React.FC = () => {
               { label: 'Plain-Language Summary', icon: <Scale className="h-5 w-5" /> },
               { label: 'Official Court Forms', icon: <ClipboardList className="h-5 w-5" /> },
               { label: 'Filling Instructions', icon: <CheckCircle2 className="h-5 w-5" /> },
-              { label: 'Forms Filled From Your Answers', icon: <Briefcase className="h-5 w-5" /> },
+              { label: 'You Fill In Official Forms', icon: <Briefcase className="h-5 w-5" /> },
             ].map((item) => (
               <Card key={item.label} className="text-center">
                 <CardContent className="p-4">
@@ -194,7 +194,7 @@ const StateLandingPage: React.FC = () => {
                 <CardContent>
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-muted-foreground">
-                      {funnel.forms.length > 0 ? `${funnel.forms.length} common forms` : 'General information'}
+                      {funnel.forms.length > 0 ? 'Common official forms' : 'General information'}
                     </span>
                     <Button variant="ghost" size="sm" className="group-hover:translate-x-1 transition-transform">
                       Start <ArrowRight className="h-4 w-4 ml-1" />

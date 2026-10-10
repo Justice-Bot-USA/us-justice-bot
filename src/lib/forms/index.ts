@@ -16,11 +16,12 @@ import { getAdditionalStateData } from './additionalStatesData';
 import { stateFormsLibrary, type StateFormsData, type CourtForm } from '../formsLibraryData';
 import {
   CA_CRIMINAL_FORMS, CA_FAMILY_FORMS, CA_DIVORCE_FORMS, CA_CPS_FORMS,
-  CA_WORKPLACE_FORMS, CA_CIVIL_FORMS, CA_HUMAN_RIGHTS_FORMS,
+  CA_WORKPLACE_FORMS, CA_CIVIL_FORMS, CA_HUMAN_RIGHTS_FORMS, CA_PERSONAL_INJURY_FUNNEL_FORMS,
 } from '../ca/forms';
 import {
   NY_CRIMINAL_FORMS, NY_FAMILY_FORMS, NY_DIVORCE_FORMS, NY_CPS_FORMS,
   NY_IMMIGRATION_FORMS, NY_WORKPLACE_FORMS, NY_CIVIL_FORMS, NY_HUMAN_RIGHTS_FORMS,
+  NY_PERSONAL_INJURY_FUNNEL_FORMS,
 } from '../ny/forms';
 export type { CourtForm, StateFormsData } from '../formsLibraryData';
 
@@ -43,6 +44,7 @@ const LAUNCH_STATE_FORMS: Record<string, Record<string, CourtForm[]>> = {
     cps: CA_CPS_FORMS,
     employment: CA_WORKPLACE_FORMS,
     'human-rights': CA_HUMAN_RIGHTS_FORMS,
+    'personal-injury': CA_PERSONAL_INJURY_FUNNEL_FORMS,
   },
   NY: {
     family: [...NY_FAMILY_FORMS, ...NY_DIVORCE_FORMS],
@@ -53,6 +55,7 @@ const LAUNCH_STATE_FORMS: Record<string, Record<string, CourtForm[]>> = {
     employment: NY_WORKPLACE_FORMS,
     'human-rights': NY_HUMAN_RIGHTS_FORMS,
     immigration: NY_IMMIGRATION_FORMS,
+    'personal-injury': NY_PERSONAL_INJURY_FUNNEL_FORMS,
   },
 };
 

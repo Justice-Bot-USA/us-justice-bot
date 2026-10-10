@@ -274,7 +274,7 @@ const BookOfDocuments = () => {
         : `Book_of_Documents_${format(new Date(), 'yyyy-MM-dd')}.pdf`;
       
       downloadPDF(doc, filename);
-      toast.success('Court-ready Book of Documents downloaded!');
+      toast.success('Book of Documents downloaded');
     } catch (error) {
       console.error('PDF generation error:', error);
       toast.error('Failed to generate PDF');
@@ -418,13 +418,13 @@ const BookOfDocuments = () => {
                 onClick={() => {
                   setCourtReadyMode(!courtReadyMode);
                   if (!courtReadyMode) {
-                    toast.success('Court-ready mode: Documents sorted oldest → newest');
+                    toast.success('Documents sorted oldest → newest');
                   }
                 }}
                 className={courtReadyMode ? "bg-green-600 hover:bg-green-700" : ""}
               >
                 <Scale className="h-4 w-4 mr-2" />
-                {courtReadyMode ? "Court-Ready ✓" : "Court-Ready Order"}
+                {courtReadyMode ? "Oldest First ✓" : "Sort Oldest First"}
               </Button>
               <Button 
                 onClick={handleDownloadPDF}
