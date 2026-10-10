@@ -76,7 +76,7 @@ export const NY_PROCEDURES: Record<NyCategoryKey, FilingProcedure> = {
     fees: 'Index Number $210, RJI $95, Note of Issue $30. Poor-Person relief available.',
     eFilingUrl: NYSCEF,
     deadlines: [
-      'Residency: 1–2 years (DRL §230).',
+      'Residency (DRL §230): usually 1 or 2 years of continuous residence before filing, depending on your ties to New York; no minimum if the grounds happened in New York and both spouses live here when the case is filed.',
       'Defendant has 20 days (personal service) or 30 days (other) to answer.',
       'Statement of Net Worth and financial disclosure due at least 10 days before the preliminary conference (22 NYCRR 202.16(f)).',
     ],
@@ -165,8 +165,8 @@ export const NY_PROCEDURES: Record<NyCategoryKey, FilingProcedure> = {
     eFilingUrl: NYSCEF,
     deadlines: [
       'Small claims default judgment: ask the court to vacate it within 1 year after you were served with a copy of the judgment, for an excusable default (CPLR 5015(a)(1)); no time limit if the summons was never properly served.',
-      'Housing, nonpayment case: answer within 10 days of being served, in person at the clerk or in writing (RPAPL 732).',
-      'Housing, holdover case: answer on the first court date, or 3 days before it if the notice of petition demands that (RPAPL 743).',
+      'Housing, nonpayment case: in NYC Housing Court, and in other courts whose rules adopt RPAPL 732, answer within 10 days of being served, in person at the clerk or in writing. The notice of petition must say if this applies (RPAPL 732(4)).',
+      'Housing, holdover cases, and nonpayment cases in courts that do not use RPAPL 732: answer at the first court date, orally or in writing (RPAPL 743).',
       'Article 78: 4 months from final agency action.',
       'Breach of contract: generally 6 years, but a lawsuit against a consumer over a consumer credit debt (such as a credit card or personal loan) must be started within 3 years (CPLR 214-i). Once that time runs out, a later payment does not restart it. Consumer fraud: 3 years.',
     ],

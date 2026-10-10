@@ -41,7 +41,7 @@ const buildFAQs = (st: LaunchState, stateName: string, legalArea: LegalCategory)
         q: `How do I file for divorce in ${stateName}?`,
         a: ca
           ? 'In California, a divorce (dissolution of marriage) starts with a Petition, form FL-100, filed with the superior court in your county. Before the court can grant the divorce, you or your spouse must have lived in California for 6 months and in that county for 3 months (Family Code § 2320). Our California legal center lists the official divorce forms and explains each one.'
-          : 'In New York, divorces are handled by the Supreme Court in your county. You or your spouse must meet one of the residency rules in Domestic Relations Law § 230, which means either of you living in New York for two years without a break, or for one year if you married in New York, lived here as a married couple, or the grounds for divorce happened here. Our New York legal center links to the official forms and explains each one.',
+          : 'In New York, divorces are handled by the Supreme Court in your county. You or your spouse must meet one of the residency rules in Domestic Relations Law § 230, which means either of you living in New York for two years without a break; or for one year without a break if you married in New York, lived here as a married couple, or the grounds for divorce happened here; or, if the grounds happened here, both of you living in New York when the case is filed. Our New York legal center links to the official forms and explains each one.',
       },
       {
         q: `Do I need a lawyer for a divorce in ${stateName}?`,

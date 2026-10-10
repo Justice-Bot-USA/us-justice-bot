@@ -36,6 +36,9 @@ import { RelatedCasesDisplay } from '@/components/dashboard/RelatedCasesDisplay'
 import { ProceduralGuidancePanel } from '@/components/ProceduralGuidancePanel';
 import { trackAddToCart, getDetectedCountry } from '@/hooks/useAnalytics';
 import { isValidUUID } from '@/lib/validation';
+import { launchStateOf } from '@/lib/stateRouting';
+import { US_STATES } from '@/lib/states';
+import { StateComingSoon } from '@/components/funnel/StateComingSoon';
 
 interface CaseData {
   id: string;
@@ -128,7 +131,15 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
     fetchCaseData();
   }, [caseId, user]);
 
+  // The plan is only sold for California and New York cases. Other states are coming soon.
+  const caseState = caseData?.state || '';
+  const planOffered = !!launchStateOf(caseState);
+  const caseStateName = US_STATES.find(
+    (s) => s.value === caseState.toUpperCase() || s.label.toLowerCase() === caseState.toLowerCase(),
+  )?.label;
+
   const handleUnlock = async () => {
+    if (!planOffered || accessLoading) return;
     if (!user) {
       navigate(signInPath());
       return;
@@ -501,8 +512,13 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
                     </div>
                   </div>
 
+                  {/* Not sold outside California and New York */}
+                  {!hasAccess && !isAdmin && !planOffered && (
+                    <StateComingSoon stateName={caseStateName} />
+                  )}
+
                   {/* Document Preview (Locked) */}
-                  {!hasAccess && !isAdmin && (
+                  {!hasAccess && !isAdmin && planOffered && (
                     <Card className="border-2 border-dashed border-muted-foreground/30 bg-muted/30">
                       <CardContent className="p-8 text-center">
                         <Lock className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
@@ -529,12 +545,12 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
                       Continue to Filing Instructions
                       <ArrowRight className="ml-2 h-5 w-5" />
                     </Button>
-                  ) : (
+                  ) : planOffered ? (
                     <Button 
                       className="w-full h-14 text-lg bg-green-600 hover:bg-green-700"
                       size="lg"
                       onClick={handleUnlock}
-                      disabled={isUnlocking}
+                      disabled={isUnlocking || accessLoading}
                     >
                       {isUnlocking ? (
                         <>
@@ -548,11 +564,13 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
                         </>
                       )}
                     </Button>
-                  )}
+                  ) : null}
 
-                  <p className="text-center text-sm text-muted-foreground">
-                    Secure checkout via Stripe • Cancel any time by contacting support
-                  </p>
+                  {!hasAccess && !isAdmin && planOffered && (
+                    <p className="text-center text-sm text-muted-foreground">
+                      Secure checkout via Stripe • Cancel any time by contacting support
+                    </p>
+                  )}
                 </CardContent>
               </Card>
             </motion.div>

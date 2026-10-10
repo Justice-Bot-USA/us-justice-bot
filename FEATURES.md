@@ -91,10 +91,11 @@ US Justice Bot is a comprehensive legal assistance platform that provides afford
 - **Evidence integration**: Reference uploaded documents in chat
 
 ### 7. **Payment & Subscription System**
-- **PayPal integration**: Secure payment processing
-- **Subscription plans**:
-  - Monthly: $59.99/month
-  - Annual: $299.99/year (save $419.89!)
+- **Stripe checkout**: the only payment method
+- **One plan**: Justice Bot USA Access, $25/month, sold for California and New York only.
+  All forms and filling instructions are included. No yearly plan, no per-form or one-time
+  purchases. Courts and agencies may charge their own fees (filing, service, copies); fee
+  waivers and our fee waiver forms are free.
 - **Payment tracking**: Admin dashboard for revenue monitoring
 - **Subscription management**: User self-service portal
 
@@ -181,10 +182,8 @@ US Justice Bot is a comprehensive legal assistance platform that provides afford
 }
 ```
 
-### 4. `paypal-payments`
-**Purpose**: Process subscription payments
-**Auth**: Required
-**Input**: PayPal payment data
+### 4. `paypal-payments`, `paypal-webhook`
+**Status**: Retired (Oct 2026). Both return 410 Gone. Payments go through `stripe-checkout`.
 
 ## Admin Features
 
@@ -280,7 +279,7 @@ US Justice Bot is a comprehensive legal assistance platform that provides afford
 - **Backend**: Supabase (PostgreSQL + Edge Functions)
 - **Authentication**: Supabase Auth
 - **AI**: Lovable AI Gateway (Gemini models)
-- **Payments**: PayPal
+- **Payments**: Stripe (single $25/month plan)
 - **Storage**: Supabase Storage
 
 ## Roadmap

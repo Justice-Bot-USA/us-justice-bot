@@ -56,7 +56,7 @@ const SMALL_CLAIMS_SERVICE: Record<string, { title: string; description: string 
 };
 const EVICTION_DEADLINE: Record<string, string> = {
   CA: 'If you were served with an eviction Summons and Complaint, you generally have 10 court days to file an Answer (UD-105). Weekends and court holidays don\'t count, and service that was not in person can move the deadline.',
-  NY: 'Nonpayment case in NYC Housing Court: answer within 10 days of being served. In other courts, and in holdover cases, answer on the court date on your papers (or 3 days before it if the notice of petition says so).',
+  NY: 'Read your notice of petition. In a nonpayment case in NYC Housing Court (and other courts that use RPAPL 732) it tells you to answer within 10 days of being served. Otherwise, and in holdover cases, you answer at the court date on your papers, orally or in writing (RPAPL 743).',
 };
 
 const getNextSteps = (config: FunnelConfig): NextStep[] => {
