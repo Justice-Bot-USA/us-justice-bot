@@ -108,8 +108,7 @@ export default function TrackPage() {
           <section>
             <div className="flex items-center gap-2 mb-4">
               <FileText className="h-5 w-5 text-primary" />
-              <h2 className="text-xl font-bold text-foreground">Your Packet</h2>
-              <Badge variant="secondary" className="ml-auto">{trackForms.length} forms</Badge>
+              <h2 className="text-xl font-bold text-foreground">Common official forms for this track</h2>
             </div>
             <div className="grid gap-3">
               {trackForms.map((tf: any) => {

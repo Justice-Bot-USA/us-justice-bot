@@ -109,10 +109,9 @@ function sitemapPlugin(): Plugin {
     closeBundle() {
       const buildDate = new Date().toISOString().split("T")[0];
       const xml = buildSitemap(buildDate);
-      writeFileSync(path.resolve(__dirname, "public/sitemap.xml"), xml, "utf-8");
-      // Vite copies public/ into the build output before closeBundle runs, so
-      // also write the fresh sitemap into the output; otherwise the deployed
-      // sitemap is the one left over from the previous build.
+      // Write only into the build output (Vite has already copied public/ there,
+      // so this replaces the copied file). public/sitemap.xml is tracked in git
+      // and is not rewritten, so a build no longer changes a tracked file.
       if (outDir && existsSync(outDir)) {
         writeFileSync(path.join(outDir, "sitemap.xml"), xml, "utf-8");
       }

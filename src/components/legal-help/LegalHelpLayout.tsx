@@ -35,6 +35,8 @@ interface LegalHelpLayoutProps {
   breadcrumbLabel: string;
   relatedPages?: { label: string; href: string }[];
   faqItems?: { question: string; answer: string }[];
+  /** Keep placeholder pages (coming-soon states, not found) out of search results. */
+  noindex?: boolean;
 }
 
 const LegalHelpLayout = ({
@@ -52,6 +54,7 @@ const LegalHelpLayout = ({
   breadcrumbLabel,
   relatedPages = [],
   faqItems = [],
+  noindex = false,
 }: LegalHelpLayoutProps) => {
   const [language, setLanguage] = useState<"en" | "es">("en");
   const canonicalUrl = `https://justicebot-usa.com${canonicalPath}`;
@@ -113,6 +116,7 @@ const LegalHelpLayout = ({
         <title>{metaTitle}</title>
         <meta name="description" content={metaDescription} />
         <meta name="keywords" content={keywords} />
+        {noindex && <meta name="robots" content="noindex, follow" />}
         <link rel="canonical" href={canonicalUrl} />
         <link rel="alternate" hrefLang="en" href={canonicalUrl} />
         <link rel="alternate" hrefLang="es" href={canonicalUrl} />
@@ -246,9 +250,10 @@ const LegalHelpLayout = ({
           <div className="flex flex-wrap gap-3 justify-center">
             {ctas.map((cta, i) => (
               <Button key={i} asChild variant={i === 0 ? "default" : "outline"} size="lg" onClick={() => {
-                if (typeof window !== "undefined" && (window as any).gtag) {
-                  (window as any).gtag("event", "cta_click", { event_category: "seo_content", cta_label: cta.label, page_path: canonicalPath });
-                }
+                const gtag = typeof window !== "undefined"
+                  ? (window as Window & { gtag?: (...args: unknown[]) => void }).gtag
+                  : undefined;
+                gtag?.("event", "cta_click", { event_category: "seo_content", cta_label: cta.label, page_path: canonicalPath });
               }}>
                 <Link to={cta.href}>
                   {cta.label} <ArrowRight className="ml-2 h-4 w-4" />

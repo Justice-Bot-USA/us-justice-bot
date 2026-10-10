@@ -31,7 +31,10 @@ verify_jwt = true
 verify_jwt = false
 
 [functions.paypal-payments]
-verify_jwt = true
+verify_jwt = false
+
+[functions.paypal-webhook]
+verify_jwt = false
 
 [functions.analyze-case-merit]
 verify_jwt = false
@@ -46,6 +49,12 @@ verify_jwt = false
 verify_jwt = false
 
 [functions.settlement-calculator]
+verify_jwt = false
+
+[functions.case-law-search]
+verify_jwt = false
+
+[functions.sex-offender-search]
 verify_jwt = false
 
 [functions.sweep-worker]

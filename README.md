@@ -24,7 +24,7 @@ This section is the source of truth for what works today. Keep it accurate; do n
 
 - **California document-preparation rules:** charging to fill in eviction papers may require registration as an unlawful detainer assistant, and charging for other self-help forms as a legal document assistant (Bus. & Prof. Code §6400 et seq.). UD-105 is therefore free until California counsel advises. The other paid CA forms need the same review before marketing.
 - New York form filling: see the status table.
-- Stripe metadata still carries `app: "veritas_path"` (retired name). Change it only together with any webhook logic that reads it.
+- Stripe checkout metadata uses `app: "justice_bot_usa"`; nothing reads it.
 
 ## Tech stack
 
@@ -53,7 +53,7 @@ src/hooks/useFormsPdfGenerator.ts   PDF form guides delivered after the funnel p
 src/lib/formfill/          Form filling: field maps per official form (ca.ts, ny.ts) and the pdf-lib filler (fill.ts)
 public/forms/ca/           Official Judicial Council PDFs (owner password and XFA layer removed so fields display)
 public/forms/ny/           Official nycourts.gov PDFs (CIV-SC-50 with two bad field entries removed so pdf-lib can read it)
-supabase/functions/        Edge functions (Stripe, PayPal, legal sweeps, search, analysis)
+supabase/functions/        Edge functions (Stripe, legal sweeps, search, analysis)
 ```
 
 ## Adding a state

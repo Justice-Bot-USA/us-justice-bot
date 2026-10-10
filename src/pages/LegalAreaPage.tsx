@@ -35,7 +35,7 @@ const CENTER_TABS: Record<string, Record<LaunchState, string[]>> = {
   civil: { CA: ["human-rights"], NY: ["human-rights"] },
   consumer: { CA: ["civil"], NY: ["civil"] },
   "consumer-rights": { CA: ["civil"], NY: ["civil"] },
-  "personal-injury": { CA: [], NY: [] },
+  "personal-injury": { CA: ["personal-injury"], NY: ["personal-injury"] },
   immigration: { CA: [], NY: ["immigration"] },
   federal: { CA: [], NY: [] },
   "workers-comp": { CA: ["workplace"], NY: ["workplace"] },
@@ -44,6 +44,7 @@ const CENTER_TABS: Record<string, Record<LaunchState, string[]>> = {
 const TAB_LABELS: Record<string, string> = {
   family: "Family", divorce: "Divorce", civil: "Civil", workplace: "Workplace", criminal: "Criminal",
   "human-rights": "Civil Rights", immigration: "Immigration", cps: "CPS",
+  "personal-injury": "Personal Injury",
 };
 
 const LIVE_STATE_INFO: Record<LaunchState, { name: string; center: string; fill: string; selfHelp: string; selfHelpName: string }> = {

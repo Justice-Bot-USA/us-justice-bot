@@ -35,12 +35,12 @@ const SelfHelpHub = () => {
     },
     {
       icon: FileText, title: "Find Court Forms",
-      description: "Browse official court forms, verified for California and New York. Understand what each form is for and where to file it.",
+      description: "Browse official California and New York court forms. Learn what each form is for and where it is generally filed. Other states coming soon.",
       link: "/usa-forms", linkText: "US Forms Catalog",
     },
     {
       icon: FolderOpen, title: "Organize Your Documents",
-      description: "Upload, label, and organize evidence into a court-ready Book of Documents with exhibit numbering and chronological sorting.",
+      description: "Upload your documents and put them into one PDF with numbered exhibits and a table of contents. Check your court's rules for exhibits before you file.",
       link: "/book-of-documents", linkText: "Book of Documents",
     },
     {
@@ -54,8 +54,8 @@ const SelfHelpHub = () => {
       link: "/courtroom-prep", linkText: "Prepare for Court",
     },
     {
-      icon: GraduationCap, title: "Legal Education Courses",
-      description: "Take self-paced courses on legal topics relevant to your case, with certificates of completion.",
+      icon: GraduationCap, title: "Parenting Courses",
+      description: "Find parenting and co-parenting courses offered by outside providers, and keep your own record of enrollment and certificates. Check with your court that a course is accepted.",
       link: "/courses", linkText: "Course Hub",
     },
   ];
@@ -108,7 +108,7 @@ const SelfHelpHub = () => {
         "Verify your claim amount is within your state's small claims limit",
         "Attempt to resolve the dispute informally first (demand letter)",
         "File a claim at your local small claims court",
-        "Pay the filing fee (typically $30-$75 depending on state)",
+        "Pay the filing fee set by the court, or ask the clerk about a fee waiver if you cannot afford it",
         "Serve the defendant according to your court's rules",
         "Gather your evidence: contracts, receipts, photos, correspondence",
         "Organize evidence chronologically",
@@ -243,7 +243,7 @@ const SelfHelpHub = () => {
                   <li>✓ Help you understand legal processes in plain language</li>
                   <li>✓ Identify which records or documents may exist</li>
                   <li>✓ Identify relevant courts or agencies</li>
-                  <li>✓ Generate lawful, user-initiated documents and requests</li>
+                  <li>✓ Let you fill in official California and New York forms, and draft public records requests, with your own answers</li>
                   <li>✓ Provide procedural guidance for self-represented individuals</li>
                   <li>✓ Organize your evidence chronologically</li>
                 </ul>

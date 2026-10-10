@@ -3,8 +3,11 @@ import { useFormsPdfGenerator } from '@/hooks/useFormsPdfGenerator';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { FileText, Download, Loader2, CheckCircle2, Printer } from 'lucide-react';
-import { FunnelConfig, FunnelState, US_STATE_NAMES } from '@/lib/funnels';
+import { FileText, Download, Loader2, CheckCircle2, Printer, ExternalLink } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { FunnelConfig, FunnelState, US_STATE_NAMES, LEGAL_AREA_NAMES } from '@/lib/funnels';
+import { stateRouteFor } from '@/lib/stateRouting';
+import { getExpandedStateFormsData } from '@/lib/forms';
 import { trackFormGenerated } from '@/lib/funnels/analytics';
 import { toast } from 'sonner';
 
@@ -72,6 +75,42 @@ export const FunnelGenerateStep: React.FC<FunnelGenerateStepProps> = ({
   };
 
   const readyCount = documents.length;
+  const stateName = US_STATE_NAMES[config.jurisdiction] || config.jurisdiction;
+
+  // No form guides for this state and area: say so rather than showing guides from another area.
+  if (plannedForms.length === 0) {
+    const route = stateRouteFor(config.jurisdiction, config.legalArea);
+    const selfHelpUrl = getExpandedStateFormsData(config.jurisdiction).selfHelpUrl;
+    const areaName = (LEGAL_AREA_NAMES[config.legalArea] || config.legalArea).toLowerCase();
+    return (
+      <Card>
+        <CardContent className="p-8 text-center space-y-4">
+          <FileText className="h-12 w-12 mx-auto text-muted-foreground" />
+          <h3 className="text-xl font-semibold">No form guides for this area yet</h3>
+          <p className="text-muted-foreground">
+            We don't have form guides for {areaName} matters in {stateName} yet.
+            {route ? ` Our ${route.stateName} legal center has plain-language information with links to official sources.` : ''}
+            {selfHelpUrl ? " The court's self-help site has the official forms and instructions." : ''}
+          </p>
+          <div className="flex flex-wrap gap-3 justify-center">
+            {route && (
+              <Button asChild>
+                <Link to={route.centerPath}>{route.stateName} legal center</Link>
+              </Button>
+            )}
+            {selfHelpUrl && (
+              <Button asChild variant="outline">
+                <a href={selfHelpUrl} target="_blank" rel="noopener noreferrer">
+                  Court self-help site
+                  <ExternalLink className="ml-2 h-4 w-4" />
+                </a>
+              </Button>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -89,7 +128,7 @@ export const FunnelGenerateStep: React.FC<FunnelGenerateStepProps> = ({
             <FileText className="h-16 w-16 mx-auto text-primary/50 mb-4" />
             <h4 className="text-lg font-medium mb-2">Ready to Build</h4>
             <p className="text-muted-foreground mb-6">
-              {plannedForms.length} form guide{plannedForms.length !== 1 ? 's' : ''} for {US_STATE_NAMES[config.jurisdiction]} courts
+              Form guides for common {stateName} court forms in this area
             </p>
             
             <div className="flex flex-wrap gap-2 justify-center mb-6">

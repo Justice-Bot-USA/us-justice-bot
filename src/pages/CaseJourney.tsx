@@ -13,8 +13,6 @@ import {
   Upload, 
   FileText, 
   MapPin, 
-  Lock,
-  Unlock,
   Download,
   Printer,
   Mail,
@@ -27,7 +25,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { usePaywallAccess } from '@/hooks/usePaywallAccess';
-import { PLAN, startSubscriptionCheckout } from '@/lib/pricing';
+import { PLAN, THIRD_PARTY_FEES_NOTE, startSubscriptionCheckout } from '@/lib/pricing';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -36,6 +34,9 @@ import { RelatedCasesDisplay } from '@/components/dashboard/RelatedCasesDisplay'
 import { ProceduralGuidancePanel } from '@/components/ProceduralGuidancePanel';
 import { trackAddToCart, getDetectedCountry } from '@/hooks/useAnalytics';
 import { isValidUUID } from '@/lib/validation';
+import { launchStateOf, stateRouteFor } from '@/lib/stateRouting';
+import { US_STATES } from '@/lib/states';
+import { StateComingSoon } from '@/components/funnel/StateComingSoon';
 
 interface CaseData {
   id: string;
@@ -128,7 +129,16 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
     fetchCaseData();
   }, [caseId, user]);
 
+  // The plan is only sold for California and New York cases. Other states are coming soon.
+  const caseState = caseData?.state || '';
+  const planOffered = !!launchStateOf(caseState);
+  const fillRoute = stateRouteFor(caseState);
+  const caseStateName = US_STATES.find(
+    (s) => s.value === caseState.toUpperCase() || s.label.toLowerCase() === caseState.toLowerCase(),
+  )?.label;
+
   const handleUnlock = async () => {
+    if (!planOffered || accessLoading) return;
     if (!user) {
       navigate(signInPath());
       return;
@@ -136,9 +146,11 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
 
     setIsUnlocking(true);
     
-    trackAddToCart('Case Assessment', caseData?.state || '', getDetectedCountry(), PLAN.price);
+    trackAddToCart(PLAN.name, caseData?.state || '', getDetectedCountry(), PLAN.price);
     try {
       sessionStorage.setItem('pending_case_id', caseId || '');
+      // After checkout, PaymentSuccess sends the subscriber to the form filler for this state.
+      if (fillRoute) sessionStorage.setItem('pending_fill_return', fillRoute.fillPath);
       await startSubscriptionCheckout();
     } catch (error) {
       console.error('Payment error:', error);
@@ -449,7 +461,7 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
             </motion.div>
           )}
 
-          {/* Step 3: Book of Documents (Payment Gate) */}
+          {/* Step 3: Book of Documents (free) and the monthly plan (form filling, CA and NY only) */}
           {currentStep === 3 && (
             <motion.div
               key="step3"
@@ -465,7 +477,7 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
                   </div>
                   <CardTitle className="text-2xl">Your Book of Documents</CardTitle>
                   <CardDescription className="text-lg">
-                    Your uploaded documents, organized and numbered
+                    Your uploaded documents, organized and numbered. Free to use.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
@@ -501,58 +513,80 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
                     </div>
                   </div>
 
-                  {/* Document Preview (Locked) */}
-                  {!hasAccess && !isAdmin && (
-                    <Card className="border-2 border-dashed border-muted-foreground/30 bg-muted/30">
-                      <CardContent className="p-8 text-center">
-                        <Lock className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                        <h4 className="font-semibold text-lg mb-2">Book of Documents - Locked</h4>
-                        <p className="text-muted-foreground mb-4">
-                          {uploadedFilesCount} document(s) ready to be organized
-                        </p>
-                        <div className="space-y-2">
+                  <Button
+                    variant="outline"
+                    className="w-full"
+                    onClick={() => navigate('/book-of-documents')}
+                  >
+                    <FileText className="mr-2 h-4 w-4" />
+                    Open Book of Documents
+                    {uploadedFilesCount > 0 ? ` (${uploadedFilesCount} uploaded)` : ''}
+                  </Button>
+
+                  {/* Not sold outside California and New York */}
+                  {!hasAccess && !isAdmin && !planOffered && (
+                    <StateComingSoon stateName={caseStateName} />
+                  )}
+
+                  {/* The monthly plan: what it adds beyond the free tools */}
+                  {!hasAccess && !isAdmin && planOffered && (
+                    <Card className="border-primary/40 bg-primary/5">
+                      <CardContent className="p-6 space-y-4">
+                        <div className="text-center space-y-1">
+                          <h4 className="font-semibold text-lg">{PLAN.name}</h4>
                           <p className="text-2xl font-bold text-primary">{PLAN.priceLabel}</p>
-                          <p className="text-sm text-muted-foreground">Included in the plan with every form and guide</p>
                         </div>
+                        <p className="text-sm text-muted-foreground">
+                          The Book of Documents and the general filing information in the next step are free. The plan adds official
+                          California and New York court form filling: you fill in the official forms we support with
+                          your own answers, using our filling instructions, then check, sign and file them yourself.
+                          Legal information, not legal advice. Our content has not yet been reviewed by a licensed attorney.
+                        </p>
+                        <Button
+                          className="w-full h-14 text-lg bg-green-600 hover:bg-green-700"
+                          size="lg"
+                          onClick={handleUnlock}
+                          disabled={isUnlocking || accessLoading}
+                        >
+                          {isUnlocking ? (
+                            <>
+                              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                              Processing...
+                            </>
+                          ) : (
+                            PLAN.cta
+                          )}
+                        </Button>
+                        <p className="text-xs text-muted-foreground">{THIRD_PARTY_FEES_NOTE}</p>
+                        <p className="text-center text-sm text-muted-foreground">
+                          Secure checkout via Stripe • Cancel any time by contacting support
+                        </p>
                       </CardContent>
                     </Card>
                   )}
 
-                  {/* Unlock / Continue CTA */}
-                  {hasAccess || isAdmin ? (
-                    <Button 
-                      className="w-full h-14 text-lg"
-                      size="lg"
-                      onClick={() => setCurrentStep(4)}
+                  {/* Subscribers: straight to the form filler for their state */}
+                  {(hasAccess || isAdmin) && fillRoute && (
+                    <Button
+                      variant="outline"
+                      className="w-full"
+                      onClick={() => navigate(fillRoute.fillPath)}
                     >
-                      <Unlock className="mr-2 h-5 w-5" />
-                      Continue to Filing Instructions
-                      <ArrowRight className="ml-2 h-5 w-5" />
-                    </Button>
-                  ) : (
-                    <Button 
-                      className="w-full h-14 text-lg bg-green-600 hover:bg-green-700"
-                      size="lg"
-                      onClick={handleUnlock}
-                      disabled={isUnlocking}
-                    >
-                      {isUnlocking ? (
-                        <>
-                          <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-                          Processing...
-                        </>
-                      ) : (
-                        <>
-                          <Unlock className="mr-2 h-5 w-5" />
-                          Unlock Book of Documents — {PLAN.priceLabel}
-                        </>
-                      )}
+                      <ClipboardCheck className="mr-2 h-4 w-4" />
+                      Fill in official {fillRoute.stateName} forms
                     </Button>
                   )}
 
-                  <p className="text-center text-sm text-muted-foreground">
-                    Secure checkout via Stripe • Cancel any time by contacting support
-                  </p>
+                  {/* Filing information is general and free for everyone */}
+                  <Button
+                    className="w-full h-14 text-lg"
+                    size="lg"
+                    variant={hasAccess || isAdmin || !planOffered ? 'default' : 'outline'}
+                    onClick={() => setCurrentStep(4)}
+                  >
+                    Continue to Filing Information
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
                 </CardContent>
               </Card>
             </motion.div>
@@ -682,7 +716,7 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
                     {[
                       { label: 'Situation summarized', done: true },
                       { label: 'Evidence gathered', done: uploadedFilesCount > 0 },
-                      { label: 'Documents organized', done: hasAccess || isAdmin },
+                      { label: 'Documents ready for your Book of Documents', done: uploadedFilesCount > 0 },
                       { label: 'Courts that usually hear these matters listed', done: true },
                       { label: 'Filing steps explained', done: true },
                     ].map((item, i) => (

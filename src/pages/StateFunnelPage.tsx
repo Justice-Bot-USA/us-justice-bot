@@ -41,7 +41,7 @@ const buildFAQs = (st: LaunchState, stateName: string, legalArea: LegalCategory)
         q: `How do I file for divorce in ${stateName}?`,
         a: ca
           ? 'In California, a divorce (dissolution of marriage) starts with a Petition, form FL-100, filed with the superior court in your county. Before the court can grant the divorce, you or your spouse must have lived in California for 6 months and in that county for 3 months (Family Code § 2320). Our California legal center lists the official divorce forms and explains each one.'
-          : 'In New York, divorces are handled by the Supreme Court in your county. You or your spouse must meet one of the residency rules in Domestic Relations Law § 230, which means either of you living in New York for two years without a break, or for one year if you married in New York, lived here as a married couple, or the grounds for divorce happened here. Our New York legal center links to the official forms and explains each one.',
+          : 'In New York, divorces are handled by the Supreme Court in your county. You or your spouse must meet one of the residency rules in Domestic Relations Law § 230, which means either of you living in New York for two years without a break; or for one year without a break if you married in New York, lived here as a married couple, or the grounds for divorce happened here; or, if the grounds happened here, both of you living in New York when the case is filed. Our New York legal center links to the official forms and explains each one.',
       },
       {
         q: `Do I need a lawyer for a divorce in ${stateName}?`,
@@ -181,11 +181,12 @@ const buildFAQs = (st: LaunchState, stateName: string, legalArea: LegalCategory)
       },
       {
         q: `Do I need a lawyer for a personal injury claim in ${stateName}?`,
-        a: `Not always, but injury claims can be complex and many personal injury lawyers offer free consultations. Our platform helps you organize your documents and find official ${stateName} resources.`,
-      },
-      {
-        q: `How much is my personal injury case worth in ${stateName}?`,
-        a: `Justice Bot does not estimate what a claim is worth. Compensation depends on the facts and on ${stateName} law, such as its comparative fault rules. A lawyer or legal aid office can advise you about your situation.`,
+        // Sources: selfhelp.courts.ca.gov/court-basics/help-at-court; calbar.ca.gov/public/find-legal-professionals/find-lawyer-referral-service
+        // and /public/legal-resources/free-legal-help (LawHelpCA); nycourts.gov/courthelp; nysba.org LRS page; nycbar.org/get-legal-help;
+        // lawhelpny.org. All checked 2026-10-10.
+        a: ca
+          ? 'Not always. You can represent yourself, but injury cases can be complex. Our California legal center explains the deadlines, official forms and filing steps. For help with your situation: every California superior court offers some help to people without a lawyer through its self-help center, and what it covers varies by county (selfhelp.courts.ca.gov). Lawyers referred by a State Bar-certified lawyer referral service offer a first consultation for a reduced fee or no fee (calbar.ca.gov). LawHelpCA (lawhelpca.org) lists low-cost legal aid. This is legal information, not legal advice.'
+          : "Not always. You can represent yourself, but injury cases can be complex. Our New York legal center explains the deadlines, official forms and filing steps. CourtHelp (nycourts.gov) is the court system's own site for people without a lawyer. To find a lawyer, the New York State Bar Association Lawyer Referral Service (nysba.org) refers people in the counties it serves, and in New York City the New York City Bar Legal Referral Service (nycbar.org) can refer you; ask the service about its consultation fee. LawHelpNY (lawhelpny.org) lists free legal services. This is legal information, not legal advice.",
       },
     ],
   };
@@ -232,7 +233,7 @@ const buildHowToSchema = (stateName: string, areaName: string, forms: string[]) 
       '@type': 'HowToStep',
       position: 4,
       name: 'Get Your Form Guides',
-      text: `With the $25 monthly plan you get a filing guide for each ${stateName} form, a link to the official court version, and official ${stateName} court forms filled from your answers. You check, sign and file them yourself.`,
+      text: `With the ${PLAN.priceLabel} plan you get filling instructions for each ${stateName} form and a link to the official version, and, for the official ${stateName} court forms we support, you fill them in with your own answers. You check, sign and file them yourself.`,
     },
     {
       '@type': 'HowToStep',
@@ -499,7 +500,7 @@ const StateFunnelPage: React.FC = () => {
               <ul>
                 <li>Free: questions that help sort out your situation, and a plain-language summary</li>
                 <li>A list of forms commonly used for {legalAreaName.toLowerCase()} matters in {stateName}, with links to the official court versions</li>
-                <li>With the {PLAN.priceLabel} plan: official {stateName} court forms filled from your answers, with filling instructions. You check, sign and file them yourself.</li>
+                <li>With the {PLAN.priceLabel} plan: filling instructions for each form, a link to the official version, and, for the official {stateName} court forms we support, you fill them in with your own answers. You check, sign and file them yourself.</li>
                 <li>General legal information, not legal advice. Our content has not yet been reviewed by a licensed attorney.</li>
               </ul>
               {faqs.length > 0 && (

@@ -11,7 +11,7 @@ const LocalBusinessSchema = () => {
     name: "Justice Bot USA",
     legalName: "Justice Bot Technologies Inc.",
     description:
-      "Legal information and official California and New York court forms, filled in from your own answers. Not a law firm and not legal advice.",
+      "Legal information and official California and New York court forms that you fill in with your own answers and file yourself. Not a law firm and not legal advice.",
     url: "https://justicebot-usa.com",
     logo: "https://justicebot-usa.com/icon-512.png",
     areaServed: [

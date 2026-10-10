@@ -110,6 +110,8 @@ const STATE_FORMS: Record<string, Partial<Record<LegalCategory, string[]>>> = {
     'workers-rights': ['DWC-1', 'Cal/OSHA Complaint', 'DLSE Retaliation Complaint'],
     'human-rights': ['CRD Complaint', 'EEOC Charge'],
     'agency-complaints': ['Medical Board Complaint', 'State Bar Complaint', 'AG Consumer Complaint'],
+    // Same order as the form guides the funnel delivers (CA_PERSONAL_INJURY_FUNNEL_FORMS).
+    'personal-injury': ['PLD-PI-001', 'PLD-PI-001(1)', 'PLD-PI-001(2)', 'SUM-100', 'CM-010', 'POS-010', 'CIV-050', 'FW-001'],
   },
   CO: {
     'family': ['JDF-1101', 'JDF-1102', 'JDF-1103', 'JDF-1111'],
@@ -418,6 +420,8 @@ const STATE_FORMS: Record<string, Partial<Record<LegalCategory, string[]>>> = {
     'workers-rights': ['WCB C-3', 'OSHA-7'],
     'human-rights': ['NYSDHR Complaint', 'EEOC Charge'],
     'agency-complaints': ['OPMC Complaint', 'CCRB Complaint'],
+    // Same order as the form guides the funnel delivers (NY_PERSONAL_INJURY_FUNNEL_FORMS).
+    'personal-injury': ['MV-104', 'NF-2', 'Notice of Claim (GML 50-e)', 'NYC-COMPT-BLA-PI1-F2', 'CIV-GP-59', 'UCS-840', 'CIV-SC-50', 'UCS-FW1'],
   },
   NC: {
     'family': ['AOC-CV-200', 'Divorce Complaint', 'DVPO'],
@@ -1245,9 +1249,9 @@ const generateSEO = (state: string, legalArea: LegalCategory): FunnelConfig['seo
       h1: `${stateName} Professional Complaints Help`,
     },
     'personal-injury': {
-      title: `${stateName} Personal Injury Self-Help | Accident Claims Guide`,
-      description: `Navigate personal injury claims in ${stateName}. Get help with accident cases, medical bills, and injury compensation.`,
-      keywords: [`${stateName} personal injury`, `${stateName} accident claim`, `${stateName} injury lawyer`, 'accident compensation'],
+      title: `${stateName} Personal Injury Self-Help | Deadlines, Forms & Filing Steps`,
+      description: `Legal information for ${stateName} injury cases: time limits to sue, claims against government agencies, the official court forms, and how to respond if you are sued. Not legal advice.`,
+      keywords: [`${stateName} personal injury`, `${stateName} statute of limitations personal injury`, `${stateName} personal injury forms`, `${stateName} notice of claim`, 'car accident report'],
       h1: `${stateName} Personal Injury Resources`,
     },
     'immigration': {
@@ -1297,7 +1301,8 @@ export const generateUSFunnels = (): FunnelConfig[] => {
         steps: STANDARD_STEPS,
         forms: STATE_FORMS[state]?.[legalArea] || [],
         courts: STATE_COURTS[state]?.[legalArea] || [],
-        upsell: legalArea === 'criminal' ? 'one_time' : 'subscription',
+        // The $25/month plan is the only charge, in every legal area.
+        upsell: 'subscription',
         enabled: isStateEnabled(state),
         seo: generateSEO(state, legalArea),
       });

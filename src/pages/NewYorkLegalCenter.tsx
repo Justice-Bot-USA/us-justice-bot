@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useSearchParams } from 'react-router-dom';
 import { getFillableByFormNumber } from '@/lib/formfill';
@@ -10,7 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
-  Shield, Heart, Scale, Baby, Globe, Briefcase, Building2, HandHeart,
+  Shield, Heart, Scale, Baby, Globe, Briefcase, Building2, HandHeart, HeartPulse,
   Search, ExternalLink, FileText, ListChecks, MapPin, Clock, DollarSign,
 } from 'lucide-react';
 import { NY_FORMS_BY_CATEGORY, type NyCategoryKey } from '@/lib/ny/forms';
@@ -25,6 +25,7 @@ const CATEGORIES: { key: NyCategoryKey; label: string; icon: React.ReactNode; bl
   { key: 'immigration', label: 'Immigration', icon: <Globe className="h-4 w-4" />, blurb: 'USCIS filings and EOIR removal defense in NY.' },
   { key: 'workplace', label: 'Workplace', icon: <Briefcase className="h-4 w-4" />, blurb: 'Wage theft, UI, workers comp, paid family leave, safety.' },
   { key: 'civil', label: 'Civil', icon: <Building2 className="h-4 w-4" />, blurb: 'Small claims, housing, consumer, Article 78.' },
+  { key: 'personal-injury', label: 'Personal Injury', icon: <HeartPulse className="h-4 w-4" />, blurb: 'Deadlines, forms and filing steps after an injury (such as a car crash or fall), notices of claim against government bodies, no-fault, and answering an injury lawsuit.' },
   { key: 'human-rights', label: 'Human Rights', icon: <HandHeart className="h-4 w-4" />, blurb: 'Discrimination at NYSDHR, NYC CHR, and EEOC.' },
 ];
 
@@ -36,6 +37,10 @@ export default function NewYorkLegalCenter() {
     CATEGORIES.some((c) => c.key === requested) ? (requested as NyCategoryKey) : 'criminal',
   );
   const [query, setQuery] = useState('');
+  // A new ?area= link while the page is already open switches the tab too.
+  useEffect(() => {
+    if (CATEGORIES.some((c) => c.key === requested)) setActive(requested as NyCategoryKey);
+  }, [requested]);
 
   const forms = NY_FORMS_BY_CATEGORY[active];
   const procedure = NY_PROCEDURES[active];
@@ -58,7 +63,7 @@ export default function NewYorkLegalCenter() {
     <div className="flex flex-col min-h-screen bg-background">
       <Helmet>
         <title>New York Legal Center — Forms, Procedures & Filing | Justice Bot USA</title>
-        <meta name="description" content="New York legal information across 8 areas: criminal, family, divorce, CPS, immigration, workplace, civil, and human rights — with official forms and filing procedures sourced from NY Courts and state agencies." />
+        <meta name="description" content="New York legal information across 9 areas: criminal, family, divorce, CPS, immigration, workplace, civil, personal injury, and human rights — with official forms and filing procedures sourced from NY Courts and state agencies." />
         <link rel="canonical" href="https://justicebot-usa.com/ny/legal-center" />
       </Helmet>
       <Header language="en" onLanguageChange={() => {}} />
@@ -72,10 +77,10 @@ export default function NewYorkLegalCenter() {
             </div>
             <h1 className="text-3xl md:text-4xl font-bold mb-3">New York Legal Center</h1>
             <p className="text-blue-100/80 max-w-2xl">
-              Eight legal areas, official forms, filing procedures, and venue guidance — built specifically for New York. Sourced from NY Courts, NYSDOL, NYSDHR, OCFS, and USCIS.
+              Nine legal areas, official forms, filing procedures, and venue guidance — built specifically for New York. Sourced from NY Courts, the NY Senate's official law text, NYSDOL, NYSDHR, OCFS, DMV, DFS, and USCIS.
             </p>
             <p className="text-xs text-blue-200/60 mt-4 italic">
-              Legal information, not legal advice. We do not predict outcomes or recommend whether to sue.
+              Legal information, not legal advice. Our content has not yet been reviewed by a licensed attorney. We do not predict outcomes or recommend whether to sue.
             </p>
           </div>
         </section>
@@ -147,6 +152,22 @@ export default function NewYorkLegalCenter() {
                         </ol>
                       </CardContent>
                     </Card>
+
+                    {procedure.notes && procedure.notes.length > 0 && (
+                      <Card>
+                        <CardHeader className="pb-2"><CardTitle className="text-base">Good to know</CardTitle></CardHeader>
+                        <CardContent>
+                          <ul className="list-disc pl-5 space-y-2 text-sm text-muted-foreground">
+                            {procedure.notes.map((n, i) => (
+                              <li key={i}>
+                                {n.text}
+                                {n.ref && <> <a href={n.ref} target="_blank" rel="noopener noreferrer" className="text-xs text-primary inline-flex items-center gap-1">Source <ExternalLink className="h-3 w-3" /></a></>}
+                              </li>
+                            ))}
+                          </ul>
+                        </CardContent>
+                      </Card>
+                    )}
                   </div>
                   )}
 

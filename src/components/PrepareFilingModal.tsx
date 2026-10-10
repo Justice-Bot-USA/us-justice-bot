@@ -27,7 +27,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { usePaywallAccess } from '@/hooks/usePaywallAccess';
-import { PLAN, startSubscriptionCheckout } from '@/lib/pricing';
+import { PLAN, THIRD_PARTY_FEES_NOTE, startSubscriptionCheckout } from '@/lib/pricing';
 import { fillableForState } from '@/lib/formfill';
 import { Link, useNavigate } from 'react-router-dom';
 import { launchStateOf, stateRouteFor } from '@/lib/stateRouting';
@@ -37,22 +37,26 @@ import {
   trackUSCheckoutStarted,
 } from '@/hooks/useAnalytics';
 import { US_STATES } from '@/lib/states';
+import type { LegalCategory } from '@/lib/funnels/types';
 
-const ISSUE_CATEGORIES = [
-  { value: 'small_claims', label: 'Small Claims' },
-  { value: 'family', label: 'Family Law' },
-  { value: 'housing', label: 'Housing / Landlord-Tenant' },
-  { value: 'records', label: 'Records / Expungement' },
-  { value: 'employment', label: 'Employment / Workers Rights' },
-  { value: 'personal_injury', label: 'Personal Injury' },
-  { value: 'criminal_defense', label: 'Criminal Defense' },
-  { value: 'immigration', label: 'Immigration' },
-  { value: 'other', label: 'Other' },
+// `value` is the menu option; `legalArea` is the funnel key (LegalCategory) that PaymentSuccess uses to
+// find the form guides (src/lib/forms LAUNCH_STATE_FORMS). 'Other' has no forms, so it goes to the
+// state's legal center instead of checkout.
+const ISSUE_CATEGORIES: { value: string; label: string; legalArea: LegalCategory | null }[] = [
+  { value: 'small-claims', label: 'Small Claims', legalArea: 'small-claims' },
+  { value: 'family', label: 'Family Law', legalArea: 'family' },
+  { value: 'housing', label: 'Housing / Landlord-Tenant', legalArea: 'housing' },
+  { value: 'records', label: 'Records / Expungement', legalArea: 'criminal' },
+  { value: 'employment', label: 'Employment / Workers Rights', legalArea: 'employment' },
+  { value: 'personal-injury', label: 'Personal Injury', legalArea: 'personal-injury' },
+  { value: 'criminal-defense', label: 'Criminal Defense', legalArea: 'criminal' },
+  { value: 'immigration', label: 'Immigration', legalArea: 'immigration' },
+  { value: 'other', label: 'Other', legalArea: null },
 ];
 
 // The plan covers California and New York only; the other states are coming soon.
 const WHAT_YOU_GET = [
-  { icon: FileText, text: 'Official California and New York court forms, filled from your answers' },
+  { icon: FileText, text: 'Fill in the official California and New York court forms we support with your own answers' },
   { icon: Sparkles, text: 'Plain-language filling instructions (legal information, not legal advice)' },
   { icon: CheckCircle2, text: 'General information on where and how forms are filed' },
   { icon: Download, text: 'PDFs you review, sign and file yourself' },
@@ -86,6 +90,7 @@ const PrepareFilingModal: React.FC<PrepareFilingModalProps> = ({
   // 'any' or 'federal' (from the court records page) is not a state choice; only a real non-CA/NY state is coming soon.
   const isRealState = US_STATES.some((s) => s.value === selectedState.toUpperCase() || s.label.toLowerCase() === selectedState.toLowerCase());
   const comingSoon = isRealState && !launchState;
+  const isOtherIssue = !!selectedIssue && !ISSUE_CATEGORIES.find((c) => c.value === selectedIssue)?.legalArea;
 
   const handleContinue = async () => {
     if (!selectedState) {
@@ -98,6 +103,14 @@ const PrepareFilingModal: React.FC<PrepareFilingModalProps> = ({
     }
     if (!selectedIssue) {
       toast.error('Please select an issue category');
+      return;
+    }
+
+    // 'Other' has no form guides: send the user to the state's legal center, no checkout.
+    const legalArea = ISSUE_CATEGORIES.find((c) => c.value === selectedIssue)?.legalArea ?? null;
+    if (!legalArea) {
+      onOpenChange(false);
+      navigate(stateRouteFor(launchState)?.centerPath ?? '/');
       return;
     }
 
@@ -126,7 +139,7 @@ const PrepareFilingModal: React.FC<PrepareFilingModalProps> = ({
       // Store context for post-payment redirect
       const funnelConfig = {
         jurisdiction: launchState,
-        legalArea: selectedIssue,
+        legalArea,
         forms: [],
       };
       sessionStorage.setItem('pending_funnel_config', JSON.stringify(funnelConfig));
@@ -235,13 +248,15 @@ const PrepareFilingModal: React.FC<PrepareFilingModalProps> = ({
                 ) : (
                   <>
                     <Unlock className="mr-2 h-4 w-4" />
-                    {hasAccess ? 'Continue — included in your plan' : PLAN.cta}
+                    {isOtherIssue && launchState
+                      ? `Open the ${stateRouteFor(launchState)?.stateName ?? ''} legal center`
+                      : hasAccess ? 'Continue — included in your plan' : PLAN.cta}
                   </>
                 )}
               </Button>
 
               <p className="text-xs text-muted-foreground text-center">
-                Not legal advice. You file it yourself. Courts and agencies charge their own fees; fee waiver forms are free.
+                Not legal advice. Our content has not yet been reviewed by a licensed attorney. You file it yourself. {THIRD_PARTY_FEES_NOTE}
               </p>
 
               <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground">
