@@ -24,7 +24,7 @@ This section is the source of truth for what works today. Keep it accurate; do n
 
 - **California document-preparation rules:** charging to fill in eviction papers may require registration as an unlawful detainer assistant, and charging for other self-help forms as a legal document assistant (Bus. & Prof. Code §6400 et seq.). UD-105 is therefore free until California counsel advises. The other paid CA forms need the same review before marketing.
 - New York form filling: see the status table.
-- Stripe metadata still carries `app: "veritas_path"` (retired name). Change it only together with any webhook logic that reads it.
+- Stripe checkout metadata uses `app: "justice_bot_usa"`; nothing reads it.
 
 ## Tech stack
 

@@ -724,6 +724,7 @@ const PaymentSuccess: React.FC = () => {
                     </Button>
                     <p className="text-xs text-muted-foreground mt-2">No long-term commitment. Cancel any time by contacting support.</p>
                     <p className="text-xs text-muted-foreground mt-2">{THIRD_PARTY_FEES_NOTE}</p>
+                    <p className="text-xs text-muted-foreground mt-2">Legal information, not legal advice. Our content has not yet been reviewed by a licensed attorney.</p>
                   </div>
                 </div>
               </CardContent>

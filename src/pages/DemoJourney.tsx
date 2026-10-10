@@ -231,7 +231,7 @@ const DemoJourney = () => {
               See How Justice Bot USA Works
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
-              Walk through a complete user journey — from describing your issue to getting filing-ready legal forms.
+              Walk through a complete user journey — from describing your issue to filling in official California and New York court forms with your own answers.
             </p>
             <div className="flex justify-center gap-4">
               <Button onClick={autoPlay} disabled={isPlaying} size="lg">

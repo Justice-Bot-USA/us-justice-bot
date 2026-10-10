@@ -527,8 +527,8 @@ const FOIARequestGenerator: React.FC<FOIARequestGeneratorProps> = ({
             {/* Required disclaimers */}
             <div className="border-t pt-2 space-y-1">
               <p className="text-[11px] text-muted-foreground text-center font-medium">
-                This is legal information, not legal advice. You submit the
-                request yourself.
+                This is legal information, not legal advice. Our content has not yet
+                been reviewed by a licensed attorney. You submit the request yourself.
               </p>
               <p className="text-[11px] text-muted-foreground text-center">
                 We do not access law enforcement databases.
