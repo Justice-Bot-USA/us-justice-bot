@@ -277,7 +277,7 @@ const Index = () => {
             <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-8 text-center">
               Why We Built {BRAND}
             </h2>
-            <div className="prose prose-sm sm:prose-base text-muted-foreground max-w-none leading-relaxed space-y-5">
+            <div className="prose prose-sm sm:prose-base dark:prose-invert text-muted-foreground max-w-none leading-relaxed space-y-5">
               <p>{BRAND} was not built in a boardroom.</p>
               <p>
                 It began in lived experience — in the quiet spaces where everyday people struggle to navigate systems
@@ -362,7 +362,7 @@ const Index = () => {
             <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-6">
               U.S. Legal Navigation — Without the Guesswork
             </h2>
-            <div className="prose prose-sm sm:prose-base text-muted-foreground max-w-none leading-relaxed space-y-4">
+            <div className="prose prose-sm sm:prose-base dark:prose-invert text-muted-foreground max-w-none leading-relaxed space-y-4">
               <p>
                 Whether you're responding to an eviction notice, preparing a small claims complaint, filing for custody,
                 or submitting an EEOC discrimination charge, understanding the correct procedures matters, because courts can
