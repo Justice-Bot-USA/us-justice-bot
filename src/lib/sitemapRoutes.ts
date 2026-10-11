@@ -17,6 +17,8 @@
  *   monthly  — stable reference pages
  */
 
+import { FILLABLE_FORMS, FILL_PAGES_INDEXABLE } from "./formfill";
+
 export const BASE_URL = "https://justicebot-usa.com";
 
 export interface SitemapRoute {
@@ -175,6 +177,21 @@ export const infoRoutes: SitemapRoute[] = [
   { path: "/disclaimer",                     priority: 0.5, changefreq: "yearly" },
 ];
 
+// ─── Form filling pages ────────────────────────────────────────────────────────
+// One page per fillable form, found by searches for the form number (e.g. "SC-100").
+// Listed only once FILL_PAGES_INDEXABLE is turned on.
+export const fillRoutes: SitemapRoute[] = FILL_PAGES_INDEXABLE
+  ? [
+      { path: "/fill/ca", priority: 0.8, changefreq: "weekly" },
+      { path: "/fill/ny", priority: 0.8, changefreq: "weekly" },
+      ...FILLABLE_FORMS.map((f): SitemapRoute => ({
+        path: `/fill/${f.state.toLowerCase()}/${f.id}`,
+        priority: 0.8,
+        changefreq: "monthly",
+      })),
+    ]
+  : [];
+
 // ─── All routes combined (used by the Vite plugin) ────────────────────────────
 export const allSitemapRoutes: SitemapRoute[] = [
   ...coreRoutes,
@@ -187,4 +204,5 @@ export const allSitemapRoutes: SitemapRoute[] = [
   ...funnelRoutes,
   ...stateToolRoutes,
   ...infoRoutes,
+  ...fillRoutes,
 ];

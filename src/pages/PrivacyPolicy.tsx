@@ -110,6 +110,7 @@ const PrivacyPolicy = () => {
               <li>To fill official forms with the answers you give</li>
               <li>To improve our services and user experience</li>
               <li>To communicate important updates about our service</li>
+              <li>If you sign up for updates (no account needed), to email you when we add forms or tools for your state. For this list we store your email address, your state, the type of page where you signed up and the sentence you agreed to, and nothing about your case. To be removed, email privacy@justicebot-usa.com.</li>
               <li>To comply with legal obligations</li>
               <li>To detect and prevent fraud or security issues</li>
             </ul>

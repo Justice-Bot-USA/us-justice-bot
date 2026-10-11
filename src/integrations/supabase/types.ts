@@ -2027,6 +2027,36 @@ export type Database = {
           },
         ]
       }
+      update_signups: {
+        Row: {
+          consent_text: string
+          created_at: string
+          email: string
+          id: string
+          source: string
+          state: string | null
+          unsubscribed_at: string | null
+        }
+        Insert: {
+          consent_text: string
+          created_at?: string
+          email: string
+          id?: string
+          source: string
+          state?: string | null
+          unsubscribed_at?: string | null
+        }
+        Update: {
+          consent_text?: string
+          created_at?: string
+          email?: string
+          id?: string
+          source?: string
+          state?: string | null
+          unsubscribed_at?: string | null
+        }
+        Relationships: []
+      }
       user_activity_archive_deletions: {
         Row: {
           deleted_at: string

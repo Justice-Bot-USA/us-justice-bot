@@ -3,6 +3,7 @@ import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
 import { existsSync, writeFileSync } from "fs";
+import { FILLABLE_FORMS, FILL_PAGES_INDEXABLE } from "./src/lib/formfill";
 
 // ─── Inline sitemap plugin ────────────────────────────────────────────────────
 // Route config lives in src/lib/sitemapRoutes.ts — the single source of truth.
@@ -75,6 +76,18 @@ const ROUTES: RouteEntry[] = [
   { path: "/privacy",                       priority: 0.5, changefreq: "yearly" },
   { path: "/terms",                         priority: 0.5, changefreq: "yearly" },
   { path: "/disclaimer",                    priority: 0.5, changefreq: "yearly" },
+  // ─── Form filling (one page per form; listed only when FILL_PAGES_INDEXABLE is on) ───
+  ...(FILL_PAGES_INDEXABLE
+    ? [
+        { path: "/fill/ca", priority: 0.8, changefreq: "weekly" },
+        { path: "/fill/ny", priority: 0.8, changefreq: "weekly" },
+        ...FILLABLE_FORMS.map((f) => ({
+          path: `/fill/${f.state.toLowerCase()}/${f.id}`,
+          priority: 0.8,
+          changefreq: "monthly",
+        })),
+      ]
+    : []),
 ];
 
 function buildSitemap(buildDate: string): string {

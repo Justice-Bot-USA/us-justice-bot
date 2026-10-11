@@ -13,8 +13,10 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Download, ExternalLink, FileText, Loader2, ListChecks } from 'lucide-react';
 import { toast } from 'sonner';
 import { THIRD_PARTY_FEES_NOTE } from '@/lib/pricing';
+import { UpdatesSignup } from '@/components/UpdatesSignup';
+import { BASE_URL } from '@/lib/sitemapRoutes';
 import {
-  PARTY_QUESTIONS, fillableForState, getFillableForm,
+  FILL_PAGES_INDEXABLE, PARTY_QUESTIONS, fillableForState, getFillableForm,
   type Answers, type FillableForm, type Question,
 } from '@/lib/formfill';
 
@@ -95,6 +97,9 @@ function FormList({ state }: { state: string }) {
             </Link>
           ))}
         </div>
+      )}
+      {(state === 'CA' || state === 'NY') && (
+        <UpdatesSignup source="fill_list" state={state} className="mt-8 max-w-xl" />
       )}
     </div>
   );
@@ -210,6 +215,8 @@ function FormFiller({ form }: { form: FillableForm }) {
               checking it before you sign and file. Our content has not yet been reviewed by a licensed attorney.
             </AlertDescription>
           </Alert>
+
+          <UpdatesSignup source="fill_form" state={form.state} />
         </div>
       </div>
     </div>
@@ -223,12 +230,21 @@ export default function FormFillPage() {
   const title = form
     ? `Fill ${form.formNumber} — ${form.title} | Justice Bot USA`
     : `Fill ${STATE_NAMES[st] ?? st} Court Forms | Justice Bot USA`;
+  const listKnown = !formId && st in STATE_NAMES;
+  const description = form
+    ? `Fill in the official ${STATE_NAMES[form.state]} ${form.formNumber} (${form.title}) online for free and download the PDF. Legal information, not legal advice; court fees are separate.`
+    : `Fill in official ${STATE_NAMES[st] ?? st} court forms online for free and download the PDFs. Legal information, not legal advice; court fees are separate.`;
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <Helmet>
         <title>{title}</title>
-        <meta name="robots" content="noindex" />
+        <meta name="description" content={description} />
+        {FILL_PAGES_INDEXABLE && (form || listKnown) ? (
+          <link rel="canonical" href={`${BASE_URL}/fill/${state.toLowerCase()}${form ? `/${form.id}` : ''}`} />
+        ) : (
+          <meta name="robots" content="noindex" />
+        )}
       </Helmet>
       <Header language="en" onLanguageChange={() => {}} />
       <main className="flex-1">
