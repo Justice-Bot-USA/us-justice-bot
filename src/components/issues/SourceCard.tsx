@@ -12,6 +12,8 @@ interface SourceCardProps {
   officialPdfUrl?: string | null;
   officialDirectoryUrl?: string | null;
   category?: string;
+  /** form_packages.is_required: the form is commonly used for this kind of case. It is not a
+   *  statement that a particular person must file it, so the badge says "Commonly used". */
   isRequired?: boolean;
 }
 
@@ -49,7 +51,7 @@ export function SourceCard({
                 {formNumber}
               </Badge>
               {isRequired && (
-                <Badge variant="secondary" className="text-xs">Required</Badge>
+                <Badge variant="secondary" className="text-xs">Commonly used</Badge>
               )}
               {category === 'emergency' && (
                 <Badge variant="destructive" className="text-xs">Emergency</Badge>

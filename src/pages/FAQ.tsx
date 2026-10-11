@@ -61,7 +61,7 @@ const FAQ = () => {
         },
         {
           question: "What types of legal forms do you provide?",
-          answer: "We link to official California and New York court and agency forms, plus federal court forms, and for some California and New York forms you can fill them in online with your own answers. All forms and their filling instructions are included in the $25/month plan, and fee waiver forms are free. Always confirm with the court that you have the current version before you file."
+          answer: "We link to official California and New York court and agency forms, plus federal court forms, and for some California and New York forms you can fill them in online with your own answers. Every form we offer is free to fill in and download, and so are its filling instructions. Always confirm with the court that you have the current version before you file."
         }
       ]
     },
@@ -97,7 +97,7 @@ const FAQ = () => {
       faqs: [
         {
           question: "How much does Justice Bot USA cost?",
-          answer: "Justice Bot USA has one plan: $25/month. All forms and filling instructions are included, and fee waiver forms are free. Our general guides are free to read. Courts and government agencies may charge their own fees, such as filing fees; those are separate from our plan."
+          answer: "In California and New York, every court form we offer, our form guides, and the public-records letter tool are free, and our general guides are free to read. Courts and government agencies may charge their own fees, such as filing fees; those are separate, and fee waiver forms are free. Our $25/month plan is paused for new purchases. We plan to bring it back as the Toolkit plan once its features (a case binder for each case, a hearing calendar with reminders, and a fuller course tracker) are built; those features are in development and not available yet. The binder and course tracker build on tools you can use for free today: the Book of Documents and the Course Hub course list."
         },
         {
           question: "Do you offer refunds?",
@@ -109,11 +109,11 @@ const FAQ = () => {
         },
         {
           question: "Can I cancel my subscription anytime?",
-          answer: "Yes. To cancel, email billing@justicebot-usa.com or open a ticket on our Support page, and we will cancel your subscription. There are no cancellation fees."
+          answer: "Yes. Sign in, go to the Pricing page, and choose Cancel subscription. You won't be charged again, and your plan stays active until the end of the period you have already paid for. There are no cancellation fees. If you have any trouble, email billing@justicebot-usa.com and we will cancel it for you."
         },
         {
           question: "Are there discounts for low-income users?",
-          answer: "We have one plan, $25/month, with every form and filling instruction included; we do not currently offer reduced rates. If you can't afford court fees, you may qualify for a court fee waiver, and our fee waiver forms are free. Our Legal Disclaimer page links to state bar associations, which can refer you to a lawyer."
+          answer: "Court forms, form guides, and the public-records letter tool are free for everyone in California and New York, so there is nothing to discount. If you can't afford court fees, you may qualify for a court fee waiver, and our fee waiver forms are free. Our Legal Disclaimer page links to state bar associations, which can refer you to a lawyer."
         }
       ]
     },
@@ -153,7 +153,7 @@ const FAQ = () => {
         },
         {
           question: "What are filing fees?",
-          answer: "Filing fees are set by courts and vary by court, case type, and state. They are separate from our plan. Courts can waive fees for people who can't afford them. Our California and New York fee waiver forms are free, and the court decides whether you qualify."
+          answer: "Filing fees are set by courts and vary by court, case type, and state. They are paid to the court, not to us. Courts can waive fees for people who can't afford them. Our California and New York fee waiver forms are free, and the court decides whether you qualify."
         },
         {
           question: "How do I serve legal papers?",
@@ -175,7 +175,7 @@ const FAQ = () => {
       faqs: [
         {
           question: "How do I download forms?",
-          answer: "Visit our Forms Library, select your state and legal area, and browse available forms. You can download blank official forms, and for some California and New York forms you can fill them in online with your own answers. Fee waiver forms are free; all other forms and their filling instructions are included in the $25/month plan."
+          answer: "Visit our Forms Library, select your state and legal area, and browse available forms. You can download blank official forms, and for some California and New York forms you can fill them in online with your own answers. Every form is free, including the ones you fill in online, and so are their filling instructions."
         },
         {
           question: "Are your forms accepted by courts?",

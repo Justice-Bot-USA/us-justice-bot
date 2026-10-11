@@ -43,29 +43,7 @@ US Justice Bot is a comprehensive legal assistance platform that provides afford
 **Not provided (founder decision, October 2026)**: no merit score, success rate or win probability, no settlement or dollar estimate, no time-to-resolution estimate, no defence or legal strategy, and no choosing or ordering of court forms for the user. Choosing forms and strategy is off-limits even for a registered California legal document assistant (Bus. & Prof. Code 6400(g), 6411(e)) and falls under New York Judiciary Law 495(1)(e); invented scores and estimates are also untrue claims. The settlement calculator is retired; its routes redirect to `/legal-areas`. Old values in `case_merit_scores` (merit_score, settlement range and so on) are kept in the database but no longer produced, shown or exported.
 
 ### 4. **Legal Sweeps & Research**
-- **Automated legal research**: AI-powered sweeping of reputable legal sites
-- **Multi-source aggregation**: Cornell Law, Justia, FindLaw, Nolo, and more
-- **State-specific searches**: Filter by state and county
-- **Legal area filtering**: Focus on specific practice areas
-- **Form discovery**: Automatic identification of legal forms
-- **Citation extraction**: Proper legal citations for all sources
-- **Relevance scoring**: AI-powered ranking of search results
-
-**Access**: `/admin` → Legal Sweeps tab (Admin only)
-
-**Supported Legal Sources**:
-- law.cornell.edu (Cornell Legal Information Institute)
-- justia.com (Justia Legal Resources)
-- findlaw.com (FindLaw)
-- nolo.com (Nolo Legal Encyclopedia)
-- supreme.justia.com (Supreme Court Opinions)
-
-**Document Types**:
-- Statutes
-- Regulations
-- Case law
-- Legal forms
-- Procedures
+**Status**: Retired (Oct 2026). The `legal-sweep` function never searched anything; it wrote made-up results with random statute citations and filing fees. It now answers 410 Gone, and the admin tab is removed.
 
 ### 5. **File Upload & Evidence Management**
 - **Multi-bucket storage**: Separate buckets for evidence, case documents, and user uploads
@@ -91,13 +69,16 @@ US Justice Bot is a comprehensive legal assistance platform that provides afford
 - **Evidence integration**: Reference uploaded documents in chat
 
 ### 7. **Payment & Subscription System**
-- **Stripe checkout**: the only payment method
-- **One plan**: Justice Bot USA Access, $25/month, sold for California and New York only.
-  All forms and filling instructions are included. No yearly plan, no per-form or one-time
-  purchases. Courts and agencies may charge their own fees (filing, service, copies); fee
-  waivers and our fee waiver forms are free.
+- **Free**: every fillable court form (all 12, CA and NY), the funnel's form guides and the
+  public-records letter PDF. Courts and agencies may charge their own fees (filing, service,
+  copies); those are disclosed, and fee waivers and our fee waiver forms are free.
+- **$25/month plan (Justice Bot USA Access)**: PAUSED for new purchases (October 2026);
+  `stripe-checkout` answers `create_subscription` with 409 `PLAN_PAUSED`. It returns as the
+  Toolkit plan once the case binder, hearing calendar with reminders and course tracker exist.
+- **Stripe checkout**: the only payment method. No yearly plan, no per-form or one-time purchases.
+- **Cancellation**: signed-in subscribers cancel on `/pricing` (`cancel-subscription`); access
+  runs to the end of the paid period.
 - **Payment tracking**: Admin dashboard for revenue monitoring
-- **Subscription management**: User self-service portal
 
 ## Database Schema
 
@@ -138,7 +119,7 @@ US Justice Bot is a comprehensive legal assistance platform that provides afford
 ## API Endpoints (Edge Functions)
 
 ### 1. `analyze-case-merit`
-**Purpose**: Plain-language summary of the user's situation (name kept for compatibility). Returns `{ success, summary, legalCategory, generalInfo, officialSources, isGuest, caseId }`; no score, estimate, strategy or form list
+**Purpose**: Plain-language summary of the user's situation (name kept for compatibility). Returns `{ success, summary, legalCategory, generalInfo, officialSources, isGuest, caseId }` (`legalCategory` is always null; `legal_area` is saved from the area the user picked); no score, estimate, strategy, citation or form list
 **Auth**: Required
 **Input**:
 ```json
@@ -155,18 +136,8 @@ US Justice Bot is a comprehensive legal assistance platform that provides afford
 }
 ```
 
-### 2. `legal-sweep`
-**Purpose**: Perform automated legal research
-**Auth**: Required (Admin only)
-**Input**:
-```json
-{
-  "sweepId": "uuid",
-  "searchTerms": ["term1", "term2"],
-  "state": "string",
-  "legalArea": "string"
-}
-```
+### 2. `legal-sweep`, `court-records-search`, `courtlistener-search`
+**Status**: Retired (Oct 2026). All return 410 Gone. `/court-records` links to official CA and NY court sites; `/courtlistener` redirects there.
 
 ### 3. `legal-assistance`
 **Purpose**: AI-powered legal chat responses
@@ -206,13 +177,6 @@ US Justice Bot is a comprehensive legal assistance platform that provides afford
 - Review legal citations
 - Audit case recommendations
 
-### Legal Sweep Configuration
-- Create new sweep configurations
-- Schedule automated sweeps
-- Monitor sweep results
-- Configure target domains and search terms
-- Filter by state and legal area
-
 ### Analytics & Reporting
 - User growth metrics
 - Support ticket statistics
@@ -229,21 +193,19 @@ US Justice Bot is a comprehensive legal assistance platform that provides afford
 4. **Upload evidence** to support your case
 5. **Request a plain-language summary** of your situation
 6. **Create support tickets** for specific questions
-7. **Subscribe** for premium features
 
 ### For Admins
 1. **Access admin dashboard** at `/admin`
 2. **Manage users** and assign roles
 3. **Monitor support tickets** and respond promptly
-4. **Configure legal sweeps** for research automation
-5. **Review case analyses** for quality control
-6. **Track metrics** and system usage
+4. **Review case analyses** for quality control
+5. **Track metrics** and system usage
 
 ## Pricing Model
 
-- One plan: Justice Bot USA Access, $25/month (`src/lib/pricing.ts`), sold for California and New York only; the other 48 states are coming soon.
-- All forms and filling instructions are included; fee waivers and our fee waiver forms are free.
-- Court and agency fees (filing, service, copies) are separate and are disclosed at checkout.
+- Free: every fillable California and New York court form, the form guides and the public-records letter PDF (`src/lib/pricing.ts`). The other 48 states are coming soon.
+- Court and agency fees (filing, service, copies) are separate and disclosed (`THIRD_PARTY_FEES_NOTE`); fee waivers and our fee waiver forms are free.
+- The $25/month plan is paused for new purchases and returns later as the Toolkit plan.
 - No per-form, bundle or annual prices. No PayPal.
 
 ## Technical Stack
@@ -253,7 +215,7 @@ US Justice Bot is a comprehensive legal assistance platform that provides afford
 - **Backend**: Supabase (PostgreSQL + Edge Functions)
 - **Authentication**: Supabase Auth
 - **AI**: Lovable AI Gateway (Gemini models)
-- **Payments**: Stripe (single $25/month plan)
+- **Payments**: Stripe ($25/month plan, paused for new purchases)
 - **Storage**: Supabase Storage
 
 ## Roadmap

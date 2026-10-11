@@ -21,7 +21,6 @@ import {
 import {
   FileText,
   Loader2,
-  Shield,
   Download,
   CheckCircle2,
   AlertTriangle,
@@ -37,10 +36,12 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { invokeAuthed } from '@/lib/supabaseInvoke';
-import { usePaywallAccess } from '@/hooks/usePaywallAccess';
-import { PLAN, THIRD_PARTY_FEES_NOTE, startSubscriptionCheckout } from '@/lib/pricing';
+import { THIRD_PARTY_FEES_NOTE } from '@/lib/pricing';
 import { generateFoiaLetterPdf } from '@/lib/foiaPdf';
 import { launchStateOf } from '@/lib/stateRouting';
+
+// Live only in California and New York; the letters haven't been checked for other states yet.
+const LIVE_STATES = US_STATES.filter((s) => launchStateOf(s.value));
 
 const RECORD_TYPES = [
   { value: 'arrest_report', label: 'Arrest Report' },
@@ -72,12 +73,9 @@ const FOIARequestGenerator: React.FC<FOIARequestGeneratorProps> = ({
   defaultName = '',
 }) => {
   const { user } = useAuth();
-  const { hasAccess } = usePaywallAccess();
   const navigate = useNavigate();
 
-  const [selectedState, setSelectedState] = useState(defaultState);
-  // The monthly plan is only sold in California and New York.
-  const planOffered = !!launchStateOf(selectedState);
+  const [selectedState, setSelectedState] = useState<string>(launchStateOf(defaultState) ?? '');
   const [recordType, setRecordType] = useState('');
   const [agencyName, setAgencyName] = useState('');
   const [subjectName, setSubjectName] = useState(defaultName);
@@ -131,7 +129,7 @@ const FOIARequestGenerator: React.FC<FOIARequestGeneratorProps> = ({
   };
 
   const handleGenerate = async () => {
-    if (!selectedState || !recordType) {
+    if (!launchStateOf(selectedState) || !recordType) {
       toast.error('Please select a state and record type.');
       return;
     }
@@ -182,37 +180,17 @@ const FOIARequestGenerator: React.FC<FOIARequestGeneratorProps> = ({
     toast.success('Copied to clipboard!');
   };
 
-  const handleExportPDF = async () => {
-    if (!user) {
-      toast.error('Please sign in to export.');
-      navigate(signInPath());
-      return;
-    }
-
-    // Subscribers get the full set (request + follow-up + appeal) directly.
-    if (hasAccess) {
-      const url = URL.createObjectURL(generateFoiaLetterPdf(generatedLetter, true));
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `Public-Records-Request-${new Date().toISOString().slice(0, 10)}.pdf`;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(url);
-      toast.success('PDF downloaded.');
-      return;
-    }
-
-    if (!planOffered) return;
-
-    try {
-      sessionStorage.setItem('pending_foia_letter', generatedLetter);
-      sessionStorage.setItem('pending_foia_state', selectedState);
-      await startSubscriptionCheckout();
-    } catch (err) {
-      console.error('Checkout error:', err);
-      toast.error('Failed to start checkout.');
-    }
+  // Free: the full set (request + follow-up + appeal) as one PDF.
+  const handleExportPDF = () => {
+    const url = URL.createObjectURL(generateFoiaLetterPdf(generatedLetter, true));
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Public-Records-Request-${new Date().toISOString().slice(0, 10)}.pdf`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    toast.success('PDF downloaded.');
   };
 
   const handleBack = () => {
@@ -245,13 +223,16 @@ const FOIARequestGenerator: React.FC<FOIARequestGeneratorProps> = ({
                   <SelectValue placeholder="Select state" />
                 </SelectTrigger>
                 <SelectContent className="max-h-[260px]">
-                  {US_STATES.map((s) => (
+                  {LIVE_STATES.map((s) => (
                     <SelectItem key={s.value} value={s.value}>
                       {s.label}
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
+              <p className="text-xs text-muted-foreground mt-1">
+                California and New York only for now. Other states are coming soon.
+              </p>
             </div>
 
             {/* Agency (populated via FOIA USA API) */}
@@ -435,7 +416,7 @@ const FOIARequestGenerator: React.FC<FOIARequestGeneratorProps> = ({
             </div>
           </div>
         ) : (
-          /* Preview step — outputs: letter, citations, instructions, paid PDF */
+          /* Preview step — outputs: letter, citations, instructions, free PDF */
           <div className="space-y-4 py-2">
             <div className="flex items-center gap-2">
               <Badge variant="outline" className="text-primary border-primary/30">
@@ -483,27 +464,18 @@ const FOIARequestGenerator: React.FC<FOIARequestGeneratorProps> = ({
               {generatedLetter}
             </div>
 
-            {/* Actions: Copy (free) + PDF export (paid) */}
+            {/* Actions: Copy + PDF export (both free) */}
             <div className="flex flex-col gap-3">
               <Button variant="outline" onClick={handleCopy} className="gap-2 w-full">
                 <Copy className="h-4 w-4" />
-                Copy to Clipboard (Free)
+                Copy to Clipboard
               </Button>
-              {hasAccess || planOffered ? (
-                <>
-                  <Button onClick={handleExportPDF} className="gap-2 w-full" size="lg">
-                    <Download className="h-4 w-4" />
-                    {hasAccess ? 'Download PDF (request + follow-up + appeal)' : `Export as PDF — ${PLAN.priceLabel}, unlimited`}
-                  </Button>
-                  {/* Agencies may charge their own copy or search fees, separate from our plan. */}
-                  <p className="text-xs text-muted-foreground text-center">{THIRD_PARTY_FEES_NOTE}</p>
-                </>
-              ) : (
-                <p className="text-xs text-muted-foreground text-center">
-                  Our monthly plan is only offered in California and New York, so there is nothing to buy for this state.
-                  Copy the letter for free and send it to the agency yourself.
-                </p>
-              )}
+              <Button onClick={handleExportPDF} className="gap-2 w-full" size="lg">
+                <Download className="h-4 w-4" />
+                Download PDF (request + follow-up + appeal)
+              </Button>
+              {/* Agencies may charge their own copy or search fees. */}
+              <p className="text-xs text-muted-foreground text-center">{THIRD_PARTY_FEES_NOTE}</p>
             </div>
 
             <Button
@@ -514,15 +486,6 @@ const FOIARequestGenerator: React.FC<FOIARequestGeneratorProps> = ({
             >
               ← Edit request details
             </Button>
-
-            {!hasAccess && planOffered && (
-              <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground">
-                <span className="flex items-center gap-1">
-                  <Shield className="h-3 w-3" />
-                  Payment handled by Stripe
-                </span>
-              </div>
-            )}
 
             {/* Required disclaimers */}
             <div className="border-t pt-2 space-y-1">

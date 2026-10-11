@@ -406,7 +406,7 @@ const CriminalDefenseGuide = () => {
                         <p className="text-sm text-muted-foreground">{currentStateData.expungement.process}</p>
                       </div>
                       <Button asChild className="w-full mt-4">
-                        <Link to="/case-analysis">Check Your Eligibility</Link>
+                        <Link to="/case-analysis">Get a Plain-Language Summary</Link>
                       </Button>
                     </CardContent>
                   </Card>

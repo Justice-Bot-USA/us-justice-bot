@@ -6,7 +6,6 @@ import { LegalCategory } from '@/lib/funnels/types';
 import { FunnelEngine } from '@/components/funnel';
 import { StateComingSoon } from '@/components/funnel/StateComingSoon';
 import { LaunchState, launchStateOf, stateRouteFor } from '@/lib/stateRouting';
-import { PLAN } from '@/lib/pricing';
 import { useAuth } from '@/hooks/useAuth';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -45,7 +44,7 @@ const buildFAQs = (st: LaunchState, stateName: string, legalArea: LegalCategory)
       },
       {
         q: `Do I need a lawyer for a divorce in ${stateName}?`,
-        a: `No. You can represent yourself in a ${stateName} divorce. Our tools explain the official forms and how filing generally works, and all forms and filling instructions are included in the ${PLAN.priceLabel} plan. This is legal information, not legal advice. If your case involves children, property or a disagreement, consider talking to a lawyer or legal aid.`,
+        a: `No. You can represent yourself in a ${stateName} divorce. Our tools explain the official forms and how filing generally works, and the forms and filling instructions are free. Courts charge their own filing fees. This is legal information, not legal advice. If your case involves children, property or a disagreement, consider talking to a lawyer or legal aid.`,
       },
       {
         q: `How long does a divorce take in ${stateName}?`,
@@ -233,7 +232,7 @@ const buildHowToSchema = (stateName: string, areaName: string, forms: string[]) 
       '@type': 'HowToStep',
       position: 4,
       name: 'Get Your Form Guides',
-      text: `With the ${PLAN.priceLabel} plan you get filling instructions for each ${stateName} form and a link to the official version, and, for the official ${stateName} court forms we support, you fill them in with your own answers. You check, sign and file them yourself.`,
+      text: `Free filling instructions for each ${stateName} form and a link to the official version, and, for the official ${stateName} court forms we support, you fill them in with your own answers and download them free. You check, sign and file them yourself.`,
     },
     {
       '@type': 'HowToStep',
@@ -285,9 +284,9 @@ const buildLegalServiceSchema = (stateName: string, areaName: string, descriptio
     },
     {
       '@type': 'Offer',
-      price: String(PLAN.price),
+      price: '0',
       priceCurrency: 'USD',
-      description: 'Monthly plan: all California and New York forms and filling instructions included. Courts and agencies charge their own fees.',
+      description: 'Free California and New York court forms and filling instructions. Courts and agencies charge their own fees.',
     },
   ],
 });
@@ -467,7 +466,7 @@ const StateFunnelPage: React.FC = () => {
             <h1 className="text-3xl md:text-4xl font-bold mb-4">{seo.h1}</h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Self-help legal information for {legalAreaName.toLowerCase()} in {stateName}. Start with free questions;
-              all forms and filling instructions are included in the {PLAN.priceLabel} plan.
+              forms and filling instructions are free too.
             </p>
             {centerPath && (
               <p className="mt-3 text-sm">
@@ -500,7 +499,7 @@ const StateFunnelPage: React.FC = () => {
               <ul>
                 <li>Free: questions that help sort out your situation, and a plain-language summary</li>
                 <li>A list of forms commonly used for {legalAreaName.toLowerCase()} matters in {stateName}, with links to the official court versions</li>
-                <li>With the {PLAN.priceLabel} plan: filling instructions for each form, a link to the official version, and, for the official {stateName} court forms we support, you fill them in with your own answers. You check, sign and file them yourself.</li>
+                <li>Free: filling instructions for each form, a link to the official version, and, for the official {stateName} court forms we support, you fill them in with your own answers and download them. You check, sign and file them yourself. Courts charge their own filing fees.</li>
                 <li>General legal information, not legal advice. Our content has not yet been reviewed by a licensed attorney.</li>
               </ul>
               {faqs.length > 0 && (

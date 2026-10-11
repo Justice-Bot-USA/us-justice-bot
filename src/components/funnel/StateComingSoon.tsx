@@ -16,9 +16,8 @@ interface StateComingSoonProps {
 }
 
 /**
- * Shown instead of the funnel, the paywall and checkout for every state except California
- * and New York. Nothing is sold here: it only says the state is coming soon and links to the
- * two live legal centers.
+ * Shown instead of the funnel for every state except California and New York. It only says the
+ * state is coming soon and links to the two live legal centers.
  */
 export const StateComingSoon: React.FC<StateComingSoonProps> = ({ stateName, legalArea, headingLevel = 'h2' }) => {
   const Heading = headingLevel;
@@ -36,8 +35,7 @@ export const StateComingSoon: React.FC<StateComingSoonProps> = ({ stateName, leg
         </Heading>
         <p className="text-muted-foreground">
           Justice Bot USA is live in California and New York. {stateName ? `${stateName} and the other states are` : 'Other states are'} coming
-          soon. Until then we have no forms, filling instructions or paid plan for {stateName || 'other states'}, so
-          there is nothing to sign up for or buy here.
+          soon. Until then we have no forms or filling instructions for {stateName || 'other states'}.
         </p>
         <p className="text-muted-foreground">
           If your case is in a California or New York court, start at that state's legal center:

@@ -222,6 +222,9 @@ export default function IssueHubPage() {
                 <h2 className="text-lg sm:text-xl font-bold text-foreground">Forms & Documents</h2>
                 <Badge variant="outline" className="ml-auto">{selectedState}</Badge>
               </div>
+              <p className="text-sm text-muted-foreground mb-3">
+                Forms commonly used for this kind of matter. You choose which forms apply to you; the court's self-help center can help if you're unsure.
+              </p>
               {/* Always-visible official directory + latest changes */}
               <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 mb-3">
                 <SourceCard
@@ -336,9 +339,9 @@ export default function IssueHubPage() {
             {triageSchema && (
               <div className="bg-primary/5 border border-primary/20 rounded-lg p-4 sm:p-6 text-center">
                 <h3 className="text-lg font-bold text-foreground mb-2">Ready to take the next step?</h3>
-                <p className="text-sm text-muted-foreground mb-4">Use our guided wizard to find the right path for your situation.</p>
+                <p className="text-sm text-muted-foreground mb-4">Answer a few questions to see general information about common paths. You decide what applies to you.</p>
                 <Button onClick={() => scrollToSection('wizard')}>
-                  Start Your Plan
+                  Start the Questions
                 </Button>
               </div>
             )}

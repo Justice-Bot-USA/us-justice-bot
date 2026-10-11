@@ -11,30 +11,17 @@ import {
   LEGAL_AREA_NAMES
 } from './types';
 
-// Default steps - NEW CONTINUOUS FLOW
-// triage → evidence → results (plain-language summary, FREE) → paywall → generate → next_steps
+// Default steps, all free: triage → evidence → results (plain-language summary) → generate (form guides) → next_steps
 const STANDARD_STEPS: FunnelStep[] = [
   'triage',
   'evidence',
-  'results',      // Plain-language summary + state legal center links (FREE)
-  'paywall',      // Payment gate
-  'generate',
+  'results',      // Plain-language summary + state legal center links
+  'generate',     // Form guides (PDF)
   'next_steps'
 ];
 
-// Steps with payment (same as standard now)
-const PAID_STEPS: FunnelStep[] = [
-  'triage',
-  'evidence',
-  'results',
-  'paywall',
-  'generate',
-  'next_steps'
-];
-
-// Launched states: the only states where the funnel, the plan and the forms are live.
-// The other 48 states and DC are coming soon; their funnel pages show a "coming soon" page
-// with no paywall or checkout.
+// Launched states: the only states where the funnel and the forms are live.
+// The other 48 states and DC are coming soon; their funnel pages show a "coming soon" page.
 export const ENABLED_STATES = ['CA', 'NY'] as const;
 
 // Every state with a funnel page (so old links resolve to an honest "coming soon" page).
@@ -1301,8 +1288,8 @@ export const generateUSFunnels = (): FunnelConfig[] => {
         steps: STANDARD_STEPS,
         forms: STATE_FORMS[state]?.[legalArea] || [],
         courts: STATE_COURTS[state]?.[legalArea] || [],
-        // The $25/month plan is the only charge, in every legal area.
-        upsell: 'subscription',
+        // Form guides are free in every legal area; nothing is sold in the funnel.
+        upsell: 'free',
         enabled: isStateEnabled(state),
         seo: generateSEO(state, legalArea),
       });

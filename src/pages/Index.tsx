@@ -22,7 +22,6 @@ import { SEOHead } from "@/components/SEOHead";
 import EnhancedSEO from "@/components/EnhancedSEO";
 import LocalBusinessSchema from "@/components/LocalBusinessSchema";
 import { Button } from "@/components/ui/button";
-import { PLAN } from "@/lib/pricing";
 
 // Lazy load everything below the fold
 const Header = lazy(() => import("@/components/Header"));
@@ -110,9 +109,9 @@ const Index = () => {
       description: "AI-powered informational guidance engine for understanding legal processes, records, and next steps.",
       offers: {
         "@type": "Offer",
-        price: String(PLAN.price),
+        price: "0",
         priceCurrency: "USD",
-        description: `One plan, ${PLAN.priceLabel}, with every form and filling instruction included. Court and agency fees are separate.`
+        description: "California and New York court forms and form guides are free to fill in and download. Court and agency fees are separate."
       }
     }
   };
@@ -132,7 +131,7 @@ const Index = () => {
     },
     {
       question: "What does it cost?",
-      answer: `Our general guides are free to read. One plan, ${PLAN.priceLabel}, includes every form and filling instruction for California and New York; fee waiver forms are free. Courts and agencies may charge their own fees, such as filing fees. Cancel any time by contacting support.`,
+      answer: "In California and New York, every court form we offer, our form guides and the public-records letter tool are free, and our general guides are free to read. Courts and agencies may charge their own fees, such as filing fees; those are separate, and fee waiver forms are free.",
     },
     {
       question: "Can I use this for FOIA or public records requests?",

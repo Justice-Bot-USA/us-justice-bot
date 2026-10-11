@@ -63,7 +63,7 @@ export default function IssueHubFormsPage() {
       </div>
 
       <div className="flex-1 container mx-auto px-4 py-6 sm:py-8 max-w-3xl">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-6">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-2">
           <h2 className="text-lg font-bold text-foreground">{hub?.title} — Forms</h2>
           <Button variant="outline" size="sm" asChild className="gap-1 shrink-0">
             <a href="https://www.courts.ca.gov/rules-forms/court-forms" target="_blank" rel="noopener noreferrer">
@@ -71,6 +71,10 @@ export default function IssueHubFormsPage() {
             </a>
           </Button>
         </div>
+
+        <p className="text-sm text-muted-foreground mb-6">
+          Forms commonly used for this kind of matter. You choose which forms apply to you; the court's self-help center can help if you're unsure.
+        </p>
 
         {/* Always-visible official directory + latest changes */}
         <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 mb-4">

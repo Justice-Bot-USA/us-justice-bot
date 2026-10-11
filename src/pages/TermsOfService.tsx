@@ -9,7 +9,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 
 const TermsOfService = () => {
   const [language, setLanguage] = useState<'en' | 'es'>('en');
-  const lastUpdated = "October 9, 2026";
+  const lastUpdated = "October 10, 2026";
   const effectiveDate = "January 4, 2026";
 
   const stateJurisdictions = [
@@ -249,12 +249,13 @@ const TermsOfService = () => {
 
             <h2 className="text-2xl font-bold mt-10 mb-4">7. Payments and Refunds</h2>
             <p className="text-muted-foreground">
-              Certain features of our Service require payment. By purchasing a subscription or service:
+              Court forms, form guides and the public-records letter tool are free to use. Courts and government agencies may charge their own fees, which are separate. Our subscription plan is paused and is not currently available for new purchases. Where a subscription or service requires payment, by purchasing it:
             </p>
             <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
               <li>You authorize us to charge your payment method</li>
               <li>Prices are subject to change with notice</li>
               <li>Subscriptions auto-renew unless cancelled</li>
+              <li>You can cancel a subscription online at any time: sign in and choose "Cancel subscription" on the Pricing page. Cancelling stops future charges, and your subscription stays active until the end of the period you have already paid for. You can also cancel by emailing billing@justicebot-usa.com</li>
               <li>Refunds are available within 30 days of purchase if you are not satisfied</li>
               <li>Refund requests should be submitted to billing@justicebot-usa.com</li>
             </ul>

@@ -31,7 +31,7 @@ const TribalCourtHelp = () => (
       "Ignoring tribal court deadlines and procedures",
     ]}
     ctas={[
-      { label: "Analyze Your Case", href: "/case-analysis" },
+      { label: "Get a Plain-Language Summary", href: "/case-analysis" },
       { label: "Explore Legal Tools", href: "/ai-tools" },
     ]}
     relatedPages={[

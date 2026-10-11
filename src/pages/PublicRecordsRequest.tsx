@@ -12,16 +12,16 @@ const PublicRecordsRequest = () => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const benefits = [
-    { icon: FileSearch, title: "State Law Citations", desc: "Cites your state's public records law" },
-    { icon: Shield, title: "Legally Safe Language", desc: "We never claim to access government databases" },
-    { icon: Clock, title: "Ready in Minutes", desc: "Generate a properly worded letter instantly" },
+    { icon: FileSearch, title: "State Law Citations", desc: "Cites California or New York public records law" },
+    { icon: Shield, title: "Careful Language", desc: "We never claim to access government databases" },
+    { icon: Clock, title: "Ready in Minutes", desc: "Puts your answers into a request letter in minutes" },
   ];
 
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
         title="Public Records Request Generator | Justice Bot USA"
-        description="Write a state public records request letter that cites your state's public records law. Free with an account. Powered by Justice Bot USA."
+        description="Write a California or New York public records request letter that cites the state's public records law. Free with an account, PDF included. Other states coming soon. Powered by Justice Bot USA."
         keywords="FOIA request generator, public records request, freedom of information, court records request, arrest records, police records"
         url="https://justicebot-usa.com/foia-request-generator"
       />
@@ -37,11 +37,11 @@ const PublicRecordsRequest = () => {
               Public Records Request Generator
             </div>
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Request Official Records — the Right Way
+              Request Official Records
             </h1>
             <p className="text-xl text-primary-foreground/85 max-w-2xl mx-auto mb-8">
-              Write a state public records request letter that cites your state's public records law.
-              You add your contact details and the agency's address, then send it yourself.
+              Write a California or New York public records request letter that cites the state's public
+              records law. Other states are coming soon. You add your contact details and the agency's address, then send it yourself.
             </p>
             <Button
               size="lg"
@@ -53,7 +53,7 @@ const PublicRecordsRequest = () => {
               Generate My Request Letter
             </Button>
             <p className="text-sm text-primary-foreground/60 mt-4">
-              Free with an account · PDF download included in the $25/month plan · Agencies may charge their own copy fees
+              Free with an account · Free PDF with follow-up and appeal letters · Agencies may charge their own copy fees
             </p>
           </div>
         </section>
@@ -119,7 +119,7 @@ const PublicRecordsRequest = () => {
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold mb-4">Ready to Request Your Records?</h2>
             <p className="text-primary-foreground/80 mb-8 max-w-xl mx-auto">
-              Generate a professionally worded, properly cited public records request letter in minutes.
+              Write a California or New York public records request letter that cites the state's public records law, in minutes. Free.
             </p>
             <Button size="lg" variant="secondary" onClick={() => setModalOpen(true)}>
               <FileSearch className="w-5 h-5 mr-2" />

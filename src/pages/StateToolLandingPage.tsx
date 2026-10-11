@@ -15,7 +15,6 @@ import {
 } from 'lucide-react';
 import FOIARequestGenerator from '@/components/FOIARequestGenerator';
 import { StateComingSoon } from '@/components/funnel/StateComingSoon';
-import { PLAN } from '@/lib/pricing';
 
 export default function StateToolLandingPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -225,7 +224,7 @@ export default function StateToolLandingPage() {
                 <Card className="mb-12 border-primary/30 bg-primary/5 p-6 md:p-8 text-center">
                   <h2 className="text-xl font-bold mb-2">Prepare a Public Records Request in Minutes</h2>
                   <p className="text-muted-foreground mb-4 text-sm">
-                    Generate a properly worded request letter for {stateName}, including:
+                    Put your answers into a request letter for {stateName}, including:
                   </p>
                   <ul className="text-sm text-muted-foreground mb-6 space-y-1">
                     <li className="flex items-center justify-center gap-2">
@@ -241,7 +240,7 @@ export default function StateToolLandingPage() {
                   <div className="flex items-center justify-center gap-4 mt-4 text-xs text-muted-foreground">
                     <span className="flex items-center gap-1">
                       <Lock className="h-3 w-3" />
-                      Free to write · PDF export with the {PLAN.priceLabel} plan
+                      Free with an account · PDF download included
                     </span>
                   </div>
                 </Card>
@@ -272,7 +271,7 @@ export default function StateToolLandingPage() {
               </h2>
               <div className="grid md:grid-cols-3 gap-6">
                 <StepCard n={1} icon={<BookOpen className="h-6 w-6" />} title="Browse Forms" desc={`Browse official ${stateName} court forms by legal area.`} />
-                <StepCard n={2} icon={<FileText className="h-6 w-6" />} title="Get the Official Form" desc={`Official ${stateName} court forms come from the ${stateName} courts. Filled forms and filling instructions are included in the ${PLAN.priceLabel} plan; fee waiver forms are free.`} />
+                <StepCard n={2} icon={<FileText className="h-6 w-6" />} title="Get the Official Form" desc={`Official ${stateName} court forms come from the ${stateName} courts. Filling in and downloading the forms we support is free, and so are the filling instructions. Courts charge their own filing fees.`} />
                 <StepCard n={3} icon={<CheckCircle2 className="h-6 w-6" />} title="Check and File It Yourself" desc="Review the filled form, sign it and file it with the court. Legal information, not legal advice." />
               </div>
             </section>

@@ -32,7 +32,7 @@ const TribalJurisdictionHelp = () => (
       "Not considering concurrent jurisdiction possibilities",
     ]}
     ctas={[
-      { label: "Analyze Your Jurisdictional Question", href: "/case-analysis" },
+      { label: "Get a Plain-Language Summary", href: "/case-analysis" },
       { label: "Explore Legal Tools", href: "/ai-tools" },
     ]}
     relatedPages={[

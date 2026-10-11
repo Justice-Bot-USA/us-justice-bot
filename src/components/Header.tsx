@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Globe, User, LogOut, Settings, Briefcase, Sparkles, FileText, Menu, Gavel, FolderOpen, Scale, ScrollText, GraduationCap, LayoutGrid, ChevronDown, Search, Database, Users, Heart, BarChart3, MapPin } from "lucide-react";
+import { Globe, User, LogOut, Settings, Briefcase, Sparkles, FileText, Menu, Gavel, FolderOpen, Scale, ScrollText, GraduationCap, LayoutGrid, ChevronDown, Database, Users, Heart, BarChart3, MapPin } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useAuth } from "@/hooks/useAuth";
@@ -41,7 +41,6 @@ const moreLinks = [
   {
     label: "Court data",
     links: [
-      { to: "/courtlistener", label: "CourtListener Search", icon: Search },
       { to: "/court-records", label: "Court Records", icon: ScrollText },
     ],
   },
@@ -347,12 +346,6 @@ const Header = ({ language, onLanguageChange }: HeaderProps) => {
                         </Button>
                       </CollapsibleTrigger>
                       <CollapsibleContent className="pl-6 space-y-1 mt-1">
-                        <Button asChild variant="ghost" className="w-full justify-start" size="sm">
-                          <Link to="/courtlistener">
-                            <Search className="w-4 h-4 mr-2" aria-hidden="true" />
-                            CourtListener Search
-                          </Link>
-                        </Button>
                         <Button asChild variant="ghost" className="w-full justify-start" size="sm">
                           <Link to="/court-records">
                             <ScrollText className="w-4 h-4 mr-2" aria-hidden="true" />

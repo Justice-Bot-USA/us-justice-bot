@@ -1,6 +1,5 @@
 import { states, stateAbbreviations } from './states';
 import { launchStateOf } from './stateRouting';
-import { PLAN } from './pricing';
 
 export type StateToolType = 'warrant-lookup' | 'court-forms' | 'arrest-records';
 
@@ -78,7 +77,7 @@ export function getStateToolSeo(match: StateToolMatch) {
         {
           q: `How do I request arrest records in ${stateName}?`,
           a: launched
-            ? `Submit a written public records request to the appropriate agency. Identify the correct agency, submit your request citing ${stateName}'s public records statute, wait for a response, and review or appeal if denied. Our tool generates a properly worded request letter for you.`
+            ? `Submit a written public records request to the appropriate agency. Identify the correct agency, submit your request citing ${stateName}'s public records statute, wait for a response, and review or appeal if denied. Our tool puts your answers into a request letter that cites the state's public records law.`
             : `Submit a written public records request to the agency that holds the records. Identify the records clearly, wait for the agency's response, and ask how to appeal if the request is denied.`,
         },
         {
@@ -88,7 +87,7 @@ export function getStateToolSeo(match: StateToolMatch) {
         {
           q: `How much does it cost to request arrest records in ${stateName}?`,
           a: launched
-            ? `Agencies may charge fees set by state law, usually for copies (in California, generally only the direct cost of duplication). Writing the letter with our tool is free with an account; the PDF download is included in the ${PLAN.priceLabel} plan.`
+            ? `Agencies may charge fees set by state law, usually for copies (in California, generally only the direct cost of duplication). Writing the letter with our tool and downloading the PDF are free with an account.`
             : `Agencies may charge fees set by ${stateName} law, usually for copies. Ask the agency about its fees before you send your request.`,
         },
       ],
@@ -131,7 +130,7 @@ export function getStateToolSeo(match: StateToolMatch) {
   return {
     launched,
     title: `${stateName} Court Forms | Justice Bot USA`,
-    description: `Find official ${stateName} court forms for family, small claims, housing, and more, with filling instructions. Forms and filling instructions are included in the ${PLAN.priceLabel} plan; fee waiver forms are free.`,
+    description: `Find official ${stateName} court forms for family, small claims, housing, and more, with filling instructions. Filling in and downloading forms is free; courts charge their own filing fees.`,
     h1: `${stateName} Court Forms`,
     keywords: [
       `${stateName} court forms`,
@@ -150,7 +149,7 @@ export function getStateToolSeo(match: StateToolMatch) {
       },
       {
         q: `Are ${stateName} court forms free?`,
-        a: `The official forms are free to download from the court's website. Courts charge their own filing fees, and you can ask for a fee waiver if you can't afford them. On Justice Bot USA, fee waiver forms are free; other forms and filling instructions are included in the ${PLAN.priceLabel} plan.`,
+        a: `The official forms are free to download from the court's website. Courts charge their own filing fees, and you can ask for a fee waiver if you can't afford them. On Justice Bot USA, every form we offer, including fee waiver forms, is free to fill in and download, and so are the filling instructions.`,
       },
       {
         q: `Do I need a lawyer to fill out ${stateName} court forms?`,
