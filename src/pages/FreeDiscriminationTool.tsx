@@ -19,13 +19,14 @@ const SECTIONS = [
     heading: "How it usually works in California",
     deadlines: [
       "California Civil Rights Department (CRD) employment complaint: generally 3 years from the last act.",
-      "EEOC charge: 300 days in California.",
+      "CRD housing complaints, businesses open to the public (Unruh Civil Rights Act) and most other CRD complaints: generally 1 year from the last act.",
+      "EEOC charge (employment only): 300 days in California.",
     ],
     steps: [
       "Write down what happened: dates, the people involved, witnesses, and any documents.",
       "File an intake with the Civil Rights Department (CRD). It covers employment, housing, and businesses open to the public. Employment complaints are usually filed with the EEOC at the same time.",
       "CRD interviews you and decides whether to investigate or to issue a right-to-sue notice.",
-      "With a right-to-sue notice you can take the claim to court; many people talk to an attorney at this point.",
+      "With a right-to-sue notice you can take the claim to court. For California claims, the lawsuit generally must be filed within 1 year of the date on the notice. A federal right-to-sue notice from the EEOC generally gives you 90 days after you receive it. Check the deadline printed on your notice, and talk to an attorney or free legal aid as soon as you get it.",
     ],
     forms: pickForms(CA_HUMAN_RIGHTS_FORMS, ["CRD Intake", "EEOC Charge"]),
     help: { label: "CRD: How the complaint process works", href: "https://calcivilrights.ca.gov/complaintprocess/" },
@@ -39,7 +40,7 @@ const SECTIONS = [
       "EEOC charge: 300 days in New York.",
     ],
     steps: [
-      "Choose where to file with care: filing with NYSDHR generally bars a later court case on the same facts (the \"election of remedies\" rule).",
+      "Choose where to file with care: filing a complaint with NYSDHR or the NYC Commission on Human Rights generally bars a later court case on the same facts under state and city law (the \"election of remedies\" rule). An EEOC charge that the EEOC refers to those agencies does not count as filing with them. Because this choice is hard to undo, many people talk to a lawyer or free legal aid (LawHelpNY.org) before filing.",
       "File the complaint with the agency, describing what happened, the protected characteristic, and the harm, with any supporting documents.",
       "The employer, landlord, or business answers, and an investigator may interview witnesses and ask for documents.",
       "If the agency finds probable cause, the case goes to a public hearing before an administrative law judge.",
@@ -90,9 +91,12 @@ const FreeDiscriminationTool = () => {
             <Card className="mb-6 border-l-4 border-l-primary bg-primary/5"><CardContent className="p-6">
               <h2 className="text-xl font-bold mb-4">{s.heading}</h2>
               <h3 className="text-sm font-semibold mb-2">Deadlines</h3>
-              <ul className="list-disc pl-5 space-y-1 mb-4">
+              <ul className="list-disc pl-5 space-y-1 mb-2">
                 {s.deadlines.map((d, i) => <li key={i} className="text-sm text-foreground/90">{d}</li>)}
               </ul>
+              <p className="text-xs text-muted-foreground mb-4">
+                Your exact deadline can depend on the facts. If a deadline is close, contact the agency or free legal aid right away.
+              </p>
               <h3 className="text-sm font-semibold mb-2">Steps</h3>
               <div className="space-y-3">
                 {s.steps.map((step, i) => (

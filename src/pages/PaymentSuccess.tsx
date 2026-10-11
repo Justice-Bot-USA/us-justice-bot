@@ -24,10 +24,18 @@ const PaymentSuccess: React.FC = () => {
         <Card className="max-w-xl mx-auto">
           <CardContent className="p-8 text-center space-y-4">
             <CheckCircle2 className="h-12 w-12 mx-auto text-green-600" />
-            <h1 className="text-2xl md:text-3xl font-bold">Thanks, there's nothing else to do</h1>
+            <h1 className="text-2xl md:text-3xl font-bold">Thanks for visiting</h1>
             <p className="text-muted-foreground">
               Every form and form guide on Justice Bot USA is free, so you don't need a plan. The California and New
               York forms we support can be filled in online and downloaded.
+            </p>
+            <p className="text-sm text-muted-foreground">
+              If you were just charged: your $25/month subscription is active and renews monthly until you cancel. You
+              don't need it: court forms, form guides and the public-records letter are free. To cancel, sign in and
+              choose Cancel subscription on the{' '}
+              <Link to="/pricing" className="text-primary underline">Pricing page</Link>, or email
+              billing@justicebot-usa.com. Cancelling stops future charges. Refunds are available within 30 days of purchase; email
+              billing@justicebot-usa.com to request one.
             </p>
             <div className="flex flex-wrap gap-3 justify-center">
               <Button asChild>

@@ -258,8 +258,8 @@ const buildBreadcrumbSchema = (stateName: string, stateCode: string, areaName: s
 /** LegalService schema for the specific state+area page */
 const buildLegalServiceSchema = (stateName: string, areaName: string, description: string, route: string) => ({
   '@context': 'https://schema.org',
-  '@type': 'LegalService',
-  name: `Justice Bot USA – ${stateName} ${areaName} Self-Help`,
+  '@type': 'Service',
+  name: `Justice Bot USA – ${stateName} ${areaName} legal information`,
   description,
   url: `${BASE_URL}${route}`,
   areaServed: {
@@ -267,7 +267,7 @@ const buildLegalServiceSchema = (stateName: string, areaName: string, descriptio
     name: stateName,
     address: { '@type': 'PostalAddress', addressCountry: 'US' },
   },
-  serviceType: areaName,
+  serviceType: 'Legal information and court form filling (not legal advice)',
   provider: {
     '@type': 'Organization',
     name: 'Justice Bot USA',

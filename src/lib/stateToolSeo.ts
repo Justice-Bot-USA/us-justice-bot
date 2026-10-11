@@ -77,7 +77,7 @@ export function getStateToolSeo(match: StateToolMatch) {
         {
           q: `How do I request arrest records in ${stateName}?`,
           a: launched
-            ? `Submit a written public records request to the appropriate agency. Identify the correct agency, submit your request citing ${stateName}'s public records statute, wait for a response, and review or appeal if denied. Our tool puts your answers into a request letter that cites the state's public records law.`
+            ? `Submit a written public records request to the appropriate agency. Identify the correct agency, submit your request citing ${stateName}'s public records statute, and wait for the agency's response. If the request is denied, in New York you can appeal in writing to the agency within 30 days (Public Officers Law § 89(4)(a)); California has no administrative appeal, and the remedy is a petition in superior court (Gov. Code § 7923.000). Our tool puts your answers into a request letter that cites the state's public records law.`
             : `Submit a written public records request to the agency that holds the records. Identify the records clearly, wait for the agency's response, and ask how to appeal if the request is denied.`,
         },
         {

@@ -21,8 +21,8 @@ const SECTIONS = [
       "Small claims limit: $12,500 for individuals, $6,250 for businesses. Lawyers can't appear for you at the hearing.",
       "Ask the other side to pay before you file; courts expect you to try.",
       "Fill out the Plaintiff's Claim (SC-100) and file it in the right county. The fee is $30, $50 or $75 depending on the amount, or you can ask for a fee waiver (FW-001).",
-      "An adult who is not you serves the defendant at least 15 days before the court date (20 days if they live outside the county), then you file the proof of service (SC-104) at least 5 days before the hearing.",
-      "Go to the hearing with your evidence, witnesses, and copies of everything you filed. Only the defendant can appeal (or the plaintiff, on a claim the defendant filed back), within 30 days of the judgment notice.",
+      "An adult who is not you serves the defendant at least 15 days before the court date (20 days if they live outside the county), then you file the proof of service (SC-104) at least 5 days before the hearing. If the papers are left with someone else and mailed (substituted service), service is not complete until 10 days after the mailing, so allow extra time.",
+      "Go to the hearing with your evidence, witnesses, and copies of everything you filed. A defendant who loses can appeal within 30 days after the clerk mails or hands over the notice of entry of judgment; a plaintiff can appeal only a claim the defendant filed back. If you were the defendant and missed the hearing, you can't appeal yet: first file a Motion to Vacate Judgment (SC-135) within 30 days after the notice was mailed (or within 180 days of learning of the judgment if you were never properly served).",
     ],
     forms: pickForms(CA_CIVIL_FORMS, ["SC-100", "SC-104", "FW-001"]),
     help: { label: "California Courts: Small claims self-help", href: "https://selfhelp.courts.ca.gov/small-claims-california" },
@@ -33,12 +33,13 @@ const SECTIONS = [
     steps: [
       "Pick the right court. Small claims limits: $10,000 in NYC Civil Court, $5,000 in City Courts (and District Courts in Nassau and Suffolk), and $3,000 in Town and Village Courts.",
       "In New York City, file the Statement of Claim (CIV-SC-50). The fee is $15 for claims up to $1,000 and $20 for larger claims. You can ask the court to waive fees with UCS-FW1.",
+      "Outside New York City there is no single statewide claim form. Go to the small claims clerk of the City, District, or Town or Village Court where the defendant lives, works, or has a business; the clerk will help you prepare the claim. The fee is $15 (claims up to $1,000) or $20 in City and District Courts, and $10 or $15 in Town and Village Courts.",
       "The clerk sends the notice of claim to the defendant by mail and gives you a hearing date.",
       "At the hearing, the case is heard by an arbitrator if both sides agree, or otherwise by a judge. Bring your evidence and witnesses.",
       "If you win and the other side doesn't pay, there are court procedures for collecting the judgment, such as wage garnishment.",
     ],
-    forms: pickForms(NY_CIVIL_FORMS, ["CIV-SC-50", "SC-Outside-NYC", "UCS-FW1"]),
-    help: { label: "NY Courts: CourtHelp", href: "https://www.nycourts.gov/courthelp/" },
+    forms: pickForms(NY_CIVIL_FORMS, ["CIV-SC-50", "UCS-FW1"]),
+    help: { label: "NY Courts: Small claims help", href: "https://www.nycourts.gov/help/small-claims" },
   },
 ];
 

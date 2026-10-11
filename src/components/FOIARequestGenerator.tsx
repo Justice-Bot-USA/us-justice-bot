@@ -180,9 +180,9 @@ const FOIARequestGenerator: React.FC<FOIARequestGeneratorProps> = ({
     toast.success('Copied to clipboard!');
   };
 
-  // Free: the full set (request + follow-up + appeal) as one PDF.
+  // Free: the request letter as a PDF. The follow-up and appeal pages stay off until state-specific versions are approved by counsel (task #19).
   const handleExportPDF = () => {
-    const url = URL.createObjectURL(generateFoiaLetterPdf(generatedLetter, true));
+    const url = URL.createObjectURL(generateFoiaLetterPdf(generatedLetter, false));
     const a = document.createElement('a');
     a.href = url;
     a.download = `Public-Records-Request-${new Date().toISOString().slice(0, 10)}.pdf`;
@@ -472,7 +472,7 @@ const FOIARequestGenerator: React.FC<FOIARequestGeneratorProps> = ({
               </Button>
               <Button onClick={handleExportPDF} className="gap-2 w-full" size="lg">
                 <Download className="h-4 w-4" />
-                Download PDF (request + follow-up + appeal)
+                Download PDF of your request letter
               </Button>
               {/* Agencies may charge their own copy or search fees. */}
               <p className="text-xs text-muted-foreground text-center">{THIRD_PARTY_FEES_NOTE}</p>

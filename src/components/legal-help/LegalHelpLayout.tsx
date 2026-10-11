@@ -284,7 +284,7 @@ const LegalHelpLayout = ({
 
         {/* Disclaimer */}
         <div className="text-xs text-muted-foreground border-t pt-6 mt-10">
-          <p><strong>Disclaimer:</strong> This is legal information, not legal advice. Justice Bot USA provides procedural guidance to help you understand legal processes; our content has not yet been reviewed by a licensed attorney. For advice specific to your situation, consult a licensed attorney.</p>
+          <p><strong>Disclaimer:</strong> This is legal information, not legal advice. Justice Bot USA is not a law firm and our content has not yet been reviewed by a licensed attorney. Our guides cover California and New York; other states are coming soon. Courts charge their own fees. For advice about your situation, talk to a licensed attorney, free legal aid (LawHelpNY.org, LawHelpCA.org) or your court&apos;s self-help center.</p>
         </div>
       </main>
 
