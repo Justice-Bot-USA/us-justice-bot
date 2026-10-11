@@ -167,7 +167,7 @@ const NativeAmericanRights = () => (
       "Confusing state-recognized tribes with federally recognized tribes (jurisdictional differences apply)",
     ]}
     ctas={[
-      { label: "Check Tribal Jurisdiction for Your Case", href: "/case-analysis" },
+      { label: "Get a Plain-Language Summary", href: "/case-analysis" },
       { label: "Explore Legal Tools", href: "/ai-tools" },
       { label: "Find Court Resources", href: "/court-records" },
     ]}

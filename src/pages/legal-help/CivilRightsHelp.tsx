@@ -43,7 +43,7 @@ const CivilRightsHelp = () => (
     relatedPages={[
       { label: "Workplace Discrimination", href: "/legal-help/workplace-discrimination" },
       { label: "Housing Discrimination", href: "/legal-help/housing-discrimination" },
-      { label: "Free Discrimination Complaint Helper", href: "/free-discrimination-complaint-helper" },
+      { label: "Free Discrimination Complaint Guide", href: "/free-discrimination-complaint-helper" },
       { label: "CA Workplace Discrimination", href: "/legal-help/california-workplace-discrimination" },
       { label: "FOIA Request Generator", href: "/foia-request-generator" },
       { label: "Legal Glossary: Due Process", href: "/legal-glossary#due-process" },

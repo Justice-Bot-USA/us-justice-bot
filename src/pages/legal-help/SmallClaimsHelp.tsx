@@ -43,7 +43,7 @@ const SmallClaimsHelp = () => (
       { label: "How to File Small Claims", href: "/legal-help/how-to-file-small-claims" },
       { label: "Defending Small Claims", href: "/legal-help/how-to-defend-small-claims" },
       { label: "Small Claims Evidence Guide", href: "/legal-help/small-claims-evidence" },
-      { label: "Free Small Claims Case Builder", href: "/free-small-claims-case-builder" },
+      { label: "Free Small Claims Guide", href: "/free-small-claims-case-builder" },
       { label: "New York Small Claims Court", href: "/legal-help/new-york-small-claims-court" },
       { label: "Legal Glossary: Damages", href: "/legal-glossary#damages" },
       { label: "Legal Glossary: Summons", href: "/legal-glossary#summons" },

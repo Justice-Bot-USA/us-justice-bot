@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { signInPath } from '@/lib/signIn';
 import {
   Dialog,
   DialogContent,
@@ -20,28 +19,20 @@ import {
   FileText,
   Download,
   Sparkles,
-  Shield,
   CheckCircle2,
-  Loader2,
-  Unlock,
+  ArrowRight,
 } from 'lucide-react';
-import { useAuth } from '@/hooks/useAuth';
-import { usePaywallAccess } from '@/hooks/usePaywallAccess';
-import { PLAN, THIRD_PARTY_FEES_NOTE, startSubscriptionCheckout } from '@/lib/pricing';
+import { THIRD_PARTY_FEES_NOTE } from '@/lib/pricing';
 import { fillableForState } from '@/lib/formfill';
 import { Link, useNavigate } from 'react-router-dom';
 import { launchStateOf, stateRouteFor } from '@/lib/stateRouting';
 import { toast } from 'sonner';
-import {
-  trackUSPrepareClicked,
-  trackUSCheckoutStarted,
-} from '@/hooks/useAnalytics';
+import { trackUSPrepareClicked } from '@/hooks/useAnalytics';
 import { US_STATES } from '@/lib/states';
 import type { LegalCategory } from '@/lib/funnels/types';
 
-// `value` is the menu option; `legalArea` is the funnel key (LegalCategory) that PaymentSuccess uses to
-// find the form guides (src/lib/forms LAUNCH_STATE_FORMS). 'Other' has no forms, so it goes to the
-// state's legal center instead of checkout.
+// `value` is the menu option; `legalArea` is the funnel key (LegalCategory), used to open the state's
+// legal center on the matching tab. 'Other' has no forms, so it goes to the state's legal center.
 const ISSUE_CATEGORIES: { value: string; label: string; legalArea: LegalCategory | null }[] = [
   { value: 'small-claims', label: 'Small Claims', legalArea: 'small-claims' },
   { value: 'family', label: 'Family Law', legalArea: 'family' },
@@ -54,7 +45,7 @@ const ISSUE_CATEGORIES: { value: string; label: string; legalArea: LegalCategory
   { value: 'other', label: 'Other', legalArea: null },
 ];
 
-// The plan covers California and New York only; the other states are coming soon.
+// California and New York only; the other states are coming soon. All of it is free.
 const WHAT_YOU_GET = [
   { icon: FileText, text: 'Fill in the official California and New York court forms we support with your own answers' },
   { icon: Sparkles, text: 'Plain-language filling instructions (legal information, not legal advice)' },
@@ -77,14 +68,11 @@ const PrepareFilingModal: React.FC<PrepareFilingModalProps> = ({
   defaultState = '',
   source = 'lookup_results',
 }) => {
-  const { user } = useAuth();
-  const { hasAccess } = usePaywallAccess();
   const navigate = useNavigate();
   const [selectedState, setSelectedState] = useState(defaultState);
   const [selectedIssue, setSelectedIssue] = useState('');
-  const [isProcessing, setIsProcessing] = useState(false);
 
-  // Only California and New York are live. For any other state there is nothing to sell.
+  // Only California and New York are live. Any other state has no forms yet.
   const launchState = launchStateOf(selectedState);
   const selectedStateName = US_STATES.find((s) => s.value === selectedState.toUpperCase())?.label || selectedState;
   // 'any' or 'federal' (from the court records page) is not a state choice; only a real non-CA/NY state is coming soon.
@@ -92,7 +80,7 @@ const PrepareFilingModal: React.FC<PrepareFilingModalProps> = ({
   const comingSoon = isRealState && !launchState;
   const isOtherIssue = !!selectedIssue && !ISSUE_CATEGORIES.find((c) => c.value === selectedIssue)?.legalArea;
 
-  const handleContinue = async () => {
+  const handleContinue = () => {
     if (!selectedState) {
       toast.error('Please select a state');
       return;
@@ -106,7 +94,7 @@ const PrepareFilingModal: React.FC<PrepareFilingModalProps> = ({
       return;
     }
 
-    // 'Other' has no form guides: send the user to the state's legal center, no checkout.
+    // 'Other' has no form guides: send the user to the state's legal center.
     const legalArea = ISSUE_CATEGORIES.find((c) => c.value === selectedIssue)?.legalArea ?? null;
     if (!legalArea) {
       onOpenChange(false);
@@ -114,43 +102,14 @@ const PrepareFilingModal: React.FC<PrepareFilingModalProps> = ({
       return;
     }
 
-    if (!user) {
-      toast.error('Please sign in to continue');
-      navigate(signInPath());
-      return;
-    }
-
-    // Subscribers already have access: take them to the forms instead of charging again.
-    if (hasAccess) {
-      onOpenChange(false);
-      navigate(
-        fillableForState(launchState).length
-          ? `/fill/${launchState.toLowerCase()}`
-          : stateRouteFor(launchState)?.centerPath ?? '/',
-      );
-      return;
-    }
-
-    setIsProcessing(true);
+    // Forms are free to fill and download, with no account needed: go straight to them.
     trackUSPrepareClicked(source, launchState, selectedIssue);
-    trackUSCheckoutStarted('subscription', PLAN.price);
-
-    try {
-      // Store context for post-payment redirect
-      const funnelConfig = {
-        jurisdiction: launchState,
-        legalArea,
-        forms: [],
-      };
-      sessionStorage.setItem('pending_funnel_config', JSON.stringify(funnelConfig));
-
-      await startSubscriptionCheckout();
-    } catch (err) {
-      console.error('Checkout error:', err);
-      toast.error('Failed to start checkout. Please try again.');
-    } finally {
-      setIsProcessing(false);
-    }
+    onOpenChange(false);
+    navigate(
+      fillableForState(launchState).length
+        ? `/fill/${launchState.toLowerCase()}`
+        : stateRouteFor(launchState, legalArea)?.centerPath ?? '/',
+    );
   };
 
   return (
@@ -158,11 +117,11 @@ const PrepareFilingModal: React.FC<PrepareFilingModalProps> = ({
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Unlock className="h-5 w-5 text-primary" />
+            <FileText className="h-5 w-5 text-primary" />
             Fill In Official Court Forms
           </DialogTitle>
           <DialogDescription>
-            California and New York only. Not legal advice. You check, sign and file the forms yourself.
+            California and New York only. Free to fill and download. Not legal advice. You check, sign and file the forms yourself.
           </DialogDescription>
         </DialogHeader>
 
@@ -202,12 +161,11 @@ const PrepareFilingModal: React.FC<PrepareFilingModalProps> = ({
           </div>
 
           {comingSoon ? (
-            /* Other states: coming soon, no checkout */
+            /* Other states: coming soon */
             <div className="rounded-lg border p-4 space-y-3 text-sm">
               <p className="font-medium">{selectedStateName} is coming soon.</p>
               <p className="text-muted-foreground">
-                Justice Bot USA is live in California and New York. We have no forms or plan for {selectedStateName} yet,
-                so there is nothing to buy here.
+                Justice Bot USA is live in California and New York. We don't have forms for {selectedStateName} yet.
               </p>
               <div className="flex flex-wrap gap-2">
                 <Button asChild size="sm">
@@ -238,33 +196,16 @@ const PrepareFilingModal: React.FC<PrepareFilingModalProps> = ({
                 className="w-full"
                 size="lg"
                 onClick={handleContinue}
-                disabled={isProcessing}
               >
-                {isProcessing ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Processing...
-                  </>
-                ) : (
-                  <>
-                    <Unlock className="mr-2 h-4 w-4" />
-                    {isOtherIssue && launchState
-                      ? `Open the ${stateRouteFor(launchState)?.stateName ?? ''} legal center`
-                      : hasAccess ? 'Continue — included in your plan' : PLAN.cta}
-                  </>
-                )}
+                {isOtherIssue && launchState
+                  ? `Open the ${stateRouteFor(launchState)?.stateName ?? ''} legal center`
+                  : 'Continue to the forms'}
+                <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
 
               <p className="text-xs text-muted-foreground text-center">
                 Not legal advice. Our content has not yet been reviewed by a licensed attorney. You file it yourself. {THIRD_PARTY_FEES_NOTE}
               </p>
-
-              <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground">
-                <span className="flex items-center gap-1">
-                  <Shield className="h-3 w-3" />
-                  Payment handled by Stripe
-                </span>
-              </div>
             </>
           )}
         </div>

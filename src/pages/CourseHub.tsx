@@ -58,20 +58,37 @@ type Certificate = {
   certificate_url: string | null;
 };
 
-const ACCEPTANCE_LABEL_STYLES: Record<string, { bg: string; icon: typeof Shield }> = {
+// Keys are the acceptance_label values stored in the database (a CHECK constraint fixes them).
+// The display text describes the kind of course only: we have not checked any course with a court.
+const ACCEPTANCE_LABEL_STYLES: Record<string, { display: string; bg: string; icon: typeof Shield }> = {
   "Court-Ordered (External Provider Required)": {
+    display: "Your court may name the providers it accepts",
     bg: "bg-destructive/10 text-destructive border-destructive/30",
     icon: AlertTriangle,
   },
   "Commonly Accepted in Some Jurisdictions": {
+    display: "Parent education: check with your court",
     bg: "bg-amber-100 text-amber-800 border-amber-300 dark:bg-amber-900/30 dark:text-amber-300 dark:border-amber-700",
     icon: Shield,
   },
   "Supplementary / Skill-Building": {
+    display: "Supplementary / Skill-Building",
     bg: "bg-blue-100 text-blue-800 border-blue-300 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-700",
     icon: BookOpen,
   },
 };
+
+const acceptanceDisplay = (label: string) => ACCEPTANCE_LABEL_STYLES[label]?.display ?? label;
+
+// course_enrollments.status values, shown as what the person recorded (we don't verify completion).
+const TRACKING_STATUS_LABELS: Record<string, string> = {
+  enrolled: "Tracking",
+  in_progress: "In progress",
+  completed: "Marked complete",
+  withdrawn: "Stopped tracking",
+};
+
+const trackingStatus = (status?: string) => TRACKING_STATUS_LABELS[status ?? "enrolled"] ?? status ?? "Tracking";
 
 const STATE_REGISTRY = {
   CA: {
@@ -80,32 +97,30 @@ const STATE_REGISTRY = {
     url: "https://www.courts.ca.gov/find-my-court.htm",
     flag: "🏛",
   },
-  TX: {
-    label: "TX Attorney General",
-    url: "https://www.oag.texas.gov/child-support/services-parents/parent-education-family-stabilization-course",
-    flag: "⚖️",
-  },
-  FL: {
-    // Fla. Stat. § 61.21: parenting course providers are approved by the Department of Children and Families.
-    label: "FL Dept. of Children and Families",
-    url: "https://www.myflfamilies.com/",
-    flag: "🏛",
-  },
 };
+
+// Live only in California and New York; no New York courses are listed yet.
+const LIVE_JURISDICTIONS = ["CA", "NY"];
+const liveJurisdictions = (course: Course) => course.jurisdictions.filter(j => LIVE_JURISDICTIONS.includes(j));
 
 const STATE_FILTER_OPTIONS = [
   { value: "all", label: "All States" },
   { value: "CA", label: "California" },
-  { value: "TX", label: "Texas" },
-  { value: "FL", label: "Florida" },
 ];
+
+const MAX_CERT_FILE_BYTES = 20 * 1024 * 1024;
+
+const toHex = (buffer: ArrayBuffer) =>
+  Array.from(new Uint8Array(buffer)).map(b => b.toString(16).padStart(2, "0")).join("");
 
 // Generate a SHA-256 hash in browser
 async function sha256(data: string): Promise<string> {
-  const msgBuffer = new TextEncoder().encode(data);
-  const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+  return toHex(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(data)));
+}
+
+// SHA-256 of the file's exact bytes, so anyone holding the file can recompute and compare it.
+async function sha256File(file: File): Promise<string> {
+  return toHex(await crypto.subtle.digest("SHA-256", await file.arrayBuffer()));
 }
 
 export default function CourseHub() {
@@ -167,12 +182,12 @@ export default function CourseHub() {
 
   const handleEnroll = async (courseId: string) => {
     if (!user) {
-      toast.error("Please sign in to enroll in courses.");
+      toast.error("Please sign in to track courses.");
       return;
     }
     const existing = enrollments.find(e => e.course_id === courseId);
     if (existing) {
-      toast.info("You are already enrolled in this course.");
+      toast.info("You are already tracking this course.");
       return;
     }
     const { error } = await supabase.from("course_enrollments").insert({
@@ -181,9 +196,9 @@ export default function CourseHub() {
       status: "enrolled",
     } as any);
     if (error) {
-      toast.error("Failed to enroll. Please try again.");
+      toast.error("Could not add this course to your list. Please try again.");
     } else {
-      toast.success("Enrolled successfully!");
+      toast.success("Added to My Courses. Sign up for the course on the provider's site.");
       fetchEnrollments();
     }
   };
@@ -248,17 +263,17 @@ export default function CourseHub() {
       y += 4;
       addDivider();
 
-      // Enrollments
-      addLine("Course Enrollments", 13, true);
+      // Tracked courses (course_enrollments)
+      addLine("Courses Tracked", 13, true);
       y += 2;
       if (!report.enrollments?.length) {
-        addLine("No enrollments on record.", 10, false, [120, 120, 120]);
+        addLine("No tracked courses on record.", 10, false, [120, 120, 120]);
       } else {
         report.enrollments.forEach((e: any, i: number) => {
           addLine(`${i + 1}. ${e.courseTitle}`, 11, true);
-          addLine(`   Provider: ${e.provider} | Status: ${e.status}`, 10);
-          addLine(`   Enrolled: ${new Date(e.enrolledAt).toLocaleDateString()}${e.completedAt ? `  |  Completed: ${new Date(e.completedAt).toLocaleDateString()}` : ""}`, 10);
-          addLine(`   Acceptance: ${e.acceptanceLabel}`, 10);
+          addLine(`   Provider: ${e.provider} | Status (recorded by the user): ${trackingStatus(e.status)}`, 10);
+          addLine(`   Added: ${new Date(e.enrolledAt).toLocaleDateString()}${e.completedAt ? `  |  Marked complete: ${new Date(e.completedAt).toLocaleDateString()}` : ""}`, 10);
+          addLine(`   Category: ${acceptanceDisplay(e.acceptanceLabel)}`, 10);
           y += 2;
         });
       }
@@ -275,7 +290,7 @@ export default function CourseHub() {
           addLine(`   Provider: ${c.provider} | Hours: ${c.hoursCompleted}`, 10);
           addLine(`   Completion Date: ${new Date(c.completionDate).toLocaleDateString()}`, 10);
           addLine(`   Reference ID: JB-${c.certificateHash?.substring(0, 12).toUpperCase()}`, 10, true);
-          if (c.verificationLink) addLine(`   Record lookup: ${c.verificationLink}`, 9, false, [60, 100, 180]);
+          if (c.verificationLink) addLine(`   Record page (only the account holder can open it): ${c.verificationLink}`, 9, false, [60, 100, 180]);
           y += 2;
         });
       }
@@ -284,7 +299,7 @@ export default function CourseHub() {
       // Footer
       addLine("This document was generated by Justice Bot USA and is intended for informational purposes only.", 8, false, [120, 120, 120]);
       addLine("Justice Bot USA does not determine legal compliance. Consult your attorney for specific requirements.", 8, false, [120, 120, 120]);
-      addLine("Certificate details were entered by the user. Justice Bot USA has not checked them with the course providers.", 8, false, [120, 120, 120]);
+      addLine("Certificate details and course status were entered by the user. Justice Bot USA does not verify course completion and has not checked these records with the course providers or any court.", 8, false, [120, 120, 120]);
 
       // Save
       doc.save(`JusticeBotUSA-CourseReport-${data.documentHash}.pdf`);
@@ -306,13 +321,26 @@ export default function CourseHub() {
       return;
     }
     const file = fileInputRef.current?.files?.[0];
+    if (file && file.size > MAX_CERT_FILE_BYTES) {
+      toast.error("That file is larger than 20MB. Please choose a smaller file.");
+      return;
+    }
 
     setUploadingCert(true);
     try {
-      // Generate SHA-256 hash from cert metadata + timestamp — unique per upload
-      const rawContent = `${user.id}|${course_title}|${provider_name}|${completion_date}|${Date.now()}`;
-      const hash = await sha256(rawContent);
+      // With a file, the hash is the SHA-256 of the file's bytes (its fingerprint). Without one, it
+      // covers only the typed-in details plus a timestamp, so it says nothing about any file.
+      const hash = file
+        ? await sha256File(file)
+        : await sha256(`${user.id}|${course_title}|${provider_name}|${completion_date}|${Date.now()}`);
       const verificationId = hash.substring(0, 12).toUpperCase();
+
+      // The reference ID comes from the hash, so the same file saved twice would get the same ID.
+      const duplicate = certificates.find(c => c.certificate_hash === hash);
+      if (duplicate) {
+        toast.info(`You already saved this file. Reference ID: JB-${verificationId}`);
+        return;
+      }
 
       let certUrl: string | null = null;
       let filePath: string | null = null;
@@ -320,19 +348,18 @@ export default function CourseHub() {
       // Upload file to private storage bucket
       if (file) {
         const ext = file.name.split(".").pop();
-        filePath = `${user.id}/certificates/${verificationId}.${ext}`;
+        const path = `${user.id}/certificates/${verificationId}.${ext}`;
         const { error: uploadError } = await supabase.storage
           .from("user-uploads")
-          .upload(filePath, file, { upsert: true });
-        if (uploadError) {
-          console.warn("File upload error (non-fatal):", uploadError.message);
-        } else {
-          // Private bucket — use a signed URL (1 year expiry)
-          const { data: signedData } = await supabase.storage
-            .from("user-uploads")
-            .createSignedUrl(filePath, 60 * 60 * 24 * 365);
-          certUrl = signedData?.signedUrl || null;
-        }
+          .upload(path, file, { upsert: true });
+        // Don't save a record that points to a file we don't have.
+        if (uploadError) throw new Error("Could not upload the file. Please try again.");
+        filePath = path;
+        // Private bucket — use a signed URL (1 year expiry)
+        const { data: signedData } = await supabase.storage
+          .from("user-uploads")
+          .createSignedUrl(filePath, 60 * 60 * 24 * 365);
+        certUrl = signedData?.signedUrl || null;
       }
 
       // Try to find a matching enrollment to link (optional — enrollment_id is now nullable)
@@ -359,7 +386,9 @@ export default function CourseHub() {
         metadata: {
           verification_id: `JB-${verificationId}`,
           upload_source: "manual",
-          file_uploaded: !!file,
+          file_uploaded: !!filePath,
+          // "file": certificate_hash is the SHA-256 of the uploaded file. "details": typed-in details only.
+          hash_source: file ? "file" : "details",
         },
       } as any);
 
@@ -377,19 +406,26 @@ export default function CourseHub() {
     }
   };
 
+  // The courses migration hides Texas- and Florida-only rows; this keeps them out even before it runs.
   const filteredCourses = courses.filter(c => {
+    if (liveJurisdictions(c).length === 0) return false;
     if (stateFilter !== "all" && !c.jurisdictions.includes(stateFilter)) return false;
     if (typeFilter !== "all" && c.course_type !== typeFilter) return false;
     return true;
   });
 
-  const myEnrolledCourses = courses.filter(c => enrollments.some(e => e.course_id === c.id));
+  // Built from the user's own records, so a course that is no longer listed (inactive courses
+  // aren't readable) still shows with its recorded status, as it does in the exported report.
+  const myTrackedCourses = enrollments.map(enrollment => ({
+    enrollment,
+    course: courses.find(c => c.id === enrollment.course_id) ?? null,
+  }));
 
   return (
     <>
       <SEOHead
         title="Course Hub | Justice Bot USA"
-        description="Find parenting and co-parenting courses offered by outside providers, and keep track of your enrollment, completion, and certificates. Check with your court that a course is accepted."
+        description="Find parenting and co-parenting courses offered by outside providers, and keep your own list of the courses you're taking and your certificates. We don't verify completion; check with your court that a course is accepted."
       />
       <Header language={language} onLanguageChange={setLanguage} />
 
@@ -402,8 +438,8 @@ export default function CourseHub() {
               <h1 className="text-3xl md:text-4xl font-bold">Course Hub</h1>
             </div>
             <p className="text-lg text-primary-foreground/90 max-w-2xl">
-              Find parenting and co-parenting courses offered by outside providers. Keep track of your
-              enrollment, completion, and certificates in one place. Check with your court that a course is accepted.
+              Find parenting and co-parenting courses offered by outside providers. Keep your own list of the
+              courses you're taking and your certificates in one place. Check with your court that a course is accepted.
             </p>
             <div className="mt-4 flex items-center gap-2 text-sm text-primary-foreground/70">
               <Shield className="w-4 h-4" />
@@ -416,8 +452,9 @@ export default function CourseHub() {
         <div className="bg-muted border-b">
           <div className="container mx-auto px-4 py-3">
             <p className="text-sm text-muted-foreground">
-              <strong>Important:</strong> Course acceptance varies by jurisdiction. Justice Bot USA keeps the records you enter —
-              we do not verify them or determine compliance. Consult your attorney or case worker for specific requirements.
+              <strong>Important:</strong> Justice Bot USA does not verify that you finished a course, and we don't know whether a
+              course meets your court order. Before you sign up, confirm with your court or caseworker that the course is accepted
+              and ask how to give them proof that you finished it. We only keep the records you enter.
             </p>
           </div>
         </div>
@@ -466,10 +503,13 @@ export default function CourseHub() {
                 </Select>
               </div>
 
-              {/* Acceptance Label Legend */}
+              {/* Course category legend */}
               <Card>
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-sm font-medium">Acceptance Labels</CardTitle>
+                  <CardTitle className="text-sm font-medium">Course Categories</CardTitle>
+                  <CardDescription className="text-xs">
+                    These describe the kind of course. They don't mean a court has approved it.
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="flex flex-wrap gap-3">
                   {Object.entries(ACCEPTANCE_LABEL_STYLES).map(([label, style]) => {
@@ -477,7 +517,7 @@ export default function CourseHub() {
                     return (
                       <div key={label} className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-medium ${style.bg}`}>
                         <Icon className="w-3.5 h-3.5" />
-                        {label}
+                        {style.display}
                       </div>
                     );
                   })}
@@ -509,7 +549,7 @@ export default function CourseHub() {
                           <CardTitle className="text-base">{course.title}</CardTitle>
                           <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-xs font-medium w-fit ${labelStyle?.bg || ''}`}>
                             <LabelIcon className="w-3 h-3" />
-                            {course.acceptance_label}
+                            {acceptanceDisplay(course.acceptance_label)}
                           </div>
                           <CardDescription className="mt-2">{course.description}</CardDescription>
                         </CardHeader>
@@ -521,9 +561,9 @@ export default function CourseHub() {
                                 <Clock className="w-3.5 h-3.5" /> {course.hours_required} hours
                               </p>
                             )}
-                            {course.jurisdictions.length > 0 && (
+                            {liveJurisdictions(course).length > 0 && (
                               <div className="flex flex-wrap gap-1 mt-1">
-                                {course.jurisdictions.map(j => (
+                                {liveJurisdictions(course).map(j => (
                                   <Badge key={j} variant="outline" className="text-xs">{j}</Badge>
                                 ))}
                               </div>
@@ -531,7 +571,7 @@ export default function CourseHub() {
                           </div>
 
                           {/* Official Registry Badge */}
-                          {course.jurisdictions.map(j => {
+                          {liveJurisdictions(course).map(j => {
                             const reg = STATE_REGISTRY[j as keyof typeof STATE_REGISTRY];
                             if (!reg) return null;
                             return (
@@ -564,7 +604,7 @@ export default function CourseHub() {
                               disabled={isEnrolled}
                             >
                               {isEnrolled ? (
-                                <><CheckCircle2 className="w-3.5 h-3.5 mr-1" /> Enrolled</>
+                                <><CheckCircle2 className="w-3.5 h-3.5 mr-1" /> Tracking</>
                               ) : "Track This Course"}
                             </Button>
                           </div>
@@ -577,15 +617,23 @@ export default function CourseHub() {
             </TabsContent>
 
             {/* ── My Courses ── */}
-            <TabsContent value="my-courses">
+            <TabsContent value="my-courses" className="space-y-4">
+              {user && (
+                <p className="text-sm text-muted-foreground">
+                  This is your own list. Tracking a course here does not sign you up with the provider, and Justice Bot USA
+                  does not verify completion. Confirm with your court or caseworker that the course meets your order.
+                </p>
+              )}
               {!user ? (
                 <Card>
                   <CardContent className="py-12 text-center">
-                    <p className="text-muted-foreground mb-4">Sign in to view your enrolled courses.</p>
+                    <p className="text-muted-foreground mb-4">Sign in to see the courses you're tracking.</p>
                     <Button asChild><Link to={signInPath()}>Sign In</Link></Button>
                   </CardContent>
                 </Card>
-              ) : myEnrolledCourses.length === 0 ? (
+              ) : loading ? (
+                <div className="text-center py-12 text-muted-foreground">Loading courses...</div>
+              ) : myTrackedCourses.length === 0 ? (
                 <Card>
                   <CardContent className="py-12 text-center">
                     <p className="text-muted-foreground">You haven't tracked any courses yet.</p>
@@ -593,26 +641,28 @@ export default function CourseHub() {
                 </Card>
               ) : (
                 <div className="grid gap-4 md:grid-cols-2">
-                  {myEnrolledCourses.map(course => {
-                    const enrollment = enrollments.find(e => e.course_id === course.id);
+                  {myTrackedCourses.map(({ enrollment, course }) => {
                     return (
-                      <Card key={course.id}>
+                      <Card key={enrollment.id}>
                         <CardHeader>
-                          <CardTitle className="text-base">{course.title}</CardTitle>
-                          <CardDescription>{course.provider_name}</CardDescription>
+                          <CardTitle className="text-base">{course?.title ?? "A course you tracked"}</CardTitle>
+                          <CardDescription>
+                            {course?.provider_name ??
+                              "This course is no longer listed in Course Hub. Your record is kept and is included when you export your records."}
+                          </CardDescription>
                         </CardHeader>
                         <CardContent>
                           <div className="flex items-center gap-2">
-                            <Badge variant={enrollment?.status === 'completed' ? 'default' : 'secondary'}>
-                              {enrollment?.status || 'enrolled'}
+                            <Badge variant={enrollment.status === 'completed' ? 'default' : 'secondary'}>
+                              {trackingStatus(enrollment.status)}
                             </Badge>
-                            {enrollment?.hours_completed != null && (
+                            {enrollment.hours_completed != null && (
                               <span className="text-sm text-muted-foreground">
-                                {enrollment.hours_completed} / {course.hours_required || '?'} hours
+                                {enrollment.hours_completed} / {course?.hours_required || '?'} hours
                               </span>
                             )}
                           </div>
-                          {course.lms_launch_url && (
+                          {course?.lms_launch_url && (
                             <Button size="sm" variant="outline" className="mt-3" asChild>
                               <a href={course.lms_launch_url} target="_blank" rel="noopener noreferrer">
                                 <ExternalLink className="w-3.5 h-3.5 mr-1" />
@@ -648,8 +698,10 @@ export default function CourseHub() {
                       </CardTitle>
                       <CardDescription>
                         Keep a copy of your course completion certificate here. We record when you added it and give it a
-                        reference ID. This is your own record, not verification from the course provider; your court may
-                        require the provider's original certificate.
+                        reference ID. If you attach the file, the reference ID comes from the file's SHA-256 fingerprint, so
+                        anyone with the same file can check it is unchanged; it does not show the certificate is genuine.
+                        This is your own record, not verification from the course provider; your court may require the
+                        provider's original certificate.
                       </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
@@ -754,7 +806,7 @@ export default function CourseHub() {
                                 </div>
                                 {cert.verification_link && (
                                   <p className="text-xs text-muted-foreground">
-                                    Record lookup:{" "}
+                                    Record page (only you can open it, while signed in):{" "}
                                     <a href={cert.verification_link} target="_blank" rel="noopener noreferrer" className="underline text-primary hover:text-primary/80">
                                       {cert.verification_link}
                                     </a>

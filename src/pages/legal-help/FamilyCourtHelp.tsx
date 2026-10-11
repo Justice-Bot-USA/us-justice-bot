@@ -36,15 +36,14 @@ const FamilyCourtHelp = () => (
       "Failing to document your involvement with the child",
     ]}
     ctas={[
-      { label: "Prepare Your Custody Case", href: "/case-analysis" },
-      { label: "Generate Custody Documents", href: "/forms-library" },
-      { label: "Organize Evidence", href: "/ai-tools/use" },
+      { label: "Free Custody Guide (CA & NY)", href: "/free-custody-case-organizer" },
+      { label: "California Custody Steps & Forms", href: "/ca/legal-center?area=family" },
+      { label: "New York Custody Steps & Forms", href: "/ny/legal-center?area=family" },
     ]}
     relatedPages={[
       { label: "Divorce Process", href: "/legal-help/divorce-process" },
       { label: "Child Support Guide", href: "/legal-help/child-support" },
       { label: "Protective Orders", href: "/legal-help/protective-orders" },
-      { label: "Free Custody Case Organizer", href: "/free-custody-case-organizer" },
       { label: "California Child Custody", href: "/legal-help/california-child-custody" },
       { label: "Florida Child Custody", href: "/legal-help/florida-child-custody" },
       { label: "Legal Glossary: Affidavit", href: "/legal-glossary#affidavit" },

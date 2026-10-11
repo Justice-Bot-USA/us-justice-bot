@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,13 +10,11 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Download, ExternalLink, FileText, Loader2, Lock, ListChecks } from 'lucide-react';
+import { Download, ExternalLink, FileText, Loader2, ListChecks } from 'lucide-react';
 import { toast } from 'sonner';
-import { useAuth } from '@/hooks/useAuth';
-import { usePaywallAccess } from '@/hooks/usePaywallAccess';
-import { PLAN, THIRD_PARTY_FEES_NOTE, startSubscriptionCheckout } from '@/lib/pricing';
+import { THIRD_PARTY_FEES_NOTE } from '@/lib/pricing';
 import {
-  PARTY_QUESTIONS, fillableForState, getFillableForm, isFreeForm,
+  PARTY_QUESTIONS, fillableForState, getFillableForm,
   type Answers, type FillableForm, type Question,
 } from '@/lib/formfill';
 
@@ -75,7 +73,8 @@ function FormList({ state }: { state: string }) {
       <h1 className="text-3xl font-bold mb-2">Fill {name} court forms</h1>
       <p className="text-muted-foreground mb-6">
         Answer a few questions and download the official court form with your information already in it. You review
-        it, finish the choices only you can make, and sign.
+        it, finish the choices only you can make, and sign. Filling in and downloading these forms is free; courts
+        set their own filing fees.
       </p>
       {forms.length === 0 ? (
         <Card><CardContent className="p-6 text-sm text-muted-foreground">Form filling for {name} is coming soon.</CardContent></Card>
@@ -87,7 +86,7 @@ function FormList({ state }: { state: string }) {
                 <CardContent className="p-4 space-y-1">
                   <div className="flex items-center justify-between gap-2">
                     <span className="font-mono text-xs font-semibold">{f.formNumber}</span>
-                    <Badge variant="outline">{isFreeForm(f) ? 'Free' : 'Included in plan'}</Badge>
+                    <Badge variant="outline">Free</Badge>
                   </div>
                   <div className="font-medium text-sm">{f.title}</div>
                   <p className="text-xs text-muted-foreground">{f.description}</p>
@@ -102,11 +101,7 @@ function FormList({ state }: { state: string }) {
 }
 
 function FormFiller({ form }: { form: FillableForm }) {
-  const navigate = useNavigate();
-  const { user } = useAuth();
-  const { hasAccess } = usePaywallAccess();
   const [answers, setAnswers] = useState<Answers>(() => loadAnswers(form));
-  const unlocked = isFreeForm(form) || hasAccess;
   const [busy, setBusy] = useState(false);
 
   const questions = useMemo(
@@ -118,13 +113,12 @@ function FormFiller({ form }: { form: FillableForm }) {
     try {
       sessionStorage.setItem(storageKey(form), JSON.stringify(answers));
     } catch {
-      // Storage unavailable (private mode): answers just aren't kept across the checkout redirect.
+      // Storage unavailable (private mode): answers just aren't kept if the page reloads.
     }
   }, [answers, form]);
 
   const missingRequired = questions.filter((q) => q.required && !answers[q.key]?.trim());
   const set = (k: string) => (v: string) => setAnswers((a) => ({ ...a, [k]: v }));
-  const returnPath = `/fill/${form.state.toLowerCase()}/${form.id}`;
 
   const download = async () => {
     setBusy(true);
@@ -150,22 +144,6 @@ function FormFiller({ form }: { form: FillableForm }) {
     }
   };
 
-  const checkout = async () => {
-    if (!user) {
-      navigate(`/auth?redirect=${encodeURIComponent(returnPath)}`);
-      return;
-    }
-    setBusy(true);
-    try {
-      sessionStorage.setItem('pending_fill_return', returnPath);
-      await startSubscriptionCheckout();
-    } catch (e) {
-      console.error(e);
-      toast.error('Could not start checkout. Please try again.');
-      setBusy(false);
-    }
-  };
-
   return (
     <div className="container mx-auto px-4 py-10 max-w-5xl">
       <Link to={`/fill/${form.state.toLowerCase()}`} className="text-sm text-primary">← All {STATE_NAMES[form.state]} forms</Link>
@@ -173,7 +151,7 @@ function FormFiller({ form }: { form: FillableForm }) {
         <div className="flex items-center gap-2 mb-1">
           <FileText className="h-5 w-5 text-primary" />
           <span className="font-mono text-sm font-semibold">{form.formNumber}</span>
-          <Badge variant="outline">{isFreeForm(form) ? 'Free' : 'Included in plan'}</Badge>
+          <Badge variant="outline">Free</Badge>
         </div>
         <h1 className="text-2xl md:text-3xl font-bold">{form.title}</h1>
         <p className="text-muted-foreground mt-1">{form.description}</p>
@@ -203,22 +181,11 @@ function FormFiller({ form }: { form: FillableForm }) {
               {missingRequired.length > 0 && (
                 <p className="text-xs text-muted-foreground">Fill in the starred questions to continue.</p>
               )}
-              {unlocked ? (
-                <Button className="w-full" onClick={download} disabled={busy || missingRequired.length > 0}>
-                  {busy ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Download className="h-4 w-4 mr-2" />}
-                  Download filled {form.formNumber}
-                </Button>
-              ) : (
-                <Button className="w-full" onClick={checkout} disabled={busy || missingRequired.length > 0}>
-                  {busy ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Lock className="h-4 w-4 mr-2" />}
-                  {user ? PLAN.cta : 'Sign in to continue'}
-                </Button>
-              )}
-              {!unlocked && (
-                <p className="text-xs text-muted-foreground">
-                  All forms and filling instructions included. Cancel any time by contacting support. {THIRD_PARTY_FEES_NOTE}
-                </p>
-              )}
+              <Button className="w-full" onClick={download} disabled={busy || missingRequired.length > 0}>
+                {busy ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Download className="h-4 w-4 mr-2" />}
+                Download filled {form.formNumber}
+              </Button>
+              <p className="text-xs text-muted-foreground">{THIRD_PARTY_FEES_NOTE}</p>
               <a href={form.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-primary inline-flex items-center gap-1">
                 Blank official form <ExternalLink className="h-3 w-3" />
               </a>

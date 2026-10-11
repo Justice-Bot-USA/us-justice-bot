@@ -31,14 +31,12 @@ import {
 } from '@/lib/funnels';
 import { trackFunnelStart, trackStepComplete, trackStepDrop, trackStepSkip } from '@/lib/funnels/analytics';
 import { StateComingSoon } from './StateComingSoon';
-import { usePaywallAccess } from '@/hooks/usePaywallAccess';
 import { toast } from 'sonner';
 
 // Step Components
 import { FunnelTriageStep } from './steps/FunnelTriageStep';
 import { FunnelEvidenceStep } from './steps/FunnelEvidenceStep';
 import { FunnelResultsStep } from './steps/FunnelResultsStep';
-import { FunnelPaywallStep } from './steps/FunnelPaywallStep';
 import { FunnelGenerateStep } from './steps/FunnelGenerateStep';
 import { FunnelNextStepsStep } from './steps/FunnelNextStepsStep';
 
@@ -48,6 +46,7 @@ interface FunnelEngineProps {
   onExit?: () => void;
 }
 
+// 'paywall' and 'payment' are legacy step ids: no funnel uses them now that form guides are free.
 const STEP_ICONS: Record<FunnelStep, React.ReactNode> = {
   triage: <Scale className="h-5 w-5" />,
   evidence: <Upload className="h-5 w-5" />,
@@ -78,7 +77,6 @@ export const FunnelEngine: React.FC<FunnelEngineProps> = ({
   onExit 
 }) => {
   const navigate = useNavigate();
-  const { hasAccess, loading: accessLoading } = usePaywallAccess();
   const [state, setState] = useState<FunnelState>(() => createInitialFunnelState(config));
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -133,19 +131,12 @@ export const FunnelEngine: React.FC<FunnelEngineProps> = ({
     }
   };
 
-  const isPaywallStep = state.currentStep === 'paywall' || state.currentStep === 'payment';
-
   // The checks a step needs before the user can move past it with the shared Continue button
   // (or a step's skip link). Returns a message for the user, or null when they can go on.
   const blockReason = (): string | null => {
     if (state.currentStep === 'triage') {
       if (!state.data.caseTitle?.trim()) return 'Please give your case a short title.';
       if (!state.data.caseDescription?.trim()) return 'Please describe your situation before you continue.';
-    }
-    if (isPaywallStep && !hasAccess) {
-      return accessLoading
-        ? 'Checking your plan. Please try again in a moment.'
-        : 'Forms and filling instructions are part of the monthly plan. Subscribe above to continue.';
     }
     return null;
   };
@@ -175,7 +166,7 @@ export const FunnelEngine: React.FC<FunnelEngineProps> = ({
     navigate('/');
   };
 
-  // States other than California and New York have no funnel, paywall or checkout.
+  // States other than California and New York have no funnel yet.
   if (!config.enabled) {
     return <StateComingSoon stateName={US_STATE_NAMES[config.jurisdiction]} legalArea={config.legalArea} />;
   }
@@ -198,9 +189,6 @@ export const FunnelEngine: React.FC<FunnelEngineProps> = ({
         return <FunnelEvidenceStep {...stepProps} />;
       case 'results':
         return <FunnelResultsStep {...stepProps} />;
-      case 'paywall':
-      case 'payment':
-        return <FunnelPaywallStep {...stepProps} />;
       case 'generate':
         return <FunnelGenerateStep {...stepProps} />;
       case 'next_steps':
@@ -295,9 +283,6 @@ export const FunnelEngine: React.FC<FunnelEngineProps> = ({
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               Processing...
             </Button>
-          ) : isPaywallStep && !hasAccess ? (
-            // Without the plan, the paywall step's own Subscribe button is the only way forward.
-            null
           ) : (
             <Button onClick={handleContinue}>
               {currentStepIndex === config.steps.length - 1 ? 'Complete' : 'Continue'}

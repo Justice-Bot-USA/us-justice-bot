@@ -63,6 +63,7 @@ const LegalHelpIndex = lazy(() => import("./pages/LegalHelpIndex"));
 const EvictionHelp = lazy(() => import("./pages/legal-help/EvictionHelp"));
 const SmallClaimsHelp = lazy(() => import("./pages/legal-help/SmallClaimsHelp"));
 const FamilyCourtHelp = lazy(() => import("./pages/legal-help/FamilyCourtHelp"));
+const ChildSupportHelp = lazy(() => import("./pages/legal-help/ChildSupportHelp"));
 const CivilRightsHelp = lazy(() => import("./pages/legal-help/CivilRightsHelp"));
 const CriminalDefenseHelp = lazy(() => import("./pages/legal-help/CriminalDefenseHelp"));
 const WorkplaceInjuryHelp = lazy(() => import("./pages/legal-help/WorkplaceInjuryHelp"));
@@ -173,7 +174,7 @@ export default function App() {
               <Route path="/legal-help/small-claims-evidence" element={<SmallClaimsHelp />} />
               <Route path="/legal-help/child-custody" element={<FamilyCourtHelp />} />
               <Route path="/legal-help/divorce-process" element={<DivorceProcessHelp />} />
-              <Route path="/legal-help/child-support" element={<FamilyCourtHelp />} />
+              <Route path="/legal-help/child-support" element={<ChildSupportHelp />} />
               <Route path="/legal-help/protective-orders" element={<FamilyCourtHelp />} />
               <Route path="/legal-help/discrimination-law" element={<CivilRightsHelp />} />
               <Route path="/legal-help/how-to-file-civil-rights-complaint" element={<CivilRightsHelp />} />

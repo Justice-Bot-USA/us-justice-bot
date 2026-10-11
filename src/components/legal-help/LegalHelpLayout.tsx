@@ -245,7 +245,7 @@ const LegalHelpLayout = ({
         <section className="mb-10 bg-primary/5 rounded-2xl p-8 text-center">
           <h2 className="text-2xl font-bold text-foreground mb-3">Need Help Preparing Your Case?</h2>
           <p className="text-muted-foreground mb-6 max-w-lg mx-auto">
-            Use Justice Bot USA to organize your documents, get a plain-language summary, and, in California and New York, fill in official court forms with your own answers.
+            Use Justice Bot USA to organize your documents, get a plain-language summary, and, in California and New York, fill in official court forms with your own answers for free.
           </p>
           <div className="flex flex-wrap gap-3 justify-center">
             {ctas.map((cta, i) => (

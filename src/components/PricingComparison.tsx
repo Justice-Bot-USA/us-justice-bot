@@ -3,20 +3,21 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { trackUSPrepareClicked } from "@/hooks/useAnalytics";
-import { PLAN, THIRD_PARTY_FEES_NOTE } from "@/lib/pricing";
+import { THIRD_PARTY_FEES_NOTE } from "@/lib/pricing";
 
+// Every court form and form guide is free; the paid plan is paused (see src/lib/pricing.ts).
 const plans = [
   {
-    name: PLAN.name,
-    price: `$${PLAN.price}`,
-    period: "/month",
-    description: "One plan. All forms and filling instructions included. Cancel any time by contacting support.",
+    name: "Free",
+    price: "$0",
+    period: "",
+    description: "Every court form and form guide we offer in California and New York. No subscription needed.",
     popular: true,
-    buttonText: PLAN.cta,
+    buttonText: "See the free forms",
     features: [
-      { text: "Fill in official California and New York court forms with your own answers", included: true },
+      { text: "Fill in the California and New York court forms we support online with your own answers", included: true },
+      { text: "Download the filled form as a PDF", included: true },
       { text: "Plain-language filling instructions included", included: true },
-      { text: "Saved cases and re-downloads", included: true },
     ],
   },
 ];
@@ -32,7 +33,7 @@ export const PricingComparison = () => {
             Fill In Your Own Court Forms — Step-by-Step Instructions
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Free tools stay free. One monthly plan unlocks everything else.
+            Court forms and form guides are free in California and New York. Other states are coming soon.
           </p>
         </div>
 

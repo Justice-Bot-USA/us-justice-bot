@@ -12,7 +12,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { Users, MessageSquare, CreditCard, BarChart3, Settings, Shield, Search, LifeBuoy } from 'lucide-react';
 import { SupportTicket } from '@/components/SupportTicket';
-import { LegalSweepManager } from '@/components/LegalSweepManager';
 
 interface Profile {
   id: string;
@@ -252,7 +251,6 @@ const AdminDashboardSimple = () => {
           <TabsList>
             <TabsTrigger value="users">User Management</TabsTrigger>
             <TabsTrigger value="support">Support Tickets</TabsTrigger>
-            <TabsTrigger value="sweeps">Legal Sweeps</TabsTrigger>
             <TabsTrigger value="overview">Overview</TabsTrigger>
           </TabsList>
           
@@ -332,10 +330,6 @@ const AdminDashboardSimple = () => {
             <SupportTicket />
           </TabsContent>
 
-          <TabsContent value="sweeps" className="space-y-4">
-            <LegalSweepManager />
-          </TabsContent>
-
           <TabsContent value="overview" className="space-y-4">
             <Card>
               <CardHeader>
@@ -349,7 +343,6 @@ const AdminDashboardSimple = () => {
                   <ul className="list-disc list-inside space-y-2 text-sm">
                     <li>User management and role assignment ✅</li>
                     <li>Support ticket system ✅</li>
-                    <li>Legal sweeps & research ✅</li>
                     <li>Chat session monitoring (Coming Soon)</li>
                     <li>Payment tracking and analytics (Coming Soon)</li>
                     <li>File upload management ✅</li>

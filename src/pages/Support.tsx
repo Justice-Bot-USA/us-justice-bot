@@ -30,7 +30,11 @@ const Support = () => {
               </a>
               .
             </p>
-            <p className="text-muted-foreground mb-4">Sign in to open a support ticket and track replies.</p>
+            <p className="text-muted-foreground mb-2">Sign in to open a support ticket and track replies.</p>
+            <p className="text-sm text-muted-foreground mb-4">
+              Support can help with questions about the site, your account, and billing. We can't give legal advice or
+              tell you what to do in your case.
+            </p>
             <Button onClick={() => navigate(signInPath())} className="w-full">
               Sign In
             </Button>
@@ -54,7 +58,10 @@ const Support = () => {
           </Button>
           <h1 className="text-3xl font-bold">Support Center</h1>
           <p className="text-muted-foreground">
-            Get help with your legal questions and technical issues
+            Get help with questions about the site, your account, billing, and technical issues.
+          </p>
+          <p className="text-sm text-muted-foreground mt-2">
+            Justice Bot USA is not a law firm. Support can't give legal advice or tell you what to do in your case.
           </p>
         </div>
 

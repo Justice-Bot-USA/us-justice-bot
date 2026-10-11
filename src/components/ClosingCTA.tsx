@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { PLAN } from "@/lib/pricing";
 
 interface ClosingCTAProps {
   onPrepareForm?: () => void;
@@ -31,11 +30,11 @@ const ClosingCTA = ({ onPrepareForm }: ClosingCTAProps) => {
             onClick={() => onPrepareForm ? onPrepareForm() : navigate("/pricing")}
             className="text-lg px-10 py-6 h-auto font-bold"
           >
-            Fill In a Form — {PLAN.priceLabel}
+            Fill In a Form — Free
           </Button>
         </div>
         <p className="text-sm text-muted-foreground mt-4">
-          Free guidance to start. Cancel any time by contacting support.
+          Court forms and form guides are free in California and New York. Courts set their own filing fees.
         </p>
       </div>
     </section>

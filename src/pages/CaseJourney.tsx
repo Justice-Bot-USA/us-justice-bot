@@ -24,17 +24,14 @@ import {
   BookOpen
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
-import { usePaywallAccess } from '@/hooks/usePaywallAccess';
-import { PLAN, THIRD_PARTY_FEES_NOTE, startSubscriptionCheckout } from '@/lib/pricing';
+import { THIRD_PARTY_FEES_NOTE } from '@/lib/pricing';
 import { supabase } from '@/integrations/supabase/client';
-import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
 import { EvidenceUploader } from '@/components/EvidenceUploader';
 import { RelatedCasesDisplay } from '@/components/dashboard/RelatedCasesDisplay';
 import { ProceduralGuidancePanel } from '@/components/ProceduralGuidancePanel';
-import { trackAddToCart, getDetectedCountry } from '@/hooks/useAnalytics';
 import { isValidUUID } from '@/lib/validation';
-import { launchStateOf, stateRouteFor } from '@/lib/stateRouting';
+import { stateRouteFor } from '@/lib/stateRouting';
 import { US_STATES } from '@/lib/states';
 import { StateComingSoon } from '@/components/funnel/StateComingSoon';
 
@@ -82,13 +79,11 @@ function CantAccessCaseCard({
 const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { hasAccess, isAdmin, loading: accessLoading } = usePaywallAccess();
 
   const [currentStep, setCurrentStep] = useState(1);
   const [caseData, setCaseData] = useState<CaseData | null>(null);
   const [uploadedFilesCount, setUploadedFilesCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-  const [isUnlocking, setIsUnlocking] = useState(false);
   const [accessDenied, setAccessDenied] = useState(false);
 
   useEffect(() => {
@@ -129,35 +124,12 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
     fetchCaseData();
   }, [caseId, user]);
 
-  // The plan is only sold for California and New York cases. Other states are coming soon.
+  // Free form filling is live for California and New York cases only. Other states are coming soon.
   const caseState = caseData?.state || '';
-  const planOffered = !!launchStateOf(caseState);
   const fillRoute = stateRouteFor(caseState);
   const caseStateName = US_STATES.find(
     (s) => s.value === caseState.toUpperCase() || s.label.toLowerCase() === caseState.toLowerCase(),
   )?.label;
-
-  const handleUnlock = async () => {
-    if (!planOffered || accessLoading) return;
-    if (!user) {
-      navigate(signInPath());
-      return;
-    }
-
-    setIsUnlocking(true);
-    
-    trackAddToCart(PLAN.name, caseData?.state || '', getDetectedCountry(), PLAN.price);
-    try {
-      sessionStorage.setItem('pending_case_id', caseId || '');
-      // After checkout, PaymentSuccess sends the subscriber to the form filler for this state.
-      if (fillRoute) sessionStorage.setItem('pending_fill_return', fillRoute.fillPath);
-      await startSubscriptionCheckout();
-    } catch (error) {
-      console.error('Payment error:', error);
-      toast.error('Failed to start checkout. Please try again.');
-      setIsUnlocking(false);
-    }
-  };
 
   const getCourtInfo = () => {
     const legalArea = caseData?.legal_area || '';
@@ -202,7 +174,7 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
     );
   }
 
-  if (isLoading || accessLoading) {
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
@@ -461,7 +433,7 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
             </motion.div>
           )}
 
-          {/* Step 3: Book of Documents (free) and the monthly plan (form filling, CA and NY only) */}
+          {/* Step 3: Book of Documents and official form filling (both free; form filling is CA and NY only) */}
           {currentStep === 3 && (
             <motion.div
               key="step3"
@@ -523,65 +495,34 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
                     {uploadedFilesCount > 0 ? ` (${uploadedFilesCount} uploaded)` : ''}
                   </Button>
 
-                  {/* Not sold outside California and New York */}
-                  {!hasAccess && !isAdmin && !planOffered && (
-                    <StateComingSoon stateName={caseStateName} />
-                  )}
-
-                  {/* The monthly plan: what it adds beyond the free tools */}
-                  {!hasAccess && !isAdmin && planOffered && (
+                  {/* Official form filling: free, California and New York only */}
+                  {fillRoute ? (
                     <Card className="border-primary/40 bg-primary/5">
                       <CardContent className="p-6 space-y-4">
-                        <div className="text-center space-y-1">
-                          <h4 className="font-semibold text-lg">{PLAN.name}</h4>
-                          <p className="text-2xl font-bold text-primary">{PLAN.priceLabel}</p>
-                        </div>
                         <p className="text-sm text-muted-foreground">
-                          The Book of Documents and the general filing information in the next step are free. The plan adds official
-                          California and New York court form filling: you fill in the official forms we support with
-                          your own answers, using our filling instructions, then check, sign and file them yourself.
-                          Legal information, not legal advice. Our content has not yet been reviewed by a licensed attorney.
+                          Official {fillRoute.stateName} court form filling is free: you fill in the official forms we
+                          support with your own answers, using our filling instructions, then check, sign and file them
+                          yourself. Legal information, not legal advice. Our content has not yet been reviewed by a licensed attorney.
                         </p>
                         <Button
-                          className="w-full h-14 text-lg bg-green-600 hover:bg-green-700"
-                          size="lg"
-                          onClick={handleUnlock}
-                          disabled={isUnlocking || accessLoading}
+                          variant="outline"
+                          className="w-full"
+                          onClick={() => navigate(fillRoute.fillPath)}
                         >
-                          {isUnlocking ? (
-                            <>
-                              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-                              Processing...
-                            </>
-                          ) : (
-                            PLAN.cta
-                          )}
+                          <ClipboardCheck className="mr-2 h-4 w-4" />
+                          Fill in official {fillRoute.stateName} forms
                         </Button>
                         <p className="text-xs text-muted-foreground">{THIRD_PARTY_FEES_NOTE}</p>
-                        <p className="text-center text-sm text-muted-foreground">
-                          Secure checkout via Stripe • Cancel any time by contacting support
-                        </p>
                       </CardContent>
                     </Card>
-                  )}
-
-                  {/* Subscribers: straight to the form filler for their state */}
-                  {(hasAccess || isAdmin) && fillRoute && (
-                    <Button
-                      variant="outline"
-                      className="w-full"
-                      onClick={() => navigate(fillRoute.fillPath)}
-                    >
-                      <ClipboardCheck className="mr-2 h-4 w-4" />
-                      Fill in official {fillRoute.stateName} forms
-                    </Button>
+                  ) : (
+                    <StateComingSoon stateName={caseStateName} />
                   )}
 
                   {/* Filing information is general and free for everyone */}
                   <Button
                     className="w-full h-14 text-lg"
                     size="lg"
-                    variant={hasAccess || isAdmin || !planOffered ? 'default' : 'outline'}
                     onClick={() => setCurrentStep(4)}
                   >
                     Continue to Filing Information

@@ -501,8 +501,8 @@ const AdminDashboard = () => {
                     </h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                       <div>
-                        <p className="font-medium">{PLAN.name}</p>
-                        <p className="text-muted-foreground">{PLAN.priceLabel}, all forms and filling instructions included</p>
+                        <p className="font-medium">{PLAN.name} ({PLAN.priceLabel})</p>
+                        <p className="text-muted-foreground">Paused for new purchases. All court forms, form guides and the public-records letter PDF are free; returns later as the Toolkit plan</p>
                       </div>
                       <div>
                         <p className="font-medium">Not offered</p>

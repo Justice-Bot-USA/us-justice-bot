@@ -1,8 +1,7 @@
 import { Helmet } from "react-helmet-async";
-import { PLAN } from "@/lib/pricing";
 
 // Structured data for search engines. Keep it to what is true today: legal information and
-// official court forms for California and New York, one plan. We are not a law firm, so this
+// official court forms for California and New York, free. We are not a law firm, so this
 // is an Organization, not a LegalService.
 const LocalBusinessSchema = () => {
   const schema = {
@@ -20,9 +19,9 @@ const LocalBusinessSchema = () => {
     ],
     makesOffer: {
       "@type": "Offer",
-      name: PLAN.name,
-      description: "Official court forms and filing guides. Court and agency fees are separate.",
-      price: String(PLAN.price),
+      name: "Court forms and form guides",
+      description: "Official California and New York court forms, free to fill in and download, with form guides. Court and agency fees are separate.",
+      price: "0",
       priceCurrency: "USD",
     },
   };

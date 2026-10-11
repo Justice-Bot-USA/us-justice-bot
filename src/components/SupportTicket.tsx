@@ -247,7 +247,7 @@ export const SupportTicket: React.FC = () => {
                 <SelectContent>
                   <SelectItem value="technical">Technical</SelectItem>
                   <SelectItem value="billing">Billing</SelectItem>
-                  <SelectItem value="legal">Legal Question</SelectItem>
+                  <SelectItem value="legal">Question about our forms or guides</SelectItem>
                   <SelectItem value="general">General</SelectItem>
                 </SelectContent>
               </Select>

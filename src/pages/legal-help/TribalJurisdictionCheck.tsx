@@ -27,11 +27,14 @@ interface JurisdictionResult {
   possibleCourts: string[];
   explanation: string;
   keyLaws: string[];
-  nextSteps: string[];
+  /** General items people in similar situations often look into (not instructions). */
+  thingsToLookInto: string[];
   warnings: string[];
 }
 
-function analyzeJurisdiction(
+// General information keyed to the answers. It describes how courts often divide matters like
+// the one described; it does not decide which court has jurisdiction in a particular case.
+function describeJurisdiction(
   tribalMember: string,
   tribalLand: string,
   caseType: string,
@@ -41,7 +44,7 @@ function analyzeJurisdiction(
     possibleCourts: [],
     explanation: "",
     keyLaws: [],
-    nextSteps: [],
+    thingsToLookInto: [],
     warnings: [],
   };
 
@@ -49,61 +52,73 @@ function analyzeJurisdiction(
   const onTribalLand = tribalLand === "yes";
   const maybeTribalLand = tribalLand === "not-sure";
 
-  // PL-280 states
+  // Mandatory Public Law 280 states (some reservations in them are excepted or have retroceded).
   const pl280States = ["California", "Minnesota", "Nebraska", "Oregon", "Wisconsin", "Alaska"];
   const isPL280 = pl280States.includes(state);
 
   if (isMember && onTribalLand) {
     if (caseType === "criminal") {
       result.possibleCourts = ["Tribal Court", "Federal Court"];
-      result.explanation = "Criminal matters involving tribal members on tribal land generally fall under tribal court jurisdiction. Depending on the severity of the crime, federal jurisdiction may apply under the Major Crimes Act (18 U.S.C. § 1153).";
+      result.explanation = "When a crime involving a tribal member happens on tribal land, tribal courts generally have jurisdiction, and federal courts may also have jurisdiction over serious crimes under the Major Crimes Act (18 U.S.C. § 1153).";
       result.keyLaws = ["Major Crimes Act (18 U.S.C. § 1153)", "Indian Country Crimes Act (18 U.S.C. § 1152)", "Tribal Law and Order Act of 2010"];
       if (isPL280) {
-        result.possibleCourts.push("State Court (PL-280)");
-        result.explanation += ` Because ${state} is a Public Law 280 state, the state may also have concurrent criminal jurisdiction.`;
+        result.possibleCourts = ["Tribal Court", "State Court (PL-280)", "Federal Court (limited)"];
+        result.explanation += ` ${state} is a Public Law 280 state. There, the state generally has criminal jurisdiction on most tribal lands, and the federal Major Crimes Act usually does not apply, though there are exceptions for some reservations.`;
         result.keyLaws.push("Public Law 280 (18 U.S.C. § 1162)");
       }
-    } else if (caseType === "family") {
-      result.possibleCourts = ["Tribal Court"];
-      result.explanation = "Family and child welfare matters involving tribal members on tribal land typically fall under tribal court jurisdiction. The Indian Child Welfare Act (ICWA) provides additional protections for tribal children in state proceedings.";
-      result.keyLaws = ["Indian Child Welfare Act (25 U.S.C. §§ 1901-1963)", "Tribal court family law codes"];
-      result.nextSteps.push("Contact your tribe's ICWA representative", "Request transfer to tribal court if case is in state court");
-    } else if (caseType === "housing") {
-      result.possibleCourts = ["Tribal Court", "Tribal Housing Authority"];
-      result.explanation = "Housing matters on tribal land are generally governed by tribal law and administered through tribal housing authorities. Federal programs like NAHASDA may apply.";
-      result.keyLaws = ["Native American Housing Assistance and Self-Determination Act (NAHASDA)", "Tribal housing codes"];
     } else {
-      result.possibleCourts = ["Tribal Court"];
-      result.explanation = "Civil matters between tribal members on tribal land generally fall under tribal court jurisdiction. Some tribes have their own civil codes and court systems.";
-      result.keyLaws = ["Tribal civil codes", "Indian Civil Rights Act (25 U.S.C. §§ 1301-1304)"];
+      if (caseType === "family") {
+        result.possibleCourts = ["Tribal Court"];
+        result.explanation = "Family and child welfare matters involving tribal members on tribal land are often heard in tribal court. The Indian Child Welfare Act (ICWA) also sets rules for state court child custody proceedings involving Indian children.";
+        result.keyLaws = ["Indian Child Welfare Act (25 U.S.C. §§ 1901-1963)", "Tribal court family law codes"];
+        result.thingsToLookInto.push(
+          "The tribe's ICWA office or representative",
+          "ICWA's rules on which court hears a child custody proceeding involving an Indian child, including transfer from state court to tribal court (25 U.S.C. § 1911)"
+        );
+      } else if (caseType === "housing") {
+        result.possibleCourts = ["Tribal Court", "Tribal Housing Authority"];
+        result.explanation = "Housing on tribal land is often governed by tribal law and run through tribal housing authorities. Federal programs such as NAHASDA may apply.";
+        result.keyLaws = ["Native American Housing Assistance and Self-Determination Act (NAHASDA)", "Tribal housing codes"];
+      } else {
+        result.possibleCourts = ["Tribal Court"];
+        result.explanation = "Civil matters between tribal members on tribal land are generally heard in tribal court. Many tribes have their own civil codes and court systems.";
+        result.keyLaws = ["Tribal civil codes", "Indian Civil Rights Act (25 U.S.C. §§ 1301-1304)"];
+      }
+      if (isPL280) {
+        result.possibleCourts.push("State Court (PL-280)");
+        result.explanation += ` In Public Law 280 states such as ${state}, state courts may also hear many private civil cases that arise on tribal land.`;
+        result.keyLaws.push("Public Law 280 (28 U.S.C. § 1360)");
+      }
     }
   } else if (isMember && !onTribalLand) {
     result.possibleCourts = ["State Court"];
-    result.explanation = "Matters involving tribal members that occur off tribal land generally fall under state court jurisdiction, with standard state laws applying.";
+    result.explanation = "Matters involving tribal members that happen off tribal land are usually handled in state court, under the same state laws that apply to anyone else.";
     if (caseType === "family") {
-      result.explanation += " However, ICWA may still apply to child welfare proceedings involving tribal children regardless of location.";
+      result.explanation += " ICWA can still apply to child custody proceedings involving an Indian child, wherever they take place.";
       result.keyLaws.push("Indian Child Welfare Act (ICWA)");
-      result.nextSteps.push("Notify the relevant tribe if child welfare proceedings are initiated");
+      result.thingsToLookInto.push("Whether ICWA applies; in involuntary child custody cases in state court, the child's tribe must be notified");
     }
-    result.nextSteps.push("Check if your tribe offers legal assistance for off-reservation matters");
+    result.thingsToLookInto.push("Whether the tribe offers legal help for matters off tribal land");
   } else if (!isMember && onTribalLand) {
     result.possibleCourts = ["Tribal Court (limited)", "Federal Court", "State Court"];
-    result.explanation = "Non-tribal members on tribal land face complex jurisdictional questions. Tribal courts may have limited jurisdiction over non-members. Federal or state courts may have primary jurisdiction depending on the circumstances.";
-    result.keyLaws = ["Montana v. United States (1981)", "Duro v. Reina (1990)"];
-    result.warnings.push("Jurisdiction over non-members on tribal land is a complex area of law. Consider consulting an attorney familiar with federal Indian law.");
+    result.explanation = "Matters involving people who are not tribal members on tribal land raise complex questions. Tribal courts generally cannot prosecute non-Indians for crimes, except certain crimes such as domestic violence under special tribal criminal jurisdiction, and tribal civil authority over non-members is limited. Federal or state courts may be involved depending on the facts.";
+    result.keyLaws = ["Oliphant v. Suquamish Indian Tribe (1978)", "Montana v. United States (1981)", "Special Tribal criminal jurisdiction (25 U.S.C. § 1304)"];
+    result.warnings.push("Jurisdiction over non-members on tribal land is a complex area of law. Many people in this situation talk to an attorney familiar with federal Indian law.");
   } else {
     result.possibleCourts = ["State Court"];
-    result.explanation = "Standard state court jurisdiction applies for matters not involving tribal members or tribal land.";
+    result.explanation = "Matters that don't involve tribal members or tribal land are usually handled in state court, or in federal court for federal matters.";
   }
 
+  if (tribalMember === "not-sure") {
+    result.warnings.push("If you're not sure about tribal enrollment, the tribe's enrollment office can tell you. Enrollment can change which courts may be involved; this information assumes no enrollment.");
+  }
   if (maybeTribalLand) {
-    result.warnings.push("If you're unsure whether the location is tribal land, contact the Bureau of Indian Affairs (BIA) or the relevant tribal government to clarify land status.");
+    result.warnings.push("If you're unsure whether the location is tribal land, the Bureau of Indian Affairs (BIA) or the tribal government can clarify the land's status.");
   }
 
-  result.nextSteps.push(
-    "Gather documentation of tribal membership (if applicable)",
-    "Research the specific tribal court rules if tribal jurisdiction applies",
-    "Use Justice Bot USA to organize your case documents and evidence"
+  result.thingsToLookInto.push(
+    "Documents showing tribal enrollment, if any",
+    "The rules of the tribal court involved, if tribal jurisdiction may apply"
   );
 
   return result;
@@ -121,7 +136,7 @@ const TribalJurisdictionCheck = () => {
 
   const handleAnalyze = () => {
     if (!canAnalyze) return;
-    const r = analyzeJurisdiction(tribalMember, tribalLand, caseType, state);
+    const r = describeJurisdiction(tribalMember, tribalLand, caseType, state);
     setResult(r);
     // Track
     if (typeof window !== "undefined" && (window as any).gtag) {
@@ -136,15 +151,15 @@ const TribalJurisdictionCheck = () => {
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>Tribal Jurisdiction Check | Does Tribal Court Apply? | Justice Bot USA</title>
-        <meta name="description" content="Free tool to check whether tribal, state, or federal court jurisdiction applies to your legal matter. Understand how tribal membership and location affect your case." />
+        <title>Tribal Jurisdiction Check: General Information on Tribal, State, and Federal Courts | Justice Bot USA</title>
+        <meta name="description" content="Free general information about when tribal, state, or federal courts may be involved in a legal matter, based on tribal membership, location, and the type of issue. Legal information, not legal advice." />
         <meta name="keywords" content="tribal jurisdiction check, tribal court jurisdiction, federal indian law, tribal membership legal, PL-280 states, ICWA jurisdiction" />
         <link rel="canonical" href="https://justicebot-usa.com/legal-help/tribal-jurisdiction-check" />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "WebApplication",
           name: "Tribal Jurisdiction Check",
-          description: "Determine which court system may apply to your legal matter based on tribal membership and location.",
+          description: "General information about which court systems may be involved in a legal matter, based on tribal membership and location.",
           url: "https://justicebot-usa.com/legal-help/tribal-jurisdiction-check",
           applicationCategory: "LegalService",
           operatingSystem: "Web",
@@ -164,13 +179,14 @@ const TribalJurisdictionCheck = () => {
 
         <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Tribal Jurisdiction Check</h1>
         <p className="text-muted-foreground mb-8 max-w-2xl">
-          Determine which court system — tribal, state, or federal — may apply to your legal matter based on tribal membership and location.
+          Answer four questions to see general information about how tribal, state, and federal courts often divide matters like the
+          one you describe. It does not decide which court has jurisdiction in your case.
         </p>
 
         <Alert className="mb-8 border-primary/20">
           <Info className="h-4 w-4" />
           <AlertDescription className="text-sm">
-            This tool provides general educational guidance about jurisdiction. It does not determine legal rights or eligibility. Tribal jurisdiction is a complex area of law — consult an attorney familiar with federal Indian law for specific advice.
+            Legal information, not legal advice. This page gives general information about jurisdiction. It does not determine legal rights, eligibility, or which court your matter belongs in. Tribal jurisdiction is a complex area of law; for advice about your situation, talk to an attorney familiar with federal Indian law.
           </AlertDescription>
         </Alert>
 
@@ -214,16 +230,23 @@ const TribalJurisdictionCheck = () => {
             </div>
 
             <Button onClick={handleAnalyze} disabled={!canAnalyze} size="lg" className="w-full">
-              <MapPin className="mr-2 h-4 w-4" /> Check Jurisdiction
+              <MapPin className="mr-2 h-4 w-4" /> Show General Information
             </Button>
           </CardContent>
         </Card>
 
         {result && (
           <div className="space-y-6">
+            <Alert className="border-primary/20">
+              <Info className="h-4 w-4" />
+              <AlertDescription className="text-sm">
+                General information for situations like the one you described, not a conclusion about your case. Which court has jurisdiction depends on facts and law this page doesn't cover.
+              </AlertDescription>
+            </Alert>
+
             <Card className="border-l-4 border-l-primary">
               <CardContent className="p-6">
-                <h2 className="text-xl font-bold text-foreground mb-3 flex items-center gap-2"><Scale className="h-5 w-5 text-primary" /> Possible Court Systems</h2>
+                <h2 className="text-xl font-bold text-foreground mb-3 flex items-center gap-2"><Scale className="h-5 w-5 text-primary" /> Court Systems Often Involved in Situations Like This</h2>
                 <div className="flex flex-wrap gap-2 mb-4">
                   {result.possibleCourts.map((c, i) => <Badge key={i} variant="secondary" className="text-sm">{c}</Badge>)}
                 </div>
@@ -243,7 +266,7 @@ const TribalJurisdictionCheck = () => {
             {result.keyLaws.length > 0 && (
               <Card>
                 <CardContent className="p-6">
-                  <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2"><Shield className="h-4 w-4 text-primary" /> Key Laws & Authorities</h3>
+                  <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2"><Shield className="h-4 w-4 text-primary" /> Laws and Cases Often Discussed</h3>
                   <ul className="space-y-1">{result.keyLaws.map((l, i) => <li key={i} className="text-sm text-muted-foreground flex items-start gap-2"><span className="text-primary">•</span>{l}</li>)}</ul>
                 </CardContent>
               </Card>
@@ -251,16 +274,17 @@ const TribalJurisdictionCheck = () => {
 
             <Card>
               <CardContent className="p-6">
-                <h3 className="font-semibold text-foreground mb-3">Suggested Next Steps</h3>
-                <ul className="space-y-2">{result.nextSteps.map((s, i) => <li key={i} className="text-sm text-muted-foreground flex items-start gap-2"><span className="font-bold text-primary">{i + 1}.</span>{s}</li>)}</ul>
+                <h3 className="font-semibold text-foreground mb-3">Things People in Similar Situations Often Look Into</h3>
+                <ul className="space-y-2">{result.thingsToLookInto.map((s, i) => <li key={i} className="text-sm text-muted-foreground flex items-start gap-2"><span className="text-primary">•</span>{s}</li>)}</ul>
               </CardContent>
             </Card>
 
             <div className="bg-primary/5 rounded-2xl p-8 text-center">
-              <h2 className="text-xl font-bold text-foreground mb-3">Need Help Preparing Your Case?</h2>
-              <p className="text-muted-foreground mb-6 text-sm">Use Justice Bot USA to organize evidence, generate documents, and prepare your case timeline.</p>
+              <h2 className="text-xl font-bold text-foreground mb-3">Learn More</h2>
+              <p className="text-muted-foreground mb-6 text-sm">Read more general information about tribal courts and jurisdiction.</p>
               <div className="flex flex-wrap gap-3 justify-center">
-                <Button asChild><Link to="/case-analysis">Start Case Analysis <ArrowRight className="ml-2 h-4 w-4" /></Link></Button>
+                <Button asChild><Link to="/legal-help/tribal-jurisdiction">Tribal Jurisdiction Guide <ArrowRight className="ml-2 h-4 w-4" /></Link></Button>
+                <Button asChild variant="outline"><Link to="/legal-help/tribal-court">Tribal Court Guide <ArrowRight className="ml-2 h-4 w-4" /></Link></Button>
                 <Button asChild variant="outline"><Link to="/legal-help/native-american-rights">Tribal Rights Guide <ArrowRight className="ml-2 h-4 w-4" /></Link></Button>
               </div>
             </div>
@@ -268,7 +292,7 @@ const TribalJurisdictionCheck = () => {
         )}
 
         <div className="text-xs text-muted-foreground border-t pt-6 mt-10">
-          <p><strong>Disclaimer:</strong> This tool provides general educational guidance about court jurisdiction. It does not determine legal rights, tribal membership, or eligibility for services. Jurisdiction in Indian Country is a complex area of law. For advice specific to your situation, consult an attorney experienced in federal Indian law.</p>
+          <p><strong>Disclaimer:</strong> Legal information, not legal advice. This page gives general information about court jurisdiction; it does not determine legal rights, tribal membership, eligibility for services, or which court hears your matter. Justice Bot USA is not a law firm, and our content has not yet been reviewed by a licensed attorney. Jurisdiction in Indian Country is a complex area of law. For advice specific to your situation, consult an attorney experienced in federal Indian law.</p>
         </div>
       </main>
       <Footer />

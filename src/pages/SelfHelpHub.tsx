@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import {
-  Scale, FileText, Search, FolderOpen, BookOpen, Gavel,
+  Scale, FileText, FolderOpen, BookOpen, Gavel,
   CheckCircle, AlertTriangle, ArrowRight, Users, ClipboardList,
   Building2, Clock, Shield, MapPin, GraduationCap
 } from "lucide-react";
@@ -25,13 +25,8 @@ const SelfHelpHub = () => {
     },
     {
       icon: MapPin, title: "Find Your Court & Jurisdiction",
-      description: "Determine whether your case belongs in federal, state, or local court based on your location and issue type.",
+      description: "Links to official California and New York court websites, where you can find a courthouse and look up court records.",
       link: "/court-records", linkText: "Court Records Lookup",
-    },
-    {
-      icon: Search, title: "Research Public Case Law",
-      description: "Search opinions, dockets, and oral arguments from CourtListener — all publicly available federal and state court data.",
-      link: "/courtlistener", linkText: "Search CourtListener",
     },
     {
       icon: FileText, title: "Find Court Forms",
@@ -123,7 +118,7 @@ const SelfHelpHub = () => {
     <>
       <Helmet>
         <title>Self-Help Legal Guide | Justice Bot USA — Tools for Self-Represented Litigants</title>
-        <meta name="description" content="Free self-help legal tools for self-represented litigants. Identify your case type, find court forms, research case law, organize evidence, and prepare for court. Not legal advice." />
+        <meta name="description" content="Free self-help legal tools for self-represented litigants. Identify your case type, find court forms, find official California and New York court websites, organize evidence, and prepare for court. Not legal advice." />
         <meta name="robots" content="index, follow" />
         <link rel="canonical" href="https://justicebot-usa.com/self-help" />
       </Helmet>

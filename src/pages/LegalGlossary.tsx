@@ -239,7 +239,7 @@ const LegalGlossary = () => {
                   <Link to="/legal-help">Legal Help Library <ArrowRight className="ml-1 h-3 w-3" /></Link>
                 </Button>
                 <Button asChild variant="outline" size="sm">
-                  <Link to="/case-analysis">Analyze Your Case <ArrowRight className="ml-1 h-3 w-3" /></Link>
+                  <Link to="/case-analysis">Get a Plain-Language Summary <ArrowRight className="ml-1 h-3 w-3" /></Link>
                 </Button>
                 <Button asChild variant="outline" size="sm">
                   <Link to="/courtroom-prep">Courtroom Prep <ArrowRight className="ml-1 h-3 w-3" /></Link>
