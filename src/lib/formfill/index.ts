@@ -7,6 +7,11 @@ export { PARTY_QUESTIONS } from './party';
 
 export const FILLABLE_FORMS: FillableForm[] = [...CA_FILLABLE, ...NY_FILLABLE];
 
+/** Whether search engines may index the /fill pages and list them in the sitemap. Off until the owner
+ *  decides that search listing is not a "marketing launch", which the README holds until a licensed
+ *  attorney has reviewed the NY and CA content. Flipping this one value is the whole switch. */
+export const FILL_PAGES_INDEXABLE = false;
+
 // Every fillable form is free to fill and download, with no account or plan (owner's decision,
 // 2026-10-10). Courts still charge their own filing fees; see THIRD_PARTY_FEES_NOTE.
 
