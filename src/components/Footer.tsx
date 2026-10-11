@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Mail, MapPin } from "lucide-react";
-import logoImage from "@/assets/ai-anal-logo.png";
+import logoImage from "@/assets/justice-bot-mark.svg";
+import { UpdatesSignup } from "@/components/UpdatesSignup";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -12,7 +13,7 @@ const Footer = () => {
           {/* Brand */}
           <div>
             <Link to="/" className="flex items-center gap-3 mb-4">
-              <img src={logoImage} alt="Justice Bot USA logo" className="w-10 h-10 object-contain rounded-full bg-white p-1" />
+              <img src={logoImage} alt="Justice Bot USA logo" className="w-10 h-10 object-contain rounded-full bg-white p-0.5" />
               <span className="text-xl font-bold">Justice Bot USA</span>
             </Link>
             <p className="text-sm opacity-80 mb-4">
@@ -74,6 +75,12 @@ const Footer = () => {
               </li>
             </ul>
           </div>
+        </div>
+
+        {/* Updates signup */}
+        <div className="border-t border-primary-foreground/20 pt-8 mb-8 max-w-xl">
+          <h4 className="font-semibold mb-3">Get updates</h4>
+          <UpdatesSignup source="footer" inFooter />
         </div>
 
         {/* Bottom */}

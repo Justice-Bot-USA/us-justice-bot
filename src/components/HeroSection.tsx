@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Scale, FileText, Users } from "lucide-react";
-import brandLogo from "@/assets/ai-anal-logo.png";
+import brandLogo from "@/assets/justice-bot-mark.svg";
 
 interface HeroSectionProps {
   language: 'en' | 'es';
@@ -45,7 +45,7 @@ const HeroSection = ({ language, onGetStarted }: HeroSectionProps) => {
         <div className="max-w-4xl mx-auto">
           {/* Logo */}
           <div className="mb-6">
-            <img src={brandLogo} alt="Justice Bot USA" width={128} height={128} fetchPriority="high" className="w-24 h-24 md:w-32 md:h-32 mx-auto rounded-full bg-white p-2 shadow-2xl" />
+            <img src={brandLogo} alt="Justice Bot USA" width={128} height={128} fetchPriority="high" className="w-24 h-24 md:w-32 md:h-32 mx-auto rounded-full bg-white p-1 shadow-2xl" />
           </div>
 
           {/* Slogan Badge */}

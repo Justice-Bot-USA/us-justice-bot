@@ -8,7 +8,7 @@ import Footer from "@/components/Footer";
 import { SEOHead } from "@/components/SEOHead";
 import StatePicker from "@/components/StatePicker";
 import EnhancedSEO from "@/components/EnhancedSEO";
-import brandLogo from "@/assets/ai-anal-logo.png";
+import brandLogo from "@/assets/justice-bot-mark.svg";
 import { useState } from "react";
 
 // GA4 journey_start event
@@ -116,7 +116,7 @@ const StartPage = () => {
       <main className="container mx-auto px-4 py-16 max-w-5xl">
         {/* Logo */}
         <div className="text-center mb-8">
-          <img src={brandLogo} alt="Justice Bot USA" className="w-16 h-16 mx-auto rounded-full bg-white p-1.5 shadow-lg mb-6" />
+          <img src={brandLogo} alt="Justice Bot USA" className="w-16 h-16 mx-auto rounded-full bg-white p-1 shadow-lg mb-6" />
         </div>
 
         {/* H1 */}

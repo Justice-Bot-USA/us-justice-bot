@@ -13,7 +13,6 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Download, ExternalLink, FileText, Loader2, ListChecks } from 'lucide-react';
 import { toast } from 'sonner';
 import { THIRD_PARTY_FEES_NOTE } from '@/lib/pricing';
-import { UpdatesSignup } from '@/components/UpdatesSignup';
 import { BASE_URL } from '@/lib/sitemapRoutes';
 import {
   FILL_PAGES_INDEXABLE, PARTY_QUESTIONS, fillableForState, getFillableForm,
@@ -97,9 +96,6 @@ function FormList({ state }: { state: string }) {
             </Link>
           ))}
         </div>
-      )}
-      {(state === 'CA' || state === 'NY') && (
-        <UpdatesSignup source="fill_list" state={state} className="mt-8 max-w-xl" />
       )}
     </div>
   );
@@ -215,8 +211,6 @@ function FormFiller({ form }: { form: FillableForm }) {
               checking it before you sign and file. Our content has not yet been reviewed by a licensed attorney.
             </AlertDescription>
           </Alert>
-
-          <UpdatesSignup source="fill_form" state={form.state} />
         </div>
       </div>
     </div>

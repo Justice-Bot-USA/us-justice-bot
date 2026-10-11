@@ -9,8 +9,9 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useAuth } from "@/hooks/useAuth";
 import { useAdminAccess } from "@/hooks/useAdminAccess";
-import logoImage from "@/assets/ai-anal-logo.png";
+import logoImage from "@/assets/justice-bot-mark.svg";
 import ThemeToggle from "./ThemeToggle";
+import { UpdatesSignupButton } from "./UpdatesSignup";
 
 interface HeaderProps {
   language: 'en' | 'es';
@@ -84,7 +85,7 @@ const Header = ({ language, onLanguageChange }: HeaderProps) => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between gap-4">
           <Link to="/" className="flex items-center gap-3 shrink-0">
-            <img src={logoImage} alt="Justice Bot USA logo" className="w-12 h-12 object-contain rounded-full bg-white p-1" />
+            <img src={logoImage} alt="Justice Bot USA logo" className="w-12 h-12 object-contain rounded-full bg-white p-0.5" />
             <div className="hidden sm:block lg:hidden xl:block">
               <h1 className="text-xl font-bold leading-tight">{text[language].title}</h1>
               <p className="text-xs text-primary-foreground/80">{text[language].subtitle}</p>
@@ -163,6 +164,7 @@ const Header = ({ language, onLanguageChange }: HeaderProps) => {
             </nav>
 
             <div className="flex items-center gap-2">
+              <UpdatesSignupButton />
               {showSignedIn ? (
                 <>
                   <Button asChild variant="secondary" size="sm">
@@ -404,6 +406,7 @@ const Header = ({ language, onLanguageChange }: HeaderProps) => {
                         </Link>
                       </Button>
                     )}
+                    <UpdatesSignupButton fullWidth className="w-full justify-start" />
                   </div>
                 </div>
               </SheetContent>
