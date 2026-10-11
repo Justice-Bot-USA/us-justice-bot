@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Mail, MapPin } from "lucide-react";
 import logoImage from "@/assets/ai-anal-logo.png";
+import { UpdatesSignup } from "@/components/UpdatesSignup";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -74,6 +75,12 @@ const Footer = () => {
               </li>
             </ul>
           </div>
+        </div>
+
+        {/* Updates signup */}
+        <div className="border-t border-primary-foreground/20 pt-8 mb-8 max-w-xl">
+          <h4 className="font-semibold mb-3">Get updates</h4>
+          <UpdatesSignup source="footer" inFooter />
         </div>
 
         {/* Bottom */}

@@ -11,6 +11,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useAdminAccess } from "@/hooks/useAdminAccess";
 import logoImage from "@/assets/ai-anal-logo.png";
 import ThemeToggle from "./ThemeToggle";
+import { UpdatesSignupButton } from "./UpdatesSignup";
 
 interface HeaderProps {
   language: 'en' | 'es';
@@ -163,6 +164,7 @@ const Header = ({ language, onLanguageChange }: HeaderProps) => {
             </nav>
 
             <div className="flex items-center gap-2">
+              <UpdatesSignupButton />
               {showSignedIn ? (
                 <>
                   <Button asChild variant="secondary" size="sm">
@@ -404,6 +406,7 @@ const Header = ({ language, onLanguageChange }: HeaderProps) => {
                         </Link>
                       </Button>
                     )}
+                    <UpdatesSignupButton fullWidth className="w-full justify-start" />
                   </div>
                 </div>
               </SheetContent>

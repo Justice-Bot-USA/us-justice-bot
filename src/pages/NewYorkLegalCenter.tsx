@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { UpdatesSignup } from '@/components/UpdatesSignup';
 import { Helmet } from 'react-helmet-async';
 import { Link, useSearchParams } from 'react-router-dom';
 import { getFillableByFormNumber } from '@/lib/formfill';
@@ -305,10 +304,6 @@ export default function NewYorkLegalCenter() {
               </Button>
             </CardContent>
           </Card>
-        </section>
-
-        <section className="container mx-auto px-4 pb-12 max-w-xl">
-          <UpdatesSignup source="legal_center" state="NY" />
         </section>
       </main>
       <Footer />
