@@ -19,7 +19,7 @@ export function generateFoiaLetterPdf(letterText: string, isBundle: boolean): Bl
   doc.setFontSize(10);
   doc.setFont('helvetica', 'normal');
   doc.text(
-    isBundle ? 'Request + Follow-Up + Appeal Template' : 'Official Request Letter',
+    isBundle ? 'Request + Follow-Up + Appeal Template' : 'Request Letter',
     pageWidth / 2,
     34,
     { align: 'center' }

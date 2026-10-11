@@ -22,7 +22,7 @@ const FreeEvictionDefenseTool = () => {
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org", "@type": "WebApplication",
           name: "Free Eviction Defense Tool", description: "Fill in California's eviction Answer (UD-105) for free and learn about the eviction process. Legal information, not legal advice.",
-          url: "https://justicebot-usa.com/free-eviction-defense-tool", applicationCategory: "LegalService", offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+          url: "https://justicebot-usa.com/free-eviction-defense-tool", applicationCategory: "ReferenceApplication", offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
         })}</script>
       </Helmet>
       <Header language={language} onLanguageChange={setLanguage} />
@@ -66,6 +66,15 @@ const FreeEvictionDefenseTool = () => {
                 <div key={i} className="flex items-start gap-3"><CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" /><p className="text-sm text-foreground/90">{s}</p></div>
               ))}
             </div>
+          </CardContent>
+        </Card>
+
+        <Card className="mb-12">
+          <CardContent className="p-6 space-y-2">
+            <h2 className="text-xl font-bold text-foreground">Free legal help</h2>
+            <p className="text-sm text-foreground/90">New York City: many tenants can get a free lawyer for a Housing Court eviction case under the city&apos;s right-to-counsel law, depending on household income. At your first court date, say &quot;I would like an attorney.&quot; Questions: Housing Court Answers, (212) 962-4795.</p>
+            <p className="text-sm text-foreground/90">California: your court&apos;s self-help center (<a href="https://selfhelp.courts.ca.gov/eviction-tenant" className="text-primary underline" target="_blank" rel="noopener noreferrer">selfhelp.courts.ca.gov/eviction-tenant</a>) or local legal aid. Elsewhere in New York: <a href="https://www.lawhelpny.org/" className="text-primary underline" target="_blank" rel="noopener noreferrer">LawHelpNY.org</a>.</p>
+            <p className="text-xs text-muted-foreground">These are outside organizations. Justice Bot USA does not refer you to a lawyer.</p>
           </CardContent>
         </Card>
 

@@ -12,7 +12,7 @@ const PublicRecordsRequest = () => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const benefits = [
-    { icon: FileSearch, title: "State Law Citations", desc: "Cites California or New York public records law" },
+    { icon: FileSearch, title: "State Law Citations", desc: "Cites California or New York public records law for police, sheriff and jail records" },
     { icon: Shield, title: "Careful Language", desc: "We never claim to access government databases" },
     { icon: Clock, title: "Ready in Minutes", desc: "Puts your answers into a request letter in minutes" },
   ];
@@ -53,7 +53,7 @@ const PublicRecordsRequest = () => {
               Generate My Request Letter
             </Button>
             <p className="text-sm text-primary-foreground/60 mt-4">
-              Free with an account · Free PDF with follow-up and appeal letters · Agencies may charge their own copy fees
+              Free with an account · Free PDF of your request letter · Agencies may charge their own copy fees
             </p>
           </div>
         </section>

@@ -59,12 +59,17 @@ function describeJurisdiction(
   if (isMember && onTribalLand) {
     if (caseType === "criminal") {
       result.possibleCourts = ["Tribal Court", "Federal Court"];
-      result.explanation = "When a crime involving a tribal member happens on tribal land, tribal courts generally have jurisdiction, and federal courts may also have jurisdiction over serious crimes under the Major Crimes Act (18 U.S.C. § 1153).";
+      result.explanation = "For crimes in Indian country, which courts can act depends on whether the accused person and the victim are Indian. Tribal courts can generally prosecute Indians, but generally not non-Indians, except for certain crimes such as domestic violence under special tribal criminal jurisdiction (25 U.S.C. § 1304). Federal courts handle serious crimes by Indians under the Major Crimes Act (18 U.S.C. § 1153) and many crimes between Indians and non-Indians (18 U.S.C. § 1152), and states can also prosecute non-Indians for crimes against Indians (Oklahoma v. Castro-Huerta, 2022).";
       result.keyLaws = ["Major Crimes Act (18 U.S.C. § 1153)", "Indian Country Crimes Act (18 U.S.C. § 1152)", "Tribal Law and Order Act of 2010"];
       if (isPL280) {
         result.possibleCourts = ["Tribal Court", "State Court (PL-280)", "Federal Court (limited)"];
         result.explanation += ` ${state} is a Public Law 280 state. There, the state generally has criminal jurisdiction on most tribal lands, and the federal Major Crimes Act usually does not apply, though there are exceptions for some reservations.`;
         result.keyLaws.push("Public Law 280 (18 U.S.C. § 1162)");
+      }
+      if (state === "New York") {
+        result.possibleCourts = ["Tribal Court (where the nation has one)", "New York State Court", "Federal Court"];
+        result.explanation += " In New York, state courts also have criminal jurisdiction over offenses committed by or against Indians on reservations (25 U.S.C. § 232).";
+        result.keyLaws.push("25 U.S.C. § 232 (New York criminal jurisdiction)");
       }
     } else {
       if (caseType === "family") {
@@ -81,13 +86,18 @@ function describeJurisdiction(
         result.keyLaws = ["Native American Housing Assistance and Self-Determination Act (NAHASDA)", "Tribal housing codes"];
       } else {
         result.possibleCourts = ["Tribal Court"];
-        result.explanation = "Civil matters between tribal members on tribal land are generally heard in tribal court. Many tribes have their own civil codes and court systems.";
+        result.explanation = "Civil matters involving tribal members on tribal land are often heard in tribal court. If the other party is not a tribal member, tribal court authority can be limited (Montana v. United States, 1981). Many tribes have their own civil codes and court systems.";
         result.keyLaws = ["Tribal civil codes", "Indian Civil Rights Act (25 U.S.C. §§ 1301-1304)"];
       }
       if (isPL280) {
         result.possibleCourts.push("State Court (PL-280)");
         result.explanation += ` In Public Law 280 states such as ${state}, state courts may also hear many private civil cases that arise on tribal land.`;
         result.keyLaws.push("Public Law 280 (28 U.S.C. § 1360)");
+      }
+      if (state === "New York") {
+        result.possibleCourts.push("New York State Court");
+        result.explanation += " In New York, state courts can also hear civil cases involving Indians (25 U.S.C. § 233).";
+        result.keyLaws.push("25 U.S.C. § 233 (New York civil jurisdiction)");
       }
     }
   } else if (isMember && !onTribalLand) {
@@ -161,7 +171,7 @@ const TribalJurisdictionCheck = () => {
           name: "Tribal Jurisdiction Check",
           description: "General information about which court systems may be involved in a legal matter, based on tribal membership and location.",
           url: "https://justicebot-usa.com/legal-help/tribal-jurisdiction-check",
-          applicationCategory: "LegalService",
+          applicationCategory: "ReferenceApplication",
           operatingSystem: "Web",
         })}</script>
       </Helmet>
@@ -196,7 +206,7 @@ const TribalJurisdictionCheck = () => {
           </CardHeader>
           <CardContent className="space-y-6">
             <div>
-              <Label className="text-sm font-medium mb-3 block">Are you an enrolled member of a federally recognized tribe?</Label>
+              <Label className="text-sm font-medium mb-3 block">Is anyone involved (for example the accused person, the victim, or a party) an enrolled tribal member?</Label>
               <RadioGroup value={tribalMember} onValueChange={setTribalMember} className="space-y-2">
                 <div className="flex items-center gap-2"><RadioGroupItem value="yes" id="tm-yes" /><Label htmlFor="tm-yes">Yes</Label></div>
                 <div className="flex items-center gap-2"><RadioGroupItem value="no" id="tm-no" /><Label htmlFor="tm-no">No</Label></div>
@@ -223,6 +233,7 @@ const TribalJurisdictionCheck = () => {
 
             <div>
               <Label className="text-sm font-medium mb-3 block">What state?</Label>
+              <p className="text-xs text-muted-foreground mb-2">{"Justice Bot USA's guides cover California and New York; this page gives general federal Indian law information."}</p>
               <Select value={state} onValueChange={setState}>
                 <SelectTrigger><SelectValue placeholder="Select state" /></SelectTrigger>
                 <SelectContent>{states.map(s => <SelectItem key={s} value={s}>{s}</SelectItem>)}</SelectContent>

@@ -193,9 +193,9 @@ const Pricing = () => {
 
       <div className="container mx-auto px-4 py-16">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4">Court Forms Are Free in California and New York</h1>
+          <h1 className="text-4xl font-bold mb-4">Our California and New York Court Forms Are Free</h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            All court forms, form guides and the public-records letter tool are free in California and New York. Court and agency filing fees are separate, and fee waivers are free. The other 48 states are coming soon.
+            Every court form we offer, our form guides and the public-records letter tool are free in California and New York. Court and agency filing fees are separate, and fee waivers are free. The other 48 states are coming soon.
           </p>
           {isAdmin && (
             <Badge className="mt-4" variant="secondary">

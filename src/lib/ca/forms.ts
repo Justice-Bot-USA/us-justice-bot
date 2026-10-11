@@ -68,7 +68,7 @@ export const CA_CIVIL_FORMS: CourtForm[] = [
 ];
 
 export const CA_HUMAN_RIGHTS_FORMS: CourtForm[] = [
-  { formNumber: 'CRD Intake', name: 'California Civil Rights Department Complaint', description: 'Employment, housing, and public accommodation discrimination under FEHA and the Unruh Act.', url: 'https://ccrs.calcivilrights.ca.gov/', category: 'Discrimination', feeAmount: 'Free' },
+  { formNumber: 'CRD Intake', name: 'California Civil Rights Department Complaint', description: 'Employment, housing, and public accommodation discrimination under FEHA and the Unruh Act. Deadlines: generally 3 years for employment, 1 year for housing and most other complaints.', url: 'https://ccrs.calcivilrights.ca.gov/', category: 'Discrimination', feeAmount: 'Free' },
   { formNumber: 'EEOC Charge', name: 'EEOC Charge of Discrimination', description: 'Federal Title VII / ADA / ADEA charge (300-day deadline in California).', url: 'https://publicportal.eeoc.gov/', category: 'Federal', feeAmount: 'Free' },
   { formNumber: 'AG Complaint', name: 'California Attorney General Consumer Complaint', description: 'Report unfair business practices to the AG.', url: 'https://oag.ca.gov/contact/consumer-complaint-against-business-or-company', category: 'Consumer', feeAmount: 'Free' },
 ];

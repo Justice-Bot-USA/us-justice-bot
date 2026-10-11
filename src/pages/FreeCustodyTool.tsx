@@ -17,7 +17,7 @@ const CA_STEPS = [
   "Custody orders are made in a family case. If there is already one about your child in California (such as a divorce or parentage case), you ask in that case. If not, you open one first; the court's self-help guide explains which kind.",
   "Fill out a Request for Order (FL-300). It is usually filed with FL-311 (the parenting schedule you are asking for) and FL-105 (where the child has lived for the last 5 years).",
   "File with the family court clerk. Someone 18 or older who is not you serves the other parent and fills out a proof of service. Many courthouses have a free Family Law Facilitator or self-help center that will review your forms.",
-  "Go to custody mediation (Child Custody Recommending Counseling). It is required before most custody hearings.",
+  "Go to mediation with Family Court Services. It is required when custody or visitation is contested (Family Code § 3170). Some courts use confidential mediation; others use \"recommending counseling,\" where the counselor can make a recommendation to the judge, so ask which your court uses. If there has been domestic violence or there is a protective order, you can ask to meet with the mediator separately (Family Code § 3181).",
   "Go to the hearing with copies of everything you filed. The judge may make temporary or final orders, which can be enforced once signed.",
 ];
 
@@ -25,8 +25,8 @@ const NY_STEPS = [
   "Choose the petition: Custody or Visitation (GF-17), or a change to an existing order (GF-40).",
   "File it with the Family Court intake clerk, usually in the county where the child lives. Family Court does not charge filing fees.",
   "The court issues a summons that must be delivered to the other parent before the court date. Follow the instructions on your summons.",
-  "At the first court date the judge may make temporary orders, refer you to mediation, or appoint an Attorney for the Child.",
-  "Many cases settle by agreement; otherwise the judge decides after a trial. If a final order is not followed, a violation petition (GF-8a) asks the court to enforce it.",
+  "At the first court date, the judge must tell each parent about the right to a lawyer. If you can't afford one, you can ask the court to assign a lawyer for free (Family Court Act § 262). The judge may also make temporary orders, refer you to mediation, or appoint an Attorney for the Child.",
+  "Many cases settle by agreement; otherwise the judge decides after a trial. If a custody or visitation order is not followed, a Petition for Enforcement of Order of Custody or Visitation (GF-41) asks the court to enforce it, and the court's free DIY program can help you prepare it.",
 ];
 
 const SECTIONS = [
@@ -41,7 +41,7 @@ const SECTIONS = [
     state: "NY" as const,
     heading: "How it usually works in New York",
     steps: NY_STEPS,
-    forms: pickForms(NY_FAMILY_FORMS, ["GF-17", "GF-40", "GF-8a"]),
+    forms: pickForms(NY_FAMILY_FORMS, ["GF-17", "GF-40", "GF-41"]),
     help: { label: "NY Courts: Family issues and divorce help", href: "https://www.nycourts.gov/help/family-issues-divorce" },
   },
 ];
