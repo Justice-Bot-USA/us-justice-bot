@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Justice Bot">
+  <circle cx="32" cy="32" r="32" fill="#0B2545"/>
+  <g fill="#FFFFFF">
+    <circle cx="32" cy="14.5" r="2.6"/>
+    <rect x="30.9" y="16" width="2.2" height="29" rx="1.1"/>
+    <rect x="13" y="19.6" width="38" height="2.4" rx="1.2"/>
+    <path d="M10.5 35.5h13a6.5 6.5 0 0 1-13 0z"/>
+    <path d="M40.5 35.5h13a6.5 6.5 0 0 1-13 0z"/>
+    <rect x="26" y="44" width="12" height="2.4" rx="1.2"/>
+    <rect x="22" y="47.4" width="20" height="2.8" rx="1.4"/>
+  </g>
+  <g stroke="#FFFFFF" stroke-width="1.2" stroke-linecap="round" fill="none">
+    <path d="M17 22 11.2 35.5M17 22l5.8 13.5M47 22l-5.8 13.5M47 22l5.8 13.5"/>
+  </g>
+</svg>

@@ -5,7 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { SEOHead } from "@/components/SEOHead";
 import EnhancedSEO from "@/components/EnhancedSEO";
-import brandLogo from "@/assets/ai-anal-logo.png";
+import brandLogo from "@/assets/justice-bot-mark.svg";
 import { useState } from "react";
 
 const whatItDoes = [
@@ -71,7 +71,7 @@ const JusticeBotPage = () => {
       <main className="container mx-auto px-4 py-16 max-w-4xl">
         {/* Logo + H1 */}
         <div className="text-center mb-16">
-          <img src={brandLogo} alt="Justice Bot USA" className="w-16 h-16 mx-auto rounded-full bg-white p-1.5 shadow-lg mb-6" />
+          <img src={brandLogo} alt="Justice Bot USA" className="w-16 h-16 mx-auto rounded-full bg-white p-1 shadow-lg mb-6" />
           <h1 className="text-4xl md:text-5xl font-bold mb-4">What Is Justice Bot USA?</h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Justice Bot USA is the guidance technology behind Justice Bot USA, built by Justice Bot USA to help people navigate complex legal and administrative systems without misinformation or false certainty.

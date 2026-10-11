@@ -4,21 +4,21 @@
   "description": "Legal information, not legal advice. Plain-language legal information and official court form help, live in California and New York; other states coming soon.",
   "start_url": "/",
   "display": "browser",
-  "background_color": "#1e40af",
+  "background_color": "#0B2545",
   "theme_color": "#1e40af",
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "/public/icon-512.png",
+      "src": "/icon-512.png",
       "type": "image/png",
       "sizes": "512x512",
       "purpose": "any maskable"
     },
     {
-      "src": "/src/assets/us-justice-bot-logo.png",
+      "src": "/icon-192.png",
       "type": "image/png",
       "sizes": "192x192",
-      "purpose": "any"
+      "purpose": "any maskable"
     }
   ],
   "categories": ["legal", "utilities", "business"],
