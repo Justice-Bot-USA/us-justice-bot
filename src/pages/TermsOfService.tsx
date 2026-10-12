@@ -184,7 +184,7 @@ const TermsOfService = () => {
           <div className="prose prose-lg dark:prose-invert max-w-none">
             <h2 className="text-2xl font-bold mb-4">1. Acceptance of Terms</h2>
             <p className="text-muted-foreground">
-              Justice Bot USA (the "Service" or "Platform") is operated by Justice Bot Technologies Inc. ("Justice Bot," "we," "us," or "our"). By accessing or using the Service, you agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, you may not use the Service. These Terms constitute a legally binding agreement between you and Justice Bot Technologies Inc.
+              Justice Bot USA (the "Service" or "Platform") is a service of Quorex Solutions, a trade name of Justice Bot Technologies Inc. ("Justice Bot," "we," "us," or "our"). By accessing or using the Service, you agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, you may not use the Service. These Terms constitute a legally binding agreement between you and Justice Bot Technologies Inc.
             </p>
 
             <h2 className="text-2xl font-bold mt-10 mb-4">2. Description of Service</h2>
@@ -368,7 +368,7 @@ const TermsOfService = () => {
               For questions about these Terms of Service, please contact us:
             </p>
             <div className="bg-background rounded-lg p-6 border">
-              <p className="font-medium">Justice Bot Technologies Inc. (Justice Bot USA) — Legal</p>
+              <p className="font-medium">Justice Bot Technologies Inc. (Quorex Solutions, Justice Bot USA) — Legal</p>
               <p className="text-muted-foreground">Email: legal@justicebot-usa.com</p>
               <p className="text-muted-foreground">Website: justicebot-usa.com</p>
             </div>

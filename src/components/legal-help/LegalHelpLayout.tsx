@@ -67,7 +67,7 @@ const LegalHelpLayout = ({
     url: canonicalUrl,
     publisher: {
       "@type": "Organization",
-      name: "Justice Bot USA",
+      name: "Quorex Solutions",
       url: "https://justicebot-usa.com",
     },
     mainEntityOfPage: canonicalUrl,

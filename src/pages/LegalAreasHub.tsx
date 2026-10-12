@@ -165,13 +165,13 @@ const LEGAL_CATEGORIES = [
 const structuredData = {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
-  name: "Legal Areas — JusticeBot USA",
+  name: "Legal Areas — Justice Bot USA",
   description:
     "Browse all 10 legal practice areas. Get AI-powered legal guidance, state-specific court forms, and step-by-step help for civil legal issues. Live in California and New York; other states coming soon.",
   url: "https://justicebot-usa.com/legal-areas",
   publisher: {
     "@type": "Organization",
-    name: "JusticeBot USA",
+    name: "Quorex Solutions",
     url: "https://justicebot-usa.com",
   },
   hasPart: LEGAL_CATEGORIES.map((c) => ({
@@ -189,7 +189,7 @@ export default function LegalAreasHub() {
   return (
     <HelmetProvider>
       <Helmet>
-        <title>All Legal Areas — Free US Legal Help | JusticeBot USA</title>
+        <title>All Legal Areas — Free US Legal Help | Justice Bot USA</title>
         <meta
           name="description"
           content="Browse 10 legal practice areas: immigration, family law, employment, housing, civil rights, criminal defense, small claims, workers comp, consumer protection, and human rights. Live in California and New York; other states coming soon."
@@ -200,7 +200,7 @@ export default function LegalAreasHub() {
         />
         <link rel="canonical" href="https://justicebot-usa.com/legal-areas" />
         {/* Open Graph */}
-        <meta property="og:title" content="All Legal Areas — JusticeBot USA" />
+        <meta property="og:title" content="All Legal Areas — Justice Bot USA" />
         <meta
           property="og:description"
           content="Legal information for 10 practice areas. Live in California and New York; other states coming soon."

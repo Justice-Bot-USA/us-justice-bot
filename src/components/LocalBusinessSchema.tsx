@@ -7,8 +7,9 @@ const LocalBusinessSchema = () => {
   const schema = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "Justice Bot USA",
+    name: "Quorex Solutions",
     legalName: "Justice Bot Technologies Inc.",
+    brand: { "@type": "Brand", name: "Justice Bot USA" },
     description:
       "Legal information and official California and New York court forms that you fill in with your own answers and file yourself. Not a law firm and not legal advice.",
     url: "https://justicebot-usa.com",
