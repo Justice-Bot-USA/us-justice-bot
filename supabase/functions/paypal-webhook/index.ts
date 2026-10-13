@@ -10,7 +10,7 @@ Deno.serve((req: Request) => {
   return new Response(
     JSON.stringify({
       error:
-        "PayPal payments are no longer accepted. Justice Bot USA has one plan, $25/month, paid through our Stripe checkout on the Pricing page.",
+        "PayPal payments are no longer accepted. Justice Bot USA's only paid plan is the Toolkit ($25.00 a month), sold through Stripe on the Pricing page when it is available.",
       code: "GONE",
     }),
     {

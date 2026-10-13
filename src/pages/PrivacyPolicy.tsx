@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const PrivacyPolicy = () => {
   const [language, setLanguage] = useState<'en' | 'es'>('en');
-  const lastUpdated = "October 9, 2026";
+  const lastUpdated = "October 13, 2026";
 
 
   return (
@@ -94,7 +94,14 @@ const PrivacyPolicy = () => {
               <li>Payment information (processed by Stripe, our payment processor; we do not see or store your full card number)</li>
               <li>Legal case information you voluntarily provide</li>
               <li>State of residence for jurisdiction-specific guidance</li>
+              <li>Files you upload (for example court papers, letters, photos and receipts) and the names, dates and notes you add; calendar entries and class records you type in. These can include sensitive information about you, your children or other people.</li>
+              <li>If you subscribe to the Toolkit plan: a record of what you agreed to (the version of the billing terms you were shown, the two boxes you ticked and when, and your browser's language and type), your Stripe customer and subscription numbers, and a record of the billing emails we send you</li>
             </ul>
+
+            <h3 className="text-xl font-semibold mt-6 mb-3">Who can see your files</h3>
+            <p className="text-muted-foreground">
+              Only you, when signed in. Our staff cannot open your files through the app's admin pages. We look at a file only if you ask us to in writing for support, or if the law requires it.
+            </p>
 
             <h3 className="text-xl font-semibold mt-6 mb-3">Automatically Collected Information</h3>
             <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
@@ -110,6 +117,7 @@ const PrivacyPolicy = () => {
               <li>To fill official forms with the answers you give</li>
               <li>To improve our services and user experience</li>
               <li>To communicate important updates about our service</li>
+              <li>If you subscribe to the Toolkit plan, to send the billing emails the law requires: a confirmation of your plan when you subscribe, a yearly reminder, a confirmation when you cancel, and notice before any price change. We send them to the email address on your account.</li>
               <li>If you sign up for updates (no account needed), to email you when we add forms or tools for your state. For this list we store your email address, your state, the type of page where you signed up and the sentence you agreed to, and nothing about your case. To be removed, email privacy@justicebot-usa.com.</li>
               <li>To comply with legal obligations</li>
               <li>To detect and prevent fraud or security issues</li>
@@ -120,7 +128,7 @@ const PrivacyPolicy = () => {
               We do NOT sell your personal information. We may share information only in the following circumstances:
             </p>
             <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
-              <li><strong>Service Providers:</strong> Third-party services that help us operate, such as hosting, payment processing (Stripe), analytics (Google Analytics), and the AI service that processes your questions and case details</li>
+              <li><strong>Service Providers:</strong> Third-party services that help us operate: Supabase (database and file storage), Stripe (payment processing), Resend (sends billing emails; it receives your email address and the email, not your files), Google Analytics (analytics), our website hosting provider, and the AI service that processes your questions and case details</li>
               <li><strong>Legal Requirements:</strong> When required by law, court order, or government request</li>
               <li><strong>Safety:</strong> To protect the rights, safety, and property of our users</li>
               <li><strong>Business Transfers:</strong> In connection with a merger, acquisition, or sale of assets</li>
@@ -129,6 +137,9 @@ const PrivacyPolicy = () => {
             <h2 className="text-2xl font-bold mt-12 mb-4">Data Retention</h2>
             <p className="text-muted-foreground">
               We keep your personal information, including case data, while your account is open and as long as needed for the purposes described in this policy. You may ask us to delete your data at any time by emailing privacy@justicebot-usa.com; we may keep limited records where the law requires it.
+            </p>
+            <p className="text-muted-foreground mt-4">
+              We keep your files and records until you delete them or ask us to delete your account. Cancelling the Toolkit does not delete them. You can delete the files in your case binder yourself at any time on the Case binder page, one at a time or all at once. To delete certificate files you saved in the Course Hub, email privacy@justicebot-usa.com. We keep a record of your agreement to the Toolkit's automatic renewal, and of the billing emails we sent you, for at least 3 years, or 1 year after your plan ends if that is later, because California law requires it, even if you delete your account. We also keep records of your payments and subscriptions after your account is deleted.
             </p>
 
             <h2 className="text-2xl font-bold mt-12 mb-4">Cookies and Tracking</h2>

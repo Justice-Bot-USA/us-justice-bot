@@ -8,8 +8,10 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
+import type { Tables, TablesInsert } from "@/integrations/supabase/types";
 import { toast } from "sonner";
 import { analytics } from "@/hooks/useAnalytics";
+import { deleteBinderFile } from "@/lib/binder/storage";
 import { 
   Upload, 
   File, 
@@ -28,7 +30,7 @@ import {
 interface FileUploadProps {
   sessionId?: string;
   caseId?: string;
-  onUploadComplete?: (files: any[]) => void;
+  onUploadComplete?: (files: Tables<'case_files'>[]) => void;
   bucketType?: 'evidence-files' | 'case-documents' | 'user-uploads';
 }
 
@@ -38,9 +40,27 @@ interface UploadedFile {
   size: number;
   type: string;
   url: string;
+  /** Where the object is stored, so Remove can delete it (not just the row). */
+  path?: string;
+  bucket?: string;
   description?: string;
   tags: string[];
   uploadProgress: number;
+}
+
+/** Largest file this uploader accepts (50 MB). The copy below says the same. */
+const MAX_FILE_BYTES = 50 * 1024 * 1024;
+
+/** What this uploader accepts. The copy below and isAcceptedFile() must match this list. */
+const ACCEPT =
+  "image/*,application/pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.rtf,audio/*,video/*,application/zip,.zip,.heic,.heif,.webp,.tiff,.bmp";
+const ACCEPTED_EXTENSIONS = /\.(pdf|doc|docx|xls|xlsx|ppt|pptx|txt|csv|rtf|zip|heic|heif|webp|tiff?|bmp|jpe?g|png|gif)$/i;
+
+function isAcceptedFile(file: File): boolean {
+  const type = (file.type || "").toLowerCase();
+  if (type.startsWith("image/") || type.startsWith("audio/") || type.startsWith("video/")) return true;
+  if (type === "application/pdf" || type === "application/zip") return true;
+  return ACCEPTED_EXTENSIONS.test(file.name);
 }
 
 export const FileUpload: React.FC<FileUploadProps> = ({ 
@@ -96,9 +116,17 @@ export const FileUpload: React.FC<FileUploadProps> = ({
     }
 
     setUploading(true);
-    const uploadedFiles: any[] = [];
+    const uploadedFiles: Tables<'case_files'>[] = [];
 
     for (const file of fileList) {
+      if (file.size > MAX_FILE_BYTES) {
+        toast.error(`${file.name} is larger than 50 MB, so it wasn't uploaded.`);
+        continue;
+      }
+      if (!isAcceptedFile(file)) {
+        toast.error(`${file.name} isn't a file type this upload accepts, so it wasn't uploaded.`);
+        continue;
+      }
       // Create temporary file entry with progress
       const tempFile: UploadedFile = {
         id: `temp-${Date.now()}-${Math.random()}`,
@@ -117,7 +145,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
         // Generate unique file path
         const safeOriginalName = sanitizeFileName(file.name);
         const uniqueId = (globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`)
-          .replace(/[^a-zA-Z0-9\-]/g, '');
+          .replace(/[^a-zA-Z0-9-]/g, '');
         // Keep original name for humans; ensure uniqueness and stable paths
         const fileName = `${user.id}/${Date.now()}-${uniqueId}-${safeOriginalName}`;
 
@@ -126,9 +154,8 @@ export const FileUpload: React.FC<FileUploadProps> = ({
           .from(bucketType)
           .upload(fileName, file, {
             cacheControl: '3600',
-            // Allow re-uploads with the same chosen file name without hard failure.
-            // Our path is already unique, but this prevents edge collisions.
-            upsert: true
+            // The path is unique, so never overwrite an existing file.
+            upsert: false
           });
 
         if (error) throw error;
@@ -138,10 +165,13 @@ export const FileUpload: React.FC<FileUploadProps> = ({
           .from(bucketType)
           .createSignedUrl(fileName, 3600);
         
-        if (urlError) throw urlError;
+        if (urlError) {
+          await supabase.storage.from(bucketType).remove([fileName]).catch(() => undefined);
+          throw urlError;
+        }
 
         // Save file metadata to database with case_id for direct linking
-        const insertData: any = {
+        const insertData: TablesInsert<'case_files'> = {
           user_id: user.id,
           session_id: sessionId,
           file_name: file.name,
@@ -164,12 +194,16 @@ export const FileUpload: React.FC<FileUploadProps> = ({
           .select()
           .single();
 
-        if (dbError) throw dbError;
+        if (dbError) {
+          // Don't leave a stored file with no row: nobody could see or delete it.
+          await supabase.storage.from(bucketType).remove([fileName]).catch(() => undefined);
+          throw dbError;
+        }
 
         // Update file entry with success
         setFiles(prev => prev.map(f => 
           f.id === tempFile.id 
-            ? { ...f, id: fileRecord.id, url: urlData.signedUrl, uploadProgress: 100 }
+            ? { ...f, id: fileRecord.id, url: urlData.signedUrl, path: fileName, bucket: bucketType, uploadProgress: 100 }
             : f
         ));
 
@@ -180,10 +214,10 @@ export const FileUpload: React.FC<FileUploadProps> = ({
 
         toast.success(`${file.name} uploaded successfully`);
       } catch (error) {
-        console.error('Upload error:', error);
+        // No console logging: errors can carry file paths, which include file names.
         const message =
           typeof error === 'object' && error && 'message' in error
-            ? String((error as any).message)
+            ? String((error as { message?: unknown }).message)
             : 'Upload failed';
         toast.error(`Failed to upload ${file.name}: ${message}`);
         
@@ -198,13 +232,22 @@ export const FileUpload: React.FC<FileUploadProps> = ({
     }
   };
 
+  // Deletes the stored file first, then its row, so nothing is left behind in storage.
   const removeFile = async (fileId: string) => {
+    const file = files.find(f => f.id === fileId);
+    if (!file?.path || !file.bucket) {
+      toast.error("Failed to remove file");
+      return;
+    }
     try {
-      await supabase.from('case_files').delete().eq('id', fileId);
+      const outcome = await deleteBinderFile({ id: fileId, file_path: file.path, bucket_name: file.bucket });
+      if (outcome !== "deleted") {
+        toast.error("We couldn't delete the stored file. Please try again.");
+        return;
+      }
       setFiles(prev => prev.filter(f => f.id !== fileId));
       toast.success("File removed successfully");
-    } catch (error) {
-      console.error('Delete error:', error);
+    } catch {
       toast.error("Failed to remove file");
     }
   };
@@ -244,9 +287,11 @@ export const FileUpload: React.FC<FileUploadProps> = ({
           Drag and drop files here, or click to select
         </p>
         <p className="text-sm text-muted-foreground mb-4">
-          Supports all file types: Photos, PDFs, Docs, Scans, Screenshots, Audio, Video — up to 50MB per file
+          Photos, PDFs, Word, Excel and PowerPoint files, text files, audio, video and ZIP files, up to 50 MB each.
+          Only PDF, JPG and PNG files can go into a case binder PDF.
         </p>
         <Button
+          type="button"
           onClick={() => fileInputRef.current?.click()}
           disabled={uploading}
           variant="outline"
@@ -257,7 +302,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
           ref={fileInputRef}
           type="file"
           multiple
-          accept="image/*,application/pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.rtf,audio/*,video/*,application/zip,.heic,.heif,.webp,.tiff,.bmp"
+          accept={ACCEPT}
           onChange={handleFileInput}
           className="hidden"
         />
@@ -299,6 +344,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
                     {file.url && (
                       <>
                         <Button
+                          type="button"
                           variant="ghost"
                           size="sm"
                           onClick={() => window.open(file.url, '_blank')}
@@ -306,6 +352,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
                           <Eye className="h-4 w-4" />
                         </Button>
                         <Button
+                          type="button"
                           variant="ghost"
                           size="sm"
                           onClick={() => {
@@ -320,6 +367,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
                       </>
                     )}
                     <Button
+                      type="button"
                       variant="ghost"
                       size="sm"
                       onClick={() => removeFile(file.id)}

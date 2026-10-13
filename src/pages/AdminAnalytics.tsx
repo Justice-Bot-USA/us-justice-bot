@@ -25,7 +25,36 @@ interface AdminStats {
   byArea: { name: string; count: number }[];
   byState: { name: string; count: number }[];
   topFunnelEvents: { name: string; count: number }[];
+  /** Counts that couldn't be loaded (shown as a note instead of a silent zero). */
+  unavailable: string[];
 }
+
+/** One row of public.admin_case_stats(): counts only, never titles, descriptions or user ids. */
+interface CaseStatRow {
+  dimension: string;
+  label: string;
+  case_count: number;
+}
+
+/** 'YYYY-MM' in UTC, the same months admin_case_stats() uses. */
+function monthKeyUtc(timestamp: string): string | null {
+  const ms = Date.parse(timestamp);
+  if (!Number.isFinite(ms)) return null;
+  const dt = new Date(ms);
+  return `${dt.getUTCFullYear()}-${String(dt.getUTCMonth() + 1).padStart(2, "0")}`;
+}
+
+function countBy<T>(rows: readonly T[], key: (row: T) => string | null): Record<string, number> {
+  const out: Record<string, number> = {};
+  for (const row of rows) {
+    const k = key(row);
+    if (k) out[k] = (out[k] || 0) + 1;
+  }
+  return out;
+}
+
+const topEntries = (map: Record<string, number>, n: number) =>
+  Object.entries(map).map(([name, count]) => ({ name, count })).sort((a, b) => b.count - a.count).slice(0, n);
 
 const COLORS = ["hsl(var(--primary))", "hsl(var(--secondary))", "hsl(var(--accent))", "hsl(var(--muted))", "hsl(var(--destructive))"];
 
@@ -59,59 +88,62 @@ const AdminAnalytics = () => {
     const load = async () => {
       setLoading(true);
       try {
-        const [profilesRes, casesRes, sweepsRes, filesRes, paymentsRes, funnelRes] = await Promise.all([
+        // Admins can't read other people's cases or files directly (row-level security). Case and
+        // file numbers come from admin-only database functions that return counts and nothing else.
+        const [profilesRes, caseStatsRes, sweepsRes, fileCountRes, paymentsRes, funnelRes] = await Promise.all([
           supabase.from("profiles").select("created_at", { count: "exact" }),
-          supabase.from("case_merit_scores").select("id,user_id,legal_area,state,created_at,status"),
+          supabase.rpc("admin_case_stats"),
           supabase.from("case_sweeps").select("id", { count: "exact", head: true }),
-          supabase.from("case_files").select("id", { count: "exact", head: true }),
+          supabase.rpc("admin_case_file_count"),
           supabase.from("payments").select("id,status,created_at"),
           supabase.from("funnel_analytics").select("step,action,created_at"),
         ]);
 
-        const cases = casesRes.data ?? [];
+        const unavailable: string[] = [];
+        if (caseStatsRes.error) unavailable.push("case counts");
+        if (fileCountRes.error) unavailable.push("file count");
+
+        const caseStats: CaseStatRow[] = (caseStatsRes.data ?? []).map((r) => ({
+          dimension: r.dimension,
+          label: r.label,
+          case_count: Number(r.case_count) || 0,
+        }));
+        const byDimension = (dimension: string) => caseStats.filter((r) => r.dimension === dimension);
+        const totalCases = byDimension("total").reduce((n, r) => n + r.case_count, 0);
+        const totalFiles = fileCountRes.error ? 0 : Number(fileCountRes.data) || 0;
+
         const profiles = profilesRes.data ?? [];
         const payments = paymentsRes.data ?? [];
         const funnelRows = funnelRes.data ?? [];
 
-        const monthKey = (d: string) => {
-          const dt = new Date(d);
-          return `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, "0")}`;
-        };
+        const usersByMonthMap = countBy(profiles, (p) => (p.created_at ? monthKeyUtc(p.created_at) : null));
+        const funnelStepMap = countBy(funnelRows, (f) => `${f.step}:${f.action}`);
+        const toMap = (rows: CaseStatRow[]) => Object.fromEntries(rows.map((r) => [r.label, r.case_count]));
 
-        const casesByMonthMap: Record<string, number> = {};
-        cases.forEach((c: any) => { const k = monthKey(c.created_at); casesByMonthMap[k] = (casesByMonthMap[k] || 0) + 1; });
-        const usersByMonthMap: Record<string, number> = {};
-        profiles.forEach((p: any) => { const k = monthKey(p.created_at); usersByMonthMap[k] = (usersByMonthMap[k] || 0) + 1; });
-
-        const areaMap: Record<string, number> = {};
-        cases.forEach((c: any) => { areaMap[c.legal_area || "Unknown"] = (areaMap[c.legal_area || "Unknown"] || 0) + 1; });
-        const stateMap: Record<string, number> = {};
-        cases.forEach((c: any) => { stateMap[c.state || "Unknown"] = (stateMap[c.state || "Unknown"] || 0) + 1; });
-
-        const funnelStepMap: Record<string, number> = {};
-        funnelRows.forEach((f: any) => { const k = `${f.step}:${f.action}`; funnelStepMap[k] = (funnelStepMap[k] || 0) + 1; });
-
-        const completedPayments = payments.filter((p: any) => p.status === "completed" || p.status === "succeeded" || p.status === "paid");
+        const completedPayments = payments.filter((p) => p.status === "completed" || p.status === "succeeded" || p.status === "paid");
 
         setStats({
           totalUsers: profilesRes.count ?? profiles.length,
-          totalCases: cases.length,
+          totalCases,
           totalSweeps: sweepsRes.count ?? 0,
-          totalFiles: filesRes.count ?? 0,
+          totalFiles,
           totalPayments: completedPayments.length,
           totalRevenue: 0, // Stripe amounts not stored on payments table; tracked in Stripe metadata
           funnel: [
             { step: "Visitors (funnel events)", count: funnelRows.length },
             { step: "Signups", count: profiles.length },
-            { step: "Cases started", count: cases.length },
+            { step: "Cases started", count: totalCases },
             { step: "Sweeps run", count: sweepsRes.count ?? 0 },
             { step: "Payments", count: completedPayments.length },
           ],
-          casesByMonth: Object.entries(casesByMonthMap).sort().map(([month, cases]) => ({ month, cases })),
+          casesByMonth: byDimension("month")
+            .map((r) => ({ month: r.label, cases: r.case_count }))
+            .sort((a, b) => a.month.localeCompare(b.month)),
           usersByMonth: Object.entries(usersByMonthMap).sort().map(([month, users]) => ({ month, users })),
-          byArea: Object.entries(areaMap).map(([name, count]) => ({ name, count })).sort((a, b) => b.count - a.count).slice(0, 8),
-          byState: Object.entries(stateMap).map(([name, count]) => ({ name, count })).sort((a, b) => b.count - a.count).slice(0, 8),
-          topFunnelEvents: Object.entries(funnelStepMap).map(([name, count]) => ({ name, count })).sort((a, b) => b.count - a.count).slice(0, 10),
+          byArea: topEntries(toMap(byDimension("legal_area")), 8),
+          byState: topEntries(toMap(byDimension("state")), 8),
+          topFunnelEvents: topEntries(funnelStepMap, 10),
+          unavailable,
         });
       } finally {
         setLoading(false);
@@ -281,8 +313,16 @@ const AdminAnalytics = () => {
               </Card>
             </div>
 
+            {stats.unavailable.length > 0 && (
+              <p className="text-sm text-destructive mb-2" role="status">
+                Couldn't load the {stats.unavailable.join(" and ")}, so those numbers show 0. The admin count functions
+                come with the Toolkit database migration; check that it has been applied.
+              </p>
+            )}
             <p className="text-xs text-muted-foreground">
-              Revenue totals require Stripe API enrichment (amounts not stored locally). All other metrics computed from Supabase tables in real time.
+              Revenue totals require Stripe API enrichment (amounts not stored locally). Case and file numbers are
+              counts from admin-only database functions; admins can't open anyone's cases or files from this page.
+              Months are in UTC.
             </p>
           </>
         )}

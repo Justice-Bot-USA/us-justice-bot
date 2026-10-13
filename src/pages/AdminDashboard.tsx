@@ -502,7 +502,7 @@ const AdminDashboard = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                       <div>
                         <p className="font-medium">{PLAN.name} ({PLAN.priceLabel})</p>
-                        <p className="text-muted-foreground">Paused for new purchases. All court forms, form guides and the public-records letter PDF are free; returns later as the Toolkit plan</p>
+                        <p className="text-muted-foreground">For sale only while TOOLKIT_SALES_ENABLED is 'true' and the Stripe product and account checks pass (supabase/functions/stripe-checkout/sales.ts). Court forms, form guides and the public-records letter PDF stay free.</p>
                       </div>
                       <div>
                         <p className="font-medium">Not offered</p>

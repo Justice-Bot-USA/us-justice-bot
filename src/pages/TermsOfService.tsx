@@ -6,10 +6,18 @@ import { FileText, AlertTriangle, Scale, CheckCircle, XCircle, Gavel } from "luc
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Link } from "react-router-dom";
+import {
+  DATES_ARE_YOURS,
+  DISCLOSURE_BULLETS,
+  DISCLOSURE_HEADING,
+  PRICE_CHANGE_TERMS,
+  TOOLKIT_FEATURES,
+} from "@/lib/billingDisclosure";
 
 const TermsOfService = () => {
   const [language, setLanguage] = useState<'en' | 'es'>('en');
-  const lastUpdated = "October 10, 2026";
+  const lastUpdated = "October 13, 2026";
   const effectiveDate = "January 4, 2026";
 
   const stateJurisdictions = [
@@ -126,6 +134,8 @@ const TermsOfService = () => {
                 <ul className="text-sm text-muted-foreground space-y-1">
                   <li>• Legal information</li>
                   <li>• Form-filling tools</li>
+                  <li>• Private file storage</li>
+                  <li>• Optional paid Toolkit plan</li>
                   <li>• General guidance</li>
                   <li>• Court information</li>
                 </ul>
@@ -158,6 +168,7 @@ const TermsOfService = () => {
                   <li>• Provide accurate information</li>
                   <li>• Verify all documents</li>
                   <li>• Meet court deadlines</li>
+                  <li>• Check every date you enter against your court papers. The calendar only shows what you typed.</li>
                   <li>• Seek attorney when needed</li>
                 </ul>
               </CardContent>
@@ -197,7 +208,20 @@ const TermsOfService = () => {
               <li>Court and filing information for California and New York; other states coming soon</li>
               <li>AI-generated plain-language summaries and general guidance (informational only)</li>
               <li>Links and references to official court resources</li>
+              <li>Private storage for files you upload: you can upload, view, rename, organize, download and delete the files in your case binder for free (to delete certificate files saved in the Course Hub, email privacy@justicebot-usa.com)</li>
+              <li>
+                The optional paid Toolkit plan, which adds these tools:
+                <ul className="list-disc pl-6 mt-2 space-y-1">
+                  {TOOLKIT_FEATURES.map((feature) => (
+                    <li key={feature}>{feature}</li>
+                  ))}
+                </ul>
+              </li>
             </ul>
+            <p className="text-muted-foreground mt-4">
+              {DATES_ARE_YOURS} The Toolkit's tools are software for organizing your own papers. They do not check or
+              prepare court filings, and nothing they produce is reviewed by a lawyer or a court.
+            </p>
 
             <h2 className="text-2xl font-bold mt-10 mb-4">3. No Attorney-Client Relationship</h2>
             <div className="bg-muted/50 rounded-lg p-6 my-4">
@@ -249,15 +273,26 @@ const TermsOfService = () => {
 
             <h2 className="text-2xl font-bold mt-10 mb-4">7. Payments and Refunds</h2>
             <p className="text-muted-foreground">
-              Court forms, form guides and the public-records letter tool are free to use. Courts and government agencies may charge their own fees, which are separate. Our subscription plan is paused and is not currently available for new purchases. Where a subscription or service requires payment, by purchasing it:
+              Court forms, form guides and the public-records letter tool are free to use. Courts and government agencies may charge their own fees, which are separate.
             </p>
+            <p className="text-muted-foreground mt-4">
+              The Toolkit plan is a paid subscription. When it is available to buy, these are its terms, exactly as shown before you subscribe:
+            </p>
+            <div className="not-prose my-4 rounded-lg border-2 border-foreground/70 p-4 text-base text-foreground">
+              <p className="font-bold">{DISCLOSURE_HEADING}</p>
+              <ul className="mt-2 list-disc space-y-2 pl-6">
+                {DISCLOSURE_BULLETS.map((bullet) => (
+                  <li key={bullet}>{bullet}</li>
+                ))}
+              </ul>
+            </div>
             <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
-              <li>You authorize us to charge your payment method</li>
-              <li>Prices are subject to change with notice</li>
-              <li>Subscriptions auto-renew unless cancelled</li>
-              <li>You can cancel a subscription online at any time: sign in and choose "Cancel subscription" on the Pricing page. Cancelling stops future charges, and your subscription stays active until the end of the period you have already paid for. You can also cancel by emailing billing@justicebot-usa.com</li>
-              <li>Refunds are available within 30 days of purchase if you are not satisfied</li>
-              <li>Refund requests should be submitted to billing@justicebot-usa.com</li>
+              <li>
+                You can see your plan and cancel it on the <Link to="/account/billing" className="text-primary hover:underline">Your plan</Link> page, which you can reach from your account menu by choosing Cancel subscription.
+              </li>
+              <li>If we refund your most recent charge, your plan ends when we issue the refund unless you ask us to keep it.</li>
+              <li>{DATES_ARE_YOURS}</li>
+              <li>When you subscribe, we keep a record of what you agreed to (the version of these terms that was shown, the boxes you ticked and when) for at least 3 years, or 1 year after your plan ends if that is later.</li>
             </ul>
 
             <h2 className="text-2xl font-bold mt-10 mb-4">8. Intellectual Property</h2>
@@ -293,12 +328,18 @@ const TermsOfService = () => {
 
             <h2 className="text-2xl font-bold mt-10 mb-4">12. Modifications to Terms</h2>
             <p className="text-muted-foreground">
-              We reserve the right to modify these Terms at any time. We will notify you of material changes by posting the updated Terms on our website and updating the "Last Updated" date. Your continued use of the Service after changes constitutes acceptance of the modified Terms.
+              We reserve the right to modify these Terms at any time. We will notify you of material changes by posting the updated Terms on our website and updating the "Last Updated" date. Except for the Toolkit plan, as described below, your continued use of the Service after changes constitutes acceptance of the modified Terms.
+            </p>
+            <p className="text-muted-foreground mt-4">
+              <strong>Toolkit plan:</strong> {PRICE_CHANGE_TERMS}
             </p>
 
             <h2 className="text-2xl font-bold mt-10 mb-4">13. Termination</h2>
             <p className="text-muted-foreground">
               We may suspend or terminate your access to the Service at any time, with or without cause, with or without notice. Upon termination, your right to use the Service will immediately cease. Sections that by their nature should survive termination will survive.
+            </p>
+            <p className="text-muted-foreground mt-4">
+              If we end your paid Toolkit plan for any reason other than your breach of these Terms, we will refund the unused part of your current month.
             </p>
           </div>
         </section>

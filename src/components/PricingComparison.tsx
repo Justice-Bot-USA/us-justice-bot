@@ -1,11 +1,12 @@
 import { Check, X } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { trackUSPrepareClicked } from "@/hooks/useAnalytics";
-import { THIRD_PARTY_FEES_NOTE } from "@/lib/pricing";
+import { PLAN, THIRD_PARTY_FEES_NOTE } from "@/lib/pricing";
 
-// Every court form and form guide is free; the paid plan is paused (see src/lib/pricing.ts).
+// Home page pricing: every court form and form guide is free. The optional Toolkit plan is described
+// (and, when sales are open, sold) only on /pricing, with its full terms next to the consent boxes.
 const plans = [
   {
     name: "Free",
@@ -90,7 +91,15 @@ export const PricingComparison = () => {
             </Card>
           ))}
         </div>
-        <p className="text-sm text-muted-foreground text-center max-w-2xl mx-auto mt-6">{THIRD_PARTY_FEES_NOTE}</p>
+        <p className="text-base text-center max-w-2xl mx-auto mt-6">
+          Want help keeping your case papers in order? The optional Toolkit plan ({PLAN.priceLabel}) adds a case binder
+          PDF, a hearing calendar and a class tracker.{" "}
+          <Link to="/pricing" className="font-medium text-primary underline underline-offset-4 hover:no-underline">
+            See the Toolkit on the Pricing page
+          </Link>
+          . You don't need it to fill in or download any form.
+        </p>
+        <p className="text-sm text-muted-foreground text-center max-w-2xl mx-auto mt-4">{THIRD_PARTY_FEES_NOTE}</p>
       </div>
     </section>
   );

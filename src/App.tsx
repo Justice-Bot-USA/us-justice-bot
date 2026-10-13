@@ -1,6 +1,6 @@
 import { lazy, Suspense } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useParams } from "react-router-dom";
 
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -33,7 +33,6 @@ const NewYorkLegalCenter = lazy(() => import("./pages/NewYorkLegalCenter"));
 const CaliforniaLegalCenter = lazy(() => import("./pages/CaliforniaLegalCenter"));
 const FormFillPage = lazy(() => import("./pages/FormFillPage"));
 const CriminalDefenseGuide = lazy(() => import("./pages/CriminalDefenseGuide"));
-const BookOfDocuments = lazy(() => import("./pages/BookOfDocuments"));
 const CaseJourney = lazy(() => import("./pages/CaseJourney"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermsOfService = lazy(() => import("./pages/TermsOfService"));
@@ -78,8 +77,19 @@ const FreeEvictionDefenseTool = lazy(() => import("./pages/FreeEvictionDefenseTo
 const FreeSmallClaimsTool = lazy(() => import("./pages/FreeSmallClaimsTool"));
 const FreeCustodyTool = lazy(() => import("./pages/FreeCustodyTool"));
 const FreeDiscriminationTool = lazy(() => import("./pages/FreeDiscriminationTool"));
+const ToolkitHub = lazy(() => import("./pages/toolkit/ToolkitHub"));
+const BinderPage = lazy(() => import("./pages/toolkit/BinderPage"));
+const CalendarPage = lazy(() => import("./pages/toolkit/CalendarPage"));
+const ClassesPage = lazy(() => import("./pages/toolkit/ClassesPage"));
+const AccountBilling = lazy(() => import("./pages/account/AccountBilling"));
 
 const queryClient = new QueryClient();
+
+/** Old certificate record links (/verify/:id) now open /records/:id. */
+function VerifyRedirect() {
+  const { id } = useParams();
+  return <Navigate to={`/records/${id ?? ""}`} replace />;
+}
 
 const PageLoader = () => (
   <div className="min-h-screen flex items-center justify-center bg-background">
@@ -132,7 +142,8 @@ export default function App() {
               <Route path="/criminal-defense-guide" element={<CriminalDefenseGuide />} />
               {/* Case Law Search retired: it asked the AI for case citations from memory, not a legal database. */}
               <Route path="/case-law-search" element={<Navigate to="/legal-areas" replace />} />
-              <Route path="/book-of-documents" element={<BookOfDocuments />} />
+              {/* The old Book of Documents is now the Toolkit case binder. */}
+              <Route path="/book-of-documents" element={<Navigate to="/toolkit/binder" replace />} />
               <Route path="/case-journey" element={<CaseJourney />} />
               <Route path="/case/:caseId" element={<CaseJourney />} />
               <Route path="/privacy" element={<PrivacyPolicy />} />
@@ -153,7 +164,16 @@ export default function App() {
               <Route path="/public-records-request" element={<PublicRecordsRequest />} />
               <Route path="/justice-bot" element={<JusticeBotPage />} />
               <Route path="/courses" element={<CourseHub />} />
-              <Route path="/verify/:id" element={<CertificateVerify />} />
+              {/* Your saved certificate record. /verify/ was renamed: the site checks nothing (legal review). */}
+              <Route path="/records/:id" element={<CertificateVerify />} />
+              <Route path="/verify/:id" element={<VerifyRedirect />} />
+
+              {/* Toolkit plan. Routes carry no identifying query parameters. */}
+              <Route path="/toolkit" element={<ToolkitHub />} />
+              <Route path="/toolkit/binder" element={<BinderPage />} />
+              <Route path="/toolkit/calendar" element={<CalendarPage />} />
+              <Route path="/toolkit/classes" element={<ClassesPage />} />
+              <Route path="/account/billing" element={<AccountBilling />} />
 
               {/* Tool-led landing pages */}
               <Route path="/free-eviction-defense-tool" element={<FreeEvictionDefenseTool />} />

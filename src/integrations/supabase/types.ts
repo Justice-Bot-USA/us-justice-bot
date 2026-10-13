@@ -124,18 +124,208 @@ export type Database = {
         }
         Relationships: []
       }
+      billing_consents: {
+        Row: {
+          amount_cents: number
+          auto_renew_consent: boolean
+          checkout_custom_text_version: string | null
+          checkout_session_id: string | null
+          created_at: string
+          disclosure_sha256: string
+          disclosure_version: string
+          email: string | null
+          id: string
+          interval: string
+          locale: string | null
+          notice_channel: string
+          price_id: string
+          stripe_customer_id: string | null
+          subscription_id: string | null
+          tos_consent: boolean
+          updated_at: string
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          amount_cents: number
+          auto_renew_consent: boolean
+          checkout_custom_text_version?: string | null
+          checkout_session_id?: string | null
+          created_at?: string
+          disclosure_sha256: string
+          disclosure_version: string
+          email?: string | null
+          id?: string
+          interval: string
+          locale?: string | null
+          notice_channel?: string
+          price_id: string
+          stripe_customer_id?: string | null
+          subscription_id?: string | null
+          tos_consent: boolean
+          updated_at?: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          amount_cents?: number
+          auto_renew_consent?: boolean
+          checkout_custom_text_version?: string | null
+          checkout_session_id?: string | null
+          created_at?: string
+          disclosure_sha256?: string
+          disclosure_version?: string
+          email?: string | null
+          id?: string
+          interval?: string
+          locale?: string | null
+          notice_channel?: string
+          price_id?: string
+          stripe_customer_id?: string | null
+          subscription_id?: string | null
+          tos_consent?: boolean
+          updated_at?: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      billing_notices: {
+        Row: {
+          attempts: number
+          created_at: string
+          email: string | null
+          id: string
+          kind: string
+          last_error: string | null
+          provider_message_id: string | null
+          reminder_year: number | null
+          sent_at: string | null
+          status: string
+          subscription_id: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          attempts?: number
+          created_at?: string
+          email?: string | null
+          id?: string
+          kind: string
+          last_error?: string | null
+          provider_message_id?: string | null
+          reminder_year?: number | null
+          sent_at?: string | null
+          status?: string
+          subscription_id: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          attempts?: number
+          created_at?: string
+          email?: string | null
+          id?: string
+          kind?: string
+          last_error?: string | null
+          provider_message_id?: string | null
+          reminder_year?: number | null
+          sent_at?: string | null
+          status?: string
+          subscription_id?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      case_calendar_events: {
+        Row: {
+          address: string | null
+          alarms: number[]
+          case_id: string | null
+          confirmed_at: string
+          court_or_place: string | null
+          created_at: string
+          event_date: string
+          ics_sequence: number
+          id: string
+          kind: string
+          notes: string | null
+          room: string | null
+          source_note: string | null
+          start_time: string | null
+          time_zone: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          address?: string | null
+          alarms?: number[]
+          case_id?: string | null
+          confirmed_at: string
+          court_or_place?: string | null
+          created_at?: string
+          event_date: string
+          ics_sequence?: number
+          id?: string
+          kind: string
+          notes?: string | null
+          room?: string | null
+          source_note?: string | null
+          start_time?: string | null
+          time_zone: string
+          title: string
+          updated_at?: string
+          user_id?: string
+        }
+        Update: {
+          address?: string | null
+          alarms?: number[]
+          case_id?: string | null
+          confirmed_at?: string
+          court_or_place?: string | null
+          created_at?: string
+          event_date?: string
+          ics_sequence?: number
+          id?: string
+          kind?: string
+          notes?: string | null
+          room?: string | null
+          source_note?: string | null
+          start_time?: string | null
+          time_zone?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "case_calendar_events_case_owner_fkey"
+            columns: ["case_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "case_merit_scores"
+            referencedColumns: ["id", "user_id"]
+          },
+        ]
+      }
       case_files: {
         Row: {
           bucket_name: string
           case_id: string | null
           created_at: string | null
           description: string | null
+          display_name: string | null
+          document_date: string | null
           file_name: string
           file_path: string
           file_size: number
           file_type: string
           id: string
+          notes: string | null
+          section: string | null
           session_id: string | null
+          sort_order: number | null
           tags: string[] | null
           updated_at: string | null
           uploaded_at: string | null
@@ -146,12 +336,17 @@ export type Database = {
           case_id?: string | null
           created_at?: string | null
           description?: string | null
+          display_name?: string | null
+          document_date?: string | null
           file_name: string
           file_path: string
           file_size: number
           file_type: string
           id?: string
+          notes?: string | null
+          section?: string | null
           session_id?: string | null
+          sort_order?: number | null
           tags?: string[] | null
           updated_at?: string | null
           uploaded_at?: string | null
@@ -162,12 +357,17 @@ export type Database = {
           case_id?: string | null
           created_at?: string | null
           description?: string | null
+          display_name?: string | null
+          document_date?: string | null
           file_name?: string
           file_path?: string
           file_size?: number
           file_type?: string
           id?: string
+          notes?: string | null
+          section?: string | null
           session_id?: string | null
+          sort_order?: number | null
           tags?: string[] | null
           updated_at?: string | null
           uploaded_at?: string | null
@@ -180,6 +380,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "case_merit_scores"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "case_files_case_owner_fkey"
+            columns: ["case_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "case_merit_scores"
+            referencedColumns: ["id", "user_id"]
           },
           {
             foreignKeyName: "case_files_session_id_fkey"
@@ -510,6 +717,135 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      class_sessions: {
+        Row: {
+          created_at: string
+          hours: number | null
+          id: string
+          notes: string | null
+          session_date: string
+          tracker_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          hours?: number | null
+          id?: string
+          notes?: string | null
+          session_date: string
+          tracker_id: string
+          updated_at?: string
+          user_id?: string
+        }
+        Update: {
+          created_at?: string
+          hours?: number | null
+          id?: string
+          notes?: string | null
+          session_date?: string
+          tracker_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "class_sessions_tracker_owner_fkey"
+            columns: ["tracker_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "class_trackers"
+            referencedColumns: ["id", "user_id"]
+          },
+        ]
+      }
+      class_trackers: {
+        Row: {
+          case_id: string | null
+          class_name: string
+          course_id: string | null
+          created_at: string
+          due_date: string | null
+          due_date_source: string | null
+          id: string
+          notes: string | null
+          order_wording: string | null
+          ordered_by: string | null
+          proof_file_id: string | null
+          proof_sent_how: string | null
+          proof_sent_on: string | null
+          provider_name: string | null
+          provider_url: string | null
+          required_hours: number | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          case_id?: string | null
+          class_name: string
+          course_id?: string | null
+          created_at?: string
+          due_date?: string | null
+          due_date_source?: string | null
+          id?: string
+          notes?: string | null
+          order_wording?: string | null
+          ordered_by?: string | null
+          proof_file_id?: string | null
+          proof_sent_how?: string | null
+          proof_sent_on?: string | null
+          provider_name?: string | null
+          provider_url?: string | null
+          required_hours?: number | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Update: {
+          case_id?: string | null
+          class_name?: string
+          course_id?: string | null
+          created_at?: string
+          due_date?: string | null
+          due_date_source?: string | null
+          id?: string
+          notes?: string | null
+          order_wording?: string | null
+          ordered_by?: string | null
+          proof_file_id?: string | null
+          proof_sent_how?: string | null
+          proof_sent_on?: string | null
+          provider_name?: string | null
+          provider_url?: string | null
+          required_hours?: number | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "class_trackers_case_owner_fkey"
+            columns: ["case_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "case_merit_scores"
+            referencedColumns: ["id", "user_id"]
+          },
+          {
+            foreignKeyName: "class_trackers_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "class_trackers_proof_owner_fkey"
+            columns: ["proof_file_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "case_files"
+            referencedColumns: ["id", "user_id"]
+          },
+        ]
       }
       course_certificates: {
         Row: {
@@ -1772,6 +2108,7 @@ export type Database = {
       subscriptions: {
         Row: {
           amount: number
+          cancel_at_period_end: boolean
           created_at: string
           end_date: string
           id: string
@@ -1779,11 +2116,14 @@ export type Database = {
           plan_type: string
           start_date: string
           status: string
+          stripe_customer_id: string | null
+          stripe_started_at: string | null
           updated_at: string
           user_id: string
         }
         Insert: {
           amount: number
+          cancel_at_period_end?: boolean
           created_at?: string
           end_date: string
           id?: string
@@ -1791,11 +2131,14 @@ export type Database = {
           plan_type: string
           start_date?: string
           status?: string
+          stripe_customer_id?: string | null
+          stripe_started_at?: string | null
           updated_at?: string
           user_id: string
         }
         Update: {
           amount?: number
+          cancel_at_period_end?: boolean
           created_at?: string
           end_date?: string
           id?: string
@@ -1803,6 +2146,8 @@ export type Database = {
           plan_type?: string
           start_date?: string
           status?: string
+          stripe_customer_id?: string | null
+          stripe_started_at?: string | null
           updated_at?: string
           user_id?: string
         }
@@ -2272,6 +2617,15 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_case_file_count: { Args: never; Returns: number }
+      admin_case_stats: {
+        Args: never
+        Returns: {
+          case_count: number
+          dimension: string
+          label: string
+        }[]
+      }
       admin_export_profiles: {
         Args: { p_filters?: Json; p_reason: string }
         Returns: {
@@ -2305,6 +2659,17 @@ export type Database = {
           user_id: string
         }[]
       }
+      billing_due_annual_reminders: {
+        Args: { _window_days?: number }
+        Returns: {
+          anniversary: string
+          reminder_year: number
+          started_at: string
+          stripe_customer_id: string
+          subscription_id: string
+          user_id: string
+        }[]
+      }
       calculate_case_merit_score: { Args: { case_id: string }; Returns: number }
       compute_ip_hash: { Args: { ip: string }; Returns: string }
       delete_user_activity_archive_tombstone: {
@@ -2323,7 +2688,16 @@ export type Database = {
         }
         Returns: boolean
       }
+      has_toolkit_access: { Args: { _uid: string }; Returns: boolean }
       is_verified_admin: { Args: { uid: string }; Returns: boolean }
+      list_user_storage_objects: {
+        Args: { _uid: string }
+        Returns: {
+          bucket_id: string
+          name: string
+        }[]
+      }
+      my_toolkit_access: { Args: never; Returns: boolean }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user" | "attorney"
