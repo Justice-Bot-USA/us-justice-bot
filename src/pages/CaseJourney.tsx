@@ -12,10 +12,8 @@ import {
   Scale, 
   Upload, 
   FileText, 
-  MapPin, 
-  Download,
+  MapPin,
   Printer,
-  Mail,
   Building2,
   ClipboardCheck,
   Sparkles,
@@ -78,6 +76,8 @@ function CantAccessCaseCard({
 
 const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
   const navigate = useNavigate();
+  // Opens the binder on this case. The case goes in router state, not the URL or query string.
+  const openBinder = () => navigate('/toolkit/binder', { state: { caseId } });
   const { user } = useAuth();
 
   const [currentStep, setCurrentStep] = useState(1);
@@ -347,13 +347,13 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
                     </p>
                   </div>
 
-                  {/* Accepted File Types */}
+                  {/* Examples of files the uploader accepts (see FileUpload.tsx) */}
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                     {[
                       { icon: '📷', label: 'Photos' },
                       { icon: '📄', label: 'PDFs' },
-                      { icon: '✉️', label: 'Emails' },
-                      { icon: '📝', label: 'Notices' },
+                      { icon: '📱', label: 'Screenshots' },
+                      { icon: '📝', label: 'Word files' },
                     ].map((type) => (
                       <div key={type.label} className="p-3 bg-muted rounded-lg text-center">
                         <span className="text-2xl">{type.icon}</span>
@@ -386,17 +386,19 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
                             <span className="font-medium">{uploadedFilesCount} file(s) uploaded to this case</span>
                           </div>
                           <Button
+                            type="button"
                             variant="ghost"
                             size="sm"
-                            onClick={() => navigate('/book-of-documents')}
-                            className="text-green-700 dark:text-green-300 hover:text-green-800"
+                            onClick={openBinder}
+                            className="min-h-11 text-green-700 dark:text-green-300 hover:text-green-800"
                           >
                             <FileText className="h-4 w-4 mr-1" />
-                            View All
+                            View all
                           </Button>
                         </div>
                         <p className="text-xs text-green-600 dark:text-green-400 mt-2">
-                          All uploads are saved automatically. Add more anytime — your Book of Documents will include everything.
+                          Your uploads are saved to this case. Add more any time. You can rename, sort, download and
+                          delete them on your Case binder page, for free.
                         </p>
                       </CardContent>
                     </Card>
@@ -409,18 +411,19 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
                       size="lg"
                       onClick={() => setCurrentStep(3)}
                     >
-                      Continue to Book of Documents
+                      Continue to your documents
                       <ArrowRight className="ml-2 h-5 w-5" />
                     </Button>
-                    
+
                     {uploadedFilesCount > 0 && (
-                      <Button 
+                      <Button
+                        type="button"
                         variant="outline"
-                        className="w-full"
-                        onClick={() => navigate('/book-of-documents')}
+                        className="w-full min-h-11"
+                        onClick={openBinder}
                       >
                         <FileText className="mr-2 h-4 w-4" />
-                        View & Organize Documents Now
+                        View and organize my files
                       </Button>
                     )}
                   </div>
@@ -433,7 +436,7 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
             </motion.div>
           )}
 
-          {/* Step 3: Book of Documents and official form filling (both free; form filling is CA and NY only) */}
+          {/* Step 3: your files (free) and the case binder PDF (Toolkit plan), then official form filling (free; CA and NY only) */}
           {currentStep === 3 && (
             <motion.div
               key="step3"
@@ -447,52 +450,52 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
                   <div className="mx-auto p-3 bg-primary/10 rounded-full w-fit mb-4">
                     <FileText className="h-8 w-8 text-primary" />
                   </div>
-                  <CardTitle className="text-2xl">Your Book of Documents</CardTitle>
+                  <CardTitle className="text-2xl">Your Documents</CardTitle>
                   <CardDescription className="text-lg">
-                    Your uploaded documents, organized and numbered. Free to use.
+                    Keep your files together, in the order you want.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
-                  {/* Warning about disorganized filings */}
-                  <div className="p-4 bg-yellow-50 dark:bg-yellow-950 border border-yellow-200 dark:border-yellow-800 rounded-lg">
-                    <h4 className="font-semibold text-yellow-900 dark:text-yellow-100 mb-2 flex items-center gap-2">
-                      <AlertCircle className="h-5 w-5" />
-                      Check Your Court's Rules
-                    </h4>
-                    <p className="text-sm text-yellow-800 dark:text-yellow-200">
-                      Your Book of Documents puts the files you uploaded into one PDF with numbered exhibits and a
-                      table of contents. Courts have their own rules for labeling and filing exhibits, so check
-                      your court's rules or self-help center before you file.
-                    </p>
-                  </div>
-
-                  {/* What's Included */}
+                  {/* What is free and what needs the Toolkit plan. Must match src/pages/toolkit/BinderPage.tsx. */}
                   <div className="space-y-3">
-                    <h4 className="font-semibold">What You'll Get:</h4>
-                    <div className="grid gap-3">
-                      {[
-                        { icon: FileText, text: 'One PDF with all your uploaded documents' },
-                        { icon: ClipboardCheck, text: 'Numbered exhibits with table of contents' },
-                        { icon: MapPin, text: 'General filing information for your state' },
-                        { icon: Building2, text: 'How to find your court\'s self-help center' },
-                        { icon: Mail, text: 'Service requirements explained' },
-                      ].map((item, i) => (
-                        <div key={i} className="flex items-center gap-3 p-3 bg-muted rounded-lg">
-                          <item.icon className="h-5 w-5 text-primary" />
-                          <span>{item.text}</span>
-                        </div>
-                      ))}
+                    <div className="flex items-start gap-3 p-3 bg-muted rounded-lg">
+                      <FileText className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                      <p className="text-sm">
+                        <span className="font-semibold">Free:</span> upload, view, rename, put in order, download and
+                        delete your files on your Case binder page.
+                      </p>
+                    </div>
+                    <div className="flex items-start gap-3 p-3 bg-muted rounded-lg">
+                      <ClipboardCheck className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                      <p className="text-sm">
+                        <span className="font-semibold">With the Toolkit plan:</span> make one binder PDF of your PDF,
+                        JPG and PNG files, in the order you choose, with a contents page. Word files and other types
+                        stay in your account, but they can't go in the binder PDF.
+                      </p>
                     </div>
                   </div>
 
+                  {/* The binder is an organizer, not a court filing */}
+                  <div className="p-4 bg-yellow-50 dark:bg-yellow-950 border border-yellow-200 dark:border-yellow-800 rounded-lg">
+                    <h4 className="font-semibold text-yellow-900 dark:text-yellow-100 mb-2 flex items-center gap-2">
+                      <AlertCircle className="h-5 w-5" />
+                      Check your court's rules
+                    </h4>
+                    <p className="text-sm text-yellow-800 dark:text-yellow-200">
+                      A binder PDF is not a court filing and isn't set up to any court's rules. Courts have their own
+                      rules for papers you hand in, so ask the court clerk or self-help center before you file.
+                    </p>
+                  </div>
+
                   <Button
+                    type="button"
                     variant="outline"
-                    className="w-full"
-                    onClick={() => navigate('/book-of-documents')}
+                    className="w-full min-h-11"
+                    onClick={openBinder}
                   >
                     <FileText className="mr-2 h-4 w-4" />
-                    Open Book of Documents
-                    {uploadedFilesCount > 0 ? ` (${uploadedFilesCount} uploaded)` : ''}
+                    Open my case binder
+                    {uploadedFilesCount > 0 ? ` (${uploadedFilesCount} ${uploadedFilesCount === 1 ? 'file' : 'files'} in this case)` : ''}
                   </Button>
 
                   {/* Official form filling: free, California and New York only */}
@@ -656,8 +659,7 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
                     <h4 className="font-semibold text-center mb-4">Completion Checklist</h4>
                     {[
                       { label: 'Situation summarized', done: true },
-                      { label: 'Evidence gathered', done: uploadedFilesCount > 0 },
-                      { label: 'Documents ready for your Book of Documents', done: uploadedFilesCount > 0 },
+                      { label: 'Files uploaded to this case', done: uploadedFilesCount > 0 },
                       { label: 'Courts that usually hear these matters listed', done: true },
                       { label: 'Filing steps explained', done: true },
                     ].map((item, i) => (
@@ -684,10 +686,11 @@ const CaseJourneyInner = ({ caseId }: { caseId: string }) => {
 
                   {/* Action Buttons */}
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                    <Button 
-                      variant="outline" 
+                    <Button
+                      type="button"
+                      variant="outline"
                       className="h-12"
-                      onClick={() => navigate('/book-of-documents')}
+                      onClick={openBinder}
                     >
                       <FileText className="mr-2 h-4 w-4" />
                       Documents

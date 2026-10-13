@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { signInPath } from "@/lib/signIn";
+import { formatLongDate } from "@/lib/calendar/dates";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { SEOHead } from "@/components/SEOHead";
@@ -178,7 +179,8 @@ export default function CertificateVerify() {
                       <Calendar className="w-4 h-4 text-muted-foreground" />
                       <div>
                         <p className="text-xs text-muted-foreground uppercase tracking-wider">Completion Date</p>
-                        <p className="font-medium">{new Date(cert.completion_date).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</p>
+                        {/* A plain 'yyyy-MM-dd' date: read from its numbers so it never shows the day before. */}
+                        <p className="font-medium">{formatLongDate(cert.completion_date)}</p>
                       </div>
                     </div>
                   </div>

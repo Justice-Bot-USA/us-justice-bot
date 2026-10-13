@@ -1,14 +1,18 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Globe, User, LogOut, Settings, Briefcase, Sparkles, FileText, Menu, Gavel, FolderOpen, Scale, ScrollText, GraduationCap, LayoutGrid, ChevronDown, Database, Users, Heart, BarChart3, MapPin } from "lucide-react";
+import { Globe, User, LogOut, Settings, Briefcase, Sparkles, FileText, Menu, Gavel, FolderOpen, Scale, ScrollText, GraduationCap, LayoutGrid, ChevronDown, Database, Users, Heart, BarChart3, MapPin, Wrench, CreditCard } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useAuth } from "@/hooks/useAuth";
 import { useAdminAccess } from "@/hooks/useAdminAccess";
+import { supabase } from "@/integrations/supabase/client";
+import { invokeAuthed } from "@/lib/supabaseInvoke";
+import { toolkitKeys } from "@/lib/toolkit/access";
 import logoImage from "@/assets/justice-bot-mark.svg";
 import ThemeToggle from "./ThemeToggle";
 import { UpdatesSignupButton } from "./UpdatesSignup";
@@ -54,9 +58,53 @@ const moreLinks = [
   },
 ];
 
+/**
+ * Whether to show "Cancel subscription" in the account menu (the online cancellation link the
+ * automatic renewal laws require). Shown when the person has any subscriptions row, or when
+ * check-subscription says subscribed or cancellable, and also whenever either check fails, so the
+ * link is never hidden by an error. check-subscription calls Stripe, so it runs only when the menu
+ * is opened and the database has no row, and its answer is cached for 10 minutes.
+ */
+function useShowCancelLink(userId: string | undefined, menuOpen: boolean): boolean {
+  const rowQuery = useQuery({
+    queryKey: toolkitKeys.subscriptionRow(userId),
+    queryFn: async () => {
+      const { count, error } = await supabase
+        .from("subscriptions")
+        .select("id", { count: "exact", head: true })
+        .eq("user_id", userId as string);
+      if (error) throw error;
+      return (count ?? 0) > 0;
+    },
+    enabled: Boolean(userId),
+    staleTime: 5 * 60_000,
+    retry: false,
+  });
+
+  const stripeQuery = useQuery({
+    queryKey: toolkitKeys.checkSubscription(userId),
+    queryFn: async () => {
+      const { data, error } = await invokeAuthed<{ subscribed?: boolean; cancellable?: boolean }>("check-subscription");
+      if (error) throw error;
+      return Boolean(data?.subscribed || data?.cancellable);
+    },
+    enabled: Boolean(userId) && menuOpen && rowQuery.isSuccess && rowQuery.data === false,
+    staleTime: 10 * 60_000,
+    retry: false,
+  });
+
+  if (!userId) return false;
+  if (rowQuery.isError || rowQuery.data === true) return true;
+  if (stripeQuery.isError) return true;
+  return stripeQuery.data === true;
+}
+
 const Header = ({ language, onLanguageChange }: HeaderProps) => {
   const { user, signOut, loading } = useAuth();
   const { isAdmin } = useAdminAccess();
+  const [accountMenuOpen, setAccountMenuOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const showCancelLink = useShowCancelLink(user?.id, accountMenuOpen || mobileMenuOpen);
   
   // Show Sign In button while loading to avoid flicker
   const showSignedIn = !loading && user;
@@ -176,7 +224,7 @@ const Header = ({ language, onLanguageChange }: HeaderProps) => {
                       My Cases
                     </Link>
                   </Button>
-                  <Popover>
+                  <Popover open={accountMenuOpen} onOpenChange={setAccountMenuOpen}>
                     <PopoverTrigger asChild>
                       <Button variant="ghost" size="sm" className={navButtonClass} aria-label="Account menu">
                         <User className="w-4 h-4 2xl:mr-1" aria-hidden="true" />
@@ -185,14 +233,28 @@ const Header = ({ language, onLanguageChange }: HeaderProps) => {
                         <ChevronDown className="w-3 h-3 ml-1" aria-hidden="true" />
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-52 p-2" align="end">
+                    <PopoverContent className="w-56 p-2" align="end">
                       <div className="flex flex-col gap-1">
                         <Button asChild variant="ghost" size="sm" className="justify-start">
-                          <Link to="/book-of-documents">
+                          <Link to="/toolkit">
+                            <Wrench className="w-4 h-4 mr-2" aria-hidden="true" />
+                            My Toolkit
+                          </Link>
+                        </Button>
+                        <Button asChild variant="ghost" size="sm" className="justify-start">
+                          <Link to="/toolkit/binder">
                             <FolderOpen className="w-4 h-4 mr-2" aria-hidden="true" />
                             Documents
                           </Link>
                         </Button>
+                        {showCancelLink && (
+                          <Button asChild variant="ghost" size="sm" className="justify-start">
+                            <Link to="/account/billing">
+                              <CreditCard className="w-4 h-4 mr-2" aria-hidden="true" />
+                              Cancel subscription
+                            </Link>
+                          </Button>
+                        )}
                         <Button asChild variant="ghost" size="sm" className="justify-start">
                           <Link to="/dashboard/analytics">
                             <BarChart3 className="w-4 h-4 mr-2" aria-hidden="true" />
@@ -229,7 +291,7 @@ const Header = ({ language, onLanguageChange }: HeaderProps) => {
 
           {/* Mobile nav */}
           <div className="flex lg:hidden items-center gap-2">
-            <Sheet>
+            <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
               <SheetTrigger asChild>
                 <Button variant="secondary" size="icon" aria-label="Open menu">
                   <Menu className="h-5 w-5" aria-hidden="true" />
@@ -376,27 +438,41 @@ const Header = ({ language, onLanguageChange }: HeaderProps) => {
                   <div className="space-y-2">
                     {showSignedIn ? (
                       <>
-                        <Button asChild variant="secondary" className="w-full justify-start">
+                        <Button asChild variant="secondary" className="w-full justify-start min-h-11">
                           <Link to="/my-cases">
                             <Briefcase className="w-4 h-4 mr-2" aria-hidden="true" />
                             My Cases
                           </Link>
                         </Button>
-                        <Button asChild variant="secondary" className="w-full justify-start">
-                          <Link to="/book-of-documents">
-                            <FolderOpen className="w-4 h-4 mr-2" aria-hidden="true" />
-                            Book of Documents
+                        <Button asChild variant="secondary" className="w-full justify-start min-h-11">
+                          <Link to="/toolkit">
+                            <Wrench className="w-4 h-4 mr-2" aria-hidden="true" />
+                            My Toolkit
                           </Link>
                         </Button>
+                        <Button asChild variant="secondary" className="w-full justify-start min-h-11">
+                          <Link to="/toolkit/binder">
+                            <FolderOpen className="w-4 h-4 mr-2" aria-hidden="true" />
+                            Documents
+                          </Link>
+                        </Button>
+                        {showCancelLink && (
+                          <Button asChild variant="secondary" className="w-full justify-start min-h-11">
+                            <Link to="/account/billing">
+                              <CreditCard className="w-4 h-4 mr-2" aria-hidden="true" />
+                              Cancel subscription
+                            </Link>
+                          </Button>
+                        )}
                         {isAdmin && (
-                          <Button asChild variant="secondary" className="w-full justify-start">
+                          <Button asChild variant="secondary" className="w-full justify-start min-h-11">
                             <Link to="/admin">
                               <Settings className="w-4 h-4 mr-2" aria-hidden="true" />
                               Admin
                             </Link>
                           </Button>
                         )}
-                        <Button variant="outline" onClick={() => signOut()} className="w-full justify-start">
+                        <Button variant="outline" onClick={() => signOut()} className="w-full justify-start min-h-11">
                           <LogOut className="w-4 h-4 mr-2" aria-hidden="true" />
                           Sign Out
                         </Button>

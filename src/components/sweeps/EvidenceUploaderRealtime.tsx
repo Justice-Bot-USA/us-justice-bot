@@ -145,7 +145,7 @@ export function EvidenceUploaderRealtime({
                 Drop files here or click to upload
               </p>
               <p className="text-xs text-muted-foreground">
-                All file types up to 50MB — photos, PDFs, docs, scans, screenshots
+                Photos, scans, screenshots, PDFs, Word, Excel and PowerPoint files, text files, audio, video and ZIP files
               </p>
             </>
           )}

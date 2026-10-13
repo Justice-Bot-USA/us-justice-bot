@@ -10,7 +10,8 @@
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "check:toolkit": "node scripts/toolkit/run-checks.mjs"
   },
   "dependencies": {
     "@capacitor/android": "^7.4.3",

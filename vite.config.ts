@@ -43,7 +43,6 @@ const ROUTES: RouteEntry[] = [
   { path: "/foia-request-generator",        priority: 0.8, changefreq: "monthly" },
   { path: "/public-records-request",        priority: 0.7, changefreq: "monthly" },
   { path: "/criminal-defense-guide",        priority: 0.7, changefreq: "monthly" },
-  { path: "/book-of-documents",             priority: 0.7, changefreq: "monthly" },
   { path: "/usa-forms",                     priority: 0.7, changefreq: "weekly" },
   // ─── Legal areas ────────────────────────────────────────────────────────────
   { path: "/legal-areas/immigration",       priority: 0.8, changefreq: "weekly" },

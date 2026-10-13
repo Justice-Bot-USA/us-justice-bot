@@ -1,8 +1,9 @@
 import Stripe from "https://esm.sh/stripe@18.5.0";
 
 // USA Live Price IDs (source of truth for server-side checkout creation)
-// The single public plan is the monthly subscription: $25/month ("Justice Bot USA
-// Access", lookup key justicebot_usa_monthly_25). STRIPE_PRICE_MONTHLY can override it.
+// The single public plan is the Toolkit monthly subscription: $25.00 a month (Stripe product
+// "Justice Bot USA Toolkit", lookup key justicebot_usa_monthly_25). STRIPE_PRICE_MONTHLY can
+// override it. Whether it is on sale is decided in stripe-checkout/sales.ts.
 // The legacy $19.99/month price (price_1T10c4Pr9cYwQq3CJqfwzpqo) stays active in Stripe
 // but is no longer offered.
 // Legacy one-time prices: Single Form $9.99, Bundle $49.99, FOIA Single $9.99, FOIA Bundle $29.99.

@@ -91,12 +91,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://justicebot-usa.com/book-of-documents</loc>
-    <lastmod>2026-10-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://justicebot-usa.com/usa-forms</loc>
     <lastmod>2026-10-10</lastmod>
     <changefreq>weekly</changefreq>

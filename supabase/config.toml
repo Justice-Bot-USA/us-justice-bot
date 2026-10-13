@@ -104,6 +104,15 @@ verify_jwt = false
 [functions.cancel-subscription]
 verify_jwt = false
 
+# Daily cron (pg_net, no JWT). The function checks x-cron-secret against CRON_SECRET itself.
+# MCP deploys must pass verify_jwt=false too; config.toml only applies to CLI deploys.
+[functions.billing-notices]
+verify_jwt = false
+
+# Owner/admin-run account deletion. Needs a signed-in admin token.
+[functions.delete-my-data]
+verify_jwt = true
+
 [functions.courtlistener-search]
 verify_jwt = false
 

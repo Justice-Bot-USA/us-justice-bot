@@ -35,8 +35,8 @@ const SelfHelpHub = () => {
     },
     {
       icon: FolderOpen, title: "Organize Your Documents",
-      description: "Upload your documents and put them into one PDF with numbered exhibits and a table of contents. Check your court's rules for exhibits before you file.",
-      link: "/book-of-documents", linkText: "Book of Documents",
+      description: "Upload your files and keep them in the order you choose, for free. With the Toolkit plan, make one PDF of your PDF, JPG and PNG files. A binder PDF is not a court filing, so check your court's rules before you file.",
+      link: "/toolkit/binder", linkText: "Case binder",
     },
     {
       icon: BookOpen, title: "Legal Glossary",
@@ -50,7 +50,7 @@ const SelfHelpHub = () => {
     },
     {
       icon: GraduationCap, title: "Parenting Courses",
-      description: "Find parenting and co-parenting courses offered by outside providers, and keep your own record of enrollment and certificates. Check with your court that a course is accepted.",
+      description: "Find parenting and co-parenting classes offered by outside providers, and save your certificates for free. Only your court (or whoever ordered the class) can tell you which classes it accepts. The class tracker is part of the Toolkit plan.",
       link: "/courses", linkText: "Course Hub",
     },
   ];
@@ -159,7 +159,7 @@ const SelfHelpHub = () => {
 
         {/* Tool Cards */}
         <section className="container mx-auto px-4 py-12 max-w-6xl">
-          <h2 className="text-2xl font-bold mb-2 text-center">Your Self-Help Toolkit</h2>
+          <h2 className="text-2xl font-bold mb-2 text-center">Your Self-Help Tools</h2>
           <p className="text-muted-foreground text-center mb-8 max-w-2xl mx-auto">
             Each tool helps you with a specific part of your legal journey. Start anywhere — they all work independently.
           </p>
@@ -240,7 +240,7 @@ const SelfHelpHub = () => {
                   <li>✓ Identify relevant courts or agencies</li>
                   <li>✓ Let you fill in official California and New York forms, and draft public records requests, with your own answers</li>
                   <li>✓ Provide procedural guidance for self-represented individuals</li>
-                  <li>✓ Organize your evidence chronologically</li>
+                  <li>✓ Keep your files together, in the order you choose</li>
                 </ul>
               </CardContent>
             </Card>

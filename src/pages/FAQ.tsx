@@ -7,6 +7,12 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { AFTER_CANCEL_FAQ, DATES_ARE_YOURS, DISCLOSURE_BULLETS, TOOLKIT_FEATURES } from "@/lib/billingDisclosure";
+
+// Billing answers reuse the plan terms from src/lib/billingDisclosure.ts word for word.
+const REFUND_TERMS = DISCLOSURE_BULLETS.find((b) => b.startsWith("Refunds:")) ?? "";
+const REFUND_ANSWER = `Yes. ${REFUND_TERMS} If we refund your most recent charge, your plan ends when we issue the refund unless you ask us to keep it.`;
+const ALERTS_QUALIFIER = "Alerts come from your calendar app; some apps don't keep them, so check after adding.";
 
 const FAQ = () => {
   const [language, setLanguage] = useState<'en' | 'es'>('en');
@@ -97,11 +103,23 @@ const FAQ = () => {
       faqs: [
         {
           question: "How much does Justice Bot USA cost?",
-          answer: "In California and New York, every court form we offer, our form guides, and the public-records letter tool are free, and our general guides are free to read. Courts and government agencies may charge their own fees, such as filing fees; those are separate, and fee waiver forms are free. Our $25/month plan is paused for new purchases. We plan to bring it back as the Toolkit plan once its features (a case binder for each case, a hearing calendar with reminders, and a fuller course tracker) are built; those features are in development and not available yet. The binder and course tracker build on tools you can use for free today: the Book of Documents and the Course Hub course list."
+          answer: "In California and New York, every court form we offer, our form guides, and the public-records letter tool are free, and our general guides are free to read. Uploading, organizing, downloading and deleting your own case files is free too. Courts and government agencies may charge their own fees, such as filing fees; those are separate, and fee waiver forms are free. The optional Toolkit plan costs $25.00 a month until you cancel. The Pricing page shows whether it's available to buy right now."
+        },
+        {
+          question: "What's in the Toolkit plan?",
+          answer: `${TOOLKIT_FEATURES.join(" ")} Court forms and guides stay free. ${DATES_ARE_YOURS}`
+        },
+        {
+          question: "Do I need the Toolkit to fill in court forms?",
+          answer: "No. Court forms, form guides and the public-records letter tool stay free, and so do uploading, organizing, downloading and deleting your own files. The Toolkit adds making a binder PDF, and adding new hearing calendar dates and class records."
+        },
+        {
+          question: "Will my hearing calendar alerts always go off?",
+          answer: `Not always. ${ALERTS_QUALIFIER} ${DATES_ARE_YOURS} Check every date against your court papers.`
         },
         {
           question: "Do you offer refunds?",
-          answer: "Yes. Refunds are available within 30 days of purchase if you are not satisfied. Email billing@justicebot-usa.com to request one."
+          answer: REFUND_ANSWER
         },
         {
           question: "What payment methods do you accept?",
@@ -109,11 +127,15 @@ const FAQ = () => {
         },
         {
           question: "Can I cancel my subscription anytime?",
-          answer: "Yes. Sign in, go to the Pricing page, and choose Cancel subscription. You won't be charged again, and your plan stays active until the end of the period you have already paid for. There are no cancellation fees. If you have any trouble, email billing@justicebot-usa.com and we will cancel it for you."
+          answer: "Yes. Sign in, open your account menu and choose Cancel subscription. On the Your plan page, choose Cancel subscription, then Yes, cancel my plan. If you can't sign in, email billing@justicebot-usa.com from the address on your account and we'll cancel it for you. To avoid the next charge, cancel before your next renewal date. After you cancel you won't be charged again, and the plan stays active until the end of the monthly period you already paid for. There are no cancellation fees."
+        },
+        {
+          question: "What happens to my files if I cancel?",
+          answer: AFTER_CANCEL_FAQ
         },
         {
           question: "Are there discounts for low-income users?",
-          answer: "Court forms, form guides, and the public-records letter tool are free for everyone in California and New York, so there is nothing to discount. If you can't afford court fees, you may qualify for a court fee waiver, and our fee waiver forms are free. Our Legal Disclaimer page links to state bar associations, which can refer you to a lawyer."
+          answer: "Court forms, form guides, and the public-records letter tool are free for everyone in California and New York, and you don't need the Toolkit to use them. We don't offer discounts or free trials on the Toolkit. If you can't afford court fees, you may qualify for a court fee waiver, and our fee waiver forms are free. Our Legal Disclaimer page links to state bar associations, which can refer you to a lawyer."
         }
       ]
     },
@@ -127,11 +149,11 @@ const FAQ = () => {
         },
         {
           question: "What data do you collect?",
-          answer: "We collect information you provide (name, email, case details), usage data (pages visited, features used), and technical data (browser type, IP address). See our Privacy Policy for complete details on data collection and use."
+          answer: "We collect information you provide (name, email, case details, files you upload, and the calendar dates and class records you type in), usage data (pages visited, features used), and technical data (browser type, IP address). If you subscribe to the Toolkit, we also keep a record of what you agreed to. See our Privacy Policy for complete details on data collection and use."
         },
         {
           question: "Can I delete my data?",
-          answer: "Yes. Email privacy@justicebot-usa.com to ask us to delete your personal data. We offer this to every user, wherever you live."
+          answer: "Yes. You can delete the files in your case binder yourself at any time on the Case binder page, one at a time or all at once with Delete all my files. To delete certificate files you saved in the Course Hub, email privacy@justicebot-usa.com. To delete your whole account and everything in it, email privacy@justicebot-usa.com from the address on your account. We offer this to every user, wherever you live. We keep records of your payments and subscriptions, and the record of your agreement to the Toolkit's automatic renewal, for as long as the law requires, even after your account is deleted."
         },
         {
           question: "Do you comply with state privacy laws?",
@@ -139,7 +161,7 @@ const FAQ = () => {
         },
         {
           question: "Is my case information confidential?",
-          answer: "Your case information is not shown to other users. To run the service, we share it with service providers, such as our hosting provider and the AI service that processes your questions. We never sell it. However, unlike communications with an attorney, information shared with Justice Bot USA is NOT protected by attorney-client privilege."
+          answer: "Your case information is not shown to other users. Files you upload can be opened only by you, when signed in; our staff cannot open them through the app's admin pages. To run the service, we share information with service providers, such as our hosting and file storage provider and the AI service that processes your questions. We never sell it. However, unlike communications with an attorney, information shared with Justice Bot USA is NOT protected by attorney-client privilege."
         }
       ]
     },
@@ -213,7 +235,7 @@ const FAQ = () => {
         },
         {
           question: "Can I get a refund if the service doesn't help me?",
-          answer: "Refunds are available within 30 days of purchase if you are not satisfied. Email billing@justicebot-usa.com to request one."
+          answer: REFUND_ANSWER
         },
         {
           question: "Do you have resources in Spanish?",
