@@ -43,11 +43,11 @@ const JusticeBotPage = () => {
     name: "Justice Bot USA",
     applicationCategory: "Legal",
     operatingSystem: "Web",
-    description: "Justice Bot USA is the guidance technology behind Justice Bot USA, helping people navigate complex legal and administrative systems without misinformation or false certainty.",
+    description: "Justice Bot USA is a legal information service from Quorex Solutions. It helps people navigate complex legal and administrative systems without misinformation or false certainty.",
     url: "https://justicebot-usa.com/justice-bot",
     creator: {
       "@type": "Organization",
-      name: "Justice Bot USA",
+      name: "Quorex Solutions",
     },
   };
 
@@ -55,13 +55,13 @@ const JusticeBotPage = () => {
     <div className="min-h-screen bg-background">
       <SEOHead
         title="What Is Justice Bot USA? | Justice Bot USA — Legal Guidance Technology"
-        description="Justice Bot USA is the guidance technology behind Justice Bot USA. It helps people navigate legal and administrative systems with clarity — without legal advice, database access, or surveillance."
+        description="Justice Bot USA is a legal information service from Quorex Solutions. It helps people navigate legal and administrative systems with clarity — without legal advice, database access, or surveillance."
         keywords="Justice Bot USA, legal guidance technology, informational guidance, legal information, civic guidance, self-represented individuals"
         url="https://justicebot-usa.com/justice-bot"
       />
       <EnhancedSEO
         title="What Is Justice Bot USA? | Justice Bot USA"
-        description="Justice Bot USA is the guidance technology behind Justice Bot USA, built by Justice Bot USA to help people navigate complex legal and administrative systems."
+        description="Justice Bot USA is a legal information service from Quorex Solutions that helps people navigate complex legal and administrative systems."
         canonicalUrl="https://justicebot-usa.com/justice-bot"
         structuredData={structuredData}
       />
@@ -74,7 +74,7 @@ const JusticeBotPage = () => {
           <img src={brandLogo} alt="Justice Bot USA" className="w-16 h-16 mx-auto rounded-full bg-white p-1 shadow-lg mb-6" />
           <h1 className="text-4xl md:text-5xl font-bold mb-4">What Is Justice Bot USA?</h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Justice Bot USA is the guidance technology behind Justice Bot USA, built by Justice Bot USA to help people navigate complex legal and administrative systems without misinformation or false certainty.
+            Justice Bot USA is a legal information service from Quorex Solutions, a trade name of Justice Bot Technologies Inc. It helps people navigate complex legal and administrative systems without misinformation or false certainty.
           </p>
         </div>
 

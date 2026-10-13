@@ -270,8 +270,9 @@ const buildLegalServiceSchema = (stateName: string, areaName: string, descriptio
   serviceType: 'Legal information and court form filling (not legal advice)',
   provider: {
     '@type': 'Organization',
-    name: 'Justice Bot USA',
+    name: 'Quorex Solutions',
     legalName: 'Justice Bot Technologies Inc.',
+    brand: { '@type': 'Brand', name: 'Justice Bot USA' },
     url: BASE_URL,
     logo: `${BASE_URL}/icon-512.png`,
   },

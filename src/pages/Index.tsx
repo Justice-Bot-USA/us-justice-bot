@@ -94,7 +94,8 @@ const Index = () => {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "Justice Bot USA",
+    name: "Quorex Solutions",
+    legalName: "Justice Bot Technologies Inc.",
     url: "https://justicebot-usa.com",
     description: "Justice Bot USA is an AI-powered civic-guidance platform helping self-represented individuals navigate the U.S. legal system.",
     brand: {

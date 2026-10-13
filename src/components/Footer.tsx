@@ -14,7 +14,10 @@ const Footer = () => {
           <div>
             <Link to="/" className="flex items-center gap-3 mb-4">
               <img src={logoImage} alt="Justice Bot USA logo" className="w-10 h-10 object-contain rounded-full bg-white p-0.5" />
-              <span className="text-xl font-bold">Justice Bot USA</span>
+              <span className="flex flex-col">
+                <span className="text-xl font-bold leading-tight">Justice Bot USA</span>
+                <span className="text-xs font-medium opacity-80">by Quorex Solutions</span>
+              </span>
             </Link>
             <p className="text-sm opacity-80 mb-4">
               Legal information, not legal advice. Live in California and New York; the other 48 states are coming soon.
@@ -87,6 +90,9 @@ const Footer = () => {
         <div className="border-t border-primary-foreground/20 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="text-sm opacity-60 space-y-1">
             <p>© {currentYear} Justice Bot Technologies Inc. All rights reserved.</p>
+            <p className="text-xs">
+              Justice Bot USA is a service of Quorex Solutions, a trade name of Justice Bot Technologies Inc.
+            </p>
             <p className="text-xs">
               Justice Bot, Justice Bot USA, and Quorex Solutions are trademarks of Justice Bot Technologies Inc.
             </p>

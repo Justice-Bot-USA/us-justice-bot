@@ -63,11 +63,13 @@ const Header = ({ language, onLanguageChange }: HeaderProps) => {
   const text = {
     en: {
       title: "Justice Bot USA",
+      byline: "by Quorex Solutions",
       subtitle: "Legal information, not legal advice",
       languageLabel: "Language"
     },
     es: {
       title: "Justice Bot USA",
+      byline: "por Quorex Solutions",
       subtitle: "No Soy Abogado — información, no asesoría",
       languageLabel: "Idioma"
     }
@@ -88,6 +90,7 @@ const Header = ({ language, onLanguageChange }: HeaderProps) => {
             <img src={logoImage} alt="Justice Bot USA logo" className="w-12 h-12 object-contain rounded-full bg-white p-0.5" />
             <div className="hidden sm:block lg:hidden xl:block">
               <h1 className="text-xl font-bold leading-tight">{text[language].title}</h1>
+              <p className="text-xs font-medium leading-tight">{text[language].byline}</p>
               <p className="text-xs text-primary-foreground/80">{text[language].subtitle}</p>
             </div>
           </Link>
