@@ -2,11 +2,12 @@ import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { CalendarDays, FolderOpen, GraduationCap, type LucideIcon } from "lucide-react";
 import ToolkitLayout from "@/components/toolkit/ToolkitLayout";
-import LockedFeature from "@/components/toolkit/LockedFeature";
+import LockedFeature, { NOT_FOR_SALE_YET } from "@/components/toolkit/LockedFeature";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { useAuth } from "@/hooks/useAuth";
 import { useToolkitAccess } from "@/hooks/useToolkitAccess";
+import { useCheckoutStatus } from "@/hooks/useCheckoutStatus";
 import { DATES_ARE_YOURS, TOOLKIT_FEATURES } from "@/lib/billingDisclosure";
 import { countToolkitItems, toolkitKeys } from "@/lib/toolkit/api";
 import { signInPath } from "@/lib/signIn";
@@ -65,6 +66,7 @@ function splitFeature(line: string): { name: string; text: string } {
 export default function ToolkitHub() {
   const { user } = useAuth();
   const access = useToolkitAccess();
+  const checkout = useCheckoutStatus();
   const userId = user?.id;
 
   // Counts only (no titles or names). Hidden if they can't be loaded.
@@ -94,6 +96,11 @@ export default function ToolkitHub() {
                 Your files, dates and class records are private to your account. Sign in, or create a free account, to
                 use them.
               </p>
+              {checkout.data !== true && !checkout.isPending && (
+                <p className="text-base">
+                  {NOT_FOR_SALE_YET} Uploading and organizing your own files is free.
+                </p>
+              )}
               <Button asChild className="min-h-11 w-full sm:w-auto">
                 <Link to={signInPath("/toolkit")}>Sign in</Link>
               </Button>
