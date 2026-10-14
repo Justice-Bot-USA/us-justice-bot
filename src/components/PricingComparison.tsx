@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { trackUSPrepareClicked } from "@/hooks/useAnalytics";
 import { PLAN, THIRD_PARTY_FEES_NOTE } from "@/lib/pricing";
+import { useCheckoutStatus } from "@/hooks/useCheckoutStatus";
+import { NOT_FOR_SALE_YET } from "@/components/toolkit/LockedFeature";
 
 // Home page pricing: every court form and form guide is free. The optional Toolkit plan is described
 // (and, when sales are open, sold) only on /pricing, with its full terms next to the consent boxes.
@@ -25,6 +27,7 @@ const plans = [
 
 export const PricingComparison = () => {
   const navigate = useNavigate();
+  const checkout = useCheckoutStatus();
 
   return (
     <section className="py-20 bg-background">
@@ -94,6 +97,7 @@ export const PricingComparison = () => {
         <p className="text-base text-center max-w-2xl mx-auto mt-6">
           Want help keeping your case papers in order? The optional Toolkit plan ({PLAN.priceLabel}) adds a case binder
           PDF, a hearing calendar and a class tracker.{" "}
+          {checkout.data !== true && <>{NOT_FOR_SALE_YET} </>}
           <Link to="/pricing" className="font-medium text-primary underline underline-offset-4 hover:no-underline">
             See the Toolkit on the Pricing page
           </Link>

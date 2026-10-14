@@ -4,9 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
 
-    <!-- Preload critical hero assets -->
-    <link rel="preload" as="image" href="/src/assets/us-flag-hero.png" />
-
     <!-- Google tag (gtag.js) — deferred to not block rendering -->
     <script defer src="https://www.googletagmanager.com/gtag/js?id=G-Z0965W94NE"></script>
     <script>
@@ -75,8 +72,9 @@
     {
       "@context": "https://schema.org",
       "@type": "Organization",
-      "name": "Justice Bot USA",
+      "name": "Quorex Solutions",
       "legalName": "Justice Bot Technologies Inc.",
+      "brand": { "@type": "Brand", "name": "Justice Bot USA" },
       "description": "Legal information and official California and New York court forms, filled in from your own answers. Not a law firm and not legal advice.",
       "url": "https://justicebot-usa.com",
       "logo": "https://justicebot-usa.com/icon-512.png",
@@ -105,89 +103,10 @@
     }
     </script>
 
-    <!-- Structured Data - FAQ -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "How much does Justice Bot USA cost?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "One plan: $25 a month, with every form and filling instruction included. Courts and government agencies may charge their own fees, such as filing fees; we tell you about them where we know them. Fee waiver forms are free."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What legal areas does Justice Bot USA cover?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "In California and New York: family, divorce, small claims, housing and eviction, record clearing, child protective cases, workplace, and civil rights, plus immigration resources in New York. Other states are coming soon."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Is Justice Bot USA available in all US states?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Not yet. Justice Bot USA is live in California and New York. The other 48 states are coming soon."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Can Justice Bot USA replace an attorney?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "No. Justice Bot USA gives legal information and fills official court forms with your own answers. It does not give legal advice or choose forms or strategy for you. For legal advice, talk to a licensed attorney or a free legal aid program."
-          }
-        }
-      ]
-    }
-    </script>
 
-    <!-- Structured Data - BreadcrumbList -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "Home",
-          "item": "https://justicebot-usa.com/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "name": "Case Analysis",
-          "item": "https://justicebot-usa.com/case-analysis"
-        },
-        {
-          "@type": "ListItem",
-          "position": 3,
-          "name": "Forms Library",
-          "item": "https://justicebot-usa.com/forms-library"
-        },
-        {
-          "@type": "ListItem",
-          "position": 4,
-          "name": "AI Tools",
-          "item": "https://justicebot-usa.com/ai-tools"
-        },
-        {
-          "@type": "ListItem",
-          "position": 5,
-          "name": "Courses",
-          "item": "https://justicebot-usa.com/courses"
-        }
-      ]
-    }
-    </script>
 
-    <!-- Structured Data - SoftwareApplication (aggregate rating removed — no verified reviews yet) -->
+    <!-- Structured Data - SoftwareApplication (no aggregate rating: no verified reviews yet). The price is
+         the free court forms and guides; the optional Toolkit plan is described on /pricing only. -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -197,7 +116,7 @@
       "operatingSystem": "Web Browser",
       "offers": {
         "@type": "Offer",
-        "price": "25",
+        "price": "0",
         "priceCurrency": "USD"
       }
     }
