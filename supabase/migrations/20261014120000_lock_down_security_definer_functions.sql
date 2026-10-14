@@ -12,7 +12,8 @@
 --    resource_links, ...) call has_role, and revoking it would break those reads. A call is
 --    answered for any user only when there is no API request context (auth.jwt() is null: SQL run
 --    directly, cron, migrations) or the caller is the service role (edge functions). This closes the
---    "is this account an admin?" probe while every policy keeps working.
+--    "is this account an admin?" probe while every policy keeps working. Both always return true or
+--    false, never null (an anon caller has no auth.uid(), and NOT null would not deny in plpgsql).
 -- 2. delete_user_activity_archive_tombstone: anon could call it with any admin's id as its
 --    admin_user argument and mark activity-archive rows deleted. EXECUTE is now service role only,
 --    and is_verified_admin (change 1) no longer vouches for an id that isn't the caller's own.
@@ -40,16 +41,19 @@ stable
 security definer
 set search_path = ''
 as $$
-  select exists (
-    select 1
-    from public.user_roles
-    where user_id = _user_id
-      and role = _role
-  )
-  and (
-    _user_id = (select auth.uid())
-    or (select auth.jwt()) is null
-    or (select auth.jwt()) ->> 'role' = 'service_role'
+  select coalesce(
+    exists (
+      select 1
+      from public.user_roles
+      where user_id = _user_id
+        and role = _role
+    )
+    and (
+      _user_id = (select auth.uid())
+      or (select auth.jwt()) is null
+      or (select auth.jwt()) ->> 'role' = 'service_role'
+    ),
+    false
   )
 $$;
 
@@ -60,16 +64,19 @@ stable
 security definer
 set search_path = ''
 as $$
-  select exists (
-    select 1
-    from public.user_roles ur
-    where ur.user_id = uid
-      and ur.role = 'admin'
-  )
-  and (
-    uid = (select auth.uid())
-    or (select auth.jwt()) is null
-    or (select auth.jwt()) ->> 'role' = 'service_role'
+  select coalesce(
+    exists (
+      select 1
+      from public.user_roles ur
+      where ur.user_id = uid
+        and ur.role = 'admin'
+    )
+    and (
+      uid = (select auth.uid())
+      or (select auth.jwt()) is null
+      or (select auth.jwt()) ->> 'role' = 'service_role'
+    ),
+    false
   )
 $$;
 
