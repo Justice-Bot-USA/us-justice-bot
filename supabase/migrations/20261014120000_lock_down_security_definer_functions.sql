@@ -26,6 +26,8 @@
 --    EXECUTE (AdminDashboardSimple calls admin_view_profiles).
 -- 5. Trigger functions (handle_new_user, reject_profiles_email, anonymize_ip_on_insert): EXECUTE
 --    revoked from API roles. Triggers don't check the caller's EXECUTE privilege, so they still run.
+-- 6. Activity logs: browser inserts can't supply IP data (closes a hash-lookup oracle) or write
+--    rows that look like admin profile views/exports or are backdated.
 --
 -- Run as one transaction (the CLI and apply_migration wrap it). Reversible by re-granting.
 
@@ -126,3 +128,51 @@ grant execute on function public.admin_export_profiles(text, jsonb) to authentic
 revoke execute on function public.handle_new_user() from public, anon, authenticated;
 revoke execute on function public.reject_profiles_email() from public, anon, authenticated;
 revoke execute on function public.anonymize_ip_on_insert() from public, anon, authenticated;
+
+
+-- ---------------------------------------------------------------------------------------------
+-- 6. Activity log integrity (found by review of this migration; both issues predate it)
+-- ---------------------------------------------------------------------------------------------
+-- No app code inserts into user_activity_logs or user_activity_logs_archive from the browser
+-- (useActivityLogger has no callers); server code writes with the service key, which bypasses RLS,
+-- and the admin_* functions write as the table owner.
+
+-- a) A signed-in user could insert a row with any ip_address and read back its hash, turning
+--    compute_ip_hash into a lookup oracle. API callers other than the service role can no longer
+--    supply IP data; the trigger blanks it.
+create or replace function public.anonymize_ip_on_insert()
+returns trigger
+language plpgsql
+security definer
+set search_path = ''
+as $$
+begin
+  if (select auth.jwt()) is not null
+     and coalesce((select auth.jwt()) ->> 'role', '') <> 'service_role' then
+    new.ip_address := null;
+    new.ip_address_hash := null;
+  end if;
+  if new.ip_address is not null then
+    new.ip_address_hash := public.compute_ip_hash(new.ip_address::text);
+    new.ip_address := null;
+    new.anonymized_at := now();
+  end if;
+  return new;
+end;
+$$;
+
+-- b) A signed-in user could insert rows that admin_view_profile_access_logs reports as admin
+--    profile views or bulk exports, with any timestamp. Browser inserts can no longer use admin_*
+--    actions or the 'profiles' resource type, or set created_at away from now.
+drop policy if exists "System can insert activity logs" on public.user_activity_logs;
+drop policy if exists "Users can insert their own activity logs" on public.user_activity_logs;
+create policy "Users can insert their own activity logs"
+  on public.user_activity_logs
+  for insert
+  to authenticated
+  with check (
+    user_id = (select auth.uid())
+    and action not like 'admin\_%'
+    and resource_type is distinct from 'profiles'
+    and created_at between now() - interval '1 minute' and now() + interval '1 minute'
+  );
