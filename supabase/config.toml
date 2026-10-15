@@ -121,3 +121,6 @@ verify_jwt = false
 
 [functions.juriscraper-ingest]
 verify_jwt = false
+# Retired: answers 410 Gone (see index.ts).
+[functions.archive-activity]
+verify_jwt = true
